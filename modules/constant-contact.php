@@ -463,7 +463,7 @@ class WPCF7_ConstantContact extends WPCF7_Service_OAuth2 {
 			case 'failed':
 				echo sprintf(
 					'<div class="error notice notice-error is-dismissible"><p><strong>%1$s</strong>: %2$s</p></div>',
-					esc_html( __( "ERROR", 'contact-form-7' ) ),
+					esc_html( __( "Error", 'contact-form-7' ) ),
 					esc_html( __( "Failed to establish connection. Please double-check your configuration.", 'contact-form-7' ) )
 				);
 				break;

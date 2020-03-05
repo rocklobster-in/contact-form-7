@@ -474,7 +474,7 @@ class WPCF7_RECAPTCHA extends WPCF7_Service {
 		if ( 'invalid' == $message ) {
 			echo sprintf(
 				'<div class="error notice notice-error is-dismissible"><p><strong>%1$s</strong>: %2$s</p></div>',
-				esc_html( __( "ERROR", 'contact-form-7' ) ),
+				esc_html( __( "Error", 'contact-form-7' ) ),
 				esc_html( __( "Invalid key values.", 'contact-form-7' ) ) );
 		}
 
