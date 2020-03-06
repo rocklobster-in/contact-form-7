@@ -103,3 +103,9 @@ div.wpcf7 input[type="file"]:disabled {
 div.wpcf7 .wpcf7-submit:disabled {
 	cursor: not-allowed;
 }
+
+.wpcf7 input[type="url"],
+.wpcf7 input[type="email"],
+.wpcf7 input[type="tel"] {
+	direction: ltr;
+}
