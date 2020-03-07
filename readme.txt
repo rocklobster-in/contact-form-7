@@ -75,6 +75,11 @@ Do you have questions or issues with Contact Form 7? Use these support channels 
 
 For more information, see [Releases](https://contactform7.com/category/releases/).
 
+= 5.1.7 =
+
+* CSS: Adds an explicit LTR direction style rule for code inputs.
+* Accessibility: Uses _Error_ instead of _ERROR_ in warnings.
+
 = 5.1.6 =
 
 * CSS: removes a style rule from the stylesheet that was unnecessary and conflicting with Twenty Twenty’s rules.
