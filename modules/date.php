@@ -148,7 +148,7 @@ function wpcf7_tag_generator_date( $contact_form, $args = '' ) {
 
 	$description = __( "Generate a form-tag for a date input field. For more details, see %s.", 'contact-form-7' );
 
-	$desc_link = wpcf7_link( __( 'https://contactform7.com/date-field/', 'contact-form-7' ), __( 'Date Field', 'contact-form-7' ) );
+	$desc_link = wpcf7_link( __( 'https://contactform7.com/date-field/', 'contact-form-7' ), __( 'Date field', 'contact-form-7' ) );
 
 ?>
 <div class="control-box">

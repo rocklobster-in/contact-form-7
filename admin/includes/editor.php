@@ -53,7 +53,7 @@ class WPCF7_Editor {
 function wpcf7_editor_panel_form( $post ) {
 	$desc_link = wpcf7_link(
 		__( 'https://contactform7.com/editing-form-template/', 'contact-form-7' ),
-		__( 'Editing Form Template', 'contact-form-7' ) );
+		__( 'Editing form template', 'contact-form-7' ) );
 	$description = __( "You can edit the form template here. For details, see %s.", 'contact-form-7' );
 	$description = sprintf( esc_html( $description ), $desc_link );
 ?>
@@ -126,7 +126,7 @@ function wpcf7_editor_box_mail( $post, $args = '' ) {
 <?php
 	$desc_link = wpcf7_link(
 		__( 'https://contactform7.com/setting-up-mail/', 'contact-form-7' ),
-		__( 'Setting Up Mail', 'contact-form-7' ) );
+		__( 'Setting up mail', 'contact-form-7' ) );
 	$description = __( "You can edit the mail template here. For details, see %s.", 'contact-form-7' );
 	$description = sprintf( esc_html( $description ), $desc_link );
 	echo $description;
@@ -169,7 +169,7 @@ function wpcf7_editor_box_mail( $post, $args = '' ) {
 
 	<tr>
 	<th scope="row">
-		<label for="<?php echo $id; ?>-additional-headers"><?php echo esc_html( __( 'Additional Headers', 'contact-form-7' ) ); ?></label>
+		<label for="<?php echo $id; ?>-additional-headers"><?php echo esc_html( __( 'Additional headers', 'contact-form-7' ) ); ?></label>
 	</th>
 	<td>
 		<textarea id="<?php echo $id; ?>-additional-headers" name="<?php echo $id; ?>[additional_headers]" cols="100" rows="4" class="large-text code" data-config-field="<?php echo sprintf( '%s.additional_headers', esc_attr( $args['name'] ) ); ?>"><?php echo esc_textarea( $mail['additional_headers'] ); ?></textarea>
@@ -178,7 +178,7 @@ function wpcf7_editor_box_mail( $post, $args = '' ) {
 
 	<tr>
 	<th scope="row">
-		<label for="<?php echo $id; ?>-body"><?php echo esc_html( __( 'Message Body', 'contact-form-7' ) ); ?></label>
+		<label for="<?php echo $id; ?>-body"><?php echo esc_html( __( 'Message body', 'contact-form-7' ) ); ?></label>
 	</th>
 	<td>
 		<textarea id="<?php echo $id; ?>-body" name="<?php echo $id; ?>[body]" cols="100" rows="18" class="large-text code" data-config-field="<?php echo sprintf( '%s.body', esc_attr( $args['name'] ) ); ?>"><?php echo esc_textarea( $mail['body'] ); ?></textarea>
@@ -191,7 +191,7 @@ function wpcf7_editor_box_mail( $post, $args = '' ) {
 
 	<tr>
 	<th scope="row">
-		<label for="<?php echo $id; ?>-attachments"><?php echo esc_html( __( 'File Attachments', 'contact-form-7' ) ); ?></label>
+		<label for="<?php echo $id; ?>-attachments"><?php echo esc_html( __( 'File attachments', 'contact-form-7' ) ); ?></label>
 	</th>
 	<td>
 		<textarea id="<?php echo $id; ?>-attachments" name="<?php echo $id; ?>[attachments]" cols="100" rows="4" class="large-text code" data-config-field="<?php echo sprintf( '%s.attachments', esc_attr( $args['name'] ) ); ?>"><?php echo esc_textarea( $mail['attachments'] ); ?></textarea>
@@ -207,7 +207,7 @@ function wpcf7_editor_box_mail( $post, $args = '' ) {
 function wpcf7_editor_panel_messages( $post ) {
 	$desc_link = wpcf7_link(
 		__( 'https://contactform7.com/editing-messages/', 'contact-form-7' ),
-		__( 'Editing Messages', 'contact-form-7' ) );
+		__( 'Editing messages', 'contact-form-7' ) );
 	$description = __( "You can edit messages used in various situations here. For details, see %s.", 'contact-form-7' );
 	$description = sprintf( esc_html( $description ), $desc_link );
 
@@ -244,7 +244,7 @@ function wpcf7_editor_panel_messages( $post ) {
 function wpcf7_editor_panel_additional_settings( $post ) {
 	$desc_link = wpcf7_link(
 		__( 'https://contactform7.com/additional-settings/', 'contact-form-7' ),
-		__( 'Additional Settings', 'contact-form-7' ) );
+		__( 'Additional settings', 'contact-form-7' ) );
 	$description = __( "You can add customization code snippets here. For details, see %s.", 'contact-form-7' );
 	$description = sprintf( esc_html( $description ), $desc_link );
 
