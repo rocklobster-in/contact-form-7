@@ -52,7 +52,7 @@ function wpcf7_tag_generator_submit( $contact_form, $args = '' ) {
 
 	$description = __( "Generate a form-tag for a submit button. For more details, see %s.", 'contact-form-7' );
 
-	$desc_link = wpcf7_link( __( 'https://contactform7.com/submit-button/', 'contact-form-7' ), __( 'Submit Button', 'contact-form-7' ) );
+	$desc_link = wpcf7_link( __( 'https://contactform7.com/submit-button/', 'contact-form-7' ), __( 'Submit button', 'contact-form-7' ) );
 
 ?>
 <div class="control-box">

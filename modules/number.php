@@ -151,7 +151,7 @@ function wpcf7_tag_generator_number( $contact_form, $args = '' ) {
 
 	$description = __( "Generate a form-tag for a field for numeric value input. For more details, see %s.", 'contact-form-7' );
 
-	$desc_link = wpcf7_link( __( 'https://contactform7.com/number-fields/', 'contact-form-7' ), __( 'Number Fields', 'contact-form-7' ) );
+	$desc_link = wpcf7_link( __( 'https://contactform7.com/number-fields/', 'contact-form-7' ), __( 'Number fields', 'contact-form-7' ) );
 
 ?>
 <div class="control-box">

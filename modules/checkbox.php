@@ -277,7 +277,7 @@ function wpcf7_tag_generator_checkbox( $contact_form, $args = '' ) {
 		$description = __( "Generate a form-tag for a group of radio buttons. For more details, see %s.", 'contact-form-7' );
 	}
 
-	$desc_link = wpcf7_link( __( 'https://contactform7.com/checkboxes-radio-buttons-and-menus/', 'contact-form-7' ), __( 'Checkboxes, Radio Buttons and Menus', 'contact-form-7' ) );
+	$desc_link = wpcf7_link( __( 'https://contactform7.com/checkboxes-radio-buttons-and-menus/', 'contact-form-7' ), __( 'Checkboxes, radio buttons and menus', 'contact-form-7' ) );
 
 ?>
 <div class="control-box">

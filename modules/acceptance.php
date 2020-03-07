@@ -240,7 +240,7 @@ function wpcf7_tag_generator_acceptance( $contact_form, $args = '' ) {
 
 	$description = __( "Generate a form-tag for an acceptance checkbox. For more details, see %s.", 'contact-form-7' );
 
-	$desc_link = wpcf7_link( __( 'https://contactform7.com/acceptance-checkbox/', 'contact-form-7' ), __( 'Acceptance Checkbox', 'contact-form-7' ) );
+	$desc_link = wpcf7_link( __( 'https://contactform7.com/acceptance-checkbox/', 'contact-form-7' ), __( 'Acceptance checkbox', 'contact-form-7' ) );
 
 ?>
 <div class="control-box">
