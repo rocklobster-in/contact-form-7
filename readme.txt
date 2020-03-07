@@ -14,15 +14,15 @@ Just another contact form plugin. Simple but flexible.
 
 Contact Form 7 can manage multiple contact forms, plus you can customize the form and the mail contents flexibly with simple markup. The form supports Ajax-powered submitting, CAPTCHA, Akismet spam filtering and so on.
 
-= Docs & Support =
+= Docs and support =
 
-You can find [docs](https://contactform7.com/docs/), [FAQ](https://contactform7.com/faq/) and more detailed information about Contact Form 7 on [contactform7.com](https://contactform7.com/). If you were unable to find the answer to your question on the FAQ or in any of the documentation, you should check the [support forum](https://wordpress.org/support/plugin/contact-form-7/) on WordPress.org. If you can't locate any topics that pertain to your particular issue, post a new topic for it.
+You can find [docs](https://contactform7.com/docs/), [FAQ](https://contactform7.com/faq/) and more detailed information about Contact Form 7 on [contactform7.com](https://contactform7.com/). When you can't find the answer to your question on the FAQ or in any of the documentation, check the [support forum](https://wordpress.org/support/plugin/contact-form-7/) on WordPress.org. If you can't locate any topics that pertain to your particular issue, post a new topic for it.
 
-= Contact Form 7 Needs Your Support =
+= Contact Form 7 needs your support =
 
-It is hard to continue development and support for this free plugin without contributions from users like you. If you enjoy using Contact Form 7 and find it useful, please consider [__making a donation__](https://contactform7.com/donate/). Your donation will help encourage and support the plugin's continued development and better user support.
+It is hard to continue development and support for this free plugin without contributions from users like you. If you enjoy using Contact Form 7 and find it useful, please consider [making a donation](https://contactform7.com/donate/). Your donation will help encourage and support the plugin's continued development and better user support.
 
-= Privacy Notices =
+= Privacy notices =
 
 With the default configuration, this plugin, in itself, does not:
 
@@ -37,7 +37,7 @@ If you activate certain features in this plugin, the contact form submitter's pe
 * Akismet ([Automattic](https://automattic.com/privacy/))
 * Constant Contact ([Endurance International Group](https://www.endurance.com/privacy))
 
-= Recommended Plugins =
+= Recommended plugins =
 
 The following plugins are recommended for Contact Form 7 users:
 
@@ -46,16 +46,16 @@ The following plugins are recommended for Contact Form 7 users:
 
 = Translations =
 
-You can [translate Contact Form 7](https://contactform7.com/translating-contact-form-7/) on [__translate.wordpress.org__](https://translate.wordpress.org/projects/wp-plugins/contact-form-7).
+You can [translate Contact Form 7](https://contactform7.com/translating-contact-form-7/) on [translate.wordpress.org](https://translate.wordpress.org/projects/wp-plugins/contact-form-7).
 
 == Installation ==
 
 1. Upload the entire `contact-form-7` folder to the `/wp-content/plugins/` directory.
-1. Activate the plugin through the 'Plugins' menu in WordPress.
+1. Activate the plugin through the **Plugins** screen (**Plugins > Installed Plugins**).
 
-You will find 'Contact' menu in your WordPress admin panel.
+You will find **Contact** menu in your WordPress admin screen.
 
-For basic usage, you can also have a look at the [plugin web site](https://contactform7.com/).
+For basic usage, have a look at the [plugin's website](https://contactform7.com/).
 
 == Frequently Asked Questions ==
 
@@ -63,7 +63,7 @@ Do you have questions or issues with Contact Form 7? Use these support channels 
 
 1. [Docs](https://contactform7.com/docs/)
 1. [FAQ](https://contactform7.com/faq/)
-1. [Support Forum](https://wordpress.org/support/plugin/contact-form-7/)
+1. [Support forum](https://wordpress.org/support/plugin/contact-form-7/)
 
 [Support](https://contactform7.com/support/)
 
