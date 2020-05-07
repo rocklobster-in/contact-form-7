@@ -170,7 +170,7 @@ class WPCF7_Submission {
 			'user_agent' => isset( $_SERVER['HTTP_USER_AGENT'] )
 				? substr( $_SERVER['HTTP_USER_AGENT'], 0, 254 ) : '',
 			'url' => $this->get_request_url(),
-			'timestamp' => current_time( 'timestamp' ),
+			'timestamp' => time(),
 			'unit_tag' =>
 				isset( $_POST['_wpcf7_unit_tag'] ) ? $_POST['_wpcf7_unit_tag'] : '',
 			'container_post_id' => isset( $_POST['_wpcf7_container_post'] )
