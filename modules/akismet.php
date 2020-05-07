@@ -15,7 +15,9 @@ function wpcf7_akismet( $spam ) {
 		return false;
 	}
 
-	if ( ! $params = wpcf7_akismet_submitted_params() ) {
+	$submission = WPCF7_Submission::get_instance();
+
+	if ( ! $submission or ! $params = wpcf7_akismet_submitted_params() ) {
 		return false;
 	}
 
@@ -32,9 +34,8 @@ function wpcf7_akismet( $spam ) {
 	$c['user_ip'] = $_SERVER['REMOTE_ADDR'];
 	$c['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
 	$c['referrer'] = $_SERVER['HTTP_REFERER'];
-
-	// http://blog.akismet.com/2012/06/19/pro-tip-tell-us-your-comment_type/
 	$c['comment_type'] = 'contact-form';
+	$c['comment_date_gmt'] = $submission->get_meta( 'timestamp' );
 
 	if ( $permalink = get_permalink() ) {
 		$c['permalink'] = $permalink;
@@ -50,8 +51,6 @@ function wpcf7_akismet( $spam ) {
 
 	if ( wpcf7_akismet_comment_check( $c ) ) {
 		$spam = true;
-
-		$submission = WPCF7_Submission::get_instance();
 
 		$submission->add_spam_log( array(
 			'agent' => 'akismet',

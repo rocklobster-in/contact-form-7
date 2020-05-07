@@ -419,7 +419,7 @@ class WPCF7_RECAPTCHA extends WPCF7_Service {
 		$url = menu_page_url( 'wpcf7-integration', false );
 		$url = add_query_arg( array( 'service' => 'recaptcha' ), $url );
 
-		if ( ! empty( $args) ) {
+		if ( ! empty( $args ) ) {
 			$url = add_query_arg( $args, $url );
 		}
 
