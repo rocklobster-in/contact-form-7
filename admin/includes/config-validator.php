@@ -69,7 +69,7 @@ function wpcf7_load_bulk_validate_page( $page, $action ) {
 	$contact_forms = WPCF7_ContactForm::find();
 
 	$result = array(
-		'timestamp' => current_time( 'timestamp' ),
+		'timestamp' => time(),
 		'version' => WPCF7_VERSION,
 		'count_valid' => 0,
 		'count_invalid' => 0,
