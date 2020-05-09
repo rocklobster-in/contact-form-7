@@ -316,7 +316,10 @@ class WPCF7_ConstantContact extends WPCF7_Service_OAuth2 {
 
 	public function email_exists( $email ) {
 		$endpoint = add_query_arg(
-			array( 'email' => $email ),
+			array(
+				'email' => $email,
+				'status' => 'all',
+			),
 			'https://api.cc.email/v3/contacts'
 		);
 
@@ -884,9 +887,10 @@ class WPCF7_ConstantContact_ContactPostRequest {
 	public function add_phone_number( $phone_number, $kind = 'home' ) {
 		$phone_number = trim( $phone_number );
 
-		if ( 2 <= count( $this->phone_numbers )
+		if ( empty( $phone_number )
 		or ! wpcf7_is_tel( $phone_number )
 		or 25 < $this->strlen( $phone_number )
+		or 2 <= count( $this->phone_numbers )
 		or ! in_array( $kind, array( 'home', 'work', 'other' ) ) ) {
 			return false;
 		}
