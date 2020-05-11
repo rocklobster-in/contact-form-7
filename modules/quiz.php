@@ -73,7 +73,8 @@ function wpcf7_quiz_form_tag_handler( $tag ) {
 		'<span class="wpcf7-form-control-wrap %1$s"><label><span class="wpcf7-quiz-label">%2$s</span> <input %3$s /></label><input type="hidden" name="_wpcf7_quiz_answer_%4$s" value="%5$s" />%6$s</span>',
 		sanitize_html_class( $tag->name ),
 		esc_html( $question ), $atts, $tag->name,
-		wp_hash( $answer, 'wpcf7_quiz' ), $validation_error );
+		wp_hash( $answer, 'wpcf7_quiz' ), $validation_error
+	);
 
 	return $html;
 }
@@ -95,7 +96,7 @@ function wpcf7_quiz_validation_filter( $result, $tag ) {
 		? (string) $_POST['_wpcf7_quiz_answer_' . $name]
 		: '';
 
-	if ( $answer_hash != $expected_hash ) {
+	if ( $answer_hash !== $expected_hash ) {
 		$result->invalidate( $tag, wpcf7_get_message( 'quiz_answer_not_correct' ) );
 	}
 
