@@ -14,7 +14,11 @@ add_action( 'wpcf7_init', 'wpcf7_add_form_tag_text', 10, 0 );
 function wpcf7_add_form_tag_text() {
 	wpcf7_add_form_tag(
 		array( 'text', 'text*', 'email', 'email*', 'url', 'url*', 'tel', 'tel*' ),
-		'wpcf7_text_form_tag_handler', array( 'name-attr' => true ) );
+		'wpcf7_text_form_tag_handler',
+		array(
+			'name-attr' => true,
+		)
+	);
 }
 
 function wpcf7_text_form_tag_handler( $tag ) {
@@ -88,7 +92,8 @@ function wpcf7_text_form_tag_handler( $tag ) {
 
 	$html = sprintf(
 		'<span class="wpcf7-form-control-wrap %1$s"><input %2$s />%3$s</span>',
-		sanitize_html_class( $tag->name ), $atts, $validation_error );
+		sanitize_html_class( $tag->name ), $atts, $validation_error
+	);
 
 	return $html;
 }
@@ -113,31 +118,31 @@ function wpcf7_text_validation_filter( $result, $tag ) {
 		: '';
 
 	if ( 'text' == $tag->basetype ) {
-		if ( $tag->is_required() and '' == $value ) {
+		if ( $tag->is_required() and '' === $value ) {
 			$result->invalidate( $tag, wpcf7_get_message( 'invalid_required' ) );
 		}
 	}
 
 	if ( 'email' == $tag->basetype ) {
-		if ( $tag->is_required() and '' == $value ) {
+		if ( $tag->is_required() and '' === $value ) {
 			$result->invalidate( $tag, wpcf7_get_message( 'invalid_required' ) );
-		} elseif ( '' != $value and ! wpcf7_is_email( $value ) ) {
+		} elseif ( '' !== $value and ! wpcf7_is_email( $value ) ) {
 			$result->invalidate( $tag, wpcf7_get_message( 'invalid_email' ) );
 		}
 	}
 
 	if ( 'url' == $tag->basetype ) {
-		if ( $tag->is_required() and '' == $value ) {
+		if ( $tag->is_required() and '' === $value ) {
 			$result->invalidate( $tag, wpcf7_get_message( 'invalid_required' ) );
-		} elseif ( '' != $value and ! wpcf7_is_url( $value ) ) {
+		} elseif ( '' !== $value and ! wpcf7_is_url( $value ) ) {
 			$result->invalidate( $tag, wpcf7_get_message( 'invalid_url' ) );
 		}
 	}
 
 	if ( 'tel' == $tag->basetype ) {
-		if ( $tag->is_required() and '' == $value ) {
+		if ( $tag->is_required() and '' === $value ) {
 			$result->invalidate( $tag, wpcf7_get_message( 'invalid_required' ) );
-		} elseif ( '' != $value and ! wpcf7_is_tel( $value ) ) {
+		} elseif ( '' !== $value and ! wpcf7_is_tel( $value ) ) {
 			$result->invalidate( $tag, wpcf7_get_message( 'invalid_tel' ) );
 		}
 	}

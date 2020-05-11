@@ -9,7 +9,11 @@ add_action( 'wpcf7_init', 'wpcf7_add_form_tag_file', 10, 0 );
 
 function wpcf7_add_form_tag_file() {
 	wpcf7_add_form_tag( array( 'file', 'file*' ),
-		'wpcf7_file_form_tag_handler', array( 'name-attr' => true ) );
+		'wpcf7_file_form_tag_handler',
+		array(
+			'name-attr' => true,
+		)
+	);
 }
 
 function wpcf7_file_form_tag_handler( $tag ) {
@@ -48,7 +52,8 @@ function wpcf7_file_form_tag_handler( $tag ) {
 
 	$html = sprintf(
 		'<span class="wpcf7-form-control-wrap %1$s"><input %2$s />%3$s</span>',
-		sanitize_html_class( $tag->name ), $atts, $validation_error );
+		sanitize_html_class( $tag->name ), $atts, $validation_error
+	);
 
 	return $html;
 }
@@ -60,7 +65,8 @@ add_filter( 'wpcf7_form_enctype', 'wpcf7_file_form_enctype_filter', 10, 1 );
 
 function wpcf7_file_form_enctype_filter( $enctype ) {
 	$multipart = (bool) wpcf7_scan_form_tags(
-		array( 'type' => array( 'file', 'file*' ) ) );
+		array( 'type' => array( 'file', 'file*' ) )
+	);
 
 	if ( $multipart ) {
 		$enctype = 'multipart/form-data';
@@ -81,7 +87,7 @@ function wpcf7_file_validation_filter( $result, $tag ) {
 
 	$file = isset( $_FILES[$name] ) ? $_FILES[$name] : null;
 
-	if ( $file['error'] and UPLOAD_ERR_NO_FILE != $file['error'] ) {
+	if ( $file['error'] and UPLOAD_ERR_NO_FILE !== $file['error'] ) {
 		$result->invalidate( $tag, wpcf7_get_message( 'upload_failed_php_error' ) );
 		return $result;
 	}

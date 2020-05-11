@@ -112,11 +112,13 @@ function wpcf7_checkbox_form_tag_handler( $tag ) {
 		if ( $label_first ) { // put label first, input last
 			$item = sprintf(
 				'<span class="wpcf7-list-item-label">%1$s</span><input %2$s />',
-				esc_html( $label ), $item_atts );
+				esc_html( $label ), $item_atts
+			);
 		} else {
 			$item = sprintf(
 				'<input %2$s /><span class="wpcf7-list-item-label">%1$s</span>',
-				esc_html( $label ), $item_atts );
+				esc_html( $label ), $item_atts
+			);
 		}
 
 		if ( $use_label_element ) {
@@ -140,7 +142,8 @@ function wpcf7_checkbox_form_tag_handler( $tag ) {
 
 			if ( $free_text ) {
 				$free_text_name = sprintf(
-					'_wpcf7_%1$s_free_text_%2$s', $tag->basetype, $tag->name );
+					'_wpcf7_%1$s_free_text_%2$s', $tag->basetype, $tag->name
+				);
 
 				$free_text_atts = array(
 					'name' => $free_text_name,
@@ -170,7 +173,8 @@ function wpcf7_checkbox_form_tag_handler( $tag ) {
 
 	$html = sprintf(
 		'<span class="wpcf7-form-control-wrap %1$s"><span %2$s>%3$s</span>%4$s</span>',
-		sanitize_html_class( $tag->name ), $atts, $html, $validation_error );
+		sanitize_html_class( $tag->name ), $atts, $html, $validation_error
+	);
 
 	return $html;
 }
