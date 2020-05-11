@@ -72,54 +72,54 @@ function wpcf7_recaptcha_onload_script() {
 <script type="text/javascript">
 ( function( sitekey, actions ) {
 
-document.addEventListener( 'DOMContentLoaded', function( event ) {
-	var wpcf7recaptcha = {
+	document.addEventListener( 'DOMContentLoaded', function( event ) {
+		var wpcf7recaptcha = {
 
-		execute: function( action ) {
-			grecaptcha.execute(
-				sitekey,
-				{ action: action }
-			).then( function( token ) {
-				var forms = document.getElementsByTagName( 'form' );
+			execute: function( action ) {
+				grecaptcha.execute(
+					sitekey,
+					{ action: action }
+				).then( function( token ) {
+					var forms = document.getElementsByTagName( 'form' );
 
-				for ( var i = 0; i < forms.length; i++ ) {
-					var fields = forms[ i ].getElementsByTagName( 'input' );
+					for ( var i = 0; i < forms.length; i++ ) {
+						var fields = forms[ i ].getElementsByTagName( 'input' );
 
-					for ( var j = 0; j < fields.length; j++ ) {
-						var field = fields[ j ];
+						for ( var j = 0; j < fields.length; j++ ) {
+							var field = fields[ j ];
 
-						if ( 'g-recaptcha-response' === field.getAttribute( 'name' ) ) {
-							field.setAttribute( 'value', token );
-							break;
+							if ( 'g-recaptcha-response' === field.getAttribute( 'name' ) ) {
+								field.setAttribute( 'value', token );
+								break;
+							}
 						}
 					}
-				}
-			} );
-		},
+				} );
+			},
 
-		executeOnHomepage: function() {
-			wpcf7recaptcha.execute( actions[ 'homepage' ] );
-		},
+			executeOnHomepage: function() {
+				wpcf7recaptcha.execute( actions[ 'homepage' ] );
+			},
 
-		executeOnContactform: function() {
-			wpcf7recaptcha.execute( actions[ 'contactform' ] );
-		},
+			executeOnContactform: function() {
+				wpcf7recaptcha.execute( actions[ 'contactform' ] );
+			},
 
-	};
+		};
 
-	grecaptcha.ready(
-		wpcf7recaptcha.executeOnHomepage
-	);
+		grecaptcha.ready(
+			wpcf7recaptcha.executeOnHomepage
+		);
 
-	document.addEventListener( 'change',
-		wpcf7recaptcha.executeOnContactform, false
-	);
+		document.addEventListener( 'change',
+			wpcf7recaptcha.executeOnContactform, false
+		);
 
-	document.addEventListener( 'wpcf7submit',
-		wpcf7recaptcha.executeOnHomepage, false
-	);
+		document.addEventListener( 'wpcf7submit',
+			wpcf7recaptcha.executeOnHomepage, false
+		);
 
-} );
+	} );
 } )(
 	'<?php echo esc_js( $service->get_sitekey() ); ?>',
 	<?php echo json_encode( $actions ), "\n"; ?>
