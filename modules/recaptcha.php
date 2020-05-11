@@ -70,8 +70,9 @@ function wpcf7_recaptcha_onload_script() {
 
 ?>
 <script type="text/javascript">
-( function( grecaptcha, sitekey, actions ) {
+( function( sitekey, actions ) {
 
+document.addEventListener( 'DOMContentLoaded', function( event ) {
 	var wpcf7recaptcha = {
 
 		execute: function( action ) {
@@ -118,8 +119,8 @@ function wpcf7_recaptcha_onload_script() {
 		wpcf7recaptcha.executeOnHomepage, false
 	);
 
+} );
 } )(
-	grecaptcha,
 	'<?php echo esc_js( $service->get_sitekey() ); ?>',
 	<?php echo json_encode( $actions ), "\n"; ?>
 );
