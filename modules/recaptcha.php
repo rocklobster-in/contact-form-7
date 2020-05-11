@@ -80,20 +80,14 @@ function wpcf7_recaptcha_onload_script() {
 					sitekey,
 					{ action: action }
 				).then( function( token ) {
-					var forms = document.getElementsByTagName( 'form' );
+					var event = new CustomEvent( 'wpcf7grecaptchaexecuted', {
+						detail: {
+							action: action,
+							token: token,
+						},
+					} );
 
-					for ( var i = 0; i < forms.length; i++ ) {
-						var fields = forms[ i ].getElementsByTagName( 'input' );
-
-						for ( var j = 0; j < fields.length; j++ ) {
-							var field = fields[ j ];
-
-							if ( 'g-recaptcha-response' === field.getAttribute( 'name' ) ) {
-								field.setAttribute( 'value', token );
-								break;
-							}
-						}
-					}
+					document.dispatchEvent( event );
 				} );
 			},
 
@@ -120,6 +114,18 @@ function wpcf7_recaptcha_onload_script() {
 		);
 
 	} );
+
+	document.addEventListener( 'wpcf7grecaptchaexecuted', function( event ) {
+		var fields = document.querySelectorAll(
+			"form.wpcf7-form input[name='g-recaptcha-response']"
+		);
+
+		for ( var i = 0; i < fields.length; i++ ) {
+			var field = fields[ i ];
+			field.setAttribute( 'value', event.detail.token );
+		}
+	} );
+
 } )(
 	'<?php echo esc_js( $service->get_sitekey() ); ?>',
 	<?php echo json_encode( $actions ), "\n"; ?>
