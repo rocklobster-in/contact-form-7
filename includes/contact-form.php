@@ -563,7 +563,8 @@ class WPCF7_ContactForm {
 						$content .= sprintf( '<li>%s</li>', $link );
 					} else {
 						$content .= sprintf( '<li>%s</li>',
-							esc_html( $field['reason'] ) );
+							esc_html( $field['reason'] )
+						);
 					}
 
 					$content .= "\n";
@@ -576,6 +577,7 @@ class WPCF7_ContactForm {
 		$atts = array(
 			'class' => trim( $class ),
 			'role' => trim( $role ),
+			'aria-live' => 'polite',
 		);
 
 		$atts = wpcf7_format_atts( $atts );
