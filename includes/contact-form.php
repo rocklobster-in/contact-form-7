@@ -520,15 +520,18 @@ class WPCF7_ContactForm {
 		$atts = array(
 			'class' => trim( $class ),
 			'role' => trim( $role ),
+			'aria-hidden' => 'true',
 		);
 
 		$atts = wpcf7_format_atts( $atts );
 
 		$output = sprintf( '<div %1$s>%2$s</div>',
-			$atts, esc_html( $content ) );
+			$atts, esc_html( $content )
+		);
 
 		$output = apply_filters( 'wpcf7_form_response_output',
-			$output, $class, $content, $this, $status );
+			$output, $class, $content, $this, $status
+		);
 
 		$this->responses_count += 1;
 
@@ -572,12 +575,14 @@ class WPCF7_ContactForm {
 
 		$atts = array(
 			'class' => trim( $class ),
-			'role' => trim( $role ) );
+			'role' => trim( $role ),
+		);
 
 		$atts = wpcf7_format_atts( $atts );
 
 		$output = sprintf( '<div %1$s>%2$s</div>',
-			$atts, $content );
+			$atts, $content
+		);
 
 		return $output;
 	}
@@ -597,9 +602,17 @@ class WPCF7_ContactForm {
 			return $error;
 		}
 
+		$atts = array(
+			'class' => 'wpcf7-not-valid-tip',
+			'role' => 'alert',
+			'aria-hidden' => 'true',
+		);
+
 		$error = sprintf(
-			'<span role="alert" class="wpcf7-not-valid-tip">%s</span>',
-			esc_html( $error ) );
+			'<span %1$s>%2$s</span>',
+			wpcf7_format_atts( $atts ),
+			esc_html( $error )
+		);
 
 		return apply_filters( 'wpcf7_validation_error', $error, $name, $this );
 	}
