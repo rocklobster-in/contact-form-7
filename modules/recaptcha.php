@@ -201,7 +201,7 @@ function wpcf7_upgrade_recaptcha_v2_v3( $new_ver, $old_ver ) {
 
 	$service = WPCF7_RECAPTCHA::get_instance();
 
-	if ( ! $service->is_active() ) {
+	if ( ! $service->is_active() or $service->get_global_sitekey() ) {
 		return;
 	}
 
