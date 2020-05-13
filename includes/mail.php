@@ -353,7 +353,8 @@ class WPCF7_MailTaggedText {
 		}
 
 		$special = apply_filters( 'wpcf7_special_mail_tags', null,
-			$mail_tag->tag_name(), $html, $mail_tag );
+			$mail_tag->tag_name(), $html, $mail_tag
+		);
 
 		if ( null !== $special ) {
 			$this->replaced_tags[$tag] = $special;

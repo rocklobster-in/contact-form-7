@@ -63,11 +63,21 @@ function wpcf7_flamingo_submit( $contact_form, $result ) {
 		'user_agent', 'url', 'date', 'time', 'post_id', 'post_name',
 		'post_title', 'post_url', 'post_author', 'post_author_email',
 		'site_title', 'site_description', 'site_url', 'site_admin_email',
-		'user_login', 'user_email', 'user_display_name' );
+		'user_login', 'user_email', 'user_display_name',
+	);
 
 	foreach ( $special_mail_tags as $smt ) {
-		$meta[$smt] = apply_filters( 'wpcf7_special_mail_tags', '',
-			sprintf( '_%s', $smt ), false );
+		$tagname = sprintf( '_%s', $smt );
+
+		$mail_tag = new WPCF7_MailTag(
+			sprintf( '[%s]', $tagname ),
+			$tagname,
+			''
+		);
+
+		$meta[$smt] = apply_filters( 'wpcf7_special_mail_tags', null,
+			$tagname, false, $mail_tag
+		);
 	}
 
 	$akismet = isset( $submission->akismet )
