@@ -75,6 +75,15 @@ Do you have questions or issues with Contact Form 7? Use these support channels 
 
 For more information, see [Releases](https://contactform7.com/category/releases/).
 
+= 5.1.8 =
+
+* reCAPTCHA: Shows no warning on upgrading from v2 if the global sitekey is defined.
+* reCAPTCHA: Improves the frontend JavaScript coding.
+* Accessibility: Improves the response message markup.
+* Fixes the regular expression pattern in `wpcf7_is_tel()`.
+* Fixed: Character count was not reset after a successful submission.
+* Fixed: The fourth parameter of the `wpcf7_special_mail_tags` filter hook was not correctly set.
+
 = 5.1.7 =
 
 * CSS: Adds an explicit LTR direction style rule for code inputs.
