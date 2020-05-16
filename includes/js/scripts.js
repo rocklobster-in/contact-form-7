@@ -153,7 +153,7 @@
 		} );
 	};
 
-	wpcf7.submit = function( form ) {
+	wpcf7.submit = wpcf7.utils.debounce(function( form ) {
 		if ( typeof window.FormData !== 'function' ) {
 			return;
 		}
@@ -319,7 +319,7 @@
 			var $e = $( '<div class="ajax-error"></div>' ).text( error.message );
 			$form.after( $e );
 		} );
-	};
+	}, 500);
 
 	wpcf7.triggerEvent = function( target, name, detail ) {
 		var $target = $( target );
@@ -512,6 +512,21 @@
 			wpcf7.apiSettings.namespace + path );
 
 		return url;
+	};
+
+	wpcf7.utils.debounce = function(func, wait, immediate) {
+		var timeout;
+		return function() {
+			var context = this, args = arguments;
+			var later = function() {
+				timeout = null;
+				if (!immediate) func.apply(context, args);
+			};
+			var callNow = immediate && !timeout;
+			clearTimeout(timeout);
+			timeout = setTimeout(later, wait);
+			if (callNow) func.apply(context, args);
+		};
 	};
 
 } )( jQuery );
