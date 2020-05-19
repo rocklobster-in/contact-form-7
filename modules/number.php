@@ -106,9 +106,9 @@ function wpcf7_number_validation_filter( $result, $tag ) {
 		$result->invalidate( $tag, wpcf7_get_message( 'invalid_required' ) );
 	} elseif ( '' !== $value and ! wpcf7_is_number( $value ) ) {
 		$result->invalidate( $tag, wpcf7_get_message( 'invalid_number' ) );
-	} elseif ( '' !== $value and '' !== $min and (float) $value < (float) $min ) {
+	} elseif ( '' !== $value and false !== $min and (float) $value < (float) $min ) {
 		$result->invalidate( $tag, wpcf7_get_message( 'number_too_small' ) );
-	} elseif ( '' !== $value and '' !== $max and (float) $max < (float) $value ) {
+	} elseif ( '' !== $value and false !== $max and (float) $max < (float) $value ) {
 		$result->invalidate( $tag, wpcf7_get_message( 'number_too_large' ) );
 	}
 
