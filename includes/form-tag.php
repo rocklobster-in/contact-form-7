@@ -197,9 +197,14 @@ class WPCF7_FormTag implements ArrayAccess {
 				$unit = 'days';
 			}
 
-			$date = gmdate( 'Y-m-d',
-				strtotime( sprintf( 'today %1$s %2$s', $number, $unit ) ) );
-			return $date;
+			// Temporary fix until introducing wp_date()
+			$today = gmdate( 'Y-m-d',
+				time() + get_option( 'gmt_offset' ) * HOUR_IN_SECONDS
+			);
+
+			$format = sprintf( '%1$s %2$s %3$s', $today, $number, $unit );
+
+			return gmdate( 'Y-m-d', strtotime( $format ) );
 		}
 
 		return false;
