@@ -229,27 +229,23 @@ class WPCF7_Contact_Form_List_Table extends WP_List_Table {
 			return;
 		}
 
-		$t_time = mysql2date( __( 'Y/m/d g:i:s A', 'contact-form-7' ),
-			$post->post_date, true );
-		$m_time = $post->post_date;
-		$time = mysql2date( 'G', $post->post_date )
-			- get_option( 'gmt_offset' ) * 3600;
-
+		$t_time = get_the_time( __( 'Y/m/d g:i:s a', 'contact-form-7' ), $post );
+		$time = get_post_timestamp( $post );
 		$time_diff = time() - $time;
 
-		if ( $time_diff > 0 and $time_diff < 24*60*60 ) {
+		if ( $time and 0 < $time_diff and $time_diff < DAY_IN_SECONDS ) {
 			$h_time = sprintf(
-				/* translators: %s: time since the creation of the contact form */
+				/* translators: %s: Human-readable time difference since the creation of the contact form */
 				__( '%s ago', 'contact-form-7' ),
 				human_time_diff( $time )
 			);
 		} else {
-			$h_time = mysql2date( __( 'Y/m/d', 'contact-form-7' ), $m_time );
+			$h_time = get_the_time( __( 'Y/m/d', 'contact-form-7' ), $post );
 		}
 
-		return sprintf( '<abbr title="%2$s">%1$s</abbr>',
-			esc_html( $h_time ),
-			esc_attr( $t_time )
+		return sprintf( '<span title="%1$s">%2$s</span>',
+			esc_attr( $t_time ),
+			esc_html( $h_time )
 		);
 	}
 }
