@@ -190,17 +190,13 @@ class WPCF7_FormTag implements ArrayAccess {
 		}
 
 		if ( preg_match( '/^today(?:([+-][0-9]+)([a-z]*))?/', $option, $matches ) ) {
+			$today = wp_date( 'Y-m-d' );
 			$number = isset( $matches[1] ) ? (int) $matches[1] : 0;
 			$unit = isset( $matches[2] ) ? $matches[2] : '';
 
 			if ( ! preg_match( '/^(day|month|year|week)s?$/', $unit ) ) {
 				$unit = 'days';
 			}
-
-			// Temporary fix until introducing wp_date()
-			$today = gmdate( 'Y-m-d',
-				time() + get_option( 'gmt_offset' ) * HOUR_IN_SECONDS
-			);
 
 			$format = sprintf( '%1$s %2$s %3$s', $today, $number, $unit );
 
