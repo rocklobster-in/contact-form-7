@@ -416,7 +416,7 @@ class WPCF7_Submission {
 		$this->uploaded_files[$name] = $file_path;
 
 		if ( empty( $this->posted_data[$name] ) ) {
-			$this->posted_data[$name] = basename( $file_path );
+			$this->posted_data[$name] = wp_basename( $file_path );
 		}
 	}
 

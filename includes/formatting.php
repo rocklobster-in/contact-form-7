@@ -338,7 +338,7 @@ function wpcf7_is_email_in_site_domain( $email ) {
 }
 
 function wpcf7_antiscript_file_name( $filename ) {
-	$filename = basename( $filename );
+	$filename = wp_basename( $filename );
 	$parts = explode( '.', $filename );
 
 	if ( count( $parts ) < 2 ) {
