@@ -30,6 +30,7 @@ class WPCF7_Submission {
 			self::$instance = new self;
 			self::$instance->contact_form = $contact_form;
 			self::$instance->skip_mail = (bool) $args['skip_mail'];
+			self::$instance->setup_meta_data();
 			self::$instance->setup_posted_data();
 			self::$instance->submit();
 		} elseif ( null != $contact_form ) {
@@ -83,6 +84,46 @@ class WPCF7_Submission {
 
 	public function get_invalid_fields() {
 		return $this->invalid_fields;
+	}
+
+	public function get_meta( $name ) {
+		if ( isset( $this->meta[$name] ) ) {
+			return $this->meta[$name];
+		}
+	}
+
+	private function setup_meta_data() {
+		$timestamp = time();
+
+		$remote_ip = $this->get_remote_ip_addr();
+
+		$user_agent = isset( $_SERVER['HTTP_USER_AGENT'] )
+			? substr( $_SERVER['HTTP_USER_AGENT'], 0, 254 ) : '';
+
+		$url = $this->get_request_url();
+
+		$unit_tag = isset( $_POST['_wpcf7_unit_tag'] )
+			? $_POST['_wpcf7_unit_tag'] : '';
+
+		$container_post_id = isset( $_POST['_wpcf7_container_post'] )
+			? (int) $_POST['_wpcf7_container_post'] : 0;
+
+		$current_user_id = get_current_user_id();
+
+		$do_not_store = $this->contact_form->is_true( 'do_not_store' );
+
+		$this->meta = array(
+			'timestamp' => $timestamp,
+			'remote_ip' => $remote_ip,
+			'user_agent' => $user_agent,
+			'url' => $url,
+			'unit_tag' => $unit_tag,
+			'container_post_id' => $container_post_id,
+			'current_user_id' => $current_user_id,
+			'do_not_store' => $do_not_store,
+		);
+
+		return $this->meta;
 	}
 
 	public function get_posted_data( $name = '' ) {
@@ -166,24 +207,7 @@ class WPCF7_Submission {
 			return $this->status;
 		}
 
-		$this->meta = array_merge( $this->meta, array(
-			'remote_ip' => $this->get_remote_ip_addr(),
-			'user_agent' => isset( $_SERVER['HTTP_USER_AGENT'] )
-				? substr( $_SERVER['HTTP_USER_AGENT'], 0, 254 ) : '',
-			'url' => $this->get_request_url(),
-			'timestamp' => time(),
-			'unit_tag' =>
-				isset( $_POST['_wpcf7_unit_tag'] ) ? $_POST['_wpcf7_unit_tag'] : '',
-			'container_post_id' => isset( $_POST['_wpcf7_container_post'] )
-				? (int) $_POST['_wpcf7_container_post'] : 0,
-			'current_user_id' => get_current_user_id(),
-		) );
-
 		$contact_form = $this->contact_form;
-
-		if ( $contact_form->is_true( 'do_not_store' ) ) {
-			$this->meta['do_not_store'] = true;
-		}
 
 		if ( ! $this->validate() ) { // Validation error occured
 			$this->set_status( 'validation_failed' );
@@ -431,12 +455,6 @@ class WPCF7_Submission {
 				// remove parent dir if it's empty.
 				rmdir( $dir );
 			}
-		}
-	}
-
-	public function get_meta( $name ) {
-		if ( isset( $this->meta[$name] ) ) {
-			return $this->meta[$name];
 		}
 	}
 }
