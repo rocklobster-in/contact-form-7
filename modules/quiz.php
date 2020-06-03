@@ -96,7 +96,7 @@ function wpcf7_quiz_validation_filter( $result, $tag ) {
 		? (string) $_POST['_wpcf7_quiz_answer_' . $name]
 		: '';
 
-	if ( $answer_hash !== $expected_hash ) {
+	if ( ! hash_equals( $expected_hash, $answer_hash ) ) {
 		$result->invalidate( $tag, wpcf7_get_message( 'quiz_answer_not_correct' ) );
 	}
 
