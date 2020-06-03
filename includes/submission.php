@@ -100,6 +100,7 @@ class WPCF7_Submission {
 	private function setup_posted_data() {
 		$posted_data = (array) $_POST;
 		$posted_data = array_diff_key( $posted_data, array( '_wpnonce' => '' ) );
+		$posted_data = wp_unslash( $posted_data );
 		$posted_data = $this->sanitize_posted_data( $posted_data );
 
 		$tags = $this->contact_form->scan_form_tags();
@@ -126,10 +127,10 @@ class WPCF7_Submission {
 					$value = array();
 
 					foreach ( $value_orig as $v ) {
-						$value[] = $pipes->do_pipe( wp_unslash( $v ) );
+						$value[] = $pipes->do_pipe( $v );
 					}
 				} else {
-					$value = $pipes->do_pipe( wp_unslash( $value_orig ) );
+					$value = $pipes->do_pipe( $value_orig );
 				}
 			}
 
