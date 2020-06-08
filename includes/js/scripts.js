@@ -184,12 +184,6 @@
 				detail.unitTag = field.value;
 			} else if ( '_wpcf7_container_post' == field.name ) {
 				detail.containerPostId = field.value;
-			} else if ( field.name.match( /^_wpcf7_\w+_free_text_/ ) ) {
-				var owner = field.name.replace( /^_wpcf7_\w+_free_text_/, '' );
-				detail.inputs.push( {
-					name: owner + '-free-text',
-					value: field.value
-				} );
 			} else if ( field.name.match( /^_/ ) ) {
 				// do nothing
 			} else {
