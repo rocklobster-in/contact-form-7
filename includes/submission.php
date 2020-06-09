@@ -139,8 +139,10 @@ class WPCF7_Submission {
 	}
 
 	private function setup_posted_data() {
-		$posted_data = (array) $_POST;
-		$posted_data = array_diff_key( $posted_data, array( '_wpnonce' => '' ) );
+		$posted_data = array_filter( (array) $_POST, function( $key ) {
+			return '_' !== substr( $key, 0, 1 );
+		}, ARRAY_FILTER_USE_KEY );
+
 		$posted_data = wp_unslash( $posted_data );
 		$posted_data = $this->sanitize_posted_data( $posted_data );
 
@@ -154,6 +156,11 @@ class WPCF7_Submission {
 			$type = $tag->type;
 			$name = $tag->name;
 			$pipes = $tag->pipes;
+
+			if ( wpcf7_form_tag_supports( $type, 'do-not-store' ) ) {
+				unset( $posted_data[$name] );
+				continue;
+			}
 
 			$value_orig = $value = '';
 
