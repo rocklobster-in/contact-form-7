@@ -44,8 +44,6 @@ function wpcf7_flamingo_submit( $contact_form, $result ) {
 		$exclude_names[] = $tag['name'];
 	}
 
-	$exclude_names[] = 'g-recaptcha-response';
-
 	foreach ( $posted_data as $key => $value ) {
 		if ( '_' == substr( $key, 0, 1 )
 		or in_array( $key, $exclude_names ) ) {
