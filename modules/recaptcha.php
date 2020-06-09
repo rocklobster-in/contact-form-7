@@ -44,7 +44,7 @@ function wpcf7_recaptcha_add_hidden_fields( $fields ) {
 	}
 
 	return array_merge( $fields, array(
-		'g-recaptcha-response' => '',
+		'_wpcf7_recaptcha_response' => '',
 	) );
 }
 
@@ -117,7 +117,7 @@ function wpcf7_recaptcha_onload_script() {
 
 	document.addEventListener( 'wpcf7grecaptchaexecuted', function( event ) {
 		var fields = document.querySelectorAll(
-			"form.wpcf7-form input[name='g-recaptcha-response']"
+			"form.wpcf7-form input[name='_wpcf7_recaptcha_response']"
 		);
 
 		for ( var i = 0; i < fields.length; i++ ) {
@@ -149,8 +149,8 @@ function wpcf7_recaptcha_verify_response( $spam ) {
 
 	$submission = WPCF7_Submission::get_instance();
 
-	$token = isset( $_POST['g-recaptcha-response'] )
-		? trim( $_POST['g-recaptcha-response'] ) : '';
+	$token = isset( $_POST['_wpcf7_recaptcha_response'] )
+		? trim( $_POST['_wpcf7_recaptcha_response'] ) : '';
 
 	if ( $service->verify( $token ) ) { // Human
 		$spam = false;
