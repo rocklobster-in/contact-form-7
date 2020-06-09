@@ -470,10 +470,16 @@ class WPCF7_Submission {
 	}
 
 	public function add_uploaded_file( $name, $file_path ) {
+		if ( ! wpcf7_is_name( $name ) ) {
+			return false;
+		}
+
 		$this->uploaded_files[$name] = $file_path;
 
 		if ( empty( $this->posted_data[$name] ) ) {
-			$this->posted_data[$name] = wp_basename( $file_path );
+			$this->posted_data[$name] = $this->sanitize_posted_data(
+				wp_basename( $file_path )
+			);
 		}
 	}
 
