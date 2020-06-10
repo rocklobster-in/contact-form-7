@@ -44,7 +44,44 @@ class WPCF7_Submission {
 		$this->skip_mail = (bool) $args['skip_mail'];
 		$this->setup_meta_data();
 		$this->setup_posted_data();
-		$this->submit();
+
+		if ( ! $this->validate() ) { // Validation error occured
+			$this->set_status( 'validation_failed' );
+			$this->set_response( $contact_form->message( 'validation_error' ) );
+
+		} elseif ( ! $this->accepted() ) { // Not accepted terms
+			$this->set_status( 'acceptance_missing' );
+			$this->set_response( $contact_form->message( 'accept_terms' ) );
+
+		} elseif ( $this->spam() ) { // Spam!
+			$this->set_status( 'spam' );
+			$this->set_response( $contact_form->message( 'spam' ) );
+
+		} elseif ( ! $this->before_send_mail() ) {
+			if ( 'init' == $this->get_status() ) {
+				$this->set_status( 'aborted' );
+			}
+
+			if ( '' === $this->get_response() ) {
+				$this->set_response( $contact_form->filter_message(
+					__( "Sending mail has been aborted.", 'contact-form-7' ) )
+				);
+			}
+
+		} elseif ( $this->mail() ) {
+			$this->set_status( 'mail_sent' );
+			$this->set_response( $contact_form->message( 'mail_sent_ok' ) );
+
+			do_action( 'wpcf7_mail_sent', $contact_form );
+
+		} else {
+			$this->set_status( 'mail_failed' );
+			$this->set_response( $contact_form->message( 'mail_sent_ng' ) );
+
+			do_action( 'wpcf7_mail_failed', $contact_form );
+		}
+
+		$this->remove_uploaded_files();
 	}
 
 	public function get_status() {
@@ -235,54 +272,6 @@ class WPCF7_Submission {
 		}
 
 		return $value;
-	}
-
-	private function submit() {
-		if ( ! $this->is( 'init' ) ) {
-			return $this->status;
-		}
-
-		$contact_form = $this->contact_form;
-
-		if ( ! $this->validate() ) { // Validation error occured
-			$this->set_status( 'validation_failed' );
-			$this->set_response( $contact_form->message( 'validation_error' ) );
-
-		} elseif ( ! $this->accepted() ) { // Not accepted terms
-			$this->set_status( 'acceptance_missing' );
-			$this->set_response( $contact_form->message( 'accept_terms' ) );
-
-		} elseif ( $this->spam() ) { // Spam!
-			$this->set_status( 'spam' );
-			$this->set_response( $contact_form->message( 'spam' ) );
-
-		} elseif ( ! $this->before_send_mail() ) {
-			if ( 'init' == $this->get_status() ) {
-				$this->set_status( 'aborted' );
-			}
-
-			if ( '' === $this->get_response() ) {
-				$this->set_response( $contact_form->filter_message(
-					__( "Sending mail has been aborted.", 'contact-form-7' ) )
-				);
-			}
-
-		} elseif ( $this->mail() ) {
-			$this->set_status( 'mail_sent' );
-			$this->set_response( $contact_form->message( 'mail_sent_ok' ) );
-
-			do_action( 'wpcf7_mail_sent', $contact_form );
-
-		} else {
-			$this->set_status( 'mail_failed' );
-			$this->set_response( $contact_form->message( 'mail_sent_ng' ) );
-
-			do_action( 'wpcf7_mail_failed', $contact_form );
-		}
-
-		$this->remove_uploaded_files();
-
-		return $this->status;
 	}
 
 	private function get_remote_ip_addr() {
