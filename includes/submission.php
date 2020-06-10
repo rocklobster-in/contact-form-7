@@ -15,33 +15,36 @@ class WPCF7_Submission {
 	private $consent = array();
 	private $spam_log = array();
 
-	private function __construct() {}
-
-	public static function get_instance( WPCF7_ContactForm $contact_form = null, $args = '' ) {
-		$args = wp_parse_args( $args, array(
-			'skip_mail' => false,
-		) );
-
-		if ( empty( self::$instance ) ) {
-			if ( null == $contact_form ) {
+	public static function get_instance( $contact_form = null, $args = '' ) {
+		if ( $contact_form instanceof WPCF7_ContactForm ) {
+			if ( empty( self::$instance ) ) {
+				return self::$instance = new self( $contact_form, $args );
+			} else {
 				return null;
 			}
-
-			self::$instance = new self;
-			self::$instance->contact_form = $contact_form;
-			self::$instance->skip_mail = (bool) $args['skip_mail'];
-			self::$instance->setup_meta_data();
-			self::$instance->setup_posted_data();
-			self::$instance->submit();
-		} elseif ( null != $contact_form ) {
-			return null;
+		} else {
+			if ( empty( self::$instance ) ) {
+				return null;
+			} else {
+				return self::$instance;
+			}
 		}
-
-		return self::$instance;
 	}
 
 	public static function is_restful() {
 		return defined( 'REST_REQUEST' ) && REST_REQUEST;
+	}
+
+	private function __construct( WPCF7_ContactForm $contact_form, $args = '' ) {
+		$args = wp_parse_args( $args, array(
+			'skip_mail' => false,
+		) );
+
+		$this->contact_form = $contact_form;
+		$this->skip_mail = (bool) $args['skip_mail'];
+		$this->setup_meta_data();
+		$this->setup_posted_data();
+		$this->submit();
 	}
 
 	public function get_status() {
