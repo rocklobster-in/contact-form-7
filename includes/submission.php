@@ -45,40 +45,45 @@ class WPCF7_Submission {
 		$this->setup_meta_data();
 		$this->setup_posted_data();
 
-		if ( ! $this->validate() ) { // Validation error occured
+		if ( $this->is( 'init' ) and ! $this->validate() ) {
 			$this->set_status( 'validation_failed' );
 			$this->set_response( $contact_form->message( 'validation_error' ) );
+		}
 
-		} elseif ( ! $this->accepted() ) { // Not accepted terms
+		if ( $this->is( 'init' ) and ! $this->accepted() ) {
 			$this->set_status( 'acceptance_missing' );
 			$this->set_response( $contact_form->message( 'accept_terms' ) );
+		}
 
-		} elseif ( $this->spam() ) { // Spam!
+		if ( $this->is( 'init' ) and $this->spam() ) {
 			$this->set_status( 'spam' );
 			$this->set_response( $contact_form->message( 'spam' ) );
+		}
 
-		} elseif ( ! $this->before_send_mail() ) {
-			if ( 'init' == $this->get_status() ) {
-				$this->set_status( 'aborted' );
+		if ( $this->is( 'init' ) ) {
+			$abort = ! $this->before_send_mail();
+
+			if ( $abort ) {
+				if ( $this->is( 'init' ) ) {
+					$this->set_status( 'aborted' );
+				}
+
+				if ( '' === $this->get_response() ) {
+					$this->set_response( $contact_form->filter_message(
+						__( "Sending mail has been aborted.", 'contact-form-7' ) )
+					);
+				}
+			} elseif ( $this->mail() ) {
+				$this->set_status( 'mail_sent' );
+				$this->set_response( $contact_form->message( 'mail_sent_ok' ) );
+
+				do_action( 'wpcf7_mail_sent', $contact_form );
+			} else {
+				$this->set_status( 'mail_failed' );
+				$this->set_response( $contact_form->message( 'mail_sent_ng' ) );
+
+				do_action( 'wpcf7_mail_failed', $contact_form );
 			}
-
-			if ( '' === $this->get_response() ) {
-				$this->set_response( $contact_form->filter_message(
-					__( "Sending mail has been aborted.", 'contact-form-7' ) )
-				);
-			}
-
-		} elseif ( $this->mail() ) {
-			$this->set_status( 'mail_sent' );
-			$this->set_response( $contact_form->message( 'mail_sent_ok' ) );
-
-			do_action( 'wpcf7_mail_sent', $contact_form );
-
-		} else {
-			$this->set_status( 'mail_failed' );
-			$this->set_response( $contact_form->message( 'mail_sent_ng' ) );
-
-			do_action( 'wpcf7_mail_failed', $contact_form );
 		}
 
 		$this->remove_uploaded_files();
