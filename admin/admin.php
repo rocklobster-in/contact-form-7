@@ -166,11 +166,11 @@ function wpcf7_dark_mode_support( $user_id ) {
 }
 
 add_filter( 'set-screen-option', 'wpcf7_set_screen_options', 10, 3 );
-add_filter( 'set_screen_option_cfseven_contact_forms_per_page', 'wpcf7_set_screen_options', 10, 3 );
+add_filter( 'set_screen_option_wpcf7_contact_forms_per_page', 'wpcf7_set_screen_options', 10, 3 );
 
 function wpcf7_set_screen_options( $result, $option, $value ) {
 	$wpcf7_screens = array(
-		'cfseven_contact_forms_per_page',
+		'wpcf7_contact_forms_per_page',
 	);
 
 	if ( in_array( $option, $wpcf7_screens ) ) {
@@ -350,7 +350,7 @@ function wpcf7_load_contact_form_admin() {
 
 		add_screen_option( 'per_page', array(
 			'default' => 20,
-			'option' => 'cfseven_contact_forms_per_page',
+			'option' => 'wpcf7_contact_forms_per_page',
 		) );
 	}
 }
