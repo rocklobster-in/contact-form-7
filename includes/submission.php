@@ -18,7 +18,9 @@ class WPCF7_Submission {
 	public static function get_instance( $contact_form = null, $args = '' ) {
 		if ( $contact_form instanceof WPCF7_ContactForm ) {
 			if ( empty( self::$instance ) ) {
-				return self::$instance = new self( $contact_form, $args );
+				self::$instance = new self( $contact_form, $args );
+				self::$instance->proceed();
+				return self::$instance;
 			} else {
 				return null;
 			}
@@ -42,8 +44,13 @@ class WPCF7_Submission {
 
 		$this->contact_form = $contact_form;
 		$this->skip_mail = (bool) $args['skip_mail'];
+	}
+
+	private function proceed() {
 		$this->setup_meta_data();
 		$this->setup_posted_data();
+
+		$contact_form = $this->contact_form;
 
 		if ( $this->is( 'init' ) and ! $this->validate() ) {
 			$this->set_status( 'validation_failed' );
@@ -433,7 +440,8 @@ class WPCF7_Submission {
 		$contact_form = $this->contact_form;
 
 		$skip_mail = apply_filters( 'wpcf7_skip_mail',
-			$this->skip_mail, $contact_form );
+			$this->skip_mail, $contact_form
+		);
 
 		if ( $skip_mail ) {
 			return true;
@@ -450,7 +458,8 @@ class WPCF7_Submission {
 			}
 
 			$additional_mail = apply_filters( 'wpcf7_additional_mail',
-				$additional_mail, $contact_form );
+				$additional_mail, $contact_form
+			);
 
 			foreach ( $additional_mail as $name => $template ) {
 				WPCF7_Mail::send( $template, $name );
