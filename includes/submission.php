@@ -7,6 +7,8 @@ class WPCF7_Submission {
 	private $contact_form;
 	private $status = 'init';
 	private $posted_data = array();
+	private $posted_data_hash = null;
+	private $skip_spam_check = false;
 	private $uploaded_files = array();
 	private $skip_mail = false;
 	private $response = '';
@@ -62,12 +64,30 @@ class WPCF7_Submission {
 			$this->set_response( $contact_form->message( 'accept_terms' ) );
 		}
 
+		$posted_data_hash = wp_hash(
+			wpcf7_flat_join( array_merge(
+				array(
+					$this->get_meta( 'remote_ip' ),
+					$this->get_meta( 'unit_tag' ),
+				),
+				$this->posted_data
+			) ),
+			'wpcf7_submission'
+		);
+
+		if ( ! empty( $_POST['_wpcf7_posted_data_hash'] )
+		and $posted_data_hash === $_POST['_wpcf7_posted_data_hash'] ) {
+			$this->skip_spam_check = true;
+		}
+
 		if ( $this->is( 'init' ) and $this->spam() ) {
 			$this->set_status( 'spam' );
 			$this->set_response( $contact_form->message( 'spam' ) );
 		}
 
 		if ( $this->is( 'init' ) ) {
+			$this->posted_data_hash = $posted_data_hash;
+
 			$abort = ! $this->before_send_mail();
 
 			if ( $abort ) {
@@ -286,6 +306,10 @@ class WPCF7_Submission {
 		return $value;
 	}
 
+	public function get_posted_data_hash() {
+		return $this->posted_data_hash;
+	}
+
 	private function get_remote_ip_addr() {
 		$ip_addr = '';
 
@@ -353,6 +377,10 @@ class WPCF7_Submission {
 
 	private function spam() {
 		$spam = false;
+
+		if ( $this->skip_spam_check ) {
+			return $spam;
+		}
 
 		if ( $this->contact_form->is_true( 'subscribers_only' )
 		and current_user_can( 'wpcf7_submit', $this->contact_form->id() ) ) {
@@ -481,7 +509,7 @@ class WPCF7_Submission {
 		}
 
 		if ( ! @is_file( $file_path ) or ! @is_readable( $file_path ) ) {
-		  return false;
+			return false;
 		}
 
 		$this->uploaded_files[$name] = $file_path;

@@ -452,6 +452,7 @@ class WPCF7_ContactForm {
 			'_wpcf7_locale' => $this->locale(),
 			'_wpcf7_unit_tag' => $this->unit_tag(),
 			'_wpcf7_container_post' => 0,
+			'_wpcf7_posted_data_hash' => '',
 		);
 
 		if ( in_the_loop() ) {
@@ -760,6 +761,7 @@ class WPCF7_ContactForm {
 			'status' => $submission->get_status(),
 			'message' => $submission->get_response(),
 			'demo_mode' => $this->in_demo_mode(),
+			'posted_data_hash' => $submission->get_posted_data_hash(),
 		);
 
 		if ( $submission->is( 'validation_failed' ) ) {
