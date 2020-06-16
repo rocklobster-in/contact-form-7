@@ -480,12 +480,14 @@ class WPCF7_Submission {
 			return false;
 		}
 
+		if ( ! @is_file( $file_path ) or ! @is_readable( $file_path ) ) {
+		  return false;
+		}
+
 		$this->uploaded_files[$name] = $file_path;
 
 		if ( empty( $this->posted_data[$name] ) ) {
-			$this->posted_data[$name] = $this->sanitize_posted_data(
-				wp_basename( $file_path )
-			);
+			$this->posted_data[$name] = md5_file( $file_path );
 		}
 	}
 

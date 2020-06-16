@@ -105,7 +105,8 @@ class WPCF7_Mail {
 		);
 
 		$components = apply_filters( 'wpcf7_mail_components',
-			$components, wpcf7_get_current_contact_form(), $this );
+			$components, wpcf7_get_current_contact_form(), $this
+		);
 
 		if ( ! $send ) {
 			return $components;
@@ -340,11 +341,14 @@ class WPCF7_MailTaggedText {
 
 				$replaced = apply_filters(
 					"wpcf7_mail_tag_replaced_{$type}", $replaced,
-					$submitted, $html, $mail_tag );
+					$submitted, $html, $mail_tag
+				);
 			}
 
-			$replaced = apply_filters( 'wpcf7_mail_tag_replaced', $replaced,
-				$submitted, $html, $mail_tag );
+			$replaced = apply_filters(
+				'wpcf7_mail_tag_replaced', $replaced,
+				$submitted, $html, $mail_tag
+			);
 
 			$replaced = wp_unslash( trim( $replaced ) );
 
