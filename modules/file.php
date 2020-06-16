@@ -152,6 +152,21 @@ function wpcf7_file_validation_filter( $result, $tag ) {
 	return $result;
 }
 
+add_filter( 'wpcf7_mail_tag_replaced_file', 'wpcf7_file_mail_tag', 10, 4 );
+add_filter( 'wpcf7_mail_tag_replaced_file*', 'wpcf7_file_mail_tag', 10, 4 );
+
+function wpcf7_file_mail_tag( $replaced, $submitted, $html, $mail_tag ) {
+	$submission = WPCF7_Submission::get_instance();
+	$uploaded_files = $submission->uploaded_files();
+	$name = $mail_tag->field_name();
+
+	if ( ! empty( $uploaded_files[$name] ) ) {
+		$replaced = wp_basename( $uploaded_files[$name] );
+	}
+
+	return $replaced;
+}
+
 
 /* Messages */
 
