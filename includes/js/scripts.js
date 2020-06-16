@@ -296,6 +296,11 @@
 
 				$response.attr( 'role', 'alert' ).focus();
 			} );
+
+			if ( data.postedDataHash ) {
+				$form.find( 'input[name="_wpcf7_posted_data_hash"]' ).first()
+					.val( data.postedDataHash );
+			}
 		};
 
 		$.ajax( {

@@ -290,6 +290,7 @@ function wpcf7_rest_create_feedback( WP_REST_Request $request ) {
 		'into' => '#' . wpcf7_sanitize_unit_tag( $unit_tag ),
 		'status' => $result['status'],
 		'message' => $result['message'],
+		'postedDataHash' => $result['posted_data_hash'],
 	);
 
 	if ( 'validation_failed' == $result['status'] ) {
