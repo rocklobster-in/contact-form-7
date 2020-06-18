@@ -578,7 +578,7 @@ class WPCF7_ConfigValidator {
 				}
 			}
 
-			$max = 25 * 1024 * 1024; // 25 MB
+			$max = 25 * MB_IN_BYTES; // 25 MB
 
 			if ( $max < $total_size ) {
 				$this->add_error( sprintf( '%s.attachments', $template ),
