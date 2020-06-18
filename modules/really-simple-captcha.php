@@ -552,7 +552,7 @@ function wpcf7_cleanup_captcha_files() {
 
 			$stat = stat( path_join( $dir, $file ) );
 
-			if ( $stat['mtime'] + 3600 < time() ) { // 3600 secs == 1 hour
+			if ( $stat['mtime'] + HOUR_IN_SECONDS < time() ) {
 				@unlink( path_join( $dir, $file ) );
 			}
 		}
