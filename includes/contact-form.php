@@ -480,12 +480,9 @@ class WPCF7_ContactForm {
 	public function form_response_output() {
 		$status = 'init';
 		$class = 'wpcf7-response-output';
-		$role = '';
 		$content = '';
 
 		if ( $this->is_posted() ) { // Post response output for non-AJAX
-			$role = 'alert';
-
 			$submission = WPCF7_Submission::get_instance();
 			$status = $submission->get_status();
 			$content = $submission->get_response();
@@ -520,7 +517,7 @@ class WPCF7_ContactForm {
 
 		$atts = array(
 			'class' => trim( $class ),
-			'role' => trim( $role ),
+			'role' => 'alert',
 			'aria-hidden' => 'true',
 		);
 
@@ -541,12 +538,9 @@ class WPCF7_ContactForm {
 
 	public function screen_reader_response() {
 		$class = 'screen-reader-response';
-		$role = '';
 		$content = '';
 
 		if ( $this->is_posted() ) { // Post response output for non-AJAX
-			$role = 'alert';
-
 			$submission = WPCF7_Submission::get_instance();
 
 			if ( $response = $submission->get_response() ) {
@@ -577,7 +571,7 @@ class WPCF7_ContactForm {
 
 		$atts = array(
 			'class' => trim( $class ),
-			'role' => trim( $role ),
+			'role' => 'alert',
 			'aria-live' => 'polite',
 		);
 
