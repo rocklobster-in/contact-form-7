@@ -491,31 +491,6 @@ class WPCF7_ContactForm {
 			$submission = WPCF7_Submission::get_instance();
 			$status = $submission->get_status();
 			$content = $submission->get_response();
-
-			switch ( $status ) {
-				case 'validation_failed':
-					$class .= ' wpcf7-validation-errors';
-					break;
-				case 'acceptance_missing':
-					$class .= ' wpcf7-acceptance-missing';
-					break;
-				case 'spam':
-					$class .= ' wpcf7-spam-blocked';
-					break;
-				case 'aborted':
-					$class .= ' wpcf7-aborted';
-					break;
-				case 'mail_sent':
-					$class .= ' wpcf7-mail-sent-ok';
-					break;
-				case 'mail_failed':
-					$class .= ' wpcf7-mail-sent-ng';
-					break;
-				default:
-					$class .= sprintf( ' wpcf7-custom-%s',
-						preg_replace( '/[^0-9a-z]+/i', '-', $status )
-					);
-			}
 		}
 
 		$atts = array(
@@ -524,10 +499,9 @@ class WPCF7_ContactForm {
 			'aria-hidden' => 'true',
 		);
 
-		$atts = wpcf7_format_atts( $atts );
-
 		$output = sprintf( '<div %1$s>%2$s</div>',
-			$atts, esc_html( $content )
+			wpcf7_format_atts( $atts ),
+			esc_html( $content )
 		);
 
 		$output = apply_filters( 'wpcf7_form_response_output',
