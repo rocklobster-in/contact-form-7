@@ -272,11 +272,10 @@
 			}
 
 			$message.html( '' ).append( data.message ).slideDown( 'fast' );
-			$message.attr( 'role', 'alert' );
 
 			$( '.screen-reader-response', $form.closest( '.wpcf7' ) ).each( function() {
 				var $response = $( this );
-				$response.html( '' ).attr( 'role', '' ).append( data.message );
+				$response.html( '' ).append( data.message );
 
 				if ( data.invalidFields ) {
 					var $invalids = $( '<ul></ul>' );
@@ -294,7 +293,7 @@
 					$response.append( $invalids );
 				}
 
-				$response.attr( 'role', 'alert' ).focus();
+				$response.focus();
 			} );
 
 			if ( data.postedDataHash ) {
@@ -492,14 +491,14 @@
 	wpcf7.clearResponse = function( form ) {
 		var $form = $( form );
 		$form.removeClass( 'invalid spam sent failed' );
-		$form.siblings( '.screen-reader-response' ).html( '' ).attr( 'role', '' );
+		$form.siblings( '.screen-reader-response' ).html( '' );
 
 		$( '.wpcf7-not-valid-tip', $form ).remove();
 		$( '[aria-invalid]', $form ).attr( 'aria-invalid', 'false' );
 		$( '.wpcf7-form-control', $form ).removeClass( 'wpcf7-not-valid' );
 
 		$( '.wpcf7-response-output', $form )
-			.hide().empty().removeAttr( 'role' )
+			.hide().empty()
 			.removeClass( 'wpcf7-mail-sent-ok wpcf7-mail-sent-ng wpcf7-validation-errors wpcf7-spam-blocked' );
 	};
 
