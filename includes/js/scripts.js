@@ -45,6 +45,8 @@
 	wpcf7.initForm = function( form ) {
 		var $form = $( form );
 
+		wpcf7.setStatus( $form, 'init' );
+
 		$form.submit( function( event ) {
 			if ( ! wpcf7.supportHtml5.placeholder ) {
 				$( '[placeholder].placeheld', $form ).each( function( i, n ) {
@@ -161,7 +163,6 @@
 		var $form = $( form );
 
 		$( '.ajax-loader', $form ).addClass( 'is-active' );
-
 		wpcf7.clearResponse( $form );
 
 		var formData = new FormData( $form.get( 0 ) );
@@ -199,6 +200,9 @@
 			detail.apiResponse = data;
 
 			switch ( data.status ) {
+				case 'init':
+					wpcf7.setStatus( $form, 'init' );
+					break;
 				case 'validation_failed':
 					$.each( data.invalidFields, function( i, n ) {
 						$( n.into, $form ).each( function() {
@@ -208,39 +212,33 @@
 						} );
 					} );
 
-					$form.addClass( 'invalid' );
-
+					wpcf7.setStatus( $form, 'invalid' );
 					wpcf7.triggerEvent( data.into, 'invalid', detail );
 					break;
 				case 'acceptance_missing':
-					$form.addClass( 'unaccepted' );
-
+					wpcf7.setStatus( $form, 'unaccepted' );
 					wpcf7.triggerEvent( data.into, 'unaccepted', detail );
 					break;
 				case 'spam':
-					$form.addClass( 'spam' );
-
+					wpcf7.setStatus( $form, 'spam' );
 					wpcf7.triggerEvent( data.into, 'spam', detail );
 					break;
 				case 'aborted':
-					$form.addClass( 'aborted' );
-
+					wpcf7.setStatus( $form, 'aborted' );
 					wpcf7.triggerEvent( data.into, 'aborted', detail );
 					break;
 				case 'mail_sent':
-					$form.addClass( 'sent' );
-
+					wpcf7.setStatus( $form, 'sent' );
 					wpcf7.triggerEvent( data.into, 'mailsent', detail );
 					break;
 				case 'mail_failed':
-					$form.addClass( 'failed' );
-
+					wpcf7.setStatus( $form, 'failed' );
 					wpcf7.triggerEvent( data.into, 'mailfailed', detail );
 					break;
 				default:
-					var customStatusClass = 'custom-'
-						+ data.status.replace( /[^0-9a-z]+/i, '-' );
-					$form.addClass( customStatusClass );
+					wpcf7.setStatus( $form,
+						'custom-' + data.status.replace( /[^0-9a-z]+/i, '-' )
+					);
 			}
 
 			wpcf7.refill( $form, data );
@@ -326,6 +324,18 @@
 		$target.trigger( 'wpcf7:' + name, detail );
 		$target.trigger( name + '.wpcf7', detail ); // deprecated
 	};
+
+	wpcf7.setStatus = function( form, status ) {
+		var $form = $( form );
+		var prevStatus = $form.data( 'status' );
+
+		$form.data( 'status', status );
+		$form.addClass( status );
+
+		if ( prevStatus ) {
+			$form.removeClass( prevStatus );
+		}
+	}
 
 	wpcf7.toggleSubmit = function( form, state ) {
 		var $form = $( form );
@@ -482,7 +492,6 @@
 
 	wpcf7.clearResponse = function( form ) {
 		var $form = $( form );
-		$form.removeClass( 'invalid spam sent failed' );
 		$form.siblings( '.screen-reader-response' ).html( '' );
 
 		$( '.wpcf7-not-valid-tip', $form ).remove();
