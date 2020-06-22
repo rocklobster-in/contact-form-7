@@ -198,8 +198,6 @@
 			detail.status = data.status;
 			detail.apiResponse = data;
 
-			var $message = $( '.wpcf7-response-output', $form );
-
 			switch ( data.status ) {
 				case 'validation_failed':
 					$.each( data.invalidFields, function( i, n ) {
@@ -210,37 +208,31 @@
 						} );
 					} );
 
-					$message.addClass( 'wpcf7-validation-errors' );
 					$form.addClass( 'invalid' );
 
 					wpcf7.triggerEvent( data.into, 'invalid', detail );
 					break;
 				case 'acceptance_missing':
-					$message.addClass( 'wpcf7-acceptance-missing' );
 					$form.addClass( 'unaccepted' );
 
 					wpcf7.triggerEvent( data.into, 'unaccepted', detail );
 					break;
 				case 'spam':
-					$message.addClass( 'wpcf7-spam-blocked' );
 					$form.addClass( 'spam' );
 
 					wpcf7.triggerEvent( data.into, 'spam', detail );
 					break;
 				case 'aborted':
-					$message.addClass( 'wpcf7-aborted' );
 					$form.addClass( 'aborted' );
 
 					wpcf7.triggerEvent( data.into, 'aborted', detail );
 					break;
 				case 'mail_sent':
-					$message.addClass( 'wpcf7-mail-sent-ok' );
 					$form.addClass( 'sent' );
 
 					wpcf7.triggerEvent( data.into, 'mailsent', detail );
 					break;
 				case 'mail_failed':
-					$message.addClass( 'wpcf7-mail-sent-ng' );
 					$form.addClass( 'failed' );
 
 					wpcf7.triggerEvent( data.into, 'mailfailed', detail );
@@ -248,7 +240,6 @@
 				default:
 					var customStatusClass = 'custom-'
 						+ data.status.replace( /[^0-9a-z]+/i, '-' );
-					$message.addClass( 'wpcf7-' + customStatusClass );
 					$form.addClass( customStatusClass );
 			}
 
@@ -271,7 +262,8 @@
 				} );
 			}
 
-			$message.html( '' ).append( data.message ).slideDown( 'fast' );
+			$( '.wpcf7-response-output', $form )
+				.html( '' ).append( data.message ).slideDown( 'fast' );
 
 			$( '.screen-reader-response', $form.closest( '.wpcf7' ) ).each( function() {
 				var $response = $( this );
@@ -497,9 +489,7 @@
 		$( '[aria-invalid]', $form ).attr( 'aria-invalid', 'false' );
 		$( '.wpcf7-form-control', $form ).removeClass( 'wpcf7-not-valid' );
 
-		$( '.wpcf7-response-output', $form )
-			.hide().empty()
-			.removeClass( 'wpcf7-mail-sent-ok wpcf7-mail-sent-ng wpcf7-validation-errors wpcf7-spam-blocked' );
+		$( '.wpcf7-response-output', $form ).hide().empty();
 	};
 
 	wpcf7.apiSettings.getRoute = function( path ) {
