@@ -366,6 +366,9 @@ class WPCF7_ContactForm {
 			$submission = WPCF7_Submission::get_instance();
 
 			switch ( $submission->get_status() ) {
+				case 'init':
+					$class .= ' init';
+					break;
 				case 'validation_failed':
 					$class .= ' invalid';
 					break;
@@ -389,6 +392,8 @@ class WPCF7_ContactForm {
 						preg_replace( '/[^0-9a-z]+/i', '-', $submission->get_status() )
 					);
 			}
+		} else {
+			$class .= ' init';
 		}
 
 		if ( $args['html_class'] ) {
@@ -511,8 +516,6 @@ class WPCF7_ContactForm {
 						preg_replace( '/[^0-9a-z]+/i', '-', $status )
 					);
 			}
-		} else {
-			$class .= ' wpcf7-display-none';
 		}
 
 		$atts = array(
