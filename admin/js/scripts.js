@@ -85,7 +85,7 @@
 				},
 				data: data
 			} ).done( function( response ) {
-				wpcf7.configValidator.errors = response.configErrors;
+				wpcf7.configValidator.errors = response.config_errors;
 				wpcf7.updateConfigErrors();
 			} );
 		} );

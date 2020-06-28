@@ -204,7 +204,7 @@
 					wpcf7.setStatus( $form, 'init' );
 					break;
 				case 'validation_failed':
-					$.each( data.invalidFields, function( i, n ) {
+					$.each( data.invalid_fields, function( i, n ) {
 						$( n.into, $form ).each( function() {
 							wpcf7.notValidTip( this, n.message );
 							$( '.wpcf7-form-control', this ).addClass( 'wpcf7-not-valid' );
@@ -267,10 +267,10 @@
 				var $response = $( this );
 				$response.html( '' ).append( data.message );
 
-				if ( data.invalidFields ) {
+				if ( data.invalid_fields ) {
 					var $invalids = $( '<ul></ul>' );
 
-					$.each( data.invalidFields, function( i, n ) {
+					$.each( data.invalid_fields, function( i, n ) {
 						if ( n.idref ) {
 							var $li = $( '<li></li>' ).append( $( '<a></a>' ).attr( 'href', '#' + n.idref ).append( n.message ) );
 						} else {
@@ -286,9 +286,9 @@
 				$response.focus();
 			} );
 
-			if ( data.postedDataHash ) {
+			if ( data.posted_data_hash ) {
 				$form.find( 'input[name="_wpcf7_posted_data_hash"]' ).first()
-					.val( data.postedDataHash );
+					.val( data.posted_data_hash );
 			}
 		};
 
