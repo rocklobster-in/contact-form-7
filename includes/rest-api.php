@@ -148,7 +148,7 @@ function wpcf7_rest_create_contact_form( WP_REST_Request $request ) {
 		'slug' => $item->name(),
 		'title' => $item->title(),
 		'locale' => $item->locale(),
-		'properties' => $item->get_properties(),
+		'properties' => wpcf7_get_properties_for_api( $item ),
 		'config_errors' => array(),
 	);
 
@@ -189,7 +189,7 @@ function wpcf7_rest_get_contact_form( WP_REST_Request $request ) {
 		'slug' => $item->name(),
 		'title' => $item->title(),
 		'locale' => $item->locale(),
-		'properties' => $item->get_properties(),
+		'properties' => wpcf7_get_properties_for_api( $item ),
 	);
 
 	return rest_ensure_response( $response );
@@ -229,7 +229,7 @@ function wpcf7_rest_update_contact_form( WP_REST_Request $request ) {
 		'slug' => $item->name(),
 		'title' => $item->title(),
 		'locale' => $item->locale(),
-		'properties' => $item->get_properties(),
+		'properties' => wpcf7_get_properties_for_api( $item ),
 		'config_errors' => array(),
 	);
 
@@ -340,4 +340,55 @@ function wpcf7_rest_get_refill( WP_REST_Request $request ) {
 	$response = apply_filters( 'wpcf7_ajax_onload', array() );
 
 	return rest_ensure_response( $response );
+}
+
+function wpcf7_get_properties_for_api( WPCF7_ContactForm $contact_form ) {
+	$properties = $contact_form->get_properties();
+
+	$properties['form'] = array(
+		'content' => (string) $properties['form'],
+		'fields' => array_map(
+			function( WPCF7_FormTag $form_tag ) {
+				return array(
+					'type' => $form_tag->type,
+					'basetype' => $form_tag->basetype,
+					'name' => $form_tag->name,
+					'options' => $form_tag->options,
+					'raw_values' => $form_tag->raw_values,
+					'labels' => $form_tag->labels,
+					'values' => $form_tag->values,
+					'pipes' => $form_tag->pipes->to_array(),
+					'content' => $form_tag->content,
+				);
+			},
+			$contact_form->scan_form_tags()
+		),
+	);
+
+	$properties['additional_settings'] = array(
+		'content' => (string) $properties['additional_settings'],
+		'settings' => array_filter( array_map(
+			function( $setting ) {
+				$pattern = '/^([a-zA-Z0-9_]+)[\t ]*:(.*)$/';
+
+				if ( preg_match( $pattern, $setting, $matches ) ) {
+					$name = trim( $matches[1] );
+					$value = trim( $matches[2] );
+
+					if ( in_array( $value, array( 'on', 'true' ), true ) ) {
+						$value = true;
+					} elseif ( in_array( $value, array( 'off', 'false' ), true ) ) {
+						$value = false;
+					}
+
+					return array( $name, $value );
+				}
+
+				return false;
+			},
+			explode( "\n", $properties['additional_settings'] )
+		) ),
+	);
+
+	return $properties;
 }
