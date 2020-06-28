@@ -149,14 +149,14 @@ function wpcf7_rest_create_contact_form( WP_REST_Request $request ) {
 		'title' => $item->title(),
 		'locale' => $item->locale(),
 		'properties' => $item->get_properties(),
-		'configErrors' => array(),
+		'config_errors' => array(),
 	);
 
 	if ( wpcf7_validate_configuration() ) {
 		$config_validator = new WPCF7_ConfigValidator( $item );
 		$config_validator->validate();
 
-		$response['configErrors'] = $config_validator->collect_error_messages();
+		$response['config_errors'] = $config_validator->collect_error_messages();
 
 		if ( 'save' == $context ) {
 			$config_validator->save();
@@ -230,14 +230,14 @@ function wpcf7_rest_update_contact_form( WP_REST_Request $request ) {
 		'title' => $item->title(),
 		'locale' => $item->locale(),
 		'properties' => $item->get_properties(),
-		'configErrors' => array(),
+		'config_errors' => array(),
 	);
 
 	if ( wpcf7_validate_configuration() ) {
 		$config_validator = new WPCF7_ConfigValidator( $item );
 		$config_validator->validate();
 
-		$response['configErrors'] = $config_validator->collect_error_messages();
+		$response['config_errors'] = $config_validator->collect_error_messages();
 
 		if ( 'save' == $context ) {
 			$config_validator->save();
@@ -303,7 +303,7 @@ function wpcf7_rest_create_feedback( WP_REST_Request $request ) {
 		'into' => '#' . wpcf7_sanitize_unit_tag( $unit_tag ),
 		'status' => $result['status'],
 		'message' => $result['message'],
-		'postedDataHash' => $result['posted_data_hash'],
+		'posted_data_hash' => $result['posted_data_hash'],
 	);
 
 	if ( 'validation_failed' == $result['status'] ) {
@@ -318,7 +318,7 @@ function wpcf7_rest_create_feedback( WP_REST_Request $request ) {
 			);
 		}
 
-		$response['invalidFields'] = $invalid_fields;
+		$response['invalid_fields'] = $invalid_fields;
 	}
 
 	$response = apply_filters( 'wpcf7_ajax_json_echo', $response, $result );
