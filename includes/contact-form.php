@@ -767,6 +767,14 @@ class WPCF7_ContactForm {
 
 	/* Additional settings */
 
+	public function pref( $name ) {
+		$settings = $this->additional_setting( $name );
+
+		if ( $settings ) {
+			return $settings[0];
+		}
+	}
+
 	public function additional_setting( $name, $max = 1 ) {
 		$settings = (array) explode( "\n", $this->prop( 'additional_settings' ) );
 
@@ -791,15 +799,11 @@ class WPCF7_ContactForm {
 	}
 
 	public function is_true( $name ) {
-		$settings = $this->additional_setting( $name, false );
-
-		foreach ( $settings as $setting ) {
-			if ( in_array( $setting, array( 'on', 'true', '1' ) ) ) {
-				return true;
-			}
-		}
-
-		return false;
+		return in_array(
+			$this->pref( $name ),
+			array( 'on', 'true', '1' ),
+			true
+		);
 	}
 
 	public function in_demo_mode() {

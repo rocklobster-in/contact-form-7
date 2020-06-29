@@ -144,19 +144,20 @@ function wpcf7_flamingo_get_value( $field, $contact_form ) {
 	$value = '';
 
 	if ( in_array( $field, array( 'email', 'name', 'subject' ) ) ) {
-		$templates = $contact_form->additional_setting( 'flamingo_' . $field );
+		$template = $contact_form->pref( 'flamingo_' . $field );
 
-		if ( empty( $templates[0] ) ) {
+		if ( null === $template ) {
 			$template = sprintf( '[your-%s]', $field );
 		} else {
-			$template = trim( wpcf7_strip_quote( $templates[0] ) );
+			$template = trim( wpcf7_strip_quote( $template ) );
 		}
 
 		$value = wpcf7_mail_replace_tags( $template );
 	}
 
 	$value = apply_filters( 'wpcf7_flamingo_get_value', $value,
-		$field, $contact_form );
+		$field, $contact_form
+	);
 
 	return $value;
 }
