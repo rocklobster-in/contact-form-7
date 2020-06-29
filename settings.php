@@ -56,11 +56,19 @@ class WPCF7 {
 			return false;
 		}
 
-		$file = path_join( $dir, $mod . '.php' );
+		$files = array(
+			path_join( $dir, $mod . '/' . $mod . '.php' ),
+			path_join( $dir, $mod . '.php' ),
+		);
 
-		if ( file_exists( $file ) ) {
-			include_once $file;
+		foreach ( $files as $file ) {
+			if ( file_exists( $file ) ) {
+				include_once $file;
+				return true;
+			}
 		}
+
+		return false;
 	}
 
 	public static function get_option( $name, $default = false ) {
