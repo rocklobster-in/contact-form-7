@@ -332,7 +332,7 @@
 		$form.data( 'status', status );
 		$form.addClass( status );
 
-		if ( prevStatus ) {
+		if ( prevStatus && prevStatus !== status ) {
 			$form.removeClass( prevStatus );
 		}
 	}
