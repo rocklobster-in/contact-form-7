@@ -321,7 +321,14 @@ function wpcf7_rest_create_feedback( WP_REST_Request $request ) {
 		$response['invalid_fields'] = $invalid_fields;
 	}
 
-	$response = apply_filters( 'wpcf7_ajax_json_echo', $response, $result );
+	$response = wpcf7_apply_filters_deprecated(
+		'wpcf7_ajax_json_echo',
+		array( $response, $result ),
+		'5.2',
+		'wpcf7_feedback_response'
+	);
+
+	$response = apply_filters( 'wpcf7_feedback_response', $response, $result );
 
 	return rest_ensure_response( $response );
 }
@@ -337,7 +344,14 @@ function wpcf7_rest_get_refill( WP_REST_Request $request ) {
 		);
 	}
 
-	$response = apply_filters( 'wpcf7_ajax_onload', array() );
+	$response = wpcf7_apply_filters_deprecated(
+		'wpcf7_ajax_onload',
+		array( array() ),
+		'5.2',
+		'wpcf7_refill_response'
+	);
+
+	$response = apply_filters( 'wpcf7_refill_response', array() );
 
 	return rest_ensure_response( $response );
 }
