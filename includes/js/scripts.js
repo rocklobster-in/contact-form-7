@@ -310,19 +310,12 @@
 	};
 
 	wpcf7.triggerEvent = function( target, name, detail ) {
-		var $target = $( target );
-
-		/* DOM event */
 		var event = new CustomEvent( 'wpcf7' + name, {
 			bubbles: true,
 			detail: detail
 		} );
 
-		$target.get( 0 ).dispatchEvent( event );
-
-		/* jQuery event */
-		$target.trigger( 'wpcf7:' + name, detail );
-		$target.trigger( name + '.wpcf7', detail ); // deprecated
+		$( target ).get( 0 ).dispatchEvent( event );
 	};
 
 	wpcf7.setStatus = function( form, status ) {
