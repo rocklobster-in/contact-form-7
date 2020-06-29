@@ -371,9 +371,20 @@ function wpcf7_deprecated_function( $function, $version, $replacement ) {
 
 	if ( WP_DEBUG and $trigger_error ) {
 		if ( function_exists( '__' ) ) {
-			trigger_error( sprintf( __( '%1$s is <strong>deprecated</strong> since Contact Form 7 version %2$s! Use %3$s instead.', 'contact-form-7' ), $function, $version, $replacement ) );
+			trigger_error(
+				sprintf(
+					/* translators: 1: PHP function name, 2: version number, 3: alternative function name */
+					__( '%1$s is <strong>deprecated</strong> since Contact Form 7 version %2$s! Use %3$s instead.', 'contact-form-7' ),
+					$function, $version, $replacement
+				)
+			);
 		} else {
-			trigger_error( sprintf( '%1$s is <strong>deprecated</strong> since Contact Form 7 version %2$s! Use %3$s instead.', $function, $version, $replacement ) );
+			trigger_error(
+				sprintf(
+					'%1$s is <strong>deprecated</strong> since Contact Form 7 version %2$s! Use %3$s instead.',
+					$function, $version, $replacement
+				)
+			);
 		}
 	}
 }
