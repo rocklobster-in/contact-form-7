@@ -68,6 +68,7 @@ class WPCF7_Submission {
 			wpcf7_flat_join( array_merge(
 				array(
 					$this->get_meta( 'remote_ip' ),
+					$this->get_meta( 'remote_port' ),
 					$this->get_meta( 'unit_tag' ),
 				),
 				$this->posted_data
@@ -169,6 +170,9 @@ class WPCF7_Submission {
 
 		$remote_ip = $this->get_remote_ip_addr();
 
+		$remote_port = isset( $_SERVER['REMOTE_PORT'] )
+			? (int) $_SERVER['REMOTE_PORT'] : '';
+
 		$user_agent = isset( $_SERVER['HTTP_USER_AGENT'] )
 			? substr( $_SERVER['HTTP_USER_AGENT'], 0, 254 ) : '';
 
@@ -187,6 +191,7 @@ class WPCF7_Submission {
 		$this->meta = array(
 			'timestamp' => $timestamp,
 			'remote_ip' => $remote_ip,
+			'remote_port' => $remote_port,
 			'user_agent' => $user_agent,
 			'url' => $url,
 			'unit_tag' => $unit_tag,
