@@ -23,18 +23,40 @@ function wpcf7_recaptcha_enqueue_scripts() {
 		return;
 	}
 
-	$url = add_query_arg(
-		array(
-			'render' => $service->get_sitekey(),
+	wp_enqueue_script( 'google-recaptcha',
+		add_query_arg(
+			array(
+				'render' => $service->get_sitekey(),
+			),
+			'https://www.google.com/recaptcha/api.js'
 		),
-		'https://www.google.com/recaptcha/api.js'
+		array(),
+		'3.0',
+		true
 	);
 
-	wp_enqueue_script( 'google-recaptcha', $url, array(), '3.0', true );
+	wp_enqueue_script( 'wpcf7-recaptcha',
+		wpcf7_plugin_url( 'modules/recaptcha/script.js' ),
+		array( 'google-recaptcha' ),
+		WPCF7_VERSION,
+		true
+	);
+
+	wp_localize_script( 'wpcf7-recaptcha',
+		'wpcf7_recaptcha',
+		array(
+			'sitekey' => $service->get_sitekey(),
+			'actions' => apply_filters( 'wpcf7_recaptcha_actions', array(
+				'homepage' => 'homepage',
+				'contactform' => 'contactform',
+			) ),
+		)
+	);
 }
 
 add_filter( 'wpcf7_form_hidden_fields',
-	'wpcf7_recaptcha_add_hidden_fields', 100, 1 );
+	'wpcf7_recaptcha_add_hidden_fields', 100, 1
+);
 
 function wpcf7_recaptcha_add_hidden_fields( $fields ) {
 	$service = WPCF7_RECAPTCHA::get_instance();
@@ -46,92 +68,6 @@ function wpcf7_recaptcha_add_hidden_fields( $fields ) {
 	return array_merge( $fields, array(
 		'_wpcf7_recaptcha_response' => '',
 	) );
-}
-
-add_action( 'wp_footer', 'wpcf7_recaptcha_onload_script', 40, 0 );
-
-function wpcf7_recaptcha_onload_script() {
-	$service = WPCF7_RECAPTCHA::get_instance();
-
-	if ( ! $service->is_active() ) {
-		return;
-	}
-
-	if ( ! wp_script_is( 'google-recaptcha', 'done' ) ) {
-		return;
-	}
-
-	$actions = apply_filters( 'wpcf7_recaptcha_actions',
-		array(
-			'homepage' => 'homepage',
-			'contactform' => 'contactform',
-		)
-	);
-
-?>
-<script type="text/javascript">
-( function( sitekey, actions ) {
-
-	document.addEventListener( 'DOMContentLoaded', function( event ) {
-		var wpcf7recaptcha = {
-
-			execute: function( action ) {
-				grecaptcha.execute(
-					sitekey,
-					{ action: action }
-				).then( function( token ) {
-					var event = new CustomEvent( 'wpcf7grecaptchaexecuted', {
-						detail: {
-							action: action,
-							token: token,
-						},
-					} );
-
-					document.dispatchEvent( event );
-				} );
-			},
-
-			executeOnHomepage: function() {
-				wpcf7recaptcha.execute( actions[ 'homepage' ] );
-			},
-
-			executeOnContactform: function() {
-				wpcf7recaptcha.execute( actions[ 'contactform' ] );
-			},
-
-		};
-
-		grecaptcha.ready(
-			wpcf7recaptcha.executeOnHomepage
-		);
-
-		document.addEventListener( 'change',
-			wpcf7recaptcha.executeOnContactform, false
-		);
-
-		document.addEventListener( 'wpcf7submit',
-			wpcf7recaptcha.executeOnHomepage, false
-		);
-
-	} );
-
-	document.addEventListener( 'wpcf7grecaptchaexecuted', function( event ) {
-		var fields = document.querySelectorAll(
-			"form.wpcf7-form input[name='_wpcf7_recaptcha_response']"
-		);
-
-		for ( var i = 0; i < fields.length; i++ ) {
-			var field = fields[ i ];
-			field.setAttribute( 'value', event.detail.token );
-		}
-	} );
-
-} )(
-	'<?php echo esc_js( $service->get_sitekey() ); ?>',
-	<?php echo json_encode( $actions ), "\n"; ?>
-);
-</script>
-<?php
 }
 
 add_filter( 'wpcf7_spam', 'wpcf7_recaptcha_verify_response', 9, 1 );
