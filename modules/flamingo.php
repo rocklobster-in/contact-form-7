@@ -113,6 +113,7 @@ function wpcf7_flamingo_submit( $contact_form, $result ) {
 		'akismet' => $akismet,
 		'spam' => ( 'spam' == $result['status'] ),
 		'consent' => $submission->collect_consent(),
+		'timestamp' => $submission->get_meta( 'timestamp' ),
 	);
 
 	if ( $args['spam'] ) {
