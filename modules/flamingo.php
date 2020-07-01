@@ -115,6 +115,7 @@ function wpcf7_flamingo_submit( $contact_form, $result ) {
 		'spam' => ( 'spam' == $result['status'] ),
 		'consent' => $submission->collect_consent(),
 		'timestamp' => $submission->get_meta( 'timestamp' ),
+		'posted_data_hash' => $submission->get_posted_data_hash(),
 	);
 
 	if ( $args['spam'] ) {
