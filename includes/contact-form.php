@@ -732,11 +732,22 @@ class WPCF7_ContactForm {
 			'status' => $submission->get_status(),
 			'message' => $submission->get_response(),
 			'demo_mode' => $this->in_demo_mode(),
-			'posted_data_hash' => $submission->get_posted_data_hash(),
 		);
 
 		if ( $submission->is( 'validation_failed' ) ) {
 			$result['invalid_fields'] = $submission->get_invalid_fields();
+		}
+
+		switch ( $submission->get_status() ) {
+			case 'init':
+			case 'validation_failed':
+			case 'acceptance_missing':
+			case 'spam':
+				$result['posted_data_hash'] = '';
+				break;
+			default:
+				$result['posted_data_hash'] = $submission->get_posted_data_hash();
+				break;
 		}
 
 		do_action( 'wpcf7_submit', $this, $result );
