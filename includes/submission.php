@@ -64,31 +64,12 @@ class WPCF7_Submission {
 			$this->set_response( $contact_form->message( 'accept_terms' ) );
 		}
 
-		$posted_data_hash = wp_hash(
-			wpcf7_flat_join( array_merge(
-				array(
-					$this->get_meta( 'remote_ip' ),
-					$this->get_meta( 'remote_port' ),
-					$this->get_meta( 'unit_tag' ),
-				),
-				$this->posted_data
-			) ),
-			'wpcf7_submission'
-		);
-
-		if ( ! empty( $_POST['_wpcf7_posted_data_hash'] )
-		and $posted_data_hash === $_POST['_wpcf7_posted_data_hash'] ) {
-			$this->skip_spam_check = true;
-		}
-
 		if ( $this->is( 'init' ) and $this->spam() ) {
 			$this->set_status( 'spam' );
 			$this->set_response( $contact_form->message( 'spam' ) );
 		}
 
 		if ( $this->is( 'init' ) ) {
-			$this->posted_data_hash = $posted_data_hash;
-
 			$abort = ! $this->before_send_mail();
 
 			if ( $abort ) {
@@ -297,6 +278,18 @@ class WPCF7_Submission {
 
 		$this->posted_data = apply_filters( 'wpcf7_posted_data', $posted_data );
 
+		$this->posted_data_hash = wp_hash(
+			wpcf7_flat_join( array_merge(
+				array(
+					$this->get_meta( 'remote_ip' ),
+					$this->get_meta( 'remote_port' ),
+					$this->get_meta( 'unit_tag' ),
+				),
+				$this->posted_data
+			) ),
+			'wpcf7_submission'
+		);
+
 		return $this->posted_data;
 	}
 
@@ -383,7 +376,12 @@ class WPCF7_Submission {
 	private function spam() {
 		$spam = false;
 
-		if ( $this->skip_spam_check ) {
+		$skip_spam_check = apply_filters( 'wpcf7_skip_spam_check',
+			$this->skip_spam_check,
+			$this
+		);
+
+		if ( $skip_spam_check ) {
 			return $spam;
 		}
 
