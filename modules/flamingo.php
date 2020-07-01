@@ -104,6 +104,7 @@ function wpcf7_flamingo_submit( $contact_form, $result ) {
 
 	$args = array(
 		'channel' => $channel,
+		'status' => $submission->get_status(),
 		'subject' => $subject,
 		'from' => trim( sprintf( '%s <%s>', $name, $email ) ),
 		'from_name' => $name,
