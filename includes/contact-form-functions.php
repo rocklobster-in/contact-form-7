@@ -125,7 +125,10 @@ function wpcf7_contact_form_tag_func( $atts, $content = null, $code = '' ) {
 	}
 
 	if ( ! $contact_form ) {
-		return '[contact-form-7 404 "Not Found"]';
+		return sprintf(
+			'[contact-form-7 404 "%s"]',
+			esc_html( __( 'Not Found', 'contact-form-7' ) )
+		);
 	}
 
 	return $contact_form->form_html( $atts );
