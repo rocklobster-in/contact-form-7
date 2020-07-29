@@ -39,6 +39,13 @@ function wpcf7_file_form_tag_handler( $tag ) {
 	$atts['accept'] = wpcf7_acceptable_filetypes(
 		$tag->get_option( 'filetypes' ), 'attr' );
 
+	$multiple = $tag->has_option( 'multiple' );
+
+
+	if ( $multiple ) {
+		$atts['multiple'] = 'multiple';
+	}
+
 	if ( $tag->is_required() ) {
 		$atts['aria-required'] = 'true';
 	}
@@ -46,7 +53,7 @@ function wpcf7_file_form_tag_handler( $tag ) {
 	$atts['aria-invalid'] = $validation_error ? 'true' : 'false';
 
 	$atts['type'] = 'file';
-	$atts['name'] = $tag->name;
+	$atts['name'] = $tag->name . ( $multiple ? '[]' : '' );
 
 	$atts = wpcf7_format_atts( $atts );
 
@@ -85,74 +92,95 @@ function wpcf7_file_validation_filter( $result, $tag ) {
 	$name = $tag->name;
 	$id = $tag->get_id_option();
 
-	$file = isset( $_FILES[$name] ) ? $_FILES[$name] : null;
-
-	if ( ! empty( $file['error'] ) and UPLOAD_ERR_NO_FILE !== $file['error'] ) {
-		$result->invalidate( $tag, wpcf7_get_message( 'upload_failed_php_error' ) );
-		return $result;
+	$files = [];
+	if (isset($_FILES[$name])) {
+		if (is_array($_FILES[$name])) {
+			// multiple files uploaded
+			for( $i=0; $i<count($_FILES[$name]['name']); $i++) {
+				$files[] = array(
+					'name' => $_FILES[$name]['name'][$i],
+					'type' => $_FILES[$name]['type'][$i],
+					'tmp_name' => $_FILES[$name]['tmp_name'][$i],
+					'error' => $_FILES[$name]['error'][$i],
+					'size' => $_FILES[$name]['size'][$i],
+				);
+			}
+		} else {
+			// single file uploaded
+			$files[] = $_FILES[$name];
+		}
 	}
 
-	if ( empty( $file['tmp_name'] ) and $tag->is_required() ) {
-		$result->invalidate( $tag, wpcf7_get_message( 'invalid_required' ) );
-		return $result;
-	}
+	foreach ($files as $file) {
 
-	if ( empty( $file['tmp_name'] )
-	or ! is_uploaded_file( $file['tmp_name'] ) ) {
-		return $result;
-	}
+		if ( ! empty( $file['error'] ) and UPLOAD_ERR_NO_FILE !== $file['error'] ) {
+			$result->invalidate( $tag, wpcf7_get_message( 'upload_failed_php_error' ) );
+			return $result;
+		}
 
-	/* File type validation */
+		if ( empty( $file['tmp_name'] ) and $tag->is_required() ) {
+			$result->invalidate( $tag, wpcf7_get_message( 'invalid_required' ) );
+			return $result;
+		}
 
-	$file_type_pattern = wpcf7_acceptable_filetypes(
-		$tag->get_option( 'filetypes' ), 'regex'
-	);
+		if ( empty( $file['tmp_name'] )
+		or ! is_uploaded_file( $file['tmp_name'] ) ) {
+			return $result;
+		}
 
-	$file_type_pattern = '/\.(' . $file_type_pattern . ')$/i';
+		/* File type validation */
 
-	if ( empty( $file['name'] )
-	or ! preg_match( $file_type_pattern, $file['name'] ) ) {
-		$result->invalidate( $tag,
-			wpcf7_get_message( 'upload_file_type_invalid' )
+		$file_type_pattern = wpcf7_acceptable_filetypes(
+			$tag->get_option( 'filetypes' ), 'regex'
 		);
 
-		return $result;
-	}
+		$file_type_pattern = '/\.(' . $file_type_pattern . ')$/i';
 
-	/* File size validation */
+		if ( empty( $file['name'] )
+		or ! preg_match( $file_type_pattern, $file['name'] ) ) {
+			$result->invalidate( $tag,
+				wpcf7_get_message( 'upload_file_type_invalid' )
+			);
 
-	$allowed_size = $tag->get_limit_option();
+			return $result;
+		}
 
-	if ( ! empty( $file['size'] ) and $allowed_size < $file['size'] ) {
-		$result->invalidate( $tag, wpcf7_get_message( 'upload_file_too_large' ) );
-		return $result;
-	}
+		/* File size validation */
 
-	wpcf7_init_uploads(); // Confirm upload dir
-	$uploads_dir = wpcf7_upload_tmp_dir();
-	$uploads_dir = wpcf7_maybe_add_random_dir( $uploads_dir );
+		$allowed_size = $tag->get_limit_option();
 
-	$filename = $file['name'];
-	$filename = wpcf7_canonicalize( $filename, 'as-is' );
-	$filename = wpcf7_antiscript_file_name( $filename );
+		if ( ! empty( $file['size'] ) and $allowed_size < $file['size'] ) {
+			$result->invalidate( $tag, wpcf7_get_message( 'upload_file_too_large' ) );
+			return $result;
+		}
 
-	$filename = apply_filters( 'wpcf7_upload_file_name', $filename,
-		$file['name'], $tag
-	);
+		wpcf7_init_uploads(); // Confirm upload dir
+		$uploads_dir = wpcf7_upload_tmp_dir();
+		$uploads_dir = wpcf7_maybe_add_random_dir( $uploads_dir );
 
-	$filename = wp_unique_filename( $uploads_dir, $filename );
-	$new_file = path_join( $uploads_dir, $filename );
+		$filename = $file['name'];
+		$filename = wpcf7_canonicalize( $filename, 'as-is' );
+		$filename = wpcf7_antiscript_file_name( $filename );
 
-	if ( false === @move_uploaded_file( $file['tmp_name'], $new_file ) ) {
-		$result->invalidate( $tag, wpcf7_get_message( 'upload_failed' ) );
-		return $result;
-	}
+		$filename = apply_filters( 'wpcf7_upload_file_name', $filename,
+			$file['name'], $tag
+		);
 
-	// Make sure the uploaded file is only readable for the owner process
-	chmod( $new_file, 0400 );
+		$filename = wp_unique_filename( $uploads_dir, $filename );
+		$new_file = path_join( $uploads_dir, $filename );
 
-	if ( $submission = WPCF7_Submission::get_instance() ) {
-		$submission->add_uploaded_file( $name, $new_file );
+		if ( false === @move_uploaded_file( $file['tmp_name'], $new_file ) ) {
+			$result->invalidate( $tag, wpcf7_get_message( 'upload_failed' ) );
+			return $result;
+		}
+
+		// Make sure the uploaded file is only readable for the owner process
+		chmod( $new_file, 0400 );
+
+		if ( $submission = WPCF7_Submission::get_instance() ) {
+			$submission->add_uploaded_file( $name, $new_file );
+		}
+		
 	}
 
 	return $result;
@@ -251,6 +279,17 @@ function wpcf7_tag_generator_file( $contact_form, $args = '' ) {
 	<tr>
 	<th scope="row"><label for="<?php echo esc_attr( $args['content'] . '-filetypes' ); ?>"><?php echo esc_html( __( 'Acceptable file types', 'contact-form-7' ) ); ?></label></th>
 	<td><input type="text" name="filetypes" class="filetype oneline option" id="<?php echo esc_attr( $args['content'] . '-filetypes' ); ?>" /></td>
+	</tr>
+
+	<tr>
+	<th scope="row"><?php echo esc_html( __( 'Options', 'contact-form-7' ) ); ?></th>
+	<td>
+		<fieldset>
+		<legend class="screen-reader-text"><?php echo esc_html( __( 'Options', 'contact-form-7' ) ); ?></legend>
+		<label><input type="checkbox" name="multiple" class="option" /> <?php echo esc_html( __( 'Allow multiple selections', 'contact-form-7' ) ); ?></label><br />
+		<label><input type="checkbox" name="include_blank" class="option" /> <?php echo esc_html( __( 'Insert a blank item as the first option', 'contact-form-7' ) ); ?></label>
+		</fieldset>
+	</td>
 	</tr>
 
 	<tr>
