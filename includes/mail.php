@@ -158,10 +158,12 @@ class WPCF7_Mail {
 		if ( $submission = WPCF7_Submission::get_instance() ) {
 			$uploaded_files = $submission->uploaded_files();
 
-			foreach ( (array) $uploaded_files as $name => $path ) {
-				if ( false !== strpos( $template, "[${name}]" )
-				and ! empty( $path ) ) {
-					$attachments[] = $path;
+			foreach ( (array) $uploaded_files as $name => $paths ) {
+				foreach ($paths as $path) {
+					if ( false !== strpos( $template, "[${name}]" )
+					and ! empty( $path ) ) {
+						$attachments[] = $path;
+					}
 				}
 			}
 		}

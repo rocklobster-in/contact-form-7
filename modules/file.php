@@ -93,8 +93,8 @@ function wpcf7_file_validation_filter( $result, $tag ) {
 	$id = $tag->get_id_option();
 
 	$files = [];
-	if (isset($_FILES[$name])) {
-		if (is_array($_FILES[$name])) {
+	if (isset($_FILES[$name]) && isset($_FILES[$name]['name'])) {
+		if (is_array($_FILES[$name]['name'])) {
 			// multiple files uploaded
 			for( $i=0; $i<count($_FILES[$name]['name']); $i++) {
 				$files[] = array(
@@ -194,11 +194,11 @@ function wpcf7_file_mail_tag( $replaced, $submitted, $html, $mail_tag ) {
 	$uploaded_files = $submission->uploaded_files();
 	$name = $mail_tag->field_name();
 
-	if ( ! empty( $uploaded_files[$name] ) ) {
-		$replaced = wp_basename( $uploaded_files[$name] );
-	}
+	$replaced = array_map(function($path){
+		return basename($path);
+	},$uploaded_files[$name]);
 
-	return $replaced;
+	return implode(', ', $replaced);
 }
 
 

@@ -515,11 +515,15 @@ class WPCF7_Submission {
 			return false;
 		}
 
-		$this->uploaded_files[$name] = $file_path;
+		$this->uploaded_files[$name][] = $file_path;
 
-		if ( empty( $this->posted_data[$name] ) ) {
-			$this->posted_data[$name] = md5_file( $file_path );
+		if (
+			empty( $this->posted_data[$name] ) ||
+			!is_array($this->posted_data[$name])
+		) {
+			$this->posted_data[$name] = [];
 		}
+		$this->posted_data[$name][] = md5_file( $file_path );
 	}
 
 	public function remove_uploaded_files() {
