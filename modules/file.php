@@ -286,8 +286,7 @@ function wpcf7_tag_generator_file( $contact_form, $args = '' ) {
 	<td>
 		<fieldset>
 		<legend class="screen-reader-text"><?php echo esc_html( __( 'Options', 'contact-form-7' ) ); ?></legend>
-		<label><input type="checkbox" name="multiple" class="option" /> <?php echo esc_html( __( 'Allow multiple selections', 'contact-form-7' ) ); ?></label><br />
-		<label><input type="checkbox" name="include_blank" class="option" /> <?php echo esc_html( __( 'Insert a blank item as the first option', 'contact-form-7' ) ); ?></label>
+		<label><input type="checkbox" name="multiple" class="option" /> <?php echo esc_html( __( 'Allow multiple uploads', 'contact-form-7' ) ); ?></label><br />
 		</fieldset>
 	</td>
 	</tr>
