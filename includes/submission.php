@@ -240,29 +240,31 @@ class WPCF7_Submission {
 				}
 			}
 
-			if ( wpcf7_form_tag_supports( $type, 'selectable-values' )
-			and $tag->has_option( 'free_text' )
-			and isset( $posted_data[$name . '_free_text'] )
-			and is_array( $value ) ) {
-				$last_val = array_pop( $value );
+			if ( wpcf7_form_tag_supports( $type, 'selectable-values' ) ) {
+				$value = (array) $value;
 
-				list( $tied_item ) = array_slice(
-					WPCF7_USE_PIPE ? $tag->pipes->collect_afters() : $tag->values,
-					-1, 1
-				);
+				if ( $tag->has_option( 'free_text' )
+				and isset( $posted_data[$name . '_free_text'] ) ) {
+					$last_val = array_pop( $value );
 
-				$tied_item = html_entity_decode( $tied_item, ENT_QUOTES, 'UTF-8' );
-
-				if ( $last_val === $tied_item ) {
-					$value[] = sprintf( '%s %s',
-						$last_val,
-						$posted_data[$name . '_free_text']
+					list( $tied_item ) = array_slice(
+						WPCF7_USE_PIPE ? $tag->pipes->collect_afters() : $tag->values,
+						-1, 1
 					);
-				} else {
-					$value[] = $last_val;
-				}
 
-				unset( $posted_data[$name . '_free_text'] );
+					$tied_item = html_entity_decode( $tied_item, ENT_QUOTES, 'UTF-8' );
+
+					if ( $last_val === $tied_item ) {
+						$value[] = sprintf( '%s %s',
+							$last_val,
+							$posted_data[$name . '_free_text']
+						);
+					} else {
+						$value[] = $last_val;
+					}
+
+					unset( $posted_data[$name . '_free_text'] );
+				}
 			}
 
 			$value = apply_filters( "wpcf7_posted_data_{$type}", $value,
