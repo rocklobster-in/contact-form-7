@@ -347,6 +347,68 @@ class WPCF7_FormTag implements ArrayAccess {
 		return (int) $default;
 	}
 
+	public function get_limit_total_option( $default = MB_IN_BYTES ) {
+		$pattern = '/^limit_total:([1-9][0-9]*)([kKmM]?[bB])?$/';
+
+		$matches = $this->get_first_match_option( $pattern );
+
+		if ( $matches ) {
+			$size = (int) $matches[1];
+
+			if ( ! empty( $matches[2] ) ) {
+				$kbmb = strtolower( $matches[2] );
+
+				if ( 'kb' == $kbmb ) {
+					$size *= KB_IN_BYTES;
+				} elseif ( 'mb' == $kbmb ) {
+					$size *= MB_IN_BYTES;
+				}
+			}
+
+			return $size;
+		}
+
+		return (int) $default;
+	}
+
+	public function get_max_option( $default = 10 ) {
+		$option = $this->get_option( 'max', 'int', true );
+
+		if ( $option ) {
+			return $option;
+		}
+
+		$matches_a = $this->get_all_match_options(
+			'%^(?:[0-9]*x?[0-9]*)?/([0-9]+)$%' );
+
+		foreach ( (array) $matches_a as $matches ) {
+			if ( isset( $matches[1] ) && '' !== $matches[1] ) {
+				return $matches[1];
+			}
+		}
+
+		return $default;
+	}
+
+	public function get_min_option( $default = 0 ) {
+		$option = $this->get_option( 'min', 'int', true );
+
+		if ( $option ) {
+			return $option;
+		}
+
+		$matches_a = $this->get_all_match_options(
+			'%^(?:[0-9]*x?[0-9]*)?/([0-9]+)$%' );
+
+		foreach ( (array) $matches_a as $matches ) {
+			if ( isset( $matches[1] ) && '' !== $matches[1] ) {
+				return $matches[1];
+			}
+		}
+
+		return $default;
+	}
+
 	public function get_first_match_option( $pattern ) {
 		foreach( (array) $this->options as $option ) {
 			if ( preg_match( $pattern, $option, $matches ) ) {

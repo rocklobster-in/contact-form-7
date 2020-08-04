@@ -111,8 +111,47 @@ function wpcf7_file_validation_filter( $result, $tag ) {
 		}
 	}
 
-	foreach ($files as $file) {
+	/* Multiple files uploaded: validation */
+	$num_files = count($files);
 
+	if (
+		in_array('multiple', $tag->options) &&
+		(
+			!empty($files[0]['name'])
+		)
+	) {
+
+		$allowed_size_total = $tag->get_limit_total_option();
+		$total_size = array_sum(array_column($files,'size'));
+		if ( $allowed_size_total < $total_size ) {
+			$result->invalidate( $tag, wpcf7_get_message( 'upload_files_too_large' ) );
+			return $result;
+		}
+
+		$max_files_allowed = $tag->get_max_option();
+		if ( $max_files_allowed < $num_files ) {
+			$result->invalidate( $tag, wpcf7_get_message( 'upload_too_many_files' ) );
+			return $result;
+		}
+
+		$min_files_required = $tag->get_min_option();
+		if ( $min_files_required > $num_files ) {
+			$result->invalidate( $tag, wpcf7_get_message( 'upload_too_few_files' ) );
+			return $result;
+		}
+
+	}																														
+
+	$file_type_pattern = wpcf7_acceptable_filetypes(
+		$tag->get_option( 'filetypes' ), 'regex'
+	);
+	$file_type_pattern = '/\.(' . $file_type_pattern . ')$/i';
+
+	$allowed_size = $tag->get_limit_option();
+
+	// First make sure all individual files pass validation.
+
+	foreach ($files as $file) {
 		if ( ! empty( $file['error'] ) and UPLOAD_ERR_NO_FILE !== $file['error'] ) {
 			$result->invalidate( $tag, wpcf7_get_message( 'upload_failed_php_error' ) );
 			return $result;
@@ -130,12 +169,6 @@ function wpcf7_file_validation_filter( $result, $tag ) {
 
 		/* File type validation */
 
-		$file_type_pattern = wpcf7_acceptable_filetypes(
-			$tag->get_option( 'filetypes' ), 'regex'
-		);
-
-		$file_type_pattern = '/\.(' . $file_type_pattern . ')$/i';
-
 		if ( empty( $file['name'] )
 		or ! preg_match( $file_type_pattern, $file['name'] ) ) {
 			$result->invalidate( $tag,
@@ -145,18 +178,22 @@ function wpcf7_file_validation_filter( $result, $tag ) {
 			return $result;
 		}
 
-		/* File size validation */
-
-		$allowed_size = $tag->get_limit_option();
-
+		/* Individual file size validation */
 		if ( ! empty( $file['size'] ) and $allowed_size < $file['size'] ) {
 			$result->invalidate( $tag, wpcf7_get_message( 'upload_file_too_large' ) );
 			return $result;
 		}
+	}
 
-		wpcf7_init_uploads(); // Confirm upload dir
-		$uploads_dir = wpcf7_upload_tmp_dir();
-		$uploads_dir = wpcf7_maybe_add_random_dir( $uploads_dir );
+	// All files passed validation. Now save them.
+
+	wpcf7_init_uploads(); // Confirm upload dir
+	$uploads_dir = wpcf7_upload_tmp_dir();
+	$uploads_dir = wpcf7_maybe_add_random_dir( $uploads_dir );
+
+	$moved_files = []; // keeps track of moved files. Needed for rollback.
+
+	foreach($files as $file) {
 
 		$filename = $file['name'];
 		$filename = wpcf7_canonicalize( $filename, 'as-is' );
@@ -170,9 +207,17 @@ function wpcf7_file_validation_filter( $result, $tag ) {
 		$new_file = path_join( $uploads_dir, $filename );
 
 		if ( false === @move_uploaded_file( $file['tmp_name'], $new_file ) ) {
+
+			// rollback: delete the previously added files.
+			array_walk($moved_files,function($moved_file){
+				@unlink($moved_file);
+			});
+
 			$result->invalidate( $tag, wpcf7_get_message( 'upload_failed' ) );
 			return $result;
 		}
+
+		$moved_files[] = $new_file;
 
 		// Make sure the uploaded file is only readable for the owner process
 		chmod( $new_file, 0400 );
@@ -180,7 +225,6 @@ function wpcf7_file_validation_filter( $result, $tag ) {
 		if ( $submission = WPCF7_Submission::get_instance() ) {
 			$submission->add_uploaded_file( $name, $new_file );
 		}
-		
 	}
 
 	return $result;
@@ -221,6 +265,21 @@ function wpcf7_file_messages( $messages ) {
 		'upload_file_too_large' => array(
 			'description' => __( "Uploaded file is too large", 'contact-form-7' ),
 			'default' => __( "The file is too big.", 'contact-form-7' )
+		),
+
+		'upload_files_too_large' => array(
+			'description' => __( "Total size of the uploaded files is too large", 'contact-form-7' ),
+			'default' => __( "The total size of the uploaded files is too large.", 'contact-form-7' )
+		),
+
+		'upload_too_many_files' => array(
+			'description' => __( "Too many files files selected", 'contact-form-7' ),
+			'default' => __( "You are not allowed to upload this many files.", 'contact-form-7' )
+		),
+
+		'upload_too_few_files' => array(
+			'description' => __( "Too few files files selected", 'contact-form-7' ),
+			'default' => __( "You must select more files.", 'contact-form-7' )
 		),
 
 		'upload_failed_php_error' => array(
@@ -282,11 +341,15 @@ function wpcf7_tag_generator_file( $contact_form, $args = '' ) {
 	</tr>
 
 	<tr>
-	<th scope="row"><?php echo esc_html( __( 'Options', 'contact-form-7' ) ); ?></th>
+	<th scope="row"><?php echo esc_html( __( 'Multiple file uploads', 'contact-form-7' ) ); ?></th>
 	<td>
 		<fieldset>
-		<legend class="screen-reader-text"><?php echo esc_html( __( 'Options', 'contact-form-7' ) ); ?></legend>
-		<label><input type="checkbox" name="multiple" class="option" /> <?php echo esc_html( __( 'Allow multiple uploads', 'contact-form-7' ) ); ?></label><br />
+			<legend class="screen-reader-text"><?php echo esc_html( __( 'Options', 'contact-form-7' ) ); ?></legend>
+			<label><input type="checkbox" name="multiple" class="option" /> <?php echo esc_html( __( 'Allow multiple uploads', 'contact-form-7' ) ); ?></label><br />
+			<label><?php echo esc_html( __( 'Min files', 'contact-form-7' ) ); ?> <input type="number" min="0" name="min" class="numeric option" /></label>
+			&ndash; 
+			<label><?php echo esc_html( __( 'Max files', 'contact-form-7' ) ); ?> <input type="number" min="1" name="max" class="numeric option" /></label><br />
+			<label><?php echo esc_html( __( 'Total file size limit (bytes)', 'contact-form-7' ) ); ?> <input type="text" name="limit_total" class="filesize oneline option" /></label>
 		</fieldset>
 	</td>
 	</tr>
