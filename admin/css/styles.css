@@ -51,7 +51,7 @@ span.shortcode input {
 }
 
 #submitpost input.delete:hover {
-	color: #f00;
+	color: #dc3232;
 }
 
 #submitpost input.delete:focus {
@@ -84,7 +84,7 @@ ul.config-error li {
 }
 
 [data-config-field][aria-invalid="true"] {
-	border-color: #d00;
+	border-color: #dc3232;
 }
 
 #contact-form-editor-tabs li a .icon-in-circle,
