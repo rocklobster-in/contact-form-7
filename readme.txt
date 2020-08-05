@@ -3,8 +3,8 @@ Contributors: takayukister
 Donate link: https://contactform7.com/donate/
 Tags: contact, form, contact form, feedback, email, ajax, captcha, akismet, multilingual
 Requires at least: 5.3
-Tested up to: 5.4
-Stable tag: 5.1.9
+Tested up to: 5.5
+Stable tag: 5.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -74,6 +74,16 @@ Do you have questions or issues with Contact Form 7? Use these support channels 
 == Changelog ==
 
 For more information, see [Releases](https://contactform7.com/category/releases/).
+
+= 5.2.1 =
+
+* Makes the [contact-form-7 404 "Not Found"] message localizable.
+* REST API: Adds the `permission_callback` argument to every endpoint definition.
+* Flamingo: Uses `id()` instead of `id`, if available.
+* Fixed: The `free_text` option did not work correctly with the `exclusive` option.
+* Applies `wpcf7_mail_tag_replaced` filters even when the `$posted_data` is null.
+* Adds custom mail-tag replacement for quiz fields.
+* Admin: Updates the date column format in the list table.
 
 = 5.2 =
 
