@@ -394,7 +394,9 @@ function wpcf7_get_properties_for_api( WPCF7_ContactForm $contact_form ) {
 					'raw_values' => $form_tag->raw_values,
 					'labels' => $form_tag->labels,
 					'values' => $form_tag->values,
-					'pipes' => $form_tag->pipes->to_array(),
+					'pipes' => $form_tag->pipes instanceof WPCF7_Pipes
+						? $form_tag->pipes->to_array()
+						: $form_tag->pipes,
 					'content' => $form_tag->content,
 				);
 			},
