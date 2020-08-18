@@ -258,7 +258,7 @@ function wpcf7_flamingo_update_channel( $contact_form ) {
 
 add_filter( 'wpcf7_special_mail_tags', 'wpcf7_flamingo_serial_number', 10, 4 );
 
-function wpcf7_flamingo_serial_number( $output, $name, $html, $mail_tag ) {
+function wpcf7_flamingo_serial_number( $output, $name, $html, $mail_tag = '' ) {
 	if ( '_serial_number' != $name ) {
 		return $output;
 	}
