@@ -26,3 +26,6 @@ Contributing to Contact Form 7
 ------------------------------
 
 You can contribute to the project of Contact Form 7 in several ways. For more information, see [How to contribute to Contact Form 7](https://contactform7.com/contributing/).
+
+
+<br/><br/><p align="center"><img src="https://s.w.org/style/images/codeispoetry.png?1" alt="Code is Poetry." /></p>
