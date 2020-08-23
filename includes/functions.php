@@ -367,9 +367,7 @@ function wpcf7_is_localhost() {
 }
 
 function wpcf7_deprecated_function( $function, $version, $replacement ) {
-	$trigger_error = apply_filters( 'deprecated_function_trigger_error', true );
-
-	if ( WP_DEBUG and $trigger_error ) {
+	if ( WP_DEBUG ) {
 		if ( function_exists( '__' ) ) {
 			trigger_error(
 				sprintf(
@@ -396,7 +394,7 @@ function wpcf7_apply_filters_deprecated( $tag, $args, $version, $replacement ) {
 		return $args[0];
 	}
 
-	if ( WP_DEBUG and apply_filters( 'deprecated_hook_trigger_error', true ) ) {
+	if ( WP_DEBUG ) {
 		trigger_error(
 			sprintf(
 				/* translators: 1: WordPress hook name, 2: version number, 3: alternative hook name */
