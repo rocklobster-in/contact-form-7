@@ -407,6 +407,48 @@ function wpcf7_apply_filters_deprecated( $tag, $args, $version, $replacement ) {
 	return apply_filters_ref_array( $tag, $args );
 }
 
+function wpcf7_doing_it_wrong( $function, $message, $version ) {
+	if ( WP_DEBUG ) {
+		if ( function_exists( '__' ) ) {
+			if ( $version ) {
+				$version = sprintf(
+					/* translators: %s: Contact Form 7 version number. */
+					__( '(This message was added in Contact Form 7 version %s.)', 'contact-form-7' ),
+					$version
+				);
+			}
+
+			trigger_error(
+				sprintf(
+					/* translators: Developer debugging message. 1: PHP function name, 2: Explanatory message, 3: Contact Form 7 version number. */
+					__( '%1$s was called incorrectly. %2$s %3$s', 'contact-form-7' ),
+					$function,
+					$message,
+					$version
+				),
+				E_USER_NOTICE
+			);
+		} else {
+			if ( $version ) {
+				$version = sprintf(
+					'(This message was added in Contact Form 7 version %s.)',
+					$version
+				);
+			}
+
+			trigger_error(
+				sprintf(
+					'%1$s was called incorrectly. %2$s %3$s',
+					$function,
+					$message,
+					$version
+				),
+				E_USER_NOTICE
+			);
+		}
+	}
+}
+
 function wpcf7_log_remote_request( $url, $request, $response ) {
 	$log = sprintf(
 		/* translators: 1: response code, 2: message, 3: body, 4: URL */
