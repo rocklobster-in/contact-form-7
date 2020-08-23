@@ -175,20 +175,28 @@ class WPCF7_ContactForm {
 
 		if ( 'id' == $name ) {
 			if ( WP_DEBUG ) {
-				trigger_error( sprintf( $message, 'id', 'id()' ) );
+				trigger_error(
+					sprintf( $message, 'id', 'id()' ),
+					E_USER_DEPRECATED
+				);
 			}
 
 			return $this->id;
 		} elseif ( 'title' == $name ) {
 			if ( WP_DEBUG ) {
-				trigger_error( sprintf( $message, 'title', 'title()' ) );
+				trigger_error(
+					sprintf( $message, 'title', 'title()' ),
+					E_USER_DEPRECATED
+				);
 			}
 
 			return $this->title;
 		} elseif ( $prop = $this->prop( $name ) ) {
 			if ( WP_DEBUG ) {
 				trigger_error(
-					sprintf( $message, $name, 'prop(\'' . $name . '\')' ) );
+					sprintf( $message, $name, 'prop(\'' . $name . '\')' ),
+					E_USER_DEPRECATED
+				);
 			}
 
 			return $prop;
