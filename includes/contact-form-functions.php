@@ -130,6 +130,13 @@ function wpcf7_contact_form_tag_func( $atts, $content = null, $code = '' ) {
 			esc_html( __( 'Not Found', 'contact-form-7' ) )
 		);
 	}
+	
+	wp_enqueue_script( 'contact-form-7' );
+	wp_enqueue_style( 'contact-form-7' );
+	
+	if ( wpcf7_is_rtl() ) {
+		wp_enqueue_style( 'contact-form-7-rtl' );
+	}
 
 	return $contact_form->form_html( $atts );
 }
