@@ -75,6 +75,13 @@ Do you have questions or issues with Contact Form 7? Use these support channels 
 
 For more information, see [Releases](https://contactform7.com/category/releases/).
 
+= 5.2.2 =
+
+* Fixed: A REST API call aborted with a PHP fatal error when the `WPCF7_USE_PIPE` constant value was false.
+* Introduces the `wpcf7_doing_it_wrong()` function.
+* Sets the `trigger_error()` function’s `$error_type` parameter explicitly.
+* Makes the `wpcf7_special_mail_tags` filter functions’ `$mail_tag` parameter optional.
+
 = 5.2.1 =
 
 * Makes the [contact-form-7 404 "Not Found"] message localizable.
