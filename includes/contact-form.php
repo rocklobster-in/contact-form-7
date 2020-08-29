@@ -344,6 +344,7 @@ class WPCF7_ContactForm {
 				'role' => 'form',
 				'class' => 'wpcf7',
 				'id' => $this->unit_tag(),
+				'title' => get_the_title( $this->id ),
 				( get_option( 'html_type' ) == 'text/html' ) ? 'lang' : 'xml:lang'
 					=> $lang_tag,
 				'dir' => wpcf7_is_rtl( $this->locale ) ? 'rtl' : 'ltr',
