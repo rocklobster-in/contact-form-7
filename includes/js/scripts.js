@@ -169,6 +169,7 @@
 
 		var detail = {
 			id: $form.closest( 'div.wpcf7' ).attr( 'id' ),
+			title: $form.closest( 'div.wpcf7' ).attr( 'title' ),
 			status: 'init',
 			inputs: [],
 			formData: formData
