@@ -203,16 +203,16 @@ ul.config-error li {
 
 .tag-generator-panel {
 	position: relative;
-	height: 495px;
-	display: flex;
-	flex-direction: column;
+    height: 495px;
+    display: flex;
+    flex-direction: column;
 }
 
 .tag-generator-panel .control-box {
 	padding: 0;
-	margin: 0;
-	height: 380px;
-	overflow: auto;
+    margin: 0;
+    overflow: auto;
+    flex-grow: 1;
 }
 
 .tag-generator-panel .control-box > fieldset > legend {
@@ -276,15 +276,15 @@ ul.config-error li {
 }
 
 .tag-generator-panel .insert-box {
-	margin: 0;
-	padding: 8px 16px;
-	background-color: #fcfcfc;
-	border-top: 1px solid #dfdfdf;
-	overflow: auto;
+	margin: 0 -15px -15px;
+    padding: 8px 16px;
+    background-color: #fcfcfc;
+    border-top: 1px solid #dfdfdf;
+    overflow: auto;
 }
 
 .tag-generator-panel .insert-box input.tag {
-	width: 480px;
+	width: 510px;
 	float: left;
 	background-color: transparent;
 	box-shadow: none;
