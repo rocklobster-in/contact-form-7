@@ -5,6 +5,7 @@
   "private": true,
   "scripts": {
     "build": "wp-scripts build includes/js/src/block-editor.js --output-path=includes/js",
+    "packages-update": "wp-scripts packages-update",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -18,6 +19,6 @@
   },
   "homepage": "https://github.com/takayukister/contact-form-7#readme",
   "devDependencies": {
-    "@wordpress/scripts": "12.1.1"
+    "@wordpress/scripts": "^12.2.0"
   }
 }
