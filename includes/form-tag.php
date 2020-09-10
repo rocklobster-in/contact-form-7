@@ -203,7 +203,7 @@ class WPCF7_FormTag implements ArrayAccess {
 			return gmdate( 'Y-m-d', strtotime( $format ) );
 		}
 
-		$date = apply_filters( 'wpcf7_form_tag_date_option' , $this->get_option($opt, '', true) );
+		$date = apply_filters( 'wpcf7_form_tag_date_option', $this->get_option( $opt, '', true ) );
 		if ( preg_match( '/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/', $date ) ) {
 			return $date; 
 		}
