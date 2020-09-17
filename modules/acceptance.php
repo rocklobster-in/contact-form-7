@@ -67,12 +67,12 @@ function wpcf7_acceptance_form_tag_handler( $tag ) {
 	if ( $content ) {
 		if ( $tag->has_option( 'label_first' ) ) {
 			$html = sprintf(
-				'<span class="wpcf7-list-item-label">%2$s</span><input %1$s />',
-				$item_atts, $content );
+				'<label for="%3$s" class="wpcf7-list-item-label">%2$s</label><input %1$s />',
+				$item_atts, $content, $item_atts['id']);
 		} else {
 			$html = sprintf(
-				'<input %1$s /><span class="wpcf7-list-item-label">%2$s</span>',
-				$item_atts, $content );
+				'<input %1$s /><label for="%3$s" class="wpcf7-list-item-label">%2$s</label>',
+				$item_atts, $content, $item_atts['id']);
 		}
 
 		$html = sprintf(
