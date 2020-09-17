@@ -4,9 +4,9 @@
   "description": "Contact form selector block.",
   "private": true,
   "scripts": {
-    "build": "wp-scripts build includes/js/src/block-editor.js --output-path=includes/js",
-    "packages-update": "wp-scripts packages-update",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "wp-scripts start includes/block-editor/src/block-editor.js --output-path=includes/block-editor",
+    "build": "wp-scripts build includes/block-editor/src/block-editor.js --output-path=includes/block-editor",
+    "packages-update": "wp-scripts packages-update"
   },
   "repository": {
     "type": "git",
