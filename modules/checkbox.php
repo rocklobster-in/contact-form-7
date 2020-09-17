@@ -99,7 +99,9 @@ function wpcf7_checkbox_form_tag_handler( $tag ) {
 			$label = $value;
 		}
 
+		$item_id=strtolower('wpcf7_'.$tag->basetype.'_'.$tag->name.'_'.$value);
 		$item_atts = array(
+			'id' => $item_id,
 			'type' => $tag->basetype,
 			'name' => $tag->name . ( $multiple ? '[]' : '' ),
 			'value' => $value,
@@ -111,13 +113,13 @@ function wpcf7_checkbox_form_tag_handler( $tag ) {
 
 		if ( $label_first ) { // put label first, input last
 			$item = sprintf(
-				'<span class="wpcf7-list-item-label">%1$s</span><input %2$s />',
-				esc_html( $label ), $item_atts
+				'<label for="%3$s" class="wpcf7-list-item-label">%1$s</label><input %2$s />',
+				esc_html( $label ), $item_atts, $item_id
 			);
 		} else {
 			$item = sprintf(
-				'<input %2$s /><span class="wpcf7-list-item-label">%1$s</span>',
-				esc_html( $label ), $item_atts
+				'<input %2$s /><label for="%3$s" class="wpcf7-list-item-label">%1$s</label>',
+				esc_html( $label ), $item_atts, $item_id
 			);
 		}
 
