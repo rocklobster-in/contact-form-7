@@ -3,23 +3,24 @@
 add_action( 'init', 'wpcf7_init_block_editor_assets', 10, 0 );
 
 function wpcf7_init_block_editor_assets() {
+	$assets = array();
+
 	$asset_file = wpcf7_plugin_path(
 		'includes/block-editor/block-editor.asset.php'
 	);
 
 	if ( file_exists( $asset_file ) ) {
 		$assets = include( $asset_file );
-	} else {
-		$assets = null;
 	}
 
 	$assets = wp_parse_args( $assets, array(
 		'src' => wpcf7_plugin_url( 'includes/block-editor/block-editor.js' ),
 		'dependencies' => array(
+			'wp-api-fetch',
+			'wp-components',
 			'wp-blocks',
 			'wp-element',
 			'wp-i18n',
-			'wp-polyfill',
 		),
 		'version' => WPCF7_VERSION,
 	) );
