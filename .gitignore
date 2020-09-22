@@ -21,4 +21,4 @@ node_modules/
 *.log
 *.sql
 *.sqlite
-includes/block-editor/block-editor.js.map
+includes/block-editor/index.js.map
