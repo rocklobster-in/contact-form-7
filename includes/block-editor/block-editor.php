@@ -18,6 +18,7 @@ function wpcf7_init_block_editor_assets() {
 		'dependencies' => array(
 			'wp-api-fetch',
 			'wp-components',
+			'wp-compose',
 			'wp-blocks',
 			'wp-element',
 			'wp-i18n',
