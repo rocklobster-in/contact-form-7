@@ -14,6 +14,16 @@ apiFetch( {
 } );
 
 export default function ContactFormSelectorEdit( { attributes, setAttributes } ) {
+	if ( ! contactForms.size && ! attributes.id ) {
+		return(
+			<div className="components-placeholder">
+				<p>
+					{ __( "No contact forms were found. Create a contact form first.", 'contact-form-7' ) }
+				</p>
+			</div>
+		);
+	}
+
 	const options = Array.from( contactForms.values(), ( val ) => { 
 		return { value: val.id, label: val.title };
 	} );
@@ -24,6 +34,11 @@ export default function ContactFormSelectorEdit( { attributes, setAttributes } )
 		setAttributes( {
 			id: parseInt( firstOption.value ),
 			title: firstOption.label,
+		} );
+	} else if ( ! options.size ) {
+		options.push( {
+			value: attributes.id,
+			label: attributes.title,
 		} );
 	}
 
