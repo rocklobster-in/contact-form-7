@@ -2,6 +2,7 @@ import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
 
 import edit from './edit';
+import transforms from './transforms';
 
 registerBlockType( 'contact-form-7/contact-form-selector', {
 
@@ -21,6 +22,8 @@ registerBlockType( 'contact-form-7/contact-form-selector', {
 			type: 'string',
 		},
 	},
+
+	transforms,
 
 	edit,
 
