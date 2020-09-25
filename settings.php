@@ -18,6 +18,7 @@ require_once WPCF7_PLUGIN_DIR . '/includes/upgrade.php';
 require_once WPCF7_PLUGIN_DIR . '/includes/integration.php';
 require_once WPCF7_PLUGIN_DIR . '/includes/config-validator.php';
 require_once WPCF7_PLUGIN_DIR . '/includes/rest-api.php';
+require_once WPCF7_PLUGIN_DIR . '/includes/block-editor/block-editor.php';
 
 if ( is_admin() ) {
 	require_once WPCF7_PLUGIN_DIR . '/admin/admin.php';
