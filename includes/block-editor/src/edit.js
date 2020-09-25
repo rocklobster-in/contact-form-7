@@ -35,7 +35,7 @@ export default function ContactFormSelectorEdit( { attributes, setAttributes } )
 			id: parseInt( firstOption.value ),
 			title: firstOption.label,
 		} );
-	} else if ( ! options.size ) {
+	} else if ( ! options.length ) {
 		options.push( {
 			value: attributes.id,
 			label: attributes.title,
