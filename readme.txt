@@ -2,7 +2,7 @@
 Contributors: takayukister
 Donate link: https://contactform7.com/donate/
 Tags: contact, form, contact form, feedback, email, ajax, captcha, akismet, multilingual
-Requires at least: 5.3
+Requires at least: 5.4
 Tested up to: 5.5
 Stable tag: 5.2.2
 License: GPLv2 or later
@@ -75,6 +75,8 @@ Do you have questions or issues with Contact Form 7? Use these support channels 
 
 For more information, see [Releases](https://contactform7.com/category/releases/).
 
+= 5.3 =
+
 = 5.2.2 =
 
 * Fixed: A REST API call aborted with a PHP fatal error when the `WPCF7_USE_PIPE` constant value was false.
@@ -103,65 +105,5 @@ For more information, see [Releases](https://contactform7.com/category/releases/
 * Frontend JavaScript: Abolishes the use of jQuery events.
 * reCAPTCHA: Moves script code to a separate file.
 * reCAPTCHA: Changes the name of the field for reCAPTCHA response token from `g-recaptcha-response` to `_wpcf7_recaptcha_response`.
-
-= 5.1.9 =
-
-* Special mail-tags: Reflects WP timezone to `[_date]` and `[_time]` mail-tags.
-* WPCF7_FormTag: Reflects WP timezone to `get_date_option()` output.
-* User input validation: Strictly compares to boolean _false_.
-
-= 5.1.8 =
-
-* reCAPTCHA: Shows no warning on upgrading from v2 if the global sitekey is defined.
-* reCAPTCHA: Improves the frontend JavaScript coding.
-* Accessibility: Improves the response message markup.
-* Fixes the regular expression pattern in `wpcf7_is_tel()`.
-* Fixed: Character count was not reset after a successful submission.
-* Fixed: The fourth parameter of the `wpcf7_special_mail_tags` filter hook was not correctly set.
-
-= 5.1.7 =
-
-* CSS: Adds an explicit LTR direction style rule for code inputs.
-* Accessibility: Uses _Error_ instead of _ERROR_ in warnings.
-
-= 5.1.6 =
-
-* CSS: removes a style rule from the stylesheet that was unnecessary and conflicting with Twenty Twenty’s rules.
-* REST API: retrieves the contact form ID explicitly from the route parameters.
-
-= 5.1.5 =
-
-* Config Validator: New test item for the unavailable_html_elements error.
-* Config Validator: New test item for the attachments_overweight error.
-
-= 5.1.4 =
-
-* reCAPTCHA: introduces the WPCF7_RECAPTCHA_SITEKEY and WPCF7_RECAPTCHA_SECRET constants.
-* reCAPTCHA: Introduces the wpcf7_recaptcha_sitekey and wpcf7_recaptcha_secret filter hooks.
-* Adds $status parameter to the wpcf7_form_response_output filter.
-* Creates a nonce only when the submitter is a logged-in user.
-* Introduces WPCF7_ContactForm::unit_tag(), a public method that returns a unit tag.
-* reCAPTCHA: gives a different spam log message for cases where the response token is empty.
-* Acceptance Checkbox: supports the label_first option in an acceptance form-tag.
-
-= 5.1.3 =
-
-* Fixes a bug making it unable to unselect an option in the Mail tab panel.
-
-= 5.1.2 =
-
-* Constant Contact: Introduces the contact list selector.
-* Constant Contact: Introduces the constant_contact additional setting.
-* reCAPTCHA: Introduces the wpcf7_recaptcha_actions and wpcf7_recaptcha_threshold filter hooks.
-
-= 5.1.1 =
-
-* reCAPTCHA: Modifies the reaction to empty response tokens.
-
-= 5.1 =
-
-* Introduces the Constant Contact integration module.
-* Updates the reCAPTCHA module to support reCAPTCHA v3.
-* Adds Dark Mode style rules.
 
 == Upgrade Notice ==
