@@ -1,6 +1,7 @@
 import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
 
+import icon from './icon';
 import edit from './edit';
 import transforms from './transforms';
 
@@ -9,8 +10,6 @@ registerBlockType( 'contact-form-7/contact-form-selector', {
 	title: __( 'Contact Form 7', 'contact-form-7' ),
 
 	description: __( "Insert a contact form you have created with Contact Form 7.", 'contact-form-7' ),
-
-	icon: 'email',
 
 	category: 'widgets',
 
@@ -22,6 +21,8 @@ registerBlockType( 'contact-form-7/contact-form-selector', {
 			type: 'string',
 		},
 	},
+
+	icon,
 
 	transforms,
 

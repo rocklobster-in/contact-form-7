@@ -71,7 +71,7 @@ span.wpcf7-list-item-label::after {
 div.wpcf7 .ajax-loader {
 	visibility: hidden;
 	display: inline-block;
-	background-image: url('../../images/ajax-loader.gif');
+	background-image: url('../../assets/ajax-loader.gif');
 	width: 16px;
 	height: 16px;
 	border: none;
