@@ -183,6 +183,15 @@ class WPCF7_FormTag implements ArrayAccess {
 	}
 
 	public function get_date_option( $opt ) {
+		$result = apply_filters( 'wpcf7_form_tag_date_option',
+			null,
+			array( $opt => $this->get_option( $opt, '', true ) )
+		);
+
+		if ( $result and preg_match( '/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/', $result ) ) {
+			return $result;
+		}
+
 		$option = $this->get_option( $opt, 'date', true );
 
 		if ( preg_match( '/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/', $option ) ) {
