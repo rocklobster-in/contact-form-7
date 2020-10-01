@@ -35,7 +35,7 @@ class WPCF7_FormTag implements ArrayAccess {
 
 	public function get_option( $opt, $pattern = '', $single = false ) {
 		$preset_patterns = array(
-			'date' => '([0-9]{4}-[0-9]{2}-[0-9]{2}|today(.*))',
+			'date' => '[0-9]{4}-[0-9]{2}-[0-9]{2}',
 			'int' => '[0-9]+',
 			'signed_int' => '-?[0-9]+',
 			'class' => '[-0-9a-zA-Z_]+',
@@ -183,33 +183,35 @@ class WPCF7_FormTag implements ArrayAccess {
 	}
 
 	public function get_date_option( $opt ) {
-		$result = apply_filters( 'wpcf7_form_tag_date_option',
+		$option_value = $this->get_option( $opt, '', true );
+
+		if ( empty( $option_value ) ) {
+			return false;
+		}
+
+		$date = apply_filters( 'wpcf7_form_tag_date_option',
 			null,
-			array( $opt => $this->get_option( $opt, '', true ) )
+			array( $opt => $option_value )
 		);
 
-		if ( $result and preg_match( '/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/', $result ) ) {
-			return $result;
-		}
+		if ( ! $date ) {
+			$datetime_obj = date_create_immutable(
+				preg_replace( '/[_]+/', ' ', $option_value ),
+				wp_timezone()
+			);
 
-		$option = $this->get_option( $opt, 'date', true );
-
-		if ( preg_match( '/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/', $option ) ) {
-			return $option;
-		}
-
-		if ( preg_match( '/^today(?:([+-][0-9]+)([a-z]*))?/', $option, $matches ) ) {
-			$today = wp_date( 'Y-m-d' );
-			$number = isset( $matches[1] ) ? (int) $matches[1] : 0;
-			$unit = isset( $matches[2] ) ? $matches[2] : '';
-
-			if ( ! preg_match( '/^(day|month|year|week)s?$/', $unit ) ) {
-				$unit = 'days';
+			if ( $datetime_obj ) {
+				$date = $datetime_obj->format( 'Y-m-d' );
+			} else {
+				return false;
 			}
+		}
 
-			$format = sprintf( '%1$s %2$s %3$s', $today, $number, $unit );
+		$date_pattern = '/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/';
 
-			return gmdate( 'Y-m-d', strtotime( $format ) );
+		if ( preg_match( $date_pattern, $date, $matches )
+		and checkdate( $matches[2], $matches[3], $matches[1] ) ) {
+			return $date;
 		}
 
 		return false;
