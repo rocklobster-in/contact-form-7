@@ -61,6 +61,17 @@ function wpcf7_date_form_tag_handler( $tag ) {
 
 	$value = $tag->get_default_option( $value );
 
+	if ( $value ) {
+		$datetime_obj = date_create_immutable(
+			preg_replace( '/[_]+/', ' ', $value ),
+			wp_timezone()
+		);
+
+		if ( $datetime_obj ) {
+			$value = $datetime_obj->format( 'Y-m-d' );
+		}
+	}
+
 	$value = wpcf7_get_hangover( $tag->name, $value );
 
 	$atts['value'] = $value;
