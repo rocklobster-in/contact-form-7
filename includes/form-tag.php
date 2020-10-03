@@ -194,24 +194,22 @@ class WPCF7_FormTag implements ArrayAccess {
 			array( $opt => $option_value )
 		);
 
-		if ( ! $date ) {
+		if ( $date ) {
+			$date_pattern = '/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/';
+
+			if ( preg_match( $date_pattern, $date, $matches )
+			and checkdate( $matches[2], $matches[3], $matches[1] ) ) {
+				return $date;
+			}
+		} else {
 			$datetime_obj = date_create_immutable(
 				preg_replace( '/[_]+/', ' ', $option_value ),
 				wp_timezone()
 			);
 
 			if ( $datetime_obj ) {
-				$date = $datetime_obj->format( 'Y-m-d' );
-			} else {
-				return false;
+				return $datetime_obj->format( 'Y-m-d' );
 			}
-		}
-
-		$date_pattern = '/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/';
-
-		if ( preg_match( $date_pattern, $date, $matches )
-		and checkdate( $matches[2], $matches[3], $matches[1] ) ) {
-			return $date;
 		}
 
 		return false;
