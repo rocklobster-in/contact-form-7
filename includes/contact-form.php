@@ -373,34 +373,13 @@ class WPCF7_ContactForm {
 		if ( $this->is_posted() ) {
 			$submission = WPCF7_Submission::get_instance();
 
-			switch ( $submission->get_status() ) {
-				case 'init':
-					$class .= ' init';
-					break;
-				case 'validation_failed':
-					$class .= ' invalid';
-					break;
-				case 'acceptance_missing':
-					$class .= ' unaccepted';
-					break;
-				case 'spam':
-					$class .= ' spam';
-					break;
-				case 'aborted':
-					$class .= ' aborted';
-					break;
-				case 'mail_sent':
-					$class .= ' sent';
-					break;
-				case 'mail_failed':
-					$class .= ' failed';
-					break;
-				default:
-					$class .= sprintf( ' custom-%s',
-						preg_replace( '/[^0-9a-z]+/i', '-', $submission->get_status() )
-					);
-			}
+			$data_status_attr = $this->form_status_class_name(
+				$submission->get_status()
+			);
+
+			$class .= sprintf( ' %s', $data_status_attr );
 		} else {
+			$data_status_attr = 'init';
 			$class .= ' init';
 		}
 
@@ -423,7 +402,8 @@ class WPCF7_ContactForm {
 		$autocomplete = apply_filters( 'wpcf7_form_autocomplete', '' );
 
 		$novalidate = apply_filters( 'wpcf7_form_novalidate',
-			wpcf7_support_html5() );
+			wpcf7_support_html5()
+		);
 
 		$atts = array(
 			'action' => esc_url( $url ),
@@ -432,6 +412,7 @@ class WPCF7_ContactForm {
 			'enctype' => wpcf7_enctype_value( $enctype ),
 			'autocomplete' => $autocomplete,
 			'novalidate' => $novalidate ? 'novalidate' : '',
+			'data-status' => $data_status_attr,
 		);
 
 		if ( '' !== $id_attr ) {
@@ -456,6 +437,39 @@ class WPCF7_ContactForm {
 		$html .= '</div>';
 
 		return $html;
+	}
+
+	private function form_status_class_name( $status ) {
+		switch ( $status ) {
+			case 'init':
+				$class = 'init';
+				break;
+			case 'validation_failed':
+				$class = 'invalid';
+				break;
+			case 'acceptance_missing':
+				$class = 'unaccepted';
+				break;
+			case 'spam':
+				$class = 'spam';
+				break;
+			case 'aborted':
+				$class = 'aborted';
+				break;
+			case 'mail_sent':
+				$class = 'sent';
+				break;
+			case 'mail_failed':
+				$class = 'failed';
+				break;
+			default:
+				$class = sprintf(
+					'custom-%s',
+					preg_replace( '/[^0-9a-z]+/i', '-', $status )
+				);
+		}
+
+		return $class;
 	}
 
 	private function form_hidden_fields() {
