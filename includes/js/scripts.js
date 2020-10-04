@@ -320,10 +320,11 @@
 
 	wpcf7.setStatus = function( form, status ) {
 		var $form = $( form );
-		var prevStatus = $form.data( 'status' );
+		var prevStatus = $form.attr( 'data-status' );
 
 		$form.data( 'status', status );
 		$form.addClass( status );
+		$form.attr( 'data-status', status );
 
 		if ( prevStatus && prevStatus !== status ) {
 			$form.removeClass( prevStatus );
