@@ -202,25 +202,27 @@ ul.config-error li {
 }
 
 .tag-generator-panel {
-	position: relative;
 	height: 495px;
+	display: flex;
+	flex-direction: column;
 }
 
 .tag-generator-panel .control-box {
 	padding: 0;
 	margin: 0;
-	height: 380px;
 	overflow: auto;
+	flex-grow: 1;
 }
 
-.tag-generator-panel .control-box > fieldset legend {
+.tag-generator-panel .control-box > fieldset > legend {
 	border: 1px solid #dfdfdf;
 	border-left: 4px solid #00a0d2;
 	background: #f7fcfe;
 	padding: 4px 12px;
 	margin: 4px 0;
 	line-height: 1.4em;
-	width: 95%;
+	width: 100%;
+	box-sizing: border-box;
 }
 
 .tag-generator-panel table {
@@ -273,13 +275,7 @@ ul.config-error li {
 }
 
 .tag-generator-panel .insert-box {
-	position: absolute;
-	left: -15px;
-	right: -15px;
-	bottom: -15px;
-	width: 100%;
-	height: 84px;
-	margin: 0;
+	margin: 0 -15px -15px;
 	padding: 8px 16px;
 	background-color: #fcfcfc;
 	border-top: 1px solid #dfdfdf;
@@ -287,14 +283,14 @@ ul.config-error li {
 }
 
 .tag-generator-panel .insert-box input.tag {
-	width: 480px;
+	width: 510px;
 	float: left;
 	background-color: transparent;
 	box-shadow: none;
 }
 
 .tag-generator-panel .insert-box .submitbox {
-	padding: 2px 4px;
+	padding: 0;
 }
 
 .tag-generator-panel .insert-box .submitbox input[type="button"] {

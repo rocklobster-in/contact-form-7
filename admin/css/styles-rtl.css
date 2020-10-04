@@ -12,7 +12,7 @@
 	text-align: right;
 }
 
-.tag-generator-panel .control-box > fieldset legend {
+.tag-generator-panel .control-box > fieldset > legend {
 	border: 1px solid #dfdfdf;
 	border-right: 4px solid #00a0d2;
 }
