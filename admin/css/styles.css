@@ -202,7 +202,6 @@ ul.config-error li {
 }
 
 .tag-generator-panel {
-	position: relative;
 	height: 495px;
 	display: flex;
 	flex-direction: column;
