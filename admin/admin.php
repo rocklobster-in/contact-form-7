@@ -171,8 +171,9 @@ function wpcf7_dark_mode_support( $user_id ) {
 		array( 'contact-form-7-admin' ), WPCF7_VERSION, 'screen' );
 }
 
-add_filter( 'set-screen-option', 'wpcf7_set_screen_options', 10, 3 );
-add_filter( 'set_screen_option_wpcf7_contact_forms_per_page', 'wpcf7_set_screen_options', 10, 3 );
+add_filter( 'set_screen_option_wpcf7_contact_forms_per_page',
+	'wpcf7_set_screen_options', 10, 3
+);
 
 function wpcf7_set_screen_options( $result, $option, $value ) {
 	$wpcf7_screens = array(
