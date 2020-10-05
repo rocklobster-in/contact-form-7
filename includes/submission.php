@@ -452,7 +452,7 @@ class WPCF7_Submission {
 		$target = implode( "\n", $target );
 
 		return (bool) apply_filters( 'wpcf7_submission_is_blacklisted',
-			wpcf7_blacklist_check( $target ), $this );
+			wpcf7_check_disallowed_list( $target ), $this );
 	}
 
 	/* Mail */
