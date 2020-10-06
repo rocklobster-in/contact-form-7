@@ -35,6 +35,7 @@ class WPCF7 {
 		self::load_module( 'constant-contact' );
 		self::load_module( 'count' );
 		self::load_module( 'date' );
+		self::load_module( 'disallowed-list' );
 		self::load_module( 'file' );
 		self::load_module( 'flamingo' );
 		self::load_module( 'hidden' );
