@@ -412,15 +412,6 @@ class WPCF7_Submission {
 			) );
 		}
 
-		if ( $this->is_blacklisted() ) {
-			$spam = true;
-
-			$this->add_spam_log( array(
-				'agent' => 'wpcf7',
-				'reason' => __( "Blacklisted words are used.", 'contact-form-7' ),
-			) );
-		}
-
 		return apply_filters( 'wpcf7_spam', $spam );
 	}
 
@@ -443,16 +434,6 @@ class WPCF7_Submission {
 		}
 
 		return wpcf7_verify_nonce( $_POST['_wpnonce'] );
-	}
-
-	private function is_blacklisted() {
-		$target = wpcf7_array_flatten( $this->posted_data );
-		$target[] = $this->get_meta( 'remote_ip' );
-		$target[] = $this->get_meta( 'user_agent' );
-		$target = implode( "\n", $target );
-
-		return (bool) apply_filters( 'wpcf7_submission_is_blacklisted',
-			wpcf7_check_disallowed_list( $target ), $this );
 	}
 
 	/* Mail */
