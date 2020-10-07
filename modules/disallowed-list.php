@@ -34,9 +34,18 @@ function wpcf7_disallowed_list( $spam ) {
 	);
 
 	if ( $word ) {
+		if ( is_bool( $word ) ) {
+			$reason = __( "Disallowed words are used.", 'contact-form-7' );
+		} else {
+			$reason = sprintf(
+				__( "Disallowed words (%s) are used.", 'contact-form-7' ),
+				implode( ', ', (array) $word )
+			);
+		}
+
 		$submission->add_spam_log( array(
 			'agent' => 'disallowed_list',
-			'reason' => __( "Blacklisted words are used.", 'contact-form-7' ),
+			'reason' => $reason,
 		) );
 	}
 
