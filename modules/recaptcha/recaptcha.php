@@ -70,9 +70,9 @@ function wpcf7_recaptcha_add_hidden_fields( $fields ) {
 	) );
 }
 
-add_filter( 'wpcf7_spam', 'wpcf7_recaptcha_verify_response', 9, 1 );
+add_filter( 'wpcf7_spam', 'wpcf7_recaptcha_verify_response', 9, 2 );
 
-function wpcf7_recaptcha_verify_response( $spam ) {
+function wpcf7_recaptcha_verify_response( $spam, $submission ) {
 	if ( $spam ) {
 		return $spam;
 	}
@@ -82,8 +82,6 @@ function wpcf7_recaptcha_verify_response( $spam ) {
 	if ( ! $service->is_active() ) {
 		return $spam;
 	}
-
-	$submission = WPCF7_Submission::get_instance();
 
 	$token = isset( $_POST['_wpcf7_recaptcha_response'] )
 		? trim( $_POST['_wpcf7_recaptcha_response'] ) : '';

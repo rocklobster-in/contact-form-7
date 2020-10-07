@@ -412,7 +412,7 @@ class WPCF7_Submission {
 			) );
 		}
 
-		return apply_filters( 'wpcf7_spam', $spam );
+		return apply_filters( 'wpcf7_spam', $spam, $this );
 	}
 
 	public function add_spam_log( $args = '' ) {
