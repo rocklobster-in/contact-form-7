@@ -20,8 +20,15 @@ function wpcf7_disallowed_list( $spam ) {
 
 	$word = wpcf7_check_disallowed_list( $target );
 
-	$word = apply_filters(
+	$word = wpcf7_apply_filters_deprecated(
 		'wpcf7_submission_is_blacklisted',
+		array( $word, $submission ),
+		'5.3',
+		'wpcf7_submission_has_disallowed_words'
+	);
+
+	$word = apply_filters(
+		'wpcf7_submission_has_disallowed_words',
 		$word,
 		$submission
 	);
