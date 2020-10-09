@@ -1,11 +1,11 @@
 <?php
 /*
-Plugin Name: Contact Form 7
+Plugin Name: Seven Form Builder
 Plugin URI: https://contactform7.com/
-Description: Just another contact form plugin. Simple but flexible.
-Author: Takayuki Miyoshi
+Description: Just another contact form builder plugin. Simple but flexible.
+Author: Puleeno Nguyen
 Author URI: https://ideasilo.wordpress.com/
-Text Domain: contact-form-7
+Text Domain: seven-form-builder
 Domain Path: /languages/
 Version: 5.3-dev
 */
