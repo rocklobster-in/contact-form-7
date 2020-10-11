@@ -38,6 +38,7 @@ class WPCF7 {
 		self::load_module( 'disallowed-list' );
 		self::load_module( 'file' );
 		self::load_module( 'flamingo' );
+		self::load_module( 'friendly-captcha' );
 		self::load_module( 'hidden' );
 		self::load_module( 'listo' );
 		self::load_module( 'number' );
