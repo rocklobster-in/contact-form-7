@@ -75,23 +75,21 @@ class WPCF7_ContactForm {
 	}
 
 	public static function get_template( $args = '' ) {
-		global $l10n;
-
-		$defaults = array( 'locale' => null, 'title' => '' );
-		$args = wp_parse_args( $args, $defaults );
+		$args = wp_parse_args( $args, array(
+			'locale' => '',
+			'title' => __( 'Untitled', 'contact-form-7' ),
+		) );
 
 		$locale = $args['locale'];
 		$title = $args['title'];
 
-		if ( $locale ) {
-			$mo_orig = $l10n['contact-form-7'];
-			wpcf7_load_textdomain( $locale );
+		if ( ! $switched = wpcf7_load_textdomain( $locale ) ) {
+			$locale = determine_locale();
 		}
 
-		self::$current = $contact_form = new self;
-		$contact_form->title =
-			( $title ? $title : __( 'Untitled', 'contact-form-7' ) );
-		$contact_form->locale = ( $locale ? $locale : determine_locale() );
+		$contact_form = new self;
+		$contact_form->title = $title;
+		$contact_form->locale = $locale;
 
 		$properties = $contact_form->get_properties();
 
@@ -102,11 +100,14 @@ class WPCF7_ContactForm {
 		$contact_form->properties = $properties;
 
 		$contact_form = apply_filters( 'wpcf7_contact_form_default_pack',
-			$contact_form, $args );
+			$contact_form, $args
+		);
 
-		if ( isset( $mo_orig ) ) {
-			$l10n['contact-form-7'] = $mo_orig;
+		if ( $switched ) {
+			wpcf7_load_textdomain();
 		}
+
+		self::$current = $contact_form;
 
 		return $contact_form;
 	}
