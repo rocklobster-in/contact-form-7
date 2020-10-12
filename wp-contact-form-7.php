@@ -14,6 +14,8 @@ define( 'WPCF7_VERSION', '5.3-dev' );
 
 define( 'WPCF7_REQUIRED_WP_VERSION', '5.4' );
 
+define( 'WPCF7_TEXT_DOMAIN', 'contact-form-7' );
+
 define( 'WPCF7_PLUGIN', __FILE__ );
 
 define( 'WPCF7_PLUGIN_BASENAME', plugin_basename( WPCF7_PLUGIN ) );
