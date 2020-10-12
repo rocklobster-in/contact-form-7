@@ -56,7 +56,7 @@ function wpcf7_is_rtl( $locale = '' ) {
 	}
 
 	if ( empty( $locale ) ) {
-		$locale = get_locale();
+		$locale = determine_locale();
 	}
 
 	return isset( $rtl_locales[$locale] );
@@ -67,7 +67,7 @@ function wpcf7_load_textdomain( $locale = null ) {
 
 	$domain = 'contact-form-7';
 
-	if ( ( is_admin() ? get_user_locale() : get_locale() ) === $locale ) {
+	if ( determine_locale() === $locale ) {
 		$locale = null;
 	}
 
