@@ -329,8 +329,6 @@ class WPCF7_FRIENDLY_CAPTCHA extends WPCF7_Service {
 		$response_body = wp_remote_retrieve_body( $response );
 		$response_body = json_decode( $response_body, true );
 
-		$this->log( $endpoint, $request, $response );
-
 		$this->last_success_status = $success = isset( $response_body['success'] )
 			? $response_body['success']
             : false;
