@@ -171,7 +171,7 @@ function wpcf7_messages() {
 			'description'
 				=> __( "Submission was referred to as spam", 'contact-form-7' ),
 			'default'
-				=> __( "There was an error trying to send your message. Please try again later.", 'contact-form-7' ),
+				=> __( "The anti-spam check failed. Please try again later.", 'contact-form-7' ),
 		),
 
 		'accept_terms' => array(
