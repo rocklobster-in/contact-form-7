@@ -1,18 +1,16 @@
-( function() {
-
-    var restartFriendlyCaptchaWidget = function() {
-        window.friendlyChallenge.autoWidget.start();
+(function() {
+    var resetFriendlyCaptchaWidget = function() {
+        window.friendlyChallenge.autoWidget.reset();
     }
-
 	document.addEventListener( 'DOMContentLoaded', function( event ) {
         document.addEventListener( 'wpcf7mailsent',
-            restartFriendlyCaptchaWidget
+            resetFriendlyCaptchaWidget
         );
         document.addEventListener( 'wpcf7mailfailed',
-            restartFriendlyCaptchaWidget
+            resetFriendlyCaptchaWidget
 		);
         document.addEventListener( 'wpcf7spam',
-            restartFriendlyCaptchaWidget
+            resetFriendlyCaptchaWidget
         );
-    } );
+    });
 })();

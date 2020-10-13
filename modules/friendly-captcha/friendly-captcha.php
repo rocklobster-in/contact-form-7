@@ -23,42 +23,63 @@ function wpcf7_friendly_captcha_enqueue_scripts() {
 		return;
 	}
 
-	wp_enqueue_script( 'friendly-captcha',
-		add_query_arg(
-			array(
-				'render' => $service->get_sitekey(),
-			),
-			'https://unpkg.com/friendly-challenge@0.5.1/widget.min.js'
-		),
+	/* Modern browsers will load this smaller bundle */
+	wp_enqueue_script( 'friendly-captcha-widget-module',
+		wpcf7_plugin_url('modules/friendly-captcha/widget.module.min.js'),
 		array(),
-		'1.0',
+		'0.6.1',
+		true
+	);
+
+	/* Fallback for (very) old browsers */
+	wp_enqueue_script( 'friendly-captcha-widget-fallback',
+		wpcf7_plugin_url('modules/friendly-captcha/widget.polyfilled.min.js'),
+		array(),
+		'0.6.1',
 		true
 	);
 
 	wp_enqueue_script( 'wpcf7-friendly-captcha',
 		wpcf7_plugin_url( 'modules/friendly-captcha/script.js' ),
-		array( 'friendly-captcha' ),
+		array( 'friendly-captcha-widget-module', 'friendly-captcha-widget-fallback' ),
 		WPCF7_VERSION,
 		true
 	);
+}
 
-	// wp_localize_script( 'wpcf7-recaptcha',
-	// 	'wpcf7_recaptcha',
-	// 	array(
-	// 		'sitekey' => $service->get_sitekey(),
-	// 		'actions' => apply_filters( 'wpcf7_recaptcha_actions', array(
-	// 			'homepage' => 'homepage',
-	// 			'contactform' => 'contactform',
-	// 		) ),
-	// 	)
-	// );
+function wpcf7_generate_friendly_captcha_widget_tag($sitekey, $theme) {
+	return sprintf(
+        '<div class="frc-captcha %s" data-sitekey="%s"></div>
+		<noscript>You need to enable Javascript for the anti-spam check.</noscript>',
+	$theme,
+    $sitekey);
+}
+
+add_filter( 'script_loader_tag', 'wpcf7_transform_friendly_captcha_script_tags', 10, 3 );
+
+function wpcf7_transform_friendly_captcha_script_tags( $tag, $handle, $src )
+{
+	if ( 'friendly-captcha-widget-module' == $handle) {
+		return str_replace( '<script', '<script async defer type="module"', $tag );
+	}
+
+    if ( 'friendly-captcha-widget-fallback' == $handle) {
+        return str_replace( '<script', '<script async defer nomodule', $tag );
+	}
+	
+	return $tag;
 }
 
 add_filter( 'wpcf7_form_elements',
-	'wpcf7_friendly_captcha_add_widget', 100, 1
+	'wpcf7_friendly_captcha_add_widget_if_missing', 100, 1
 );
 
-function wpcf7_friendly_captcha_add_widget( $elements ) {
+function wpcf7_friendly_captcha_add_widget_if_missing( $elements ) {
+	// Check if a widget is already present (probably through a shortcode)
+	if (preg_match('/<div.*class=".*frc-captcha.*".*<\/div>/', $elements)) {
+		return $elements;
+	}
+
     $service = WPCF7_FRIENDLY_CAPTCHA::get_instance();
     
 	if ( ! $service->is_active() ) {
@@ -66,16 +87,13 @@ function wpcf7_friendly_captcha_add_widget( $elements ) {
     }
 
     $sitekey = $service->get_sitekey();
-
-    $elements .= sprintf(
-        '<div class="frc-captcha" data-sitekey="%s"></div>
-        <noscript>You need to enable Javascript for the anti-spam check.</noscript>',
-    $sitekey);
+    $elements .= wpcf7_generate_friendly_captcha_widget_tag($sitekey, "");
     
     return $elements;
 }
 
 add_filter( 'wpcf7_spam', 'wpcf7_friendly_captcha_verify_response', 9, 2 );
+
 
 function wpcf7_friendly_captcha_verify_response( $spam, $submission ) {
 	if ( $spam ) {
@@ -88,17 +106,39 @@ function wpcf7_friendly_captcha_verify_response( $spam, $submission ) {
 		return $spam;
     }
 
-	$token = isset( $_POST['frc-captcha-solution'] )
-        ? trim( $_POST['frc-captcha-solution'] ) : '';
-
-	if ( $service->verify( $token ) ) { // Valid puzzle solution
-        $spam = false;
-	} else { // Invalid puzzle solution
+	$solution = isset( $_POST['frc-captcha-solution'] )
+		? trim( $_POST['frc-captcha-solution'] ) : '';
+		
+	if ( empty( $solution ) ) {
 		$spam = true;
-		if ( 'UNFINISHED' === $token ) {
+		$submission->add_spam_log( array(
+			'agent' => 'friendly-captcha',
+			'reason' => __( 'FriendlyCaptcha solution value frc-captcha-solution was missing', 'contact-form-7' ),
+		) );
+	}  elseif ($service->verify( $solution )) {
+		$spam = false;
+	} else {
+		$spam = true;
+		if ( '.UNSTARTED' === $solution ) {
+			$submission->add_spam_log( array(
+				'agent' => 'friendly-captcha',
+				'reason' => __( 'FriendlyCaptcha widget was not started yet', 'contact-form-7' ),
+			) );
+		} elseif ( '.FETCHING' === $solution ) {
+			$submission->add_spam_log( array(
+				'agent' => 'friendly-captcha',
+				'reason' => __( 'FriendlyCaptcha widget was still fetching a puzzle', 'contact-form-7' ),
+			) );
+		}
+		elseif ( '.UNFINISHED' === $solution ) {
 			$submission->add_spam_log( array(
 				'agent' => 'friendly-captcha',
 				'reason' => __( 'FriendlyCaptcha widget was not done solving yet', 'contact-form-7' ),
+			) );
+		} elseif ( '.ERROR' === $solution ) {
+			$submission->add_spam_log( array(
+				'agent' => 'friendly-captcha',
+				'reason' => __( 'FriendlyCaptcha widget had an (internal) error', 'contact-form-7' ),
 			) );
 		} else {
 			$submission->add_spam_log( array(
@@ -114,6 +154,21 @@ function wpcf7_friendly_captcha_verify_response( $spam, $submission ) {
 	return $spam;
 }
 
+function wpcf7_friendly_captcha_widget_shortcode( $form_tag ){
+	$service = WPCF7_FRIENDLY_CAPTCHA::get_instance();
+
+	if ( ! $service->is_active() ) {
+		return;
+	}
+
+	$a = array(
+		'sitekey' => $service->get_sitekey(),
+		'class' => $form_tag->get_class_option("")
+	);
+
+	return wpcf7_generate_friendly_captcha_widget_tag($a['sitekey'], $a['class']);
+}
+
 add_action( 'wpcf7_init', 'wpcf7_friendly_captcha_add_form_tag_friendly_captcha', 10, 0 );
 
 function wpcf7_friendly_captcha_add_form_tag_friendly_captcha() {
@@ -123,10 +178,7 @@ function wpcf7_friendly_captcha_add_form_tag_friendly_captcha() {
 		return;
 	}
 
-	wpcf7_add_form_tag( 'frc-captcha',
-		'frc-captcha', // no output
-		array( 'display-block' => true )
-	);
+	wpcf7_add_form_tag("friendlycaptcha", "wpcf7_friendly_captcha_widget_shortcode", array("theme"));	
 }
 
 if ( ! class_exists( 'WPCF7_Service' ) ) {
@@ -260,7 +312,6 @@ class WPCF7_FRIENDLY_CAPTCHA extends WPCF7_Service {
 			),
         );
         
-
 		$response = wp_remote_post( esc_url_raw( $endpoint ), $request );
 
 		if ( 200 != wp_remote_retrieve_response_code( $response ) ) {
@@ -269,12 +320,16 @@ class WPCF7_FRIENDLY_CAPTCHA extends WPCF7_Service {
 			}
             // Better safe than sorry, if the request is non-200 we can not verify the response
             // Either the user's credentials are wrong (e.g. wrong sitekey, api key) or the friendly
-            // captcha servers are unresponsive.
+			// captcha servers are unresponsive.
+			
+			// TODO notify site admin somehow
 			return true;
         }
 
 		$response_body = wp_remote_retrieve_body( $response );
 		$response_body = json_decode( $response_body, true );
+
+		$this->log( $endpoint, $request, $response );
 
 		$this->last_success_status = $success = isset( $response_body['success'] )
 			? $response_body['success']
@@ -375,7 +430,7 @@ class WPCF7_FRIENDLY_CAPTCHA extends WPCF7_Service {
 
 	public function display( $action = '' ) {
 		echo '<p>' . sprintf(
-			esc_html( __( 'FriendlyCaptcha protects you against spam and other types of automated abuse. With Contact Form 7&#8217;s FriendlyCaptcha integration module, you can prevent abusive form submissions by spam bots.', 'contact-form-7' ) ),
+			esc_html( __( 'FriendlyCaptcha is a privacy-friendly, no-cookies system which protects against spam and other types of automated abuse. With Contact Form 7&#8217;s FriendlyCaptcha integration module, you can prevent abusive form submissions by spam bots.', 'contact-form-7' ) ),
 			// wpcf7_link(
 			// 	__( 'https://contactform7.com/friendly-captcha/', 'contact-form-7' ),
 			// 	__( 'Friendly Captcha (v1)', 'contact-form-7' )
