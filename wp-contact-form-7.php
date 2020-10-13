@@ -64,6 +64,7 @@ if ( ! defined( 'WPCF7_VALIDATE_CONFIGURATION' ) ) {
 
 // Deprecated, not used in the plugin core. Use wpcf7_plugin_url() instead.
 define( 'WPCF7_PLUGIN_URL',
-	untrailingslashit( plugins_url( '', WPCF7_PLUGIN ) ) );
+	untrailingslashit( plugins_url( '', WPCF7_PLUGIN ) )
+);
 
-require_once WPCF7_PLUGIN_DIR . '/settings.php';
+require_once WPCF7_PLUGIN_DIR . '/load.php';
