@@ -49,10 +49,12 @@ class WPCF7_Submission {
 	}
 
 	private function proceed() {
+		$contact_form = $this->contact_form;
+
+		switch_to_locale( $contact_form->locale() );
+
 		$this->setup_meta_data();
 		$this->setup_posted_data();
-
-		$contact_form = $this->contact_form;
 
 		if ( $this->is( 'init' ) and ! $this->validate() ) {
 			$this->set_status( 'validation_failed' );
@@ -94,6 +96,8 @@ class WPCF7_Submission {
 				do_action( 'wpcf7_mail_failed', $contact_form );
 			}
 		}
+
+		restore_previous_locale();
 
 		$this->remove_uploaded_files();
 	}

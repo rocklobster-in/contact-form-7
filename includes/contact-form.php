@@ -652,14 +652,16 @@ class WPCF7_ContactForm {
 
 	public function form_scan_shortcode( $cond = null ) {
 		wpcf7_deprecated_function( __METHOD__, '4.6',
-			'WPCF7_ContactForm::scan_form_tags' );
+			'WPCF7_ContactForm::scan_form_tags'
+		);
 
 		return $this->scan_form_tags( $cond );
 	}
 
 	public function form_elements() {
 		return apply_filters( 'wpcf7_form_elements',
-			$this->replace_all_form_tags() );
+			$this->replace_all_form_tags()
+		);
 	}
 
 	public function collect_mail_tags( $args = '' ) {
@@ -714,14 +716,18 @@ class WPCF7_ContactForm {
 		$mail = array_filter( $mail );
 
 		foreach ( (array) $this->collect_mail_tags() as $mail_tag ) {
-			$pattern = sprintf( '/\[(_[a-z]+_)?%s([ \t]+[^]]+)?\]/',
-				preg_quote( $mail_tag, '/' ) );
+			$pattern = sprintf(
+				'/\[(_[a-z]+_)?%s([ \t]+[^]]+)?\]/',
+				preg_quote( $mail_tag, '/' )
+			);
+
 			$used = preg_grep( $pattern, $mail );
 
 			echo sprintf(
 				'<span class="%1$s">[%2$s]</span>',
 				'mailtag code ' . ( $used ? 'used' : 'unused' ),
-				esc_html( $mail_tag ) );
+				esc_html( $mail_tag )
+			);
 		}
 	}
 
@@ -740,7 +746,8 @@ class WPCF7_ContactForm {
 				'status' => 'error',
 				'message' => __(
 					"This contact form is available only for logged in users.",
-					'contact-form-7' ),
+					'contact-form-7'
+				),
 			);
 
 			return $result;
