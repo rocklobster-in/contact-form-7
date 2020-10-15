@@ -338,6 +338,11 @@ function wpcf7_rest_create_feedback( WP_REST_Request $request ) {
 					. sanitize_html_class( $name ),
 				'message' => $field['reason'],
 				'idref' => $field['idref'],
+				'error_id' => sprintf(
+					'%1$s-ve-%2$s',
+					$unit_tag,
+					$name
+				),
 			);
 		}
 
