@@ -62,6 +62,18 @@ function wpcf7_get_validation_error( $name ) {
 	return $contact_form->validation_error( $name );
 }
 
+function wpcf7_get_validation_error_reference( $name ) {
+	$contact_form = wpcf7_get_current_contact_form();
+
+	if ( $contact_form and $contact_form->validation_error( $name ) ) {
+		return sprintf(
+			'%1$s-ve-%2$s',
+			$contact_form->unit_tag(),
+			$name
+		);
+	}
+}
+
 function wpcf7_get_message( $status ) {
 	if ( ! $contact_form = wpcf7_get_current_contact_form() ) {
 		return '';

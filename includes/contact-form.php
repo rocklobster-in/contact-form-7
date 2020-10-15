@@ -551,18 +551,29 @@ class WPCF7_ContactForm {
 				$content .= "\n" . '<ul>' . "\n";
 
 				foreach ( (array) $invalid_fields as $name => $field ) {
+					$list_item = esc_html( $field['reason'] );
+
 					if ( $field['idref'] ) {
-						$link = sprintf( '<a href="#%1$s">%2$s</a>',
+						$list_item = sprintf(
+							'<a href="#%1$s">%2$s</a>',
 							esc_attr( $field['idref'] ),
-							esc_html( $field['reason'] ) );
-						$content .= sprintf( '<li>%s</li>', $link );
-					} else {
-						$content .= sprintf( '<li>%s</li>',
-							esc_html( $field['reason'] )
+							$list_item
 						);
 					}
 
-					$content .= "\n";
+					$validation_error_id = sprintf(
+						'%1$s-ve-%2$s',
+						$this->unit_tag(),
+						$name
+					);
+
+					$list_item = sprintf(
+						'<li id="%1$s">%2$s</li>',
+						$validation_error_id,
+						$list_item
+					);
+
+					$content .= $list_item . "\n";
 				}
 
 				$content .= '</ul>' . "\n";
