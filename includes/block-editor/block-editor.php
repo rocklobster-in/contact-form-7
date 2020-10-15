@@ -30,7 +30,7 @@ function wpcf7_init_block_editor_assets() {
 		'contact-form-7-block-editor',
 		$assets['src'],
 		$assets['dependencies'],
-		$assets['version'],
+		$assets['version']
 	);
 
 	wp_set_script_translations(
