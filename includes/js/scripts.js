@@ -208,6 +208,10 @@
 						$( n.into, $form ).each( function() {
 							wpcf7.notValidTip( this, n.message );
 							$( '.wpcf7-form-control', this ).addClass( 'wpcf7-not-valid' );
+							$( '.wpcf7-form-control', this ).attr(
+								'aria-describedby',
+								n.error_id
+							);
 							$( '[aria-invalid]', this ).attr( 'aria-invalid', 'true' );
 						} );
 					} );
@@ -276,6 +280,8 @@
 						} else {
 							var $li = $( '<li></li>' ).append( n.message );
 						}
+
+						$li.attr( 'id', n.error_id );
 
 						$invalids.append( $li );
 					} );
