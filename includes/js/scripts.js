@@ -413,7 +413,6 @@
 
 		$( '<span></span>' ).attr( {
 			'class': 'wpcf7-not-valid-tip',
-			'role': 'alert',
 			'aria-hidden': 'true',
 		} ).text( message ).appendTo( $target );
 
