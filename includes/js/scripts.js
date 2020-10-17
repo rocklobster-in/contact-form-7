@@ -269,11 +269,9 @@
 
 			$( '.screen-reader-response', $form.closest( '.wpcf7' ) ).each( function() {
 				var $response = $( this );
-				$response.html( '' ).append( data.message );
+				$( '[role="status"]', $response ).html( data.message );
 
 				if ( data.invalid_fields ) {
-					var $invalids = $( '<ul></ul>' );
-
 					$.each( data.invalid_fields, function( i, n ) {
 						if ( n.idref ) {
 							var $li = $( '<li></li>' ).append( $( '<a></a>' ).attr( 'href', '#' + n.idref ).append( n.message ) );
@@ -283,13 +281,9 @@
 
 						$li.attr( 'id', n.error_id );
 
-						$invalids.append( $li );
+						$( 'ul', $response ).append( $li );
 					} );
-
-					$response.append( $invalids );
 				}
-
-				$response.focus();
 			} );
 
 			if ( data.posted_data_hash ) {
@@ -491,7 +485,11 @@
 
 	wpcf7.clearResponse = function( form ) {
 		var $form = $( form );
-		$form.siblings( '.screen-reader-response' ).html( '' );
+
+		$form.siblings( '.screen-reader-response' ).each( function() {
+			$( '[role="status"]', this ).html( '' );
+			$( 'ul', this ).html( '' );
+		} );
 
 		$( '.wpcf7-not-valid-tip', $form ).remove();
 		$( '[aria-invalid]', $form ).attr( 'aria-invalid', 'false' );

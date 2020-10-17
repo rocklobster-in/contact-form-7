@@ -536,19 +536,20 @@ class WPCF7_ContactForm {
 	}
 
 	public function screen_reader_response() {
-		$class = 'screen-reader-response';
-		$content = '';
+		$primary_response = '<p role="status" aria-live="polite"></p>';
+		$validation_errors = array();
 
 		if ( $this->is_posted() ) { // Post response output for non-AJAX
 			$submission = WPCF7_Submission::get_instance();
 
 			if ( $response = $submission->get_response() ) {
-				$content = esc_html( $response );
+				$primary_response = sprintf(
+					'<p role="status" aria-live="polite">%s</p>',
+					esc_html( $response )
+				);
 			}
 
 			if ( $invalid_fields = $submission->get_invalid_fields() ) {
-				$content .= "\n" . '<ul>' . "\n";
-
 				foreach ( (array) $invalid_fields as $name => $field ) {
 					$list_item = esc_html( $field['reason'] );
 
@@ -572,23 +573,20 @@ class WPCF7_ContactForm {
 						$list_item
 					);
 
-					$content .= $list_item . "\n";
+					$validation_errors[] = $list_item;
 				}
-
-				$content .= '</ul>' . "\n";
 			}
 		}
 
-		$atts = array(
-			'class' => trim( $class ),
-			'role' => 'alert',
-			'aria-live' => 'polite',
+		$validation_errors = sprintf(
+			'<ul>%s</ul>',
+			implode( "\n", $validation_errors )
 		);
 
-		$atts = wpcf7_format_atts( $atts );
-
-		$output = sprintf( '<div %1$s>%2$s</div>',
-			$atts, $content
+		$output = sprintf(
+			'<div class="screen-reader-response">%1$s %2$s</div>',
+			$primary_response,
+			$validation_errors
 		);
 
 		return $output;
