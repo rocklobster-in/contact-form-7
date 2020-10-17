@@ -536,18 +536,12 @@ class WPCF7_ContactForm {
 	}
 
 	public function screen_reader_response() {
-		$primary_response = '<p role="status" aria-live="polite"></p>';
+		$primary_response = '';
 		$validation_errors = array();
 
 		if ( $this->is_posted() ) { // Post response output for non-AJAX
 			$submission = WPCF7_Submission::get_instance();
-
-			if ( $response = $submission->get_response() ) {
-				$primary_response = sprintf(
-					'<p role="status" aria-live="polite">%s</p>',
-					esc_html( $response )
-				);
-			}
+			$primary_response = $submission->get_response();
 
 			if ( $invalid_fields = $submission->get_invalid_fields() ) {
 				foreach ( (array) $invalid_fields as $name => $field ) {
@@ -577,6 +571,11 @@ class WPCF7_ContactForm {
 				}
 			}
 		}
+
+		$primary_response = sprintf(
+			'<p role="status" aria-live="polite" aria-atomic="true">%s</p>',
+			esc_html( $primary_response )
+		);
 
 		$validation_errors = sprintf(
 			'<ul>%s</ul>',
