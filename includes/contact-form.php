@@ -518,7 +518,6 @@ class WPCF7_ContactForm {
 
 		$atts = array(
 			'class' => trim( $class ),
-			'role' => 'alert',
 			'aria-hidden' => 'true',
 		);
 
@@ -612,7 +611,6 @@ class WPCF7_ContactForm {
 
 		$atts = array(
 			'class' => 'wpcf7-not-valid-tip',
-			'role' => 'alert',
 			'aria-hidden' => 'true',
 		);
 
