@@ -21,25 +21,26 @@ class WPCF7_ContactFormTemplate {
 	public static function form() {
 		$template = sprintf(
 			'
-<label> %2$s %1$s
+<label> %2$s
     [text* your-name] </label>
 
-<label> %3$s %1$s
+<label> %3$s
     [email* your-email] </label>
 
 <label> %4$s
-    [text your-subject] </label>
+    [text* your-subject] </label>
 
-<label> %5$s
+<label> %5$s %1$s
     [textarea your-message] </label>
 
 [submit "%6$s"]',
-			__( '(required)', 'contact-form-7' ),
+			__( '(optional)', 'contact-form-7' ),
 			__( 'Your Name', 'contact-form-7' ),
 			__( 'Your Email', 'contact-form-7' ),
 			__( 'Subject', 'contact-form-7' ),
 			__( 'Your Message', 'contact-form-7' ),
-			__( 'Send', 'contact-form-7' ) );
+			__( 'Send', 'contact-form-7' )
+		);
 
 		return trim( $template );
 	}
