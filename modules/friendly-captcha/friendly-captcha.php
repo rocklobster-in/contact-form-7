@@ -344,7 +344,7 @@ class WPCF7_FRIENDLY_CAPTCHA extends WPCF7_Service {
 
 		if ( $submission = WPCF7_Submission::get_instance() ) {
 			$submission->friendly_captcha = array(
-				'version' => '0.6.1',
+				'version' => '1',
 				'response' => $response_body,
 			);
 		}
