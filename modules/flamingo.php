@@ -126,6 +126,10 @@ function wpcf7_flamingo_submit( $contact_form, $result ) {
 		$args['recaptcha'] = $submission->recaptcha;
 	}
 
+	if ( isset( $submission->friendly_captcha ) ) {
+		$args['friendly_captcha'] = $submission->friendly_captcha;
+	}
+
 	$flamingo_inbound = Flamingo_Inbound_Message::add( $args );
 
 	if ( empty( $flamingo_contact ) ) {
