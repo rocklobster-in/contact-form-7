@@ -47,32 +47,38 @@ class WPCF7_ContactFormTemplate {
 
 	public static function mail() {
 		$template = array(
-			'subject' =>
-				sprintf(
-					/* translators: 1: blog name, 2: [your-subject] */
-					_x( '%1$s "%2$s"', 'mail subject', 'contact-form-7' ),
-					get_bloginfo( 'name' ),
-					'[your-subject]'
-				),
-			'sender' => sprintf( '%s <%s>',
-				get_bloginfo( 'name' ), self::from_email() ),
+			'subject' => sprintf(
+				/* translators: 1: blog name, 2: [your-subject] */
+				_x( '%1$s "%2$s"', 'mail subject', 'contact-form-7' ),
+				'[_site_title]',
+				'[your-subject]'
+			),
+			'sender' => sprintf(
+				'%s <%s>',
+				'[_site_title]',
+				self::from_email()
+			),
 			'body' =>
-				/* translators: %s: [your-name] <[your-email]> */
-				sprintf( __( 'From: %s', 'contact-form-7' ),
-					'[your-name] <[your-email]>' ) . "\n"
-				/* translators: %s: [your-subject] */
-				. sprintf( __( 'Subject: %s', 'contact-form-7' ),
-					'[your-subject]' ) . "\n\n"
+				sprintf(
+					/* translators: %s: [your-name] <[your-email]> */
+					__( 'From: %s', 'contact-form-7' ),
+					'[your-name] <[your-email]>'
+				) . "\n"
+				. sprintf(
+					/* translators: %s: [your-subject] */
+					__( 'Subject: %s', 'contact-form-7' ),
+					'[your-subject]'
+				) . "\n\n"
 				. __( 'Message Body:', 'contact-form-7' )
-					. "\n" . '[your-message]' . "\n\n"
+				. "\n" . '[your-message]' . "\n\n"
 				. '-- ' . "\n"
 				. sprintf(
 					/* translators: 1: blog name, 2: blog URL */
 					__( 'This e-mail was sent from a contact form on %1$s (%2$s)', 'contact-form-7' ),
-					get_bloginfo( 'name' ),
-					get_bloginfo( 'url' )
+					'[_site_title]',
+					'[_site_url]'
 				),
-			'recipient' => get_option( 'admin_email' ),
+			'recipient' => '[_site_admin_email]',
 			'additional_headers' => 'Reply-To: [your-email]',
 			'attachments' => '',
 			'use_html' => 0,
@@ -85,28 +91,32 @@ class WPCF7_ContactFormTemplate {
 	public static function mail_2() {
 		$template = array(
 			'active' => false,
-			'subject' =>
-				sprintf(
-					/* translators: 1: blog name, 2: [your-subject] */
-					_x( '%1$s "%2$s"', 'mail subject', 'contact-form-7' ),
-					get_bloginfo( 'name' ),
-					'[your-subject]'
-				),
-			'sender' => sprintf( '%s <%s>',
-				get_bloginfo( 'name' ), self::from_email() ),
+			'subject' => sprintf(
+				/* translators: 1: blog name, 2: [your-subject] */
+				_x( '%1$s "%2$s"', 'mail subject', 'contact-form-7' ),
+				'[_site_title]',
+				'[your-subject]'
+			),
+			'sender' => sprintf(
+				'%s <%s>',
+				'[_site_title]',
+				self::from_email()
+			),
 			'body' =>
 				__( 'Message Body:', 'contact-form-7' )
-					. "\n" . '[your-message]' . "\n\n"
+				. "\n" . '[your-message]' . "\n\n"
 				. '-- ' . "\n"
 				. sprintf(
 					/* translators: 1: blog name, 2: blog URL */
 					__( 'This e-mail was sent from a contact form on %1$s (%2$s)', 'contact-form-7' ),
-					get_bloginfo( 'name' ),
-					get_bloginfo( 'url' )
+					'[_site_title]',
+					'[_site_url]'
 				),
 			'recipient' => '[your-email]',
-			'additional_headers' => sprintf( 'Reply-To: %s',
-				get_option( 'admin_email' ) ),
+			'additional_headers' => sprintf(
+				'Reply-To: %s',
+				'[_site_admin_email]'
+			),
 			'attachments' => '',
 			'use_html' => 0,
 			'exclude_blank' => 0,
