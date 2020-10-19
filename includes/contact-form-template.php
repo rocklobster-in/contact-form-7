@@ -35,11 +35,11 @@ class WPCF7_ContactFormTemplate {
 
 [submit "%6$s"]',
 			__( '(optional)', 'contact-form-7' ),
-			__( 'Your Name', 'contact-form-7' ),
-			__( 'Your Email', 'contact-form-7' ),
+			__( 'Your name', 'contact-form-7' ),
+			__( 'Your email', 'contact-form-7' ),
 			__( 'Subject', 'contact-form-7' ),
-			__( 'Your Message', 'contact-form-7' ),
-			__( 'Send', 'contact-form-7' )
+			__( 'Your message', 'contact-form-7' ),
+			__( 'Submit', 'contact-form-7' )
 		);
 
 		return trim( $template );
