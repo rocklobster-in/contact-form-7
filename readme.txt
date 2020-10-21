@@ -77,6 +77,16 @@ For more information, see [Releases](https://contactform7.com/category/releases/
 
 = 5.3 =
 
+* Block Editor: Introduces the contact form selector block type.
+* Renames the 'images' directory to 'assets'.
+* New filter hook: `wpcf7_form_tag_date_option`.
+* Date: Makes all DateTime date formats available for `min` and `max` options.
+* Date: Converts the default value to Y-m-d date format string.
+* Disallowed list: Deprecates the `wpcf7_submission_is_blacklisted` filter hook in favor of `wpcf7_submission_has_disallowed_words`.
+* Accessibility: Sets the `aria-describedby` attribute for invalid fields.
+* Default form template: Removes the "(required)" labels from required fields. Adds "(optional)" to optional fields instead.
+* Default mail template: Uses site-related special mail-tags.
+
 = 5.2.2 =
 
 * Fixed: A REST API call aborted with a PHP fatal error when the `WPCF7_USE_PIPE` constant value was false.
