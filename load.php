@@ -99,7 +99,6 @@ class WPCF7 {
 add_action( 'plugins_loaded', 'wpcf7', 10, 0 );
 
 function wpcf7() {
-	wpcf7_load_textdomain();
 	WPCF7::load_modules();
 
 	/* Shortcodes */
@@ -140,7 +139,6 @@ function wpcf7_install() {
 		return;
 	}
 
-	wpcf7_load_textdomain();
 	wpcf7_register_post_types();
 	wpcf7_upgrade();
 

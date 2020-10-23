@@ -7,12 +7,14 @@ Author: Takayuki Miyoshi
 Author URI: https://ideasilo.wordpress.com/
 Text Domain: contact-form-7
 Domain Path: /languages/
-Version: 5.3-dev
+Version: 5.3
 */
 
-define( 'WPCF7_VERSION', '5.3-dev' );
+define( 'WPCF7_VERSION', '5.3' );
 
 define( 'WPCF7_REQUIRED_WP_VERSION', '5.4' );
+
+define( 'WPCF7_TEXT_DOMAIN', 'contact-form-7' );
 
 define( 'WPCF7_PLUGIN', __FILE__ );
 
@@ -62,6 +64,7 @@ if ( ! defined( 'WPCF7_VALIDATE_CONFIGURATION' ) ) {
 
 // Deprecated, not used in the plugin core. Use wpcf7_plugin_url() instead.
 define( 'WPCF7_PLUGIN_URL',
-	untrailingslashit( plugins_url( '', WPCF7_PLUGIN ) ) );
+	untrailingslashit( plugins_url( '', WPCF7_PLUGIN ) )
+);
 
-require_once WPCF7_PLUGIN_DIR . '/settings.php';
+require_once WPCF7_PLUGIN_DIR . '/load.php';

@@ -21,57 +21,64 @@ class WPCF7_ContactFormTemplate {
 	public static function form() {
 		$template = sprintf(
 			'
-<label> %2$s %1$s
+<label> %2$s
     [text* your-name] </label>
 
-<label> %3$s %1$s
+<label> %3$s
     [email* your-email] </label>
 
 <label> %4$s
-    [text your-subject] </label>
+    [text* your-subject] </label>
 
-<label> %5$s
+<label> %5$s %1$s
     [textarea your-message] </label>
 
 [submit "%6$s"]',
-			__( '(required)', 'contact-form-7' ),
-			__( 'Your Name', 'contact-form-7' ),
-			__( 'Your Email', 'contact-form-7' ),
+			__( '(optional)', 'contact-form-7' ),
+			__( 'Your name', 'contact-form-7' ),
+			__( 'Your email', 'contact-form-7' ),
 			__( 'Subject', 'contact-form-7' ),
-			__( 'Your Message', 'contact-form-7' ),
-			__( 'Send', 'contact-form-7' ) );
+			__( 'Your message', 'contact-form-7' ),
+			__( 'Submit', 'contact-form-7' )
+		);
 
 		return trim( $template );
 	}
 
 	public static function mail() {
 		$template = array(
-			'subject' =>
-				sprintf(
-					/* translators: 1: blog name, 2: [your-subject] */
-					_x( '%1$s "%2$s"', 'mail subject', 'contact-form-7' ),
-					get_bloginfo( 'name' ),
-					'[your-subject]'
-				),
-			'sender' => sprintf( '%s <%s>',
-				get_bloginfo( 'name' ), self::from_email() ),
+			'subject' => sprintf(
+				/* translators: 1: blog name, 2: [your-subject] */
+				_x( '%1$s "%2$s"', 'mail subject', 'contact-form-7' ),
+				'[_site_title]',
+				'[your-subject]'
+			),
+			'sender' => sprintf(
+				'%s <%s>',
+				'[_site_title]',
+				self::from_email()
+			),
 			'body' =>
-				/* translators: %s: [your-name] <[your-email]> */
-				sprintf( __( 'From: %s', 'contact-form-7' ),
-					'[your-name] <[your-email]>' ) . "\n"
-				/* translators: %s: [your-subject] */
-				. sprintf( __( 'Subject: %s', 'contact-form-7' ),
-					'[your-subject]' ) . "\n\n"
+				sprintf(
+					/* translators: %s: [your-name] <[your-email]> */
+					__( 'From: %s', 'contact-form-7' ),
+					'[your-name] <[your-email]>'
+				) . "\n"
+				. sprintf(
+					/* translators: %s: [your-subject] */
+					__( 'Subject: %s', 'contact-form-7' ),
+					'[your-subject]'
+				) . "\n\n"
 				. __( 'Message Body:', 'contact-form-7' )
-					. "\n" . '[your-message]' . "\n\n"
+				. "\n" . '[your-message]' . "\n\n"
 				. '-- ' . "\n"
 				. sprintf(
 					/* translators: 1: blog name, 2: blog URL */
 					__( 'This e-mail was sent from a contact form on %1$s (%2$s)', 'contact-form-7' ),
-					get_bloginfo( 'name' ),
-					get_bloginfo( 'url' )
+					'[_site_title]',
+					'[_site_url]'
 				),
-			'recipient' => get_option( 'admin_email' ),
+			'recipient' => '[_site_admin_email]',
 			'additional_headers' => 'Reply-To: [your-email]',
 			'attachments' => '',
 			'use_html' => 0,
@@ -84,28 +91,32 @@ class WPCF7_ContactFormTemplate {
 	public static function mail_2() {
 		$template = array(
 			'active' => false,
-			'subject' =>
-				sprintf(
-					/* translators: 1: blog name, 2: [your-subject] */
-					_x( '%1$s "%2$s"', 'mail subject', 'contact-form-7' ),
-					get_bloginfo( 'name' ),
-					'[your-subject]'
-				),
-			'sender' => sprintf( '%s <%s>',
-				get_bloginfo( 'name' ), self::from_email() ),
+			'subject' => sprintf(
+				/* translators: 1: blog name, 2: [your-subject] */
+				_x( '%1$s "%2$s"', 'mail subject', 'contact-form-7' ),
+				'[_site_title]',
+				'[your-subject]'
+			),
+			'sender' => sprintf(
+				'%s <%s>',
+				'[_site_title]',
+				self::from_email()
+			),
 			'body' =>
 				__( 'Message Body:', 'contact-form-7' )
-					. "\n" . '[your-message]' . "\n\n"
+				. "\n" . '[your-message]' . "\n\n"
 				. '-- ' . "\n"
 				. sprintf(
 					/* translators: 1: blog name, 2: blog URL */
 					__( 'This e-mail was sent from a contact form on %1$s (%2$s)', 'contact-form-7' ),
-					get_bloginfo( 'name' ),
-					get_bloginfo( 'url' )
+					'[_site_title]',
+					'[_site_url]'
 				),
 			'recipient' => '[your-email]',
-			'additional_headers' => sprintf( 'Reply-To: %s',
-				get_option( 'admin_email' ) ),
+			'additional_headers' => sprintf(
+				'Reply-To: %s',
+				'[_site_admin_email]'
+			),
 			'attachments' => '',
 			'use_html' => 0,
 			'exclude_blank' => 0,

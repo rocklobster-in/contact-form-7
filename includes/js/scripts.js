@@ -208,6 +208,10 @@
 						$( n.into, $form ).each( function() {
 							wpcf7.notValidTip( this, n.message );
 							$( '.wpcf7-form-control', this ).addClass( 'wpcf7-not-valid' );
+							$( '.wpcf7-form-control', this ).attr(
+								'aria-describedby',
+								n.error_id
+							);
 							$( '[aria-invalid]', this ).attr( 'aria-invalid', 'true' );
 						} );
 					} );
@@ -265,11 +269,9 @@
 
 			$( '.screen-reader-response', $form.closest( '.wpcf7' ) ).each( function() {
 				var $response = $( this );
-				$response.html( '' ).append( data.message );
+				$( '[role="status"]', $response ).html( data.message );
 
 				if ( data.invalid_fields ) {
-					var $invalids = $( '<ul></ul>' );
-
 					$.each( data.invalid_fields, function( i, n ) {
 						if ( n.idref ) {
 							var $li = $( '<li></li>' ).append( $( '<a></a>' ).attr( 'href', '#' + n.idref ).append( n.message ) );
@@ -277,13 +279,11 @@
 							var $li = $( '<li></li>' ).append( n.message );
 						}
 
-						$invalids.append( $li );
+						$li.attr( 'id', n.error_id );
+
+						$( 'ul', $response ).append( $li );
 					} );
-
-					$response.append( $invalids );
 				}
-
-				$response.focus();
 			} );
 
 			if ( data.posted_data_hash ) {
@@ -407,7 +407,6 @@
 
 		$( '<span></span>' ).attr( {
 			'class': 'wpcf7-not-valid-tip',
-			'role': 'alert',
 			'aria-hidden': 'true',
 		} ).text( message ).appendTo( $target );
 
@@ -486,7 +485,11 @@
 
 	wpcf7.clearResponse = function( form ) {
 		var $form = $( form );
-		$form.siblings( '.screen-reader-response' ).html( '' );
+
+		$form.siblings( '.screen-reader-response' ).each( function() {
+			$( '[role="status"]', this ).html( '' );
+			$( 'ul', this ).html( '' );
+		} );
 
 		$( '.wpcf7-not-valid-tip', $form ).remove();
 		$( '[aria-invalid]', $form ).attr( 'aria-invalid', 'false' );
