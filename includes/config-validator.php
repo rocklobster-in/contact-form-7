@@ -578,7 +578,7 @@ class WPCF7_ConfigValidator {
 				}
 			}
 
-			$max = 25 * MB_IN_BYTES; // 25 MB
+			$max = apply_filters('wpcf7_message_size_limit',25 * MB_IN_BYTES); // Default: 25 MB
 
 			if ( $max < $total_size ) {
 				$this->add_error( sprintf( '%s.attachments', $template ),
