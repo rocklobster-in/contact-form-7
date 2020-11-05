@@ -38,6 +38,12 @@ function wpcf7_flamingo_submit( $contact_form, $result ) {
 	$email = wpcf7_flamingo_get_value( 'email', $contact_form );
 	$name = wpcf7_flamingo_get_value( 'name', $contact_form );
 	$subject = wpcf7_flamingo_get_value( 'subject', $contact_form );
+	$first_name = wpcf7_flamingo_get_value( 'first', $contact_form );
+	$last_name = wpcf7_flamingo_get_value( 'last', $contact_form );
+	
+	if ( '[your-name]' === $name || empty( $name ) ) {
+		$name = "$first_name $last_name";
+	}
 
 	$meta = array();
 
@@ -69,6 +75,7 @@ function wpcf7_flamingo_submit( $contact_form, $result ) {
 		$flamingo_contact = Flamingo_Contact::add( array(
 			'email' => $email,
 			'name' => $name,
+			'props' => ['first_name'=> $first_name, 'last_name'=>$last_name],
 		) );
 	}
 
@@ -101,6 +108,17 @@ function wpcf7_flamingo_submit( $contact_form, $result ) {
 	} else {
 		$channel = 'contact-form-7';
 	}
+
+	if ( $first_name  || $last_name ) {
+
+			$post_meta = empty( $post_meta ) ? array() : (array) $post_meta;
+			$post_meta = array_merge( $post_meta, array(
+				'first_name' => $first_name,
+				'last_name' => $last_name,
+			) );
+
+			update_post_meta( $contact_form->id(), '_flamingo', $post_meta );
+		}
 
 	$args = array(
 		'channel' => $channel,
@@ -160,7 +178,7 @@ function wpcf7_flamingo_get_value( $field, $contact_form ) {
 
 	$value = '';
 
-	if ( in_array( $field, array( 'email', 'name', 'subject' ) ) ) {
+	if ( in_array( $field, array( 'email', 'name', 'subject', 'first', 'last' ) ) ) {
 		$template = $contact_form->pref( 'flamingo_' . $field );
 
 		if ( null === $template ) {
