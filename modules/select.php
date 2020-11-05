@@ -70,8 +70,8 @@ function wpcf7_select_form_tag_handler( $tag ) {
 		$tag->labels = array_merge( $tag->labels, array_values( $data ) );
 	}
 
-	$values = $tag->values;
-	$labels = $tag->labels;
+	$values = apply_filters( 'wpcf7_select_values', $tag->values, $tag );
+	$labels = apply_filters( 'wpcf7_select_labels', $tag->labels, $tag );
 
 	$default_choice = $tag->get_default_option( null, array(
 		'multiple' => $multiple,
