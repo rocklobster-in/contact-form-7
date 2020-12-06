@@ -65,10 +65,20 @@ function wpcf7_flamingo_submit( $contact_form, $result ) {
 	$akismet = isset( $submission->akismet )
 		? (array) $submission->akismet : null;
 
+	$timestamp = $submission->get_meta( 'timestamp' );
+
+	if ( $timestamp and $datetime = date_create( '@' . $timestamp ) ) {
+		$datetime->setTimezone( wp_timezone() );
+		$last_contacted = $datetime->format( 'Y-m-d H:i:s' );
+	} else {
+		$last_contacted = '0000-00-00 00:00:00';
+	}
+
 	if ( 'mail_sent' == $result['status'] ) {
 		$flamingo_contact = Flamingo_Contact::add( array(
 			'email' => $email,
 			'name' => $name,
+			'last_contacted' => $last_contacted,
 		) );
 	}
 
@@ -114,7 +124,7 @@ function wpcf7_flamingo_submit( $contact_form, $result ) {
 		'akismet' => $akismet,
 		'spam' => ( 'spam' == $result['status'] ),
 		'consent' => $submission->collect_consent(),
-		'timestamp' => $submission->get_meta( 'timestamp' ),
+		'timestamp' => $timestamp,
 		'posted_data_hash' => $submission->get_posted_data_hash(),
 	);
 
