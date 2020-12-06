@@ -6,7 +6,7 @@ function wpcf7_constant_contact_register_service() {
 	$integration = WPCF7_Integration::get_instance();
 
 	$integration->add_category( 'email_marketing',
-		__( 'Email Marketing', 'contact-form-7' ) );
+		__( 'Email marketing', 'contact-form-7' ) );
 
 	$service = WPCF7_ConstantContact::get_instance();
 	$integration->add_service( 'constant_contact', $service );
@@ -487,7 +487,7 @@ class WPCF7_ConstantContact extends WPCF7_Service_OAuth2 {
 					'https://contactform7.com/constant-contact-integration/',
 					'contact-form-7'
 				),
-				__( 'Constant Contact Integration', 'contact-form-7' )
+				__( 'Constant Contact integration', 'contact-form-7' )
 			)
 		) . '</p>';
 
