@@ -414,13 +414,13 @@ class WPCF7_RECAPTCHA extends WPCF7_Service {
 	public function admin_notice( $message = '' ) {
 		if ( 'invalid' == $message ) {
 			echo sprintf(
-				'<div class="error notice notice-error is-dismissible"><p><strong>%1$s</strong>: %2$s</p></div>',
+				'<div class="notice notice-error is-dismissible"><p><strong>%1$s</strong>: %2$s</p></div>',
 				esc_html( __( "Error", 'contact-form-7' ) ),
 				esc_html( __( "Invalid key values.", 'contact-form-7' ) ) );
 		}
 
 		if ( 'success' == $message ) {
-			echo sprintf( '<div class="updated notice notice-success is-dismissible"><p>%s</p></div>',
+			echo sprintf( '<div class="notice notice-success is-dismissible"><p>%s</p></div>',
 				esc_html( __( 'Settings saved.', 'contact-form-7' ) ) );
 		}
 	}
