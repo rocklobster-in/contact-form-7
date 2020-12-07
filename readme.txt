@@ -75,6 +75,10 @@ Do you have questions or issues with Contact Form 7? Use these support channels 
 
 For more information, see [Releases](https://contactform7.com/category/releases/).
 
+= 5.3.1 =
+
+* Flamingo: Passes the `last_contacted` parameter based on the submission timestamp.
+
 = 5.3 =
 
 * Block Editor: Introduces the contact form selector block type.
