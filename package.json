@@ -4,8 +4,10 @@
   "description": "Contact form selector block.",
   "private": true,
   "scripts": {
-    "start": "wp-scripts start includes/block-editor/src/index.js --output-path=includes/block-editor",
-    "build": "wp-scripts build includes/block-editor/src/index.js --output-path=includes/block-editor",
+    "start:front": "wp-scripts start includes/js/src/index.js --output-path=includes/js",
+    "build:front": "wp-scripts build includes/js/src/index.js --output-path=includes/js",
+    "start:block": "wp-scripts start includes/block-editor/src/index.js --output-path=includes/block-editor",
+    "build:block": "wp-scripts build includes/block-editor/src/index.js --output-path=includes/block-editor",
     "packages-update": "wp-scripts packages-update"
   },
   "repository": {
