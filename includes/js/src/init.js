@@ -7,6 +7,10 @@ export default function init( form ) {
 
 		status: form.getAttribute( 'data-status' ),
 
+		pluginVersion: form.querySelector(
+			'input[name="_wpcf7_version"]'
+		).value,
+
 		locale: form.querySelector(
 			'input[name="_wpcf7_locale"]'
 		).value,
