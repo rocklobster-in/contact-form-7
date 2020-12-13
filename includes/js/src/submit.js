@@ -7,6 +7,21 @@ export default function submit( form ) {
 
 	const formData = new FormData( form );
 
+	const detail = {
+		id: form.wpcf7.unitTag,
+		unitTag: form.wpcf7.unitTag,
+		contactFormId: form.wpcf7.id,
+		pluginVersion: form.wpcf7.pluginVersion,
+		contactFormLocale: form.wpcf7.locale,
+		containerPostId: form.wpcf7.containerPost,
+		status: form.wpcf7.status,
+		inputs: Array.from(
+			formData,
+			val => Object.create( { name: val[0], value: val[1] } )
+		),
+		formData,
+	};
+
 	apiFetch( {
 		path: `contact-form-7/v1/contact-forms/${ form.wpcf7.id }/feedback`,
 		method: 'POST',
