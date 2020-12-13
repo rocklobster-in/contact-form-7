@@ -1,15 +1,13 @@
 import init from './init';
 import submit from './submit';
+import setStatus from './set-status';
 
 document.addEventListener( 'DOMContentLoaded', event => {
-	if ( typeof wpcf7 === 'undefined' || wpcf7 === null ) {
-		return;
-	}
-
 	wpcf7 = {
 		init,
 		submit,
-		...wpcf7,
+		setStatus,
+		...( wpcf7 ?? {} ),
 	};
 
 	const forms = document.querySelectorAll( '.wpcf7 > form' );
@@ -17,6 +15,7 @@ document.addEventListener( 'DOMContentLoaded', event => {
 	forms.forEach( form => {
 		form.wpcf7 = {
 			id: parseInt( form.querySelector( 'input[name="_wpcf7"]' ).value, 10 ),
+			status: form.getAttribute( 'data-status' ),
 		};
 
 		wpcf7.init( form );
