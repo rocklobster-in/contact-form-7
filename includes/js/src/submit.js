@@ -17,8 +17,11 @@ export default function submit( form ) {
 		status: form.wpcf7.status,
 		inputs: Array.from(
 			formData,
-			val => Object.create( { name: val[0], value: val[1] } )
-		),
+			val => {
+				const name = val[0], value = val[1];
+				return name.match( /^_/ ) ? false : { name, value };
+			}
+		).filter( val => false !== val ),
 		formData,
 	};
 
