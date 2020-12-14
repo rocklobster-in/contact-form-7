@@ -33,5 +33,26 @@ export default function submit( form ) {
 		detail.apiResponse = response;
 
 		wpcf7.setStatus( form, response.status );
+
+		if ( response.invalid_fields ) {
+			response.invalid_fields.forEach( error => {
+				const wrap = form.querySelector( error.into );
+
+				const control = wrap.querySelector( '.wpcf7-form-control' );
+				control.classList.add( 'wpcf7-not-valid' );
+				control.setAttribute( 'aria-invalid', 'true' );
+				control.setAttribute( 'aria-describedby', error.error_id );
+
+				const tip = document.createElement( 'span' );
+				tip.setAttribute( 'class', 'wpcf7-not-valid-tip' );
+				tip.setAttribute( 'aria-hidden', 'true' );
+				tip.insertAdjacentText( 'beforeend', error.message );
+				wrap.appendChild( tip );
+			} );
+		}
+
+		form.querySelectorAll( '.wpcf7-response-output' ).forEach( div => {
+			div.innerText = response.message;
+		} );
 	} );
 }
