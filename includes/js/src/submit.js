@@ -85,5 +85,6 @@ export default function submit( form ) {
 		form.querySelectorAll( '.wpcf7-response-output' ).forEach( div => {
 			div.innerText = response.message;
 		} );
-	} );
+
+	} ).catch( error => console.error( error ) );
 }
