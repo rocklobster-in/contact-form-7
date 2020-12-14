@@ -12,6 +12,7 @@ export default function init( form ) {
 		locale: formData.get( '_wpcf7_locale' ),
 		unitTag: formData.get( '_wpcf7_unit_tag' ),
 		containerPost: parseInt( formData.get( '_wpcf7_container_post' ), 10 ),
+		parent: form.closest( '.wpcf7' ),
 		formData,
 	};
 
