@@ -1,28 +1,18 @@
 export default function init( form ) {
+	if ( typeof window.FormData !== 'function' ) {
+		return;
+	}
+
+	const formData = new FormData( form );
+
 	form.wpcf7 = {
-		id: parseInt(
-			form.querySelector( 'input[name="_wpcf7"]' ).value,
-			10
-		),
-
+		id: parseInt( formData.get( '_wpcf7' ), 10 ),
 		status: form.getAttribute( 'data-status' ),
-
-		pluginVersion: form.querySelector(
-			'input[name="_wpcf7_version"]'
-		).value,
-
-		locale: form.querySelector(
-			'input[name="_wpcf7_locale"]'
-		).value,
-
-		unitTag: form.querySelector(
-			'input[name="_wpcf7_unit_tag"]'
-		).value,
-
-		containerPost: parseInt(
-			form.querySelector( 'input[name="_wpcf7_container_post"]' ).value,
-			10
-		),
+		pluginVersion: formData.get( '_wpcf7_version' ),
+		locale: formData.get( '_wpcf7_locale' ),
+		unitTag: formData.get( '_wpcf7_unit_tag' ),
+		containerPost: parseInt( formData.get( '_wpcf7_container_post' ), 10 ),
+		formData,
 	};
 
 	form.addEventListener( 'submit', event => {
