@@ -15,6 +15,13 @@ export default function init( form ) {
 		formData,
 	};
 
+	form.querySelectorAll( '.wpcf7-submit' ).forEach( element => {
+		element.insertAdjacentHTML(
+			'afterend',
+			'<span class="ajax-loader"></span>'
+		);
+	} );
+
 	form.addEventListener( 'submit', event => {
 		if ( typeof window.FormData === 'function' ) {
 			wpcf7.submit( form );

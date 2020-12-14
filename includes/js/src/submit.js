@@ -24,6 +24,8 @@ export default function submit( form ) {
 		formData,
 	};
 
+	wpcf7.setStatus( form, 'submitting' );
+
 	apiFetch( {
 		path: `contact-form-7/v1/contact-forms/${ form.wpcf7.id }/feedback`,
 		method: 'POST',
