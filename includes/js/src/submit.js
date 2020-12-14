@@ -7,6 +7,31 @@ export default function submit( form ) {
 
 	wpcf7.setStatus( form, 'submitting' );
 
+	const clearResponse = () => {
+		form.wpcf7.parent.querySelector(
+			'.screen-reader-response [role="status"]'
+		).innerText = '';
+
+		form.wpcf7.parent.querySelector(
+			'.screen-reader-response ul'
+		).innerText = '';
+
+		form.querySelectorAll( '.wpcf7-not-valid-tip' ).forEach( span => {
+			span.remove();
+		} );
+
+		form.querySelectorAll( '.wpcf7-form-control' ).forEach( control => {
+			control.setAttribute( 'aria-invalid', 'false' );
+			control.classList.remove( 'wpcf7-not-valid' );
+		} );
+
+		form.querySelectorAll( '.wpcf7-response-output' ).forEach( div => {
+			div.innerText = '';
+		} );
+	};
+
+	clearResponse();
+
 	const formData = new FormData( form );
 
 	const detail = {
