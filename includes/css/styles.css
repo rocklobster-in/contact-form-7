@@ -68,7 +68,7 @@ span.wpcf7-list-item-label::after {
 	content: " ";
 }
 
-div.wpcf7 .ajax-loader {
+.wpcf7 .ajax-loader {
 	visibility: hidden;
 	display: inline-block;
 	background-image: url('../../assets/ajax-loader.gif');
@@ -80,7 +80,7 @@ div.wpcf7 .ajax-loader {
 	vertical-align: middle;
 }
 
-div.wpcf7 .ajax-loader.is-active {
+.wpcf7 form.submitting .ajax-loader {
 	visibility: visible;
 }
 

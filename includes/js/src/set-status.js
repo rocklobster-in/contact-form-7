@@ -9,6 +9,7 @@ export default function setStatus( form, status ) {
 		[ 'aborted', 'aborted' ],
 		[ 'mail_sent', 'sent' ],
 		[ 'mail_failed', 'failed' ],
+		[ 'submitting', 'submitting' ],
 	] );
 
 	if ( defaultStatuses.has( status ) ) {
