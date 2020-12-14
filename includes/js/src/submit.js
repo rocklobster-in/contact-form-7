@@ -8,11 +8,10 @@ export default function submit( form ) {
 	const formData = new FormData( form );
 
 	const detail = {
-		id: form.wpcf7.unitTag,
-		unitTag: form.wpcf7.unitTag,
 		contactFormId: form.wpcf7.id,
 		pluginVersion: form.wpcf7.pluginVersion,
 		contactFormLocale: form.wpcf7.locale,
+		unitTag: form.wpcf7.unitTag,
 		containerPostId: form.wpcf7.containerPost,
 		status: form.wpcf7.status,
 		inputs: Array.from(
@@ -30,5 +29,9 @@ export default function submit( form ) {
 		method: 'POST',
 		body: formData,
 	} ).then( response => {
+		detail.status = response.status;
+		detail.apiResponse = response;
+
+		wpcf7.setStatus( form, response.status );
 	} );
 }
