@@ -1,6 +1,6 @@
 import init from './init';
 import submit from './submit';
-import setStatus from './set-status';
+import setStatus from './status';
 
 document.addEventListener( 'DOMContentLoaded', event => {
 	wpcf7 = {
