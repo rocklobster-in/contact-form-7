@@ -122,6 +122,12 @@ export default function submit( form ) {
 
 	} ).then( response => {
 
+		if ( response.posted_data_hash ) {
+			form.querySelector(
+				'input[name="_wpcf7_posted_data_hash"]'
+			).value = response.posted_data_hash;
+		}
+
 		if ( response.invalid_fields ) {
 			response.invalid_fields.forEach( setScreenReaderValidationError );
 			response.invalid_fields.forEach( setVisualValidationError );
