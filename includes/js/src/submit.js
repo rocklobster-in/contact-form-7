@@ -5,7 +5,7 @@ export default function submit( form ) {
 		return;
 	}
 
-	wpcf7.setStatus( form, 'submitting' );
+	const path = `contact-form-7/v1/contact-forms/${ form.wpcf7.id }/feedback`;
 
 	const clearResponse = () => {
 		form.wpcf7.parent.querySelector(
@@ -88,8 +88,19 @@ export default function submit( form ) {
 		wrap.appendChild( tip );
 	};
 
+	if ( form.wpcf7.status === 'init' ) {
+		apiFetch.use( ( options, next ) => {
+			if ( options.path === path ) {
+				wpcf7.triggerEvent( form.wpcf7.parent, 'beforesubmit', detail );
+				wpcf7.setStatus( form, 'submitting' );
+			}
+
+			return next( options );
+		} );
+	}
+
 	apiFetch( {
-		path: `contact-form-7/v1/contact-forms/${ form.wpcf7.id }/feedback`,
+		path,
 		method: 'POST',
 		body: formData,
 	} ).then( response => {
