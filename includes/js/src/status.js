@@ -31,4 +31,6 @@ export default function setStatus( form, status ) {
 	if ( prevStatus && prevStatus !== status ) {
 		form.classList.remove( prevStatus );
 	}
+
+	return status;
 }
