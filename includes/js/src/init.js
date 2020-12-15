@@ -23,6 +23,12 @@ export default function init( form ) {
 		);
 	} );
 
+	window.addEventListener( 'load', event => {
+		if ( wpcf7.cached ) {
+			wpcf7.refill( form );
+		}
+	} );
+
 	form.addEventListener( 'submit', event => {
 		if ( typeof window.FormData === 'function' ) {
 			wpcf7.submit( form );

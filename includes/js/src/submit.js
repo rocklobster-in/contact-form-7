@@ -105,6 +105,8 @@ export default function submit( form ) {
 			wpcf7.triggerEvent( form.wpcf7.parent, `mail${ status }`, detail );
 		}
 
+		wpcf7.triggerEvent( form.wpcf7.parent, 'submit', detail );
+
 		return response;
 
 	} ).then( response => {
