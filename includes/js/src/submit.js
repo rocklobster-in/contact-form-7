@@ -93,10 +93,21 @@ export default function submit( form ) {
 		method: 'POST',
 		body: formData,
 	} ).then( response => {
-		wpcf7.setStatus( form, response.status );
+
+		const status = wpcf7.setStatus( form, response.status );
 
 		detail.status = response.status;
 		detail.apiResponse = response;
+
+		if ( [ 'invalid', 'unaccepted', 'spam', 'aborted' ].includes( status ) ) {
+			wpcf7.triggerEvent( form.wpcf7.parent, status, detail );
+		} else if ( [ 'sent', 'failed' ].includes( status ) ) {
+			wpcf7.triggerEvent( form.wpcf7.parent, `mail${ status }`, detail );
+		}
+
+		return response;
+
+	} ).then( response => {
 
 		if ( response.invalid_fields ) {
 			response.invalid_fields.forEach( setScreenReaderValidationError );
