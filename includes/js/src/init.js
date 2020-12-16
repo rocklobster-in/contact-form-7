@@ -1,3 +1,5 @@
+import { absInt } from './utils';
+
 export default function init( form ) {
 	if ( typeof window.FormData !== 'function' ) {
 		return;
@@ -6,12 +8,12 @@ export default function init( form ) {
 	const formData = new FormData( form );
 
 	form.wpcf7 = {
-		id: parseInt( formData.get( '_wpcf7' ), 10 ),
+		id: absInt( formData.get( '_wpcf7' ) ),
 		status: form.getAttribute( 'data-status' ),
 		pluginVersion: formData.get( '_wpcf7_version' ),
 		locale: formData.get( '_wpcf7_locale' ),
 		unitTag: formData.get( '_wpcf7_unit_tag' ),
-		containerPost: parseInt( formData.get( '_wpcf7_container_post' ), 10 ),
+		containerPost: absInt( formData.get( '_wpcf7_container_post' ) ),
 		parent: form.closest( '.wpcf7' ),
 		formData,
 	};
