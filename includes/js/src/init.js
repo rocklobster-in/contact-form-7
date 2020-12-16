@@ -37,4 +37,6 @@ export default function init( form ) {
 			event.preventDefault();
 		}
 	} );
+
+	wpcf7.initCharacterCount( form );
 }
