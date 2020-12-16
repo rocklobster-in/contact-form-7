@@ -86,6 +86,16 @@ export default function submit( form ) {
 		tip.setAttribute( 'aria-hidden', 'true' );
 		tip.insertAdjacentText( 'beforeend', error.message );
 		wrap.appendChild( tip );
+
+		if ( control.closest( '.use-floating-validation-tip' ) ) {
+			control.addEventListener( 'focus', event => {
+				tip.setAttribute( 'style', 'display: none' );
+			} );
+
+			tip.addEventListener( 'mouseover', event => {
+				tip.setAttribute( 'style', 'display: none' );
+			} );
+		}
 	};
 
 	if ( form.wpcf7.status === 'init' ) {

@@ -50,13 +50,14 @@
 }
 
 .use-floating-validation-tip .wpcf7-not-valid-tip {
-	position: absolute;
-	top: 20%;
-	left: 20%;
+	position: relative;
+	top: -2ex;
+	left: 1em;
 	z-index: 100;
 	border: 1px solid #dc3232;
 	background: #fff;
 	padding: .2em .8em;
+	width: 24em;
 }
 
 span.wpcf7-list-item {
