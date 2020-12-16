@@ -3,6 +3,7 @@ import submit from './submit';
 import refill from './refill';
 import setStatus from './status';
 import triggerEvent from './event';
+import initCharacterCount from './character-count';
 
 document.addEventListener( 'DOMContentLoaded', event => {
 	wpcf7 = {
@@ -11,6 +12,7 @@ document.addEventListener( 'DOMContentLoaded', event => {
 		refill,
 		setStatus,
 		triggerEvent,
+		initCharacterCount,
 		...( wpcf7 ?? {} ),
 	};
 
