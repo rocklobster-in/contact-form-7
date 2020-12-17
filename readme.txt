@@ -75,6 +75,11 @@ Do you have questions or issues with Contact Form 7? Use these support channels 
 
 For more information, see [Releases](https://contactform7.com/category/releases/).
 
+= 5.3.2 =
+
+* Removes control, separator, and other types of special characters from filename to fix the unrestricted file upload vulnerability issue.
+* Akismet: Sets ISO 8601 date/time format for the `comment_date_gmt` parameter.
+
 = 5.3.1 =
 
 * Flamingo: Passes the `last_contacted` parameter based on the submission timestamp.
