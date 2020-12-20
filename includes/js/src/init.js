@@ -38,5 +38,7 @@ export default function init( form ) {
 		}
 	} );
 
+	wpcf7.initSubmitButton( form );
+
 	wpcf7.initCharacterCount( form );
 }
