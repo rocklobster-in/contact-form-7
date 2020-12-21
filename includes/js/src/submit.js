@@ -138,6 +138,10 @@ export default function submit( form ) {
 			).value = response.posted_data_hash;
 		}
 
+		if ( 'mail_sent' === response.status ) {
+			form.reset();
+		}
+
 		if ( response.invalid_fields ) {
 			response.invalid_fields.forEach( setScreenReaderValidationError );
 			response.invalid_fields.forEach( setVisualValidationError );
