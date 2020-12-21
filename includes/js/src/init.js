@@ -58,4 +58,23 @@ export default function init( form ) {
 			} );
 		} );
 	} );
+
+	// Free text option for checkboxes and radio buttons
+	form.querySelectorAll( '.has-free-text' ).forEach( element => {
+		const freetext = element.querySelector( 'input.wpcf7-free-text' );
+
+		const checkbox = element.querySelector(
+			'input[type="checkbox"], input[type="radio"]'
+		);
+
+		freetext.disabled = ! checkbox.checked;
+
+		form.addEventListener( 'change', event => {
+			freetext.disabled = ! checkbox.checked;
+
+			if ( event.target === checkbox && checkbox.checked ) {
+				freetext.focus();
+			}
+		} );
+	} );
 }
