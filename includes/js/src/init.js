@@ -38,5 +38,24 @@ export default function init( form ) {
 		}
 	} );
 
+	wpcf7.initSubmitButton( form );
+
 	wpcf7.initCharacterCount( form );
+
+	// Exclusive checkbox
+	form.querySelectorAll( '.wpcf7-exclusive-checkbox' ).forEach( element => {
+		element.addEventListener( 'change', event => {
+			const nameAttr = event.target.getAttribute( 'name' );
+
+			const siblings = form.querySelectorAll(
+				`input[type="checkbox"][name="${ nameAttr }"]`
+			);
+
+			siblings.forEach( sibling => {
+				if ( sibling !== event.target ) {
+					sibling.checked = false;
+				}
+			} );
+		} );
+	} );
 }
