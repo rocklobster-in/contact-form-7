@@ -77,4 +77,20 @@ export default function init( form ) {
 			}
 		} );
 	} );
+
+	// URL input correction
+	form.querySelectorAll( '.wpcf7-validates-as-url' ).forEach( element => {
+		element.addEventListener( 'change', event => {
+			let val = element.value.trim();
+
+			if ( val
+			&& ! val.match( /^[a-z][a-z0-9.+-]*:/i )
+			&& -1 !== val.indexOf( '.' ) ) {
+				val = val.replace( /^\/+/, '' );
+				val = 'http://' + val;
+			}
+
+			element.value = val;
+		} );
+	} );
 }
