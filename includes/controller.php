@@ -80,10 +80,6 @@ function wpcf7_enqueue_scripts() {
 		$wpcf7['cached'] = 1;
 	}
 
-	if ( wpcf7_support_html5_fallback() ) {
-		$wpcf7['jqueryUi'] = 1;
-	}
-
 	wp_localize_script( 'contact-form-7', 'wpcf7', $wpcf7 );
 
 	do_action( 'wpcf7_enqueue_scripts' );
@@ -117,8 +113,13 @@ function wpcf7_html5_fallback() {
 	}
 
 	if ( wpcf7_script_is() ) {
-		wp_enqueue_script( 'jquery-ui-datepicker' );
-		wp_enqueue_script( 'jquery-ui-spinner' );
+		wp_enqueue_script(
+			'contact-form-7-html5-fallback',
+			wpcf7_plugin_url( 'includes/js/html5-fallback.js' ),
+			array( 'jquery-ui-datepicker', 'jquery-ui-spinner' ),
+			WPCF7_VERSION,
+			true
+		);
 	}
 
 	if ( wpcf7_style_is() ) {
