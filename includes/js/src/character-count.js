@@ -34,11 +34,15 @@ export default function initCharacterCount( form ) {
 		const target = form.querySelector( `[name="${ targetName }"]` );
 
 		if ( target ) {
+			target.value = target.defaultValue;
+
 			updateCount( counter, target );
 
-			target.addEventListener( 'keyup', event => {
-				updateCount( counter, target );
-			} );
+			if ( 'init' === form.wpcf7.status ) {
+				target.addEventListener( 'keyup', event => {
+					updateCount( counter, target );
+				} );
+			}
 		}
 	} );
 }

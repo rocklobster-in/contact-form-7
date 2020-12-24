@@ -28,13 +28,10 @@ export default function initSubmitButton( form ) {
 
 	checkAcceptance();
 
-	form.addEventListener(
-		'change',
-		event => checkAcceptance()
-	);
-
-	form.wpcf7.parent.addEventListener(
-		'wpcf7mailsent',
-		event => checkAcceptance()
-	);
+	if ( 'init' === form.wpcf7.status ) {
+		form.addEventListener(
+			'change',
+			event => checkAcceptance()
+		);
+	}
 }
