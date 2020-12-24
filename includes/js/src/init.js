@@ -27,7 +27,7 @@ export default function init( form ) {
 
 	window.addEventListener( 'load', event => {
 		if ( wpcf7.cached ) {
-			wpcf7.refill( form );
+			form.reset();
 		}
 	} );
 
@@ -41,6 +41,16 @@ export default function init( form ) {
 	wpcf7.initSubmitButton( form );
 
 	wpcf7.initCharacterCount( form );
+
+	form.addEventListener( 'reset', event => {
+		wpcf7.setStatus( form, 'resetting' );
+
+		wpcf7.initSubmitButton( form );
+		wpcf7.initCharacterCount( form );
+		wpcf7.refill( form );
+
+		wpcf7.setStatus( form, 'init' );
+	} );
 
 	// Exclusive checkbox
 	form.querySelectorAll( '.wpcf7-exclusive-checkbox' ).forEach( element => {
