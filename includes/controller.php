@@ -116,7 +116,7 @@ function wpcf7_html5_fallback() {
 		wp_enqueue_script(
 			'contact-form-7-html5-fallback',
 			wpcf7_plugin_url( 'includes/js/html5-fallback.js' ),
-			array( 'jquery-ui-datepicker', 'jquery-ui-spinner' ),
+			array( 'jquery-ui-datepicker' ),
 			WPCF7_VERSION,
 			true
 		);

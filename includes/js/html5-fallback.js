@@ -3,7 +3,7 @@
 		var supportHtml5 = ( function() {
 			var features = {};
 			var input = document.createElement( 'input' );
-			var inputTypes = [ 'date', 'number' ];
+			var inputTypes = [ 'date' ];
 
 			$.each( inputTypes, function( index, value ) {
 				input.setAttribute( 'type', value );
@@ -19,16 +19,6 @@
 					dateFormat: 'yy-mm-dd',
 					minDate: new Date( $( this ).attr( 'min' ) ),
 					maxDate: new Date( $( this ).attr( 'max' ) )
-				} );
-			} );
-		}
-
-		if ( ! supportHtml5.number ) {
-			$( 'input.wpcf7-number[type="number"]' ).each( function() {
-				$( this ).spinner( {
-					min: $( this ).attr( 'min' ),
-					max: $( this ).attr( 'max' ),
-					step: $( this ).attr( 'step' )
 				} );
 			} );
 		}
