@@ -44,6 +44,14 @@ add_action(
 			$assets['in_footer']
 		);
 
+		wp_register_script(
+			'contact-form-7-html5-fallback',
+			wpcf7_plugin_url( 'includes/js/html5-fallback.js' ),
+			array( 'jquery-ui-datepicker' ),
+			WPCF7_VERSION,
+			true
+		);
+
 		if ( wpcf7_load_js() ) {
 			wpcf7_enqueue_scripts();
 		}
@@ -62,6 +70,16 @@ add_action(
 			array(),
 			WPCF7_VERSION,
 			'all'
+		);
+
+		wp_register_style(
+			'jquery-ui-smoothness',
+			wpcf7_plugin_url(
+				'includes/js/jquery-ui/themes/smoothness/jquery-ui.min.css'
+			),
+			array(),
+			'1.11.4',
+			'screen'
 		);
 
 		if ( wpcf7_load_css() ) {
@@ -113,19 +131,10 @@ function wpcf7_html5_fallback() {
 	}
 
 	if ( wpcf7_script_is() ) {
-		wp_enqueue_script(
-			'contact-form-7-html5-fallback',
-			wpcf7_plugin_url( 'includes/js/html5-fallback.js' ),
-			array( 'jquery-ui-datepicker' ),
-			WPCF7_VERSION,
-			true
-		);
+		wp_enqueue_script( 'contact-form-7-html5-fallback' );
 	}
 
 	if ( wpcf7_style_is() ) {
-		wp_enqueue_style( 'jquery-ui-smoothness',
-			wpcf7_plugin_url(
-				'includes/js/jquery-ui/themes/smoothness/jquery-ui.min.css' ),
-			array(), '1.11.4', 'screen' );
+		wp_enqueue_style( 'jquery-ui-smoothness' );
 	}
 }
