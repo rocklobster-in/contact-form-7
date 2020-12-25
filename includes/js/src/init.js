@@ -1,4 +1,5 @@
 import { absInt } from './utils';
+import { refillCaptcha, refillQuiz } from './refill';
 
 export default function init( form ) {
 	if ( typeof window.FormData !== 'function' ) {
@@ -49,6 +50,26 @@ export default function init( form ) {
 		wpcf7.refill( form );
 
 		wpcf7.setStatus( form, 'init' );
+	} );
+
+	form.wpcf7.parent.addEventListener( 'wpcf7submit', event => {
+		if ( event.detail.apiResponse.captcha ) {
+			refillCaptcha( form, event.detail.apiResponse.captcha );
+		}
+
+		if ( event.detail.apiResponse.quiz ) {
+			refillQuiz( form, event.detail.apiResponse.quiz );
+		}
+	} );
+
+	form.wpcf7.parent.addEventListener( 'wpcf7refill', event => {
+		if ( event.detail.apiResponse.captcha ) {
+			refillCaptcha( form, event.detail.apiResponse.captcha );
+		}
+
+		if ( event.detail.apiResponse.quiz ) {
+			refillQuiz( form, event.detail.apiResponse.quiz );
+		}
 	} );
 
 	// Exclusive checkbox

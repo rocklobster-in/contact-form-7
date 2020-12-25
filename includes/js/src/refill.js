@@ -31,3 +31,47 @@ export default function refill( form ) {
 
 	} ).catch( error => console.error( error ) );
 }
+
+// Refill for Really Simple CAPTCHA
+export const refillCaptcha = ( form, refill ) => {
+	for ( const name in refill ) {
+		const url = refill[ name ];
+
+		form.querySelectorAll( `input[name="${ name }"]` ).forEach( input => {
+			input.value = '';
+		} );
+
+		form.querySelectorAll( `img.wpcf7-captcha-${ name }` ).forEach( img => {
+			img.setAttribute( 'src', url );
+		} );
+
+		const match = /([0-9]+)\.(png|gif|jpeg)$/.exec( url );
+
+		if ( match ) {
+			form.querySelectorAll(
+				`input[name="_wpcf7_captcha_challenge_${ name }"]`
+			).forEach( input => {
+				input.value = match[ 1 ];
+			} );
+		}
+	}
+};
+
+// Refill for quiz fields
+export const refillQuiz = ( form, refill ) => {
+	for ( const name in refill ) {
+		const question = refill[ name ][ 0 ];
+		const hashedAnswer = refill[ name ][ 1 ];
+
+		form.querySelectorAll(
+			`.wpcf7-form-control-wrap.${ name }`
+		).forEach( wrap => {
+			wrap.querySelector( `input[name="${ name }"]` ).value = '';
+			wrap.querySelector( '.wpcf7-quiz-label' ).textContent = question;
+
+			wrap.querySelector(
+				`input[name="_wpcf7_quiz_answer_${ name }"]`
+			).value = hashedAnswer;
+		} );
+	}
+};
