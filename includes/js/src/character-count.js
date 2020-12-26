@@ -1,7 +1,6 @@
 import { absInt } from './utils';
 
-export default function initCharacterCount( form ) {
-
+export const initCharacterCount = form => {
 	const updateCount = ( counter, target ) => {
 		const starting = absInt( counter.getAttribute( 'data-starting-value' ) );
 		const maximum = absInt( counter.getAttribute( 'data-maximum-value' ) );
@@ -45,4 +44,4 @@ export default function initCharacterCount( form ) {
 			}
 		}
 	} );
-}
+};

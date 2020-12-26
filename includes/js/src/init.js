@@ -1,6 +1,8 @@
 import { absInt } from './utils';
 import { clearResponse } from './submit';
 import { refillCaptcha, refillQuiz } from './refill';
+import { initSubmitButton } from './acceptance';
+import { initCharacterCount } from './character-count';
 
 export default function init( form ) {
 	if ( typeof window.FormData !== 'function' ) {
@@ -39,16 +41,15 @@ export default function init( form ) {
 		}
 	} );
 
-	wpcf7.initSubmitButton( form );
-
-	wpcf7.initCharacterCount( form );
+	initSubmitButton( form );
+	initCharacterCount( form );
 
 	form.addEventListener( 'reset', event => {
 		wpcf7.setStatus( form, 'resetting' );
 
 		clearResponse( form );
-		wpcf7.initSubmitButton( form );
-		wpcf7.initCharacterCount( form );
+		initSubmitButton( form );
+		initCharacterCount( form );
 		wpcf7.refill( form );
 
 		wpcf7.setStatus( form, 'init' );

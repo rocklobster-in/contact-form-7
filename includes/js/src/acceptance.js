@@ -1,5 +1,4 @@
-export default function initSubmitButton( form ) {
-
+export const initSubmitButton = form => {
 	if ( ! form.querySelector( '.wpcf7-acceptance' )
 	|| form.classList.contains( 'wpcf7-acceptance-as-validation' ) ) {
 		return;
@@ -34,4 +33,4 @@ export default function initSubmitButton( form ) {
 			event => checkAcceptance()
 		);
 	}
-}
+};
