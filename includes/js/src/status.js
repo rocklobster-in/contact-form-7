@@ -1,5 +1,4 @@
-export default function setStatus( form, status ) {
-
+export const setStatus = ( form, status ) => {
 	const defaultStatuses = new Map( [
 		// 0: Status in API response, 1: Status in HTML class
 		[ 'init', 'init' ],
@@ -34,4 +33,4 @@ export default function setStatus( form, status ) {
 	}
 
 	return status;
-}
+};
