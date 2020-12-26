@@ -5,8 +5,6 @@ export default function submit( form ) {
 		return;
 	}
 
-	const path = `contact-form-7/v1/contact-forms/${ form.wpcf7.id }/feedback`;
-
 	const formData = new FormData( form );
 
 	const detail = {
@@ -73,22 +71,15 @@ export default function submit( form ) {
 		}
 	};
 
-	if ( form.wpcf7.status === 'init' ) {
-		apiFetch.use( ( options, next ) => {
-			if ( options.path === path ) {
-				clearResponse( form );
-				wpcf7.triggerEvent( form.wpcf7.parent, 'beforesubmit', detail );
-				wpcf7.setStatus( form, 'submitting' );
-			}
-
-			return next( options );
-		} );
-	}
-
 	apiFetch( {
-		path,
+		path: `contact-form-7/v1/contact-forms/${ form.wpcf7.id }/feedback`,
 		method: 'POST',
 		body: formData,
+		wpcf7: {
+			endpoint: 'feedback',
+			form,
+			detail,
+		},
 	} ).then( response => {
 
 		const status = wpcf7.setStatus( form, response.status );
@@ -133,6 +124,18 @@ export default function submit( form ) {
 
 	} ).catch( error => console.error( error ) );
 }
+
+apiFetch.use( ( options, next ) => {
+	if ( options.wpcf7 && 'feedback' === options.wpcf7.endpoint ) {
+		const { form, detail } = options.wpcf7;
+
+		clearResponse( form );
+		wpcf7.triggerEvent( form.wpcf7.parent, 'beforesubmit', detail );
+		wpcf7.setStatus( form, 'submitting' );
+	}
+
+	return next( options );
+} );
 
 export const clearResponse = form => {
 	form.wpcf7.parent.querySelector(
