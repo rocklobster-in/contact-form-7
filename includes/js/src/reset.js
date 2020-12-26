@@ -1,19 +1,10 @@
 import apiFetch from '@wordpress/api-fetch';
 
 import { clearResponse } from './submit';
+import { initSubmitButton } from './acceptance';
+import { initCharacterCount } from './character-count';
 
 export default function reset( form ) {
-	wpcf7.setStatus( form, 'resetting' );
-
-	clearResponse( form );
-	initSubmitButton( form );
-	initCharacterCount( form );
-	refill( form );
-
-	wpcf7.setStatus( form, 'init' );
-}
-
-const refill = form => {
 	const formData = new FormData( form );
 
 	const detail = {
@@ -36,14 +27,39 @@ const refill = form => {
 	apiFetch( {
 		path: `contact-form-7/v1/contact-forms/${ form.wpcf7.id }/refill`,
 		method: 'GET',
+		wpcf7: {
+			endpoint: 'refill',
+			form,
+			detail,
+		},
 	} ).then( response => {
+
+		wpcf7.setStatus( form, 'init' );
 
 		detail.apiResponse = response;
 
 		wpcf7.triggerEvent( form.wpcf7.parent, 'refill', detail );
 
+		return response;
+
+	} ).then( response => {
+
+		initSubmitButton( form );
+		initCharacterCount( form );
+
 	} ).catch( error => console.error( error ) );
-};
+}
+
+apiFetch.use( ( options, next ) => {
+	if ( options.wpcf7 && 'refill' === options.wpcf7.endpoint ) {
+		const { form, detail } = options.wpcf7;
+
+		clearResponse( form );
+		wpcf7.setStatus( form, 'resetting' );
+	}
+
+	return next( options );
+} );
 
 // Refill for Really Simple CAPTCHA
 export const refillCaptcha = ( form, refill ) => {
