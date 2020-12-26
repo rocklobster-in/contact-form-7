@@ -1,4 +1,5 @@
 import { absInt } from './utils';
+import { clearResponse } from './submit';
 import { refillCaptcha, refillQuiz } from './refill';
 
 export default function init( form ) {
@@ -45,6 +46,7 @@ export default function init( form ) {
 	form.addEventListener( 'reset', event => {
 		wpcf7.setStatus( form, 'resetting' );
 
+		clearResponse( form );
 		wpcf7.initSubmitButton( form );
 		wpcf7.initCharacterCount( form );
 		wpcf7.refill( form );
