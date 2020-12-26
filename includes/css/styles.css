@@ -16,6 +16,7 @@
 }
 
 .wpcf7 form.init .wpcf7-response-output,
+.wpcf7 form.resetting .wpcf7-response-output,
 .wpcf7 form.submitting .wpcf7-response-output {
 	display: none;
 }
