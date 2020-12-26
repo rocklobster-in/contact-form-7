@@ -1,6 +1,19 @@
 import apiFetch from '@wordpress/api-fetch';
 
-export default function refill( form ) {
+import { clearResponse } from './submit';
+
+export default function reset( form ) {
+	wpcf7.setStatus( form, 'resetting' );
+
+	clearResponse( form );
+	initSubmitButton( form );
+	initCharacterCount( form );
+	refill( form );
+
+	wpcf7.setStatus( form, 'init' );
+}
+
+const refill = form => {
 	const formData = new FormData( form );
 
 	const detail = {
@@ -30,7 +43,7 @@ export default function refill( form ) {
 		wpcf7.triggerEvent( form.wpcf7.parent, 'refill', detail );
 
 	} ).catch( error => console.error( error ) );
-}
+};
 
 // Refill for Really Simple CAPTCHA
 export const refillCaptcha = ( form, refill ) => {

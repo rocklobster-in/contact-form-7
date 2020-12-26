@@ -1,6 +1,6 @@
 import init from './init';
 import submit from './submit';
-import refill from './refill';
+import reset from './reset';
 import setStatus from './status';
 import triggerEvent from './event';
 
@@ -8,7 +8,7 @@ document.addEventListener( 'DOMContentLoaded', event => {
 	wpcf7 = {
 		init,
 		submit,
-		refill,
+		reset,
 		setStatus,
 		triggerEvent,
 		...( wpcf7 ?? {} ),

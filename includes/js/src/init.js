@@ -1,6 +1,5 @@
 import { absInt } from './utils';
-import { clearResponse } from './submit';
-import { refillCaptcha, refillQuiz } from './refill';
+import { refillCaptcha, refillQuiz } from './reset';
 import { initSubmitButton } from './acceptance';
 import { initCharacterCount } from './character-count';
 
@@ -45,14 +44,7 @@ export default function init( form ) {
 	initCharacterCount( form );
 
 	form.addEventListener( 'reset', event => {
-		wpcf7.setStatus( form, 'resetting' );
-
-		clearResponse( form );
-		initSubmitButton( form );
-		initCharacterCount( form );
-		wpcf7.refill( form );
-
-		wpcf7.setStatus( form, 'init' );
+		wpcf7.reset( form );
 	} );
 
 	form.wpcf7.parent.addEventListener( 'wpcf7submit', event => {
