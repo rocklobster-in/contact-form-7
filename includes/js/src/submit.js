@@ -1,5 +1,8 @@
 import apiFetch from '@wordpress/api-fetch';
 
+import { setStatus } from './status';
+import { triggerEvent } from './event';
+
 export default function submit( form ) {
 	if ( typeof window.FormData !== 'function' ) {
 		return;
@@ -82,18 +85,18 @@ export default function submit( form ) {
 		},
 	} ).then( response => {
 
-		const status = wpcf7.setStatus( form, response.status );
+		const status = setStatus( form, response.status );
 
 		detail.status = response.status;
 		detail.apiResponse = response;
 
 		if ( [ 'invalid', 'unaccepted', 'spam', 'aborted' ].includes( status ) ) {
-			wpcf7.triggerEvent( form.wpcf7.parent, status, detail );
+			triggerEvent( form.wpcf7.parent, status, detail );
 		} else if ( [ 'sent', 'failed' ].includes( status ) ) {
-			wpcf7.triggerEvent( form.wpcf7.parent, `mail${ status }`, detail );
+			triggerEvent( form.wpcf7.parent, `mail${ status }`, detail );
 		}
 
-		wpcf7.triggerEvent( form.wpcf7.parent, 'submit', detail );
+		triggerEvent( form.wpcf7.parent, 'submit', detail );
 
 		return response;
 
@@ -130,8 +133,8 @@ apiFetch.use( ( options, next ) => {
 		const { form, detail } = options.wpcf7;
 
 		clearResponse( form );
-		wpcf7.triggerEvent( form.wpcf7.parent, 'beforesubmit', detail );
-		wpcf7.setStatus( form, 'submitting' );
+		triggerEvent( form.wpcf7.parent, 'beforesubmit', detail );
+		setStatus( form, 'submitting' );
 	}
 
 	return next( options );
