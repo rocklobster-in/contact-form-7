@@ -4,10 +4,6 @@ import { initSubmitButton } from './acceptance';
 import { initCharacterCount } from './character-count';
 
 export default function init( form ) {
-	if ( typeof window.FormData !== 'function' ) {
-		return;
-	}
-
 	const formData = new FormData( form );
 
 	form.wpcf7 = {
@@ -27,24 +23,22 @@ export default function init( form ) {
 		);
 	} );
 
+	initSubmitButton( form );
+	initCharacterCount( form );
+
 	window.addEventListener( 'load', event => {
 		if ( wpcf7.cached ) {
 			form.reset();
 		}
 	} );
 
-	form.addEventListener( 'submit', event => {
-		if ( typeof window.FormData === 'function' ) {
-			wpcf7.submit( form );
-			event.preventDefault();
-		}
-	} );
-
-	initSubmitButton( form );
-	initCharacterCount( form );
-
 	form.addEventListener( 'reset', event => {
 		wpcf7.reset( form );
+	} );
+
+	form.addEventListener( 'submit', event => {
+		wpcf7.submit( form );
+		event.preventDefault();
 	} );
 
 	form.wpcf7.parent.addEventListener( 'wpcf7submit', event => {
