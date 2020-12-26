@@ -1,3 +1,1 @@
-export function absInt( string ) {
-	return Math.abs( parseInt( string, 10 ) );
-}
+export const absInt = string => Math.abs( parseInt( string, 10 ) );
