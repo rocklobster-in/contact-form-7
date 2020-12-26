@@ -78,7 +78,7 @@ add_action(
 				'includes/js/jquery-ui/themes/smoothness/jquery-ui.min.css'
 			),
 			array(),
-			'1.11.4',
+			'1.12.1',
 			'screen'
 		);
 
