@@ -4,10 +4,6 @@ import { setStatus } from './status';
 import { triggerEvent } from './event';
 
 export default function submit( form ) {
-	if ( typeof window.FormData !== 'function' ) {
-		return;
-	}
-
 	const formData = new FormData( form );
 
 	const detail = {
