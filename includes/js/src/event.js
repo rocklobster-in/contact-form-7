@@ -1,4 +1,4 @@
-export default function triggerEvent( target, name, detail ) {
+export const triggerEvent = ( target, name, detail ) => {
 	const event = new CustomEvent( `wpcf7${ name }`, {
 		bubbles: true,
 		detail,
@@ -9,4 +9,4 @@ export default function triggerEvent( target, name, detail ) {
 	}
 
 	target.dispatchEvent( event );
-}
+};

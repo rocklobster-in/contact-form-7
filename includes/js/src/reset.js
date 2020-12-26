@@ -1,5 +1,7 @@
 import apiFetch from '@wordpress/api-fetch';
 
+import { setStatus } from './status';
+import { triggerEvent } from './event';
 import { clearResponse } from './submit';
 import { initSubmitButton } from './acceptance';
 import { initCharacterCount } from './character-count';
@@ -34,11 +36,11 @@ export default function reset( form ) {
 		},
 	} ).then( response => {
 
-		wpcf7.setStatus( form, 'init' );
+		setStatus( form, 'init' );
 
 		detail.apiResponse = response;
 
-		wpcf7.triggerEvent( form.wpcf7.parent, 'refill', detail );
+		triggerEvent( form.wpcf7.parent, 'refill', detail );
 
 		return response;
 
@@ -55,7 +57,7 @@ apiFetch.use( ( options, next ) => {
 		const { form, detail } = options.wpcf7;
 
 		clearResponse( form );
-		wpcf7.setStatus( form, 'resetting' );
+		setStatus( form, 'resetting' );
 	}
 
 	return next( options );
