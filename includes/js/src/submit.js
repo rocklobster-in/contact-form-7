@@ -7,31 +7,6 @@ export default function submit( form ) {
 
 	const path = `contact-form-7/v1/contact-forms/${ form.wpcf7.id }/feedback`;
 
-	const clearResponse = () => {
-		form.wpcf7.parent.querySelector(
-			'.screen-reader-response [role="status"]'
-		).innerText = '';
-
-		form.wpcf7.parent.querySelector(
-			'.screen-reader-response ul'
-		).innerText = '';
-
-		form.querySelectorAll( '.wpcf7-not-valid-tip' ).forEach( span => {
-			span.remove();
-		} );
-
-		form.querySelectorAll( '.wpcf7-form-control' ).forEach( control => {
-			control.setAttribute( 'aria-invalid', 'false' );
-			control.classList.remove( 'wpcf7-not-valid' );
-		} );
-
-		form.querySelectorAll( '.wpcf7-response-output' ).forEach( div => {
-			div.innerText = '';
-		} );
-	};
-
-	clearResponse();
-
 	const formData = new FormData( form );
 
 	const detail = {
@@ -101,6 +76,7 @@ export default function submit( form ) {
 	if ( form.wpcf7.status === 'init' ) {
 		apiFetch.use( ( options, next ) => {
 			if ( options.path === path ) {
+				clearResponse( form );
 				wpcf7.triggerEvent( form.wpcf7.parent, 'beforesubmit', detail );
 				wpcf7.setStatus( form, 'submitting' );
 			}
@@ -157,3 +133,27 @@ export default function submit( form ) {
 
 	} ).catch( error => console.error( error ) );
 }
+
+export const clearResponse = form => {
+	form.wpcf7.parent.querySelector(
+		'.screen-reader-response [role="status"]'
+	).innerText = '';
+
+	form.wpcf7.parent.querySelector(
+		'.screen-reader-response ul'
+	).innerText = '';
+
+	form.querySelectorAll( '.wpcf7-not-valid-tip' ).forEach( span => {
+		span.remove();
+	} );
+
+	form.querySelectorAll( '.wpcf7-form-control' ).forEach( control => {
+		control.setAttribute( 'aria-invalid', 'false' );
+		control.removeAttribute( 'aria-describedby' );
+		control.classList.remove( 'wpcf7-not-valid' );
+	} );
+
+	form.querySelectorAll( '.wpcf7-response-output' ).forEach( div => {
+		div.innerText = '';
+	} );
+};
