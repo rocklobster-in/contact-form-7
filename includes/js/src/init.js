@@ -1,5 +1,5 @@
 import { absInt } from './utils';
-import { refillCaptcha, refillQuiz } from './reset';
+import { resetCaptcha, resetQuiz } from './reset';
 import { initSubmitButton } from './acceptance';
 import { initCharacterCount } from './character-count';
 
@@ -43,21 +43,21 @@ export default function init( form ) {
 
 	form.wpcf7.parent.addEventListener( 'wpcf7submit', event => {
 		if ( event.detail.apiResponse.captcha ) {
-			refillCaptcha( form, event.detail.apiResponse.captcha );
+			resetCaptcha( form, event.detail.apiResponse.captcha );
 		}
 
 		if ( event.detail.apiResponse.quiz ) {
-			refillQuiz( form, event.detail.apiResponse.quiz );
+			resetQuiz( form, event.detail.apiResponse.quiz );
 		}
 	} );
 
-	form.wpcf7.parent.addEventListener( 'wpcf7refill', event => {
+	form.wpcf7.parent.addEventListener( 'wpcf7reset', event => {
 		if ( event.detail.apiResponse.captcha ) {
-			refillCaptcha( form, event.detail.apiResponse.captcha );
+			resetCaptcha( form, event.detail.apiResponse.captcha );
 		}
 
 		if ( event.detail.apiResponse.quiz ) {
-			refillQuiz( form, event.detail.apiResponse.quiz );
+			resetQuiz( form, event.detail.apiResponse.quiz );
 		}
 	} );
 
