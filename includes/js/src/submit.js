@@ -3,8 +3,12 @@ import apiFetch from '@wordpress/api-fetch';
 import { setStatus } from './status';
 import { triggerEvent } from './event';
 
-export default function submit( form ) {
+export default function submit( form, options ) {
 	const formData = new FormData( form );
+
+	if ( options.submitter && options.submitter.name ) {
+		formData.append( options.submitter.name, options.submitter.value );
+	}
 
 	const detail = {
 		contactFormId: form.wpcf7.id,
