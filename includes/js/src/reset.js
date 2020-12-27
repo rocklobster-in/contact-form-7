@@ -3,8 +3,6 @@ import apiFetch from '@wordpress/api-fetch';
 import { setStatus } from './status';
 import { triggerEvent } from './event';
 import { clearResponse } from './submit';
-import { initSubmitButton } from './acceptance';
-import { initCharacterCount } from './character-count';
 
 export default function reset( form ) {
 	const formData = new FormData( form );
@@ -41,13 +39,6 @@ export default function reset( form ) {
 		detail.apiResponse = response;
 
 		triggerEvent( form.wpcf7.parent, 'reset', detail );
-
-		return response;
-
-	} ).then( response => {
-
-		initSubmitButton( form );
-		initCharacterCount( form );
 
 	} ).catch( error => console.error( error ) );
 }
