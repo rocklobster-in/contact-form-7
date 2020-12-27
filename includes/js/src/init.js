@@ -1,7 +1,13 @@
 import { absInt } from './utils';
 import { resetCaptcha, resetQuiz } from './reset';
-import { initSubmitButton } from './acceptance';
-import { initCharacterCount } from './character-count';
+
+import {
+	exclusiveCheckboxHelper,
+	freeTextHelper,
+	urlInputHelper,
+	initSubmitButton,
+	initCharacterCount,
+} from './helpers';
 
 export default function init( form ) {
 	const formData = new FormData( form );
@@ -23,6 +29,10 @@ export default function init( form ) {
 		);
 	} );
 
+	exclusiveCheckboxHelper( form );
+	freeTextHelper( form );
+	urlInputHelper( form );
+
 	initSubmitButton( form );
 	initCharacterCount( form );
 
@@ -33,6 +43,9 @@ export default function init( form ) {
 	} );
 
 	form.addEventListener( 'reset', event => {
+		initSubmitButton( form );
+		initCharacterCount( form );
+
 		wpcf7.reset( form );
 	} );
 
@@ -59,57 +72,5 @@ export default function init( form ) {
 		if ( event.detail.apiResponse.quiz ) {
 			resetQuiz( form, event.detail.apiResponse.quiz );
 		}
-	} );
-
-	// Exclusive checkbox
-	form.querySelectorAll( '.wpcf7-exclusive-checkbox' ).forEach( element => {
-		element.addEventListener( 'change', event => {
-			const nameAttr = event.target.getAttribute( 'name' );
-
-			const siblings = form.querySelectorAll(
-				`input[type="checkbox"][name="${ nameAttr }"]`
-			);
-
-			siblings.forEach( sibling => {
-				if ( sibling !== event.target ) {
-					sibling.checked = false;
-				}
-			} );
-		} );
-	} );
-
-	// Free text option for checkboxes and radio buttons
-	form.querySelectorAll( '.has-free-text' ).forEach( element => {
-		const freetext = element.querySelector( 'input.wpcf7-free-text' );
-
-		const checkbox = element.querySelector(
-			'input[type="checkbox"], input[type="radio"]'
-		);
-
-		freetext.disabled = ! checkbox.checked;
-
-		form.addEventListener( 'change', event => {
-			freetext.disabled = ! checkbox.checked;
-
-			if ( event.target === checkbox && checkbox.checked ) {
-				freetext.focus();
-			}
-		} );
-	} );
-
-	// URL input correction
-	form.querySelectorAll( '.wpcf7-validates-as-url' ).forEach( element => {
-		element.addEventListener( 'change', event => {
-			let val = element.value.trim();
-
-			if ( val
-			&& ! val.match( /^[a-z][a-z0-9.+-]*:/i )
-			&& -1 !== val.indexOf( '.' ) ) {
-				val = val.replace( /^\/+/, '' );
-				val = 'http://' + val;
-			}
-
-			element.value = val;
-		} );
 	} );
 }
