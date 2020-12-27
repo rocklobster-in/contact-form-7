@@ -40,7 +40,7 @@ export default function reset( form ) {
 
 		detail.apiResponse = response;
 
-		triggerEvent( form.wpcf7.parent, 'refill', detail );
+		triggerEvent( form.wpcf7.parent, 'reset', detail );
 
 		return response;
 
@@ -64,7 +64,7 @@ apiFetch.use( ( options, next ) => {
 } );
 
 // Refill for Really Simple CAPTCHA
-export const refillCaptcha = ( form, refill ) => {
+export const resetCaptcha = ( form, refill ) => {
 	for ( const name in refill ) {
 		const url = refill[ name ];
 
@@ -89,7 +89,7 @@ export const refillCaptcha = ( form, refill ) => {
 };
 
 // Refill for quiz fields
-export const refillQuiz = ( form, refill ) => {
+export const resetQuiz = ( form, refill ) => {
 	for ( const name in refill ) {
 		const question = refill[ name ][ 0 ];
 		const hashedAnswer = refill[ name ][ 1 ];
