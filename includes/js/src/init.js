@@ -50,7 +50,9 @@ export default function init( form ) {
 	} );
 
 	form.addEventListener( 'submit', event => {
-		wpcf7.submit( form );
+		const submitter = event.submitter;
+		wpcf7.submit( form, { submitter } );
+
 		event.preventDefault();
 	} );
 
