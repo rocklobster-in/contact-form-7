@@ -8,6 +8,8 @@
     "build:front": "wp-scripts build includes/js/src/index.js --output-path=includes/js",
     "start:block": "wp-scripts start includes/block-editor/src/index.js --output-path=includes/block-editor",
     "build:block": "wp-scripts build includes/block-editor/src/index.js --output-path=includes/block-editor",
+    "start:recaptcha": "wp-scripts start modules/recaptcha/src/index.js --output-path=modules/recaptcha",
+    "build:recaptcha": "wp-scripts build modules/recaptcha/src/index.js --output-path=modules/recaptcha",
     "packages-update": "wp-scripts packages-update"
   },
   "repository": {
