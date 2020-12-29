@@ -34,7 +34,11 @@ export default function reset( form ) {
 		},
 	} ).then( response => {
 
-		setStatus( form, 'init' );
+		if ( 'sent' === detail.status ) {
+			setStatus( form, 'mail_sent' );
+		} else {
+			setStatus( form, 'init' );
+		}
 
 		detail.apiResponse = response;
 
