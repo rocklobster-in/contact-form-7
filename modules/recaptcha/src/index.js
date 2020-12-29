@@ -10,10 +10,9 @@ document.addEventListener( 'DOMContentLoaded', event => {
 	const execute = options => {
 		const { action, func, params } = options;
 
-		grecaptcha.execute(
-			siteKey,
-			{ action }
-		).then( token => {
+		grecaptcha.execute( siteKey, {
+			action,
+		} ).then( token => {
 			const event = new CustomEvent( 'wpcf7grecaptchaexecuted', {
 				detail: {
 					action,
