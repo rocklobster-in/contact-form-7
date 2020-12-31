@@ -86,21 +86,24 @@
 .wpcf7 form.submitting .ajax-loader {
 	visibility: visible;
 	animation-name: tenmetsukaiten;
-	animation-duration: 800ms;
+	animation-duration: 1200ms;
 	animation-timing-function: linear;
 	animation-iteration-count: infinite;
-	animation-direction: alternate;
 }
 
 @keyframes tenmetsukaiten {
 	from {
+		opacity: 0.9;
+		transform: rotate(0deg);
+	}
+
+	50% {
 		opacity: 0.1;
-		transform: rotate(0turn);
 	}
 
 	to {
 		opacity: 0.9;
-		transform: rotate(1turn);
+		transform: rotate(359deg);
 	}
 }
 
