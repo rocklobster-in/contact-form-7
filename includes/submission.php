@@ -71,6 +71,11 @@ class WPCF7_Submission {
 			$this->set_response( $contact_form->message( 'spam' ) );
 		}
 
+		if ( $this->is( 'init' ) and ! $this->unship_uploaded_files() ) {
+			$this->set_status( 'validation_failed' );
+			$this->set_response( $contact_form->message( 'validation_error' ) );
+		}
+
 		if ( $this->is( 'init' ) ) {
 			$abort = ! $this->before_send_mail();
 
@@ -352,7 +357,9 @@ class WPCF7_Submission {
 		require_once WPCF7_PLUGIN_DIR . '/includes/validation.php';
 		$result = new WPCF7_Validation();
 
-		$tags = $this->contact_form->scan_form_tags();
+		$tags = $this->contact_form->scan_form_tags( array(
+		  'feature' => '! file-uploading',
+		) );
 
 		foreach ( $tags as $tag ) {
 			$type = $tag->type;
@@ -521,4 +528,54 @@ class WPCF7_Submission {
 			}
 		}
 	}
+
+	private function unship_uploaded_files() {
+		require_once WPCF7_PLUGIN_DIR . '/includes/file.php';
+		require_once WPCF7_PLUGIN_DIR . '/includes/validation.php';
+		$result = new WPCF7_Validation();
+
+		$tags = $this->contact_form->scan_form_tags( array(
+			'feature' => 'file-uploading',
+		) );
+
+		foreach ( $tags as $tag ) {
+			if ( empty( $_FILES[$tag->name] ) ) {
+				continue;
+			}
+
+			$file = $_FILES[$tag->name];
+
+			$args = array(
+				'tag' => $tag,
+				'name' => $tag->name,
+				'required' => $tag->is_required(),
+				'filetypes' => $tag->get_option( 'filetypes' ),
+				'limit' => $tag->get_limit_option(),
+			);
+
+			$handler = new WPCF7_UploadedFileHandler();
+			$new_file = $handler->unship( $file, $args );
+
+			if ( null === $new_file ) {
+				continue;
+			}
+
+			if ( ! is_wp_error( $new_file ) ) {
+				$this->add_uploaded_file( $tag->name, $new_file );
+			}
+
+			$result = apply_filters(
+				"wpcf7_validate_{$tag->type}",
+				$result, $tag,
+				array(
+					'uploaded_file' => $new_file,
+				)
+			);
+		}
+
+		$this->invalid_fields = $result->get_invalid_fields();
+
+		return $result->is_valid();
+	}
+
 }
