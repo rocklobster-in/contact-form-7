@@ -12,6 +12,7 @@ function wpcf7_add_form_tag_file() {
 		'wpcf7_file_form_tag_handler',
 		array(
 			'name-attr' => true,
+			'file-uploading' => true,
 		)
 	);
 }
@@ -85,81 +86,18 @@ function wpcf7_file_form_enctype_filter( $enctype ) {
 
 /* Validation + upload handling filter */
 
-add_filter( 'wpcf7_validate_file', 'wpcf7_file_validation_filter', 10, 2 );
-add_filter( 'wpcf7_validate_file*', 'wpcf7_file_validation_filter', 10, 2 );
+add_filter( 'wpcf7_validate_file', 'wpcf7_file_validation_filter', 10, 3 );
+add_filter( 'wpcf7_validate_file*', 'wpcf7_file_validation_filter', 10, 3 );
 
-function wpcf7_file_validation_filter( $result, $tag ) {
-	$name = $tag->name;
-	$id = $tag->get_id_option();
+function wpcf7_file_validation_filter( $result, $tag, $args ) {
+	$args = wp_parse_args( $args, array() );
 
-	$file = isset( $_FILES[$name] ) ? $_FILES[$name] : null;
+	if ( isset( $args['uploaded_file'] ) ) {
+		$maybe_error = $args['uploaded_file'];
 
-	if ( ! empty( $file['error'] ) and UPLOAD_ERR_NO_FILE !== $file['error'] ) {
-		$result->invalidate( $tag, wpcf7_get_message( 'upload_failed_php_error' ) );
-		return $result;
-	}
-
-	if ( empty( $file['tmp_name'] ) and $tag->is_required() ) {
-		$result->invalidate( $tag, wpcf7_get_message( 'invalid_required' ) );
-		return $result;
-	}
-
-	if ( empty( $file['tmp_name'] )
-	or ! is_uploaded_file( $file['tmp_name'] ) ) {
-		return $result;
-	}
-
-	/* File type validation */
-
-	$file_type_pattern = wpcf7_acceptable_filetypes(
-		$tag->get_option( 'filetypes' ), 'regex'
-	);
-
-	$file_type_pattern = '/\.(' . $file_type_pattern . ')$/i';
-
-	if ( empty( $file['name'] )
-	or ! preg_match( $file_type_pattern, $file['name'] ) ) {
-		$result->invalidate( $tag,
-			wpcf7_get_message( 'upload_file_type_invalid' )
-		);
-
-		return $result;
-	}
-
-	/* File size validation */
-
-	$allowed_size = $tag->get_limit_option();
-
-	if ( ! empty( $file['size'] ) and $allowed_size < $file['size'] ) {
-		$result->invalidate( $tag, wpcf7_get_message( 'upload_file_too_large' ) );
-		return $result;
-	}
-
-	wpcf7_init_uploads(); // Confirm upload dir
-	$uploads_dir = wpcf7_upload_tmp_dir();
-	$uploads_dir = wpcf7_maybe_add_random_dir( $uploads_dir );
-
-	$filename = $file['name'];
-	$filename = wpcf7_canonicalize( $filename, 'as-is' );
-	$filename = wpcf7_antiscript_file_name( $filename );
-
-	$filename = apply_filters( 'wpcf7_upload_file_name', $filename,
-		$file['name'], $tag
-	);
-
-	$filename = wp_unique_filename( $uploads_dir, $filename );
-	$new_file = path_join( $uploads_dir, $filename );
-
-	if ( false === @move_uploaded_file( $file['tmp_name'], $new_file ) ) {
-		$result->invalidate( $tag, wpcf7_get_message( 'upload_failed' ) );
-		return $result;
-	}
-
-	// Make sure the uploaded file is only readable for the owner process
-	chmod( $new_file, 0400 );
-
-	if ( $submission = WPCF7_Submission::get_instance() ) {
-		$submission->add_uploaded_file( $name, $new_file );
+		if ( is_wp_error( $maybe_error ) ) {
+			$result->invalidate( $tag, $maybe_error->get_error_message() );
+		}
 	}
 
 	return $result;
