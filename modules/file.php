@@ -67,23 +67,6 @@ function wpcf7_file_form_tag_handler( $tag ) {
 }
 
 
-/* Encode type filter */
-
-add_filter( 'wpcf7_form_enctype', 'wpcf7_file_form_enctype_filter', 10, 1 );
-
-function wpcf7_file_form_enctype_filter( $enctype ) {
-	$multipart = (bool) wpcf7_scan_form_tags(
-		array( 'type' => array( 'file', 'file*' ) )
-	);
-
-	if ( $multipart ) {
-		$enctype = 'multipart/form-data';
-	}
-
-	return $enctype;
-}
-
-
 /* Validation + upload handling filter */
 
 add_filter( 'wpcf7_validate_file', 'wpcf7_file_validation_filter', 10, 3 );

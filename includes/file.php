@@ -106,6 +106,21 @@ function wpcf7_file_messages( $messages ) {
 }
 
 
+add_filter( 'wpcf7_form_enctype', 'wpcf7_file_form_enctype_filter', 10, 1 );
+
+function wpcf7_file_form_enctype_filter( $enctype ) {
+	$multipart = (bool) wpcf7_scan_form_tags( array(
+		'feature' => 'file-uploading',
+	) );
+
+	if ( $multipart ) {
+		$enctype = 'multipart/form-data';
+	}
+
+	return $enctype;
+}
+
+
 function wpcf7_acceptable_filetypes( $types = 'default', $format = 'regex' ) {
 	if ( 'default' === $types
 	or empty( $types ) ) {
