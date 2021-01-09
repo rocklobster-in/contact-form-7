@@ -354,7 +354,6 @@ class WPCF7_Submission {
 			return false;
 		}
 
-		require_once WPCF7_PLUGIN_DIR . '/includes/validation.php';
 		$result = new WPCF7_Validation();
 
 		$tags = $this->contact_form->scan_form_tags( array(
@@ -530,8 +529,6 @@ class WPCF7_Submission {
 	}
 
 	private function unship_uploaded_files() {
-		require_once WPCF7_PLUGIN_DIR . '/includes/file.php';
-		require_once WPCF7_PLUGIN_DIR . '/includes/validation.php';
 		$result = new WPCF7_Validation();
 
 		$tags = $this->contact_form->scan_form_tags( array(
