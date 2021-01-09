@@ -499,7 +499,7 @@ class WPCF7_Submission {
 		return $this->uploaded_files;
 	}
 
-	public function add_uploaded_file( $name, $file_path ) {
+	private function add_uploaded_file( $name, $file_path ) {
 		if ( ! wpcf7_is_name( $name ) ) {
 			return false;
 		}
@@ -515,7 +515,7 @@ class WPCF7_Submission {
 		}
 	}
 
-	public function remove_uploaded_files() {
+	private function remove_uploaded_files() {
 		foreach ( (array) $this->uploaded_files as $name => $path ) {
 			wpcf7_rmdir_p( $path );
 
