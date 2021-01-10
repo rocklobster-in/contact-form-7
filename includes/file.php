@@ -276,3 +276,42 @@ function wpcf7_cleanup_upload_files( $seconds = 60, $max = 100 ) {
 		closedir( $handle );
 	}
 }
+
+
+add_action(
+	'wpcf7_admin_warnings',
+	'wpcf7_file_display_warning_message',
+	10, 3
+);
+
+function wpcf7_file_display_warning_message( $page, $action, $object ) {
+	if ( $object instanceof WPCF7_ContactForm ) {
+		$contact_form = $object;
+	} else {
+		return;
+	}
+
+	$has_tags = (bool) $contact_form->scan_form_tags( array(
+		'feature' => 'file-uploading',
+	) );
+
+	if ( ! $has_tags ) {
+		return;
+	}
+
+	$uploads_dir = wpcf7_upload_tmp_dir();
+	wpcf7_init_uploads();
+
+	if ( ! is_dir( $uploads_dir ) or ! wp_is_writable( $uploads_dir ) ) {
+		$message = sprintf(
+			/* translators: %s: the path of the temporary folder */
+			__( 'This contact form has file uploading fields, but the temporary folder for the files (%s) does not exist or is not writable. You can create the folder or change its permission manually.', 'contact-form-7' ),
+			$uploads_dir
+		);
+
+		echo sprintf(
+			'<div class="notice notice-warning"><p>%s</p></div>',
+			esc_html( $message )
+		);
+	}
+}
