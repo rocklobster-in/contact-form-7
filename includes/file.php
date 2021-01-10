@@ -49,7 +49,6 @@ class WPCF7_UploadedFileHandler {
 			);
 		}
 
-		wpcf7_init_uploads(); // Confirm upload dir
 		$uploads_dir = wpcf7_upload_tmp_dir();
 		$uploads_dir = wpcf7_maybe_add_random_dir( $uploads_dir );
 
@@ -187,6 +186,12 @@ function wpcf7_acceptable_filetypes( $types = 'default', $format = 'regex' ) {
 }
 
 
+add_action(
+	'wpcf7_init',
+	'wpcf7_init_uploads',
+	10, 0
+);
+
 function wpcf7_init_uploads() {
 	$dir = wpcf7_upload_tmp_dir();
 	wp_mkdir_p( $dir );
@@ -300,7 +305,6 @@ function wpcf7_file_display_warning_message( $page, $action, $object ) {
 	}
 
 	$uploads_dir = wpcf7_upload_tmp_dir();
-	wpcf7_init_uploads();
 
 	if ( ! is_dir( $uploads_dir ) or ! wp_is_writable( $uploads_dir ) ) {
 		$message = sprintf(
