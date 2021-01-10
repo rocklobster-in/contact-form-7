@@ -180,35 +180,3 @@ function wpcf7_tag_generator_file( $contact_form, $args = '' ) {
 </div>
 <?php
 }
-
-
-/* Warning message */
-
-add_action( 'wpcf7_admin_warnings',
-	'wpcf7_file_display_warning_message', 10, 3 );
-
-function wpcf7_file_display_warning_message( $page, $action, $object ) {
-	if ( $object instanceof WPCF7_ContactForm ) {
-		$contact_form = $object;
-	} else {
-		return;
-	}
-
-	$has_tags = (bool) $contact_form->scan_form_tags(
-		array( 'type' => array( 'file', 'file*' ) ) );
-
-	if ( ! $has_tags ) {
-		return;
-	}
-
-	$uploads_dir = wpcf7_upload_tmp_dir();
-	wpcf7_init_uploads();
-
-	if ( ! is_dir( $uploads_dir )
-	or ! wp_is_writable( $uploads_dir ) ) {
-		$message = sprintf( __( 'This contact form contains file uploading fields, but the temporary folder for the files (%s) does not exist or is not writable. You can create the folder or change its permission manually.', 'contact-form-7' ), $uploads_dir );
-
-		echo sprintf( '<div class="notice notice-warning"><p>%s</p></div>',
-			esc_html( $message ) );
-	}
-}
