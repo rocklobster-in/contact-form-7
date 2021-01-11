@@ -85,13 +85,14 @@
 
 .wpcf7 form.submitting .ajax-loader {
 	visibility: visible;
-	animation-name: tenmetsukaiten;
+	animation-name: sentakki;
 	animation-duration: 1200ms;
-	animation-timing-function: linear;
+	animation-timing-function: ease-in-out;
 	animation-iteration-count: infinite;
+	animation-direction: alternate;
 }
 
-@keyframes tenmetsukaiten {
+@keyframes sentakki {
 	from {
 		opacity: 0.9;
 		transform: rotate(0deg);
@@ -103,7 +104,7 @@
 
 	to {
 		opacity: 0.9;
-		transform: rotate(359deg);
+		transform: rotate(2160deg);
 	}
 }
 
