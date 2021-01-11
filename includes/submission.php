@@ -550,8 +550,7 @@ class WPCF7_Submission {
 				'limit' => $tag->get_limit_option(),
 			);
 
-			$handler = new WPCF7_UploadedFileHandler();
-			$new_file = $handler->unship( $file, $args );
+			$new_file = wpcf7_unship_uploaded_file( $file, $args );
 
 			if ( null === $new_file ) {
 				continue;
