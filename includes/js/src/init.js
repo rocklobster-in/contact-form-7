@@ -43,9 +43,6 @@ export default function init( form ) {
 	} );
 
 	form.addEventListener( 'reset', event => {
-		initSubmitButton( form );
-		initCharacterCount( form );
-
 		wpcf7.reset( form );
 	} );
 
