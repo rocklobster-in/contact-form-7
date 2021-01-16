@@ -42,7 +42,7 @@ export default function reset( form ) {
 
 		detail.apiResponse = response;
 
-		triggerEvent( form.wpcf7.parent, 'reset', detail );
+		triggerEvent( form, 'reset', detail );
 
 	} ).catch( error => console.error( error ) );
 }
