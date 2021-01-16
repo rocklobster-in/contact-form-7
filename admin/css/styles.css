@@ -416,7 +416,7 @@ ul.config-error li {
 	float: right;
 	font-size: 13px;
 	color: #666;
-	margin: 2px 0 5px;
+	margin: 1em;
 	line-height: 1.5;
 	max-width: 240px;
 }
