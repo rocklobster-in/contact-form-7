@@ -371,21 +371,36 @@ function wpcf7_antiscript_file_name( $filename ) {
 	return $filename;
 }
 
-function wpcf7_mask_password( $text, $length_unmasked = 0 ) {
-	$length = strlen( $text );
-	$length_unmasked = absint( $length_unmasked );
 
-	if ( 0 == $length_unmasked ) {
-		if ( 9 < $length ) {
-			$length_unmasked = 4;
-		} elseif ( 3 < $length ) {
-			$length_unmasked = 2;
-		} else {
-			$length_unmasked = $length;
-		}
+/**
+ * Masks a password with asterisks (*).
+ *
+ * @param int $right Length of right-hand unmasked text. Default 0.
+ * @param int $left Length of left-hand unmasked text. Default 0.
+ * @return string Text of masked password.
+ */
+function wpcf7_mask_password( $text, $right = 0, $left = 0 ) {
+	$length = strlen( $text );
+
+	$right = absint( $right );
+	$left = absint( $left );
+
+	if ( $length < $right + $left ) {
+		$right = $left = 0;
 	}
 
-	$text = substr( $text, 0 - $length_unmasked );
-	$text = str_pad( $text, $length, '*', STR_PAD_LEFT );
+	if ( $length <= 48 ) {
+		$masked = str_repeat( '*', $length - ( $right + $left ) );
+	} elseif ( $right + $left < 48 ) {
+		$masked = str_repeat( '*', 48 - ( $right + $left ) );
+	} else {
+		$masked = '****';
+	}
+
+	$left_unmasked = $left ? substr( $text, 0, $left ) : '';
+	$right_unmasked = $right ? substr( $text, -1 * $right ) : '';
+
+	$text = $left_unmasked . $masked . $right_unmasked;
+
 	return $text;
 }
