@@ -84,12 +84,13 @@ export const initSubmitButton = form => {
 
 	checkAcceptance();
 
-	if ( 'init' === form.wpcf7.status ) {
-		form.addEventListener(
-			'change',
-			event => checkAcceptance()
-		);
-	}
+	form.addEventListener( 'change', event => {
+		checkAcceptance();
+	} );
+
+	form.wpcf7.parent.addEventListener( 'wpcf7reset', event => {
+		checkAcceptance();
+	} );
 };
 
 export const initCharacterCount = form => {
@@ -118,22 +119,35 @@ export const initCharacterCount = form => {
 		}
 	};
 
-	const counters = form.querySelectorAll( '.wpcf7-character-count' );
+	const bulkUpdate = options => {
+		options = {
+			init: false,
+			...options
+		};
 
-	counters.forEach( counter => {
-		const targetName = counter.getAttribute( 'data-target-name' );
-		const target = form.querySelector( `[name="${ targetName }"]` );
+		const counters = form.querySelectorAll( '.wpcf7-character-count' );
 
-		if ( target ) {
-			target.value = target.defaultValue;
+		counters.forEach( counter => {
+			const targetName = counter.getAttribute( 'data-target-name' );
+			const target = form.querySelector( `[name="${ targetName }"]` );
 
-			updateCount( counter, target );
+			if ( target ) {
+				target.value = target.defaultValue;
 
-			if ( 'init' === form.wpcf7.status ) {
-				target.addEventListener( 'keyup', event => {
-					updateCount( counter, target );
-				} );
+				updateCount( counter, target );
+
+				if ( options.init ) {
+					target.addEventListener( 'keyup', event => {
+						updateCount( counter, target );
+					} );
+				}
 			}
-		}
+		} );
+	};
+
+	bulkUpdate( { init: true } );
+
+	form.wpcf7.parent.addEventListener( 'wpcf7reset', event => {
+		bulkUpdate();
 	} );
 };
