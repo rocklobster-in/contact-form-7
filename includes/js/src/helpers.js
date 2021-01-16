@@ -88,7 +88,7 @@ export const initSubmitButton = form => {
 		checkAcceptance();
 	} );
 
-	form.wpcf7.parent.addEventListener( 'wpcf7reset', event => {
+	form.addEventListener( 'wpcf7reset', event => {
 		checkAcceptance();
 	} );
 };
@@ -147,7 +147,7 @@ export const initCharacterCount = form => {
 
 	bulkUpdate( { init: true } );
 
-	form.wpcf7.parent.addEventListener( 'wpcf7reset', event => {
+	form.addEventListener( 'wpcf7reset', event => {
 		bulkUpdate();
 	} );
 };
