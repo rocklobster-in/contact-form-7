@@ -91,12 +91,12 @@ export default function submit( form, options ) {
 		detail.apiResponse = response;
 
 		if ( [ 'invalid', 'unaccepted', 'spam', 'aborted' ].includes( status ) ) {
-			triggerEvent( form.wpcf7.parent, status, detail );
+			triggerEvent( form, status, detail );
 		} else if ( [ 'sent', 'failed' ].includes( status ) ) {
-			triggerEvent( form.wpcf7.parent, `mail${ status }`, detail );
+			triggerEvent( form, `mail${ status }`, detail );
 		}
 
-		triggerEvent( form.wpcf7.parent, 'submit', detail );
+		triggerEvent( form, 'submit', detail );
 
 		return response;
 
@@ -133,7 +133,7 @@ apiFetch.use( ( options, next ) => {
 		const { form, detail } = options.wpcf7;
 
 		clearResponse( form );
-		triggerEvent( form.wpcf7.parent, 'beforesubmit', detail );
+		triggerEvent( form, 'beforesubmit', detail );
 		setStatus( form, 'submitting' );
 	}
 

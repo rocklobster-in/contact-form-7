@@ -53,7 +53,7 @@ export default function init( form ) {
 		event.preventDefault();
 	} );
 
-	form.wpcf7.parent.addEventListener( 'wpcf7submit', event => {
+	form.addEventListener( 'wpcf7submit', event => {
 		if ( event.detail.apiResponse.captcha ) {
 			resetCaptcha( form, event.detail.apiResponse.captcha );
 		}
@@ -63,7 +63,7 @@ export default function init( form ) {
 		}
 	} );
 
-	form.wpcf7.parent.addEventListener( 'wpcf7reset', event => {
+	form.addEventListener( 'wpcf7reset', event => {
 		if ( event.detail.apiResponse.captcha ) {
 			resetCaptcha( form, event.detail.apiResponse.captcha );
 		}
