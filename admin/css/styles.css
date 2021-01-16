@@ -328,6 +328,21 @@ ul.config-error li {
 }
 
 /*
+ * Sendinblue Tab
+ */
+#sendinblue-panel table tr.inactive ~ tr {
+	display: none;
+}
+
+#sendinblue-panel .dashicons {
+ 	text-decoration: none;
+}
+
+#sendinblue-panel td p {
+ 	margin-top: 12px;
+}
+
+/*
  * List Table
  */
 .fixed .column-title {
