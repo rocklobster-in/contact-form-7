@@ -65,7 +65,8 @@ class WPCF7_Integration {
 
 		if ( ! empty( $args['include'] ) ) {
 			$services = array_intersect_key( $services,
-				array_flip( (array) $args['include'] ) );
+				array_flip( (array) $args['include'] )
+			);
 
 			if ( 1 == count( $services ) ) {
 				$singular = true;
@@ -80,15 +81,14 @@ class WPCF7_Integration {
 
 		foreach ( $services as $name => $service ) {
 			$cats = array_intersect_key( $this->categories,
-				array_flip( $service->get_categories() ) );
+				array_flip( $service->get_categories() )
+			);
 ?>
 <div class="card<?php echo $service->is_active() ? ' active' : ''; ?>" id="<?php echo esc_attr( $name ); ?>">
 <?php $service->icon(); ?>
 <h2 class="title"><?php echo esc_html( $service->get_title() ); ?></h2>
 <div class="infobox">
 <?php echo esc_html( implode( ', ', $cats ) ); ?>
-<br />
-<?php $service->link(); ?>
 </div>
 <br class="clear" />
 
