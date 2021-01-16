@@ -98,34 +98,7 @@ function wpcf7_sendinblue_editor_panels( $panels ) {
 		$lists = $service->get_lists();
 		$templates = $service->get_templates();
 
-		// Todo: Move the following script and style to Contact Form 7 core.
 ?>
-<script>
-( function( $ ) {
-	$( function() {
-		$( '#wpcf7-sendinblue-enable-contact-list, #wpcf7-sendinblue-enable-transactional-email' ).on( 'change', function() {
-			if ( $( this ).is( ':checked' ) ) {
-				$( this ).closest( 'tr' ).removeClass( 'inactive' );
-			} else {
-				$( this ).closest( 'tr' ).addClass( 'inactive' );
-			}
-		} );
-	} );
-} )( jQuery );
-</script>
-<style>
-#sendinblue-panel table tr.inactive ~ tr {
-	display: none;
-}
-
-#sendinblue-panel .dashicons {
-	text-decoration: none;
-}
-
-#sendinblue-panel td p {
-	margin-top: 12px;
-}
-</style>
 <h2><?php echo esc_html( __( 'Sendinblue', 'contact-form-7' ) ); ?></h2>
 
 <fieldset>
