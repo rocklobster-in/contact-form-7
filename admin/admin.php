@@ -513,7 +513,7 @@ function wpcf7_admin_updated_message( $page, $action, $object ) {
 	}
 
 	if ( ! empty( $updated_message ) ) {
-		echo sprintf( '<div id="message" class="notice notice-success is-dismissible"><p>%s</p></div>', esc_html( $updated_message ) );
+		echo sprintf( '<div id="message" class="notice notice-success"><p>%s</p></div>', esc_html( $updated_message ) );
 		return;
 	}
 
@@ -521,7 +521,7 @@ function wpcf7_admin_updated_message( $page, $action, $object ) {
 		$updated_message = __( "There was an error saving the contact form.",
 			'contact-form-7' );
 
-		echo sprintf( '<div id="message" class="notice notice-error is-dismissible"><p>%s</p></div>', esc_html( $updated_message ) );
+		echo sprintf( '<div id="message" class="notice notice-error"><p>%s</p></div>', esc_html( $updated_message ) );
 		return;
 	}
 
@@ -541,11 +541,11 @@ function wpcf7_admin_updated_message( $page, $action, $object ) {
 				number_format_i18n( $count_invalid )
 			);
 
-			echo sprintf( '<div id="message" class="notice notice-warning is-dismissible"><p>%s</p></div>', esc_html( $updated_message ) );
+			echo sprintf( '<div id="message" class="notice notice-warning"><p>%s</p></div>', esc_html( $updated_message ) );
 		} else {
 			$updated_message = __( "Configuration validation completed. No invalid contact form was found.", 'contact-form-7' );
 
-			echo sprintf( '<div id="message" class="notice notice-success is-dismissible"><p>%s</p></div>', esc_html( $updated_message ) );
+			echo sprintf( '<div id="message" class="notice notice-success"><p>%s</p></div>', esc_html( $updated_message ) );
 		}
 
 		return;
