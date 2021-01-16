@@ -48,6 +48,7 @@ class WPCF7 {
 		self::load_module( 'recaptcha' );
 		self::load_module( 'response' );
 		self::load_module( 'select' );
+		self::load_module( 'sendinblue' );
 		self::load_module( 'submit' );
 		self::load_module( 'text' );
 		self::load_module( 'textarea' );
