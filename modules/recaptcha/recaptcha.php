@@ -502,7 +502,7 @@ class WPCF7_RECAPTCHA extends WPCF7_Service {
 	<th scope="row"><label for="secret"><?php echo esc_html( __( 'Secret Key', 'contact-form-7' ) ); ?></label></th>
 	<td><?php
 		if ( $this->is_active() ) {
-			echo esc_html( wpcf7_mask_password( $secret ) );
+			echo esc_html( wpcf7_mask_password( $secret, 4, 4 ) );
 			echo sprintf(
 				'<input type="hidden" value="%1$s" id="secret" name="secret" />',
 				esc_attr( $secret )

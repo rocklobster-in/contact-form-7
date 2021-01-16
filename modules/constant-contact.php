@@ -536,7 +536,7 @@ class WPCF7_ConstantContact extends WPCF7_Service_OAuth2 {
 	<th scope="row"><label for="client_secret"><?php echo esc_html( __( 'App Secret', 'contact-form-7' ) ); ?></label></th>
 	<td><?php
 		if ( $this->is_active() ) {
-			echo esc_html( wpcf7_mask_password( $this->client_secret ) );
+			echo esc_html( wpcf7_mask_password( $this->client_secret, 4, 4 ) );
 			echo sprintf(
 				'<input type="hidden" value="%1$s" id="client_secret" name="client_secret" />',
 				esc_attr( $this->client_secret )
