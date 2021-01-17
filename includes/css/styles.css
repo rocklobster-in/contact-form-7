@@ -79,14 +79,14 @@
 	height: 20px;
 	border: none;
 	padding: 0;
-	margin: 0 0 0 20px;
+	margin: 0 20px;
 	vertical-align: middle;
 }
 
 .wpcf7 form.submitting .ajax-loader {
 	visibility: visible;
 	animation-name: sentakki;
-	animation-duration: 1200ms;
+	animation-duration: 2400ms;
 	animation-timing-function: ease-in-out;
 	animation-iteration-count: infinite;
 	animation-direction: alternate;
@@ -94,16 +94,16 @@
 
 @keyframes sentakki {
 	from {
-		opacity: 0.9;
+		opacity: 0.8;
 		transform: rotate(0deg);
 	}
 
 	50% {
-		opacity: 0.1;
+		opacity: 0.2;
 	}
 
 	to {
-		opacity: 0.9;
+		opacity: 0.8;
 		transform: rotate(2160deg);
 	}
 }
