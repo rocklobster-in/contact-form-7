@@ -75,8 +75,8 @@ add_filter( 'wpcf7_validate_file*', 'wpcf7_file_validation_filter', 10, 3 );
 function wpcf7_file_validation_filter( $result, $tag, $args ) {
 	$args = wp_parse_args( $args, array() );
 
-	if ( isset( $args['uploaded_file'] ) ) {
-		$maybe_error = $args['uploaded_file'];
+	if ( isset( $args['uploaded_files'] ) ) {
+		$maybe_error = $args['uploaded_files'];
 
 		if ( is_wp_error( $maybe_error ) ) {
 			$result->invalidate( $tag, $maybe_error->get_error_message() );
@@ -95,7 +95,10 @@ function wpcf7_file_mail_tag( $replaced, $submitted, $html, $mail_tag ) {
 	$name = $mail_tag->field_name();
 
 	if ( ! empty( $uploaded_files[$name] ) ) {
-		$replaced = wp_basename( $uploaded_files[$name] );
+		$paths = (array) $uploaded_files[$name];
+		$paths = array_map( 'wp_basename', $paths );
+
+		$replaced = wpcf7_flat_join( $paths );
 	}
 
 	return $replaced;

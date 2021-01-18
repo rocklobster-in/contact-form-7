@@ -504,26 +504,37 @@ class WPCF7_Submission {
 			return false;
 		}
 
-		if ( ! @is_file( $file_path ) or ! @is_readable( $file_path ) ) {
-			return false;
+		$paths = (array) $file_path;
+		$uploaded_files = array();
+		$hash_strings = array();
+
+		foreach ( $paths as $path ) {
+			if ( @is_file( $path ) and @is_readable( $path ) ) {
+				$uploaded_files[] = $path;
+				$hash_strings[] = md5_file( $path );
+			}
 		}
 
-		$this->uploaded_files[$name] = $file_path;
+		$this->uploaded_files[$name] = $uploaded_files;
 
 		if ( empty( $this->posted_data[$name] ) ) {
-			$this->posted_data[$name] = md5_file( $file_path );
+			$this->posted_data[$name] = implode( ' ', $hash_strings );
 		}
 	}
 
 	private function remove_uploaded_files() {
-		foreach ( (array) $this->uploaded_files as $name => $path ) {
-			wpcf7_rmdir_p( $path );
+		foreach ( (array) $this->uploaded_files as $file_path ) {
+			$paths = (array) $file_path;
 
-			if ( $dir = dirname( $path )
-			and false !== ( $files = scandir( $dir ) )
-			and ! array_diff( $files, array( '.', '..' ) ) ) {
-				// remove parent dir if it's empty.
-				rmdir( $dir );
+			foreach ( $paths as $path ) {
+				wpcf7_rmdir_p( $path );
+
+				if ( $dir = dirname( $path )
+				and false !== ( $files = scandir( $dir ) )
+				and ! array_diff( $files, array( '.', '..' ) ) ) {
+					// remove parent dir if it's empty.
+					rmdir( $dir );
+				}
 			}
 		}
 	}
@@ -550,21 +561,17 @@ class WPCF7_Submission {
 				'limit' => $tag->get_limit_option(),
 			);
 
-			$new_file = wpcf7_unship_uploaded_file( $file, $args );
+			$new_files = wpcf7_unship_uploaded_file( $file, $args );
 
-			if ( null === $new_file ) {
-				continue;
-			}
-
-			if ( ! is_wp_error( $new_file ) ) {
-				$this->add_uploaded_file( $tag->name, $new_file );
+			if ( ! is_wp_error( $new_files ) ) {
+				$this->add_uploaded_file( $tag->name, $new_files );
 			}
 
 			$result = apply_filters(
 				"wpcf7_validate_{$tag->type}",
 				$result, $tag,
 				array(
-					'uploaded_file' => $new_file,
+					'uploaded_files' => $new_files,
 				)
 			);
 		}
