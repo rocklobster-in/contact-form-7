@@ -21,9 +21,6 @@ Contact Form 7 WordPress Plugin bundles the following third-party resources:
 The official icon designed by Cheung Vong
 https://contactform7.com/2020/04/08/new-official-logo/
 
-"Image filter" icon from Dashicons
-https://developer.wordpress.org/resource/dashicons/#image-filter
-
 
 =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
