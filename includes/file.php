@@ -7,6 +7,12 @@ function wpcf7_unship_uploaded_file( $file, $args = '' ) {
 		'limit' => MB_IN_BYTES,
 	) );
 
+	foreach ( array( 'name', 'size', 'tmp_name', 'error' ) as $key ) {
+		if ( ! isset( $file[$key] ) ) {
+			$file[$key] = array();
+		}
+	}
+
 	$names = wpcf7_array_flatten( $file['name'] );
 	$sizes = wpcf7_array_flatten( $file['size'] );
 	$tmp_names = wpcf7_array_flatten( $file['tmp_name'] );

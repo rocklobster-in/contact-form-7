@@ -160,7 +160,7 @@ class WPCF7_Mail {
 
 			foreach ( (array) $uploaded_files as $name => $paths ) {
 				if ( false !== strpos( $template, "[${name}]" ) ) {
-					$attachments += (array) $paths;
+					$attachments = array_merge( $attachments, (array) $paths );
 				}
 			}
 		}
