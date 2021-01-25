@@ -74,23 +74,37 @@
 .wpcf7 .ajax-loader {
 	visibility: hidden;
 	display: inline-block;
-	background-image: url('../../assets/ajax-loader.svg');
+	background-color: #23282d; /* Dark Gray 800 */
 	opacity: 0.75;
-	width: 20px;
-	height: 20px;
+	width: 24px;
+	height: 24px;
 	border: none;
+	border-radius: 100%;
 	padding: 0;
-	margin: 0 20px;
+	margin: 0 24px;
 	vertical-align: middle;
+	position: relative;
 }
 
 .wpcf7 form.submitting .ajax-loader {
 	visibility: visible;
+}
+
+.wpcf7 .ajax-loader::before {
+	content: '';
+	position: absolute;
+	background-color: #fbfbfc; /* Light Gray 100 */
+	top: 4px;
+	left: 4px;
+	width: 8px;
+	height: 8px;
+	border: none;
+	border-radius: 100%;
+	transform-origin: 8px 8px;
 	animation-name: spin;
 	animation-duration: 1000ms;
 	animation-timing-function: linear;
 	animation-iteration-count: infinite;
-	animation-direction: normal;
 }
 
 @keyframes spin {
