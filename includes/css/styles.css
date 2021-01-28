@@ -96,8 +96,8 @@
 	background-color: #fbfbfc; /* Light Gray 100 */
 	top: 4px;
 	left: 4px;
-	width: 8px;
-	height: 8px;
+	width: 6px;
+	height: 6px;
 	border: none;
 	border-radius: 100%;
 	transform-origin: 8px 8px;
@@ -107,6 +107,13 @@
 	animation-iteration-count: infinite;
 }
 
+@media (prefers-reduced-motion: reduce) {
+	.wpcf7 .ajax-loader::before {
+		animation-name: blink;
+		animation-duration: 2000ms;
+	}
+}
+
 @keyframes spin {
 	from {
 		transform: rotate(0deg);
@@ -114,6 +121,20 @@
 
 	to {
 		transform: rotate(360deg);
+	}
+}
+
+@keyframes blink {
+	from {
+		opacity: 0;
+	}
+
+	50% {
+		opacity: 1;
+	}
+
+	to {
+		opacity: 0;
 	}
 }
 
