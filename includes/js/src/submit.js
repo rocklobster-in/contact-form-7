@@ -3,7 +3,7 @@ import apiFetch from '@wordpress/api-fetch';
 import { setStatus } from './status';
 import { triggerEvent } from './event';
 
-export default function submit( form, options ) {
+export default function submit( form, options = {} ) {
 	const formData = new FormData( form );
 
 	if ( options.submitter && options.submitter.name ) {
