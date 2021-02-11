@@ -43,7 +43,7 @@ document.addEventListener( 'DOMContentLoaded', event => {
 	if ( wpcf7 && typeof wpcf7.submit === 'function' ) {
 		const submit = wpcf7.submit;
 
-		wpcf7.submit = ( form, options ) => {
+		wpcf7.submit = ( form, options = {} ) => {
 			execute( {
 				action: contactform,
 				func: submit,
