@@ -343,7 +343,7 @@ function wpcf7_antiscript_file_name( $filename ) {
 	$filename = wp_basename( $filename );
 
 	$filename = preg_replace( '/[\r\n\t -]+/', '-', $filename );
-	$filename = preg_replace( '/[\pC\pZ]+/i', '', $filename );
+	$filename = preg_replace( '/[\pC\pZ]+/iu', '', $filename );
 
 	$parts = explode( '.', $filename );
 
