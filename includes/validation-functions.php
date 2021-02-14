@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Check whether a string is a valid NAME token.
+ * Checks whether a string is a valid NAME token.
  *
  * ID and NAME tokens must begin with a letter ([A-Za-z])
  * and may be followed by any number of letters, digits ([0-9]),
@@ -149,6 +149,19 @@ function wpcf7_is_email_in_site_domain( $email ) {
 		and wpcf7_is_email_in_domain( $email, $site_domain ) ) {
 			return true;
 		}
+	}
+
+	return false;
+}
+
+function wpcf7_is_file_path_in_content_dir( $path ) {
+	if ( 0 === strpos( realpath( $path ), realpath( WP_CONTENT_DIR ) ) ) {
+		return true;
+	}
+
+	if ( defined( 'UPLOADS' )
+	and 0 === strpos( realpath( $path ), realpath( ABSPATH . UPLOADS ) ) ) {
+		return true;
 	}
 
 	return false;
