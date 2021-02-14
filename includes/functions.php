@@ -464,16 +464,3 @@ function wpcf7_anonymize_ip_addr( $ip_addr ) {
 
 	return inet_ntop( $packed & inet_pton( $mask ) );
 }
-
-function wpcf7_is_file_path_in_content_dir( $path ) {
-	if ( 0 === strpos( realpath( $path ), realpath( WP_CONTENT_DIR ) ) ) {
-		return true;
-	}
-
-	if ( defined( 'UPLOADS' )
-	and 0 === strpos( realpath( $path ), realpath( ABSPATH . UPLOADS ) ) ) {
-		return true;
-	}
-
-	return false;
-}
