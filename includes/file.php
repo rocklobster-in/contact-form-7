@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Validates uploaded files and moves them to the temporary directory.
+ *
+ * @param array $file An item of `$_FILES`.
+ * @param string|array $args Optional. Arguments to control behavior.
+ * @return array|WP_Error Array of file paths, or WP_Error if validation fails.
+ */
 function wpcf7_unship_uploaded_file( $file, $args = '' ) {
 	$args = wp_parse_args( $args, array(
 		'required' => false,
@@ -96,7 +103,11 @@ function wpcf7_unship_uploaded_file( $file, $args = '' ) {
 }
 
 
-add_filter( 'wpcf7_messages', 'wpcf7_file_messages', 10, 1 );
+add_filter(
+	'wpcf7_messages',
+	'wpcf7_file_messages',
+	10, 1
+);
 
 function wpcf7_file_messages( $messages ) {
 	return array_merge( $messages, array(
@@ -123,7 +134,11 @@ function wpcf7_file_messages( $messages ) {
 }
 
 
-add_filter( 'wpcf7_form_enctype', 'wpcf7_file_form_enctype_filter', 10, 1 );
+add_filter(
+	'wpcf7_form_enctype',
+	'wpcf7_file_form_enctype_filter',
+	10, 1
+);
 
 function wpcf7_file_form_enctype_filter( $enctype ) {
 	$multipart = (bool) wpcf7_scan_form_tags( array(
@@ -138,6 +153,13 @@ function wpcf7_file_form_enctype_filter( $enctype ) {
 }
 
 
+/**
+ * Returns a formatted list of acceptable filetypes.
+ *
+ * @param string|array $types Optional. Array of filetypes.
+ * @param string $format Optional. Pre-defined format designator.
+ * @return string Formatted list of acceptable filetypes.
+ */
 function wpcf7_acceptable_filetypes( $types = 'default', $format = 'regex' ) {
 	if ( 'default' === $types
 	or empty( $types ) ) {
@@ -181,10 +203,12 @@ function wpcf7_acceptable_filetypes( $types = 'default', $format = 'regex' ) {
 
 	foreach ( $types as $type ) {
 		$type = trim( $type, ' ,.|' );
+
 		$type = str_replace(
 			array( '.', '+', '*', '?' ),
 			array( '\.', '\+', '\*', '\?' ),
-			$type );
+			$type
+		);
 
 		if ( '' === $type ) {
 			continue;
@@ -251,7 +275,11 @@ function wpcf7_upload_tmp_dir() {
 }
 
 
-add_action( 'template_redirect', 'wpcf7_cleanup_upload_files', 20, 0 );
+add_action(
+	'template_redirect',
+	'wpcf7_cleanup_upload_files',
+	20, 0
+);
 
 function wpcf7_cleanup_upload_files( $seconds = 60, $max = 100 ) {
 	if ( is_admin()
