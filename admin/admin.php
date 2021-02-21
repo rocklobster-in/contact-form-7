@@ -54,7 +54,7 @@ function wpcf7_admin_menu() {
 
 	if ( $integration->service_exists() ) {
 		$integration = add_submenu_page( 'wpcf7',
-			__( 'Integration with Other Services', 'contact-form-7' ),
+			__( 'Integration with External API', 'contact-form-7' ),
 			__( 'Integration', 'contact-form-7' )
 				. wpcf7_admin_menu_change_notice( 'wpcf7-integration' ),
 			'wpcf7_manage_integration',
@@ -469,7 +469,7 @@ function wpcf7_admin_integration_page() {
 ?>
 <div class="wrap" id="wpcf7-integration">
 
-<h1><?php echo esc_html( __( 'Integration with Other Services', 'contact-form-7' ) ); ?></h1>
+<h1><?php echo esc_html( __( 'Integration with External API', 'contact-form-7' ) ); ?></h1>
 
 <?php
 	do_action( 'wpcf7_admin_warnings',
