@@ -1,7 +1,18 @@
 <?php
+/**
+ * Controller for front-end requests, scripts, and styles
+ */
 
-add_action( 'parse_request', 'wpcf7_control_init', 20, 0 );
 
+add_action(
+	'parse_request',
+	'wpcf7_control_init',
+	20, 0
+);
+
+/**
+ * Handles a submission in non-Ajax mode.
+ */
 function wpcf7_control_init() {
 	if ( WPCF7_Submission::is_restful() ) {
 		return;
@@ -16,6 +27,10 @@ function wpcf7_control_init() {
 	}
 }
 
+
+/**
+ * Registers main scripts and styles.
+ */
 add_action(
 	'wp_enqueue_scripts',
 	function () {
@@ -89,6 +104,10 @@ add_action(
 	10, 0
 );
 
+
+/**
+ * Enqueues scripts.
+ */
 function wpcf7_enqueue_scripts() {
 	wp_enqueue_script( 'contact-form-7' );
 
@@ -103,10 +122,18 @@ function wpcf7_enqueue_scripts() {
 	do_action( 'wpcf7_enqueue_scripts' );
 }
 
+
+/**
+ * Returns true if the main script is enqueued.
+ */
 function wpcf7_script_is() {
 	return wp_script_is( 'contact-form-7' );
 }
 
+
+/**
+ * Enqueues styles.
+ */
 function wpcf7_enqueue_styles() {
 	wp_enqueue_style( 'contact-form-7' );
 
@@ -117,14 +144,24 @@ function wpcf7_enqueue_styles() {
 	do_action( 'wpcf7_enqueue_styles' );
 }
 
+
+/**
+ * Returns true if the main stylesheet is enqueued.
+ */
 function wpcf7_style_is() {
 	return wp_style_is( 'contact-form-7' );
 }
 
-/* HTML5 Fallback */
 
-add_action( 'wp_enqueue_scripts', 'wpcf7_html5_fallback', 20, 0 );
+add_action(
+	'wp_enqueue_scripts',
+	'wpcf7_html5_fallback',
+	20, 0
+);
 
+/**
+ * Enqueues scripts and styles for the HTML5 fallback.
+ */
 function wpcf7_html5_fallback() {
 	if ( ! wpcf7_support_html5_fallback() ) {
 		return;
