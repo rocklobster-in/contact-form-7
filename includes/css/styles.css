@@ -44,7 +44,7 @@
 }
 
 .wpcf7-not-valid-tip {
-	color: #dc3232;
+	color: #dc3232; /* Red */
 	font-size: 1em;
 	font-weight: normal;
 	display: block;
