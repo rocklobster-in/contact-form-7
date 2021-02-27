@@ -7,6 +7,8 @@ assignees: ''
 
 ---
 
+**Warning:** GitHub isn't a place to post your support requests. Any support requests posted here will be closed without explanation. If you do it more than once, you will get blocked automatically.
+
 **Is your feature request related to a problem? Please describe.**
 A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
 
