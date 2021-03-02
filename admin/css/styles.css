@@ -51,7 +51,7 @@ span.shortcode input {
 }
 
 #submitpost input.delete:hover {
-	color: #dc3232;
+	color: #dc3232; /* Red */
 }
 
 #submitpost input.delete:focus {
@@ -64,7 +64,7 @@ span.shortcode input {
 
 .keyboard-interaction {
 	visibility: hidden;
-	color: #23282d;
+	color: #23282d; /* Dark Gray 800 */
 }
 
 div.config-error, span.config-error, ul.config-error {
@@ -328,6 +328,21 @@ ul.config-error li {
 }
 
 /*
+ * Sendinblue Tab
+ */
+#sendinblue-panel table tr.inactive ~ tr {
+	display: none;
+}
+
+#sendinblue-panel .dashicons {
+ 	text-decoration: none;
+}
+
+#sendinblue-panel td p {
+ 	margin-top: 12px;
+}
+
+/*
  * List Table
  */
 .fixed .column-title {
@@ -416,7 +431,7 @@ ul.config-error li {
 	float: right;
 	font-size: 13px;
 	color: #666;
-	margin: 2px 0 5px;
+	margin: 1em;
 	line-height: 1.5;
 	max-width: 240px;
 }

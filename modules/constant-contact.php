@@ -1,12 +1,12 @@
 <?php
 
-add_action( 'wpcf7_init', 'wpcf7_constant_contact_register_service', 10, 0 );
+add_action( 'wpcf7_init', 'wpcf7_constant_contact_register_service', 20, 0 );
 
 function wpcf7_constant_contact_register_service() {
 	$integration = WPCF7_Integration::get_instance();
 
 	$integration->add_category( 'email_marketing',
-		__( 'Email Marketing', 'contact-form-7' ) );
+		__( 'Email marketing', 'contact-form-7' ) );
 
 	$service = WPCF7_ConstantContact::get_instance();
 	$integration->add_service( 'constant_contact', $service );
@@ -459,20 +459,20 @@ class WPCF7_ConstantContact extends WPCF7_Service_OAuth2 {
 		switch ( $message ) {
 			case 'success':
 				echo sprintf(
-					'<div class="updated notice notice-success is-dismissible"><p>%s</p></div>',
+					'<div class="notice notice-success"><p>%s</p></div>',
 					esc_html( __( "Connection established.", 'contact-form-7' ) )
 				);
 				break;
 			case 'failed':
 				echo sprintf(
-					'<div class="error notice notice-error is-dismissible"><p><strong>%1$s</strong>: %2$s</p></div>',
+					'<div class="notice notice-error"><p><strong>%1$s</strong>: %2$s</p></div>',
 					esc_html( __( "Error", 'contact-form-7' ) ),
 					esc_html( __( "Failed to establish connection. Please double-check your configuration.", 'contact-form-7' ) )
 				);
 				break;
 			case 'updated':
 				echo sprintf(
-					'<div class="updated notice notice-success is-dismissible"><p>%s</p></div>',
+					'<div class="notice notice-success"><p>%s</p></div>',
 					esc_html( __( "Configuration updated.", 'contact-form-7' ) )
 				);
 				break;
@@ -487,7 +487,7 @@ class WPCF7_ConstantContact extends WPCF7_Service_OAuth2 {
 					'https://contactform7.com/constant-contact-integration/',
 					'contact-form-7'
 				),
-				__( 'Constant Contact Integration', 'contact-form-7' )
+				__( 'Constant Contact integration', 'contact-form-7' )
 			)
 		) . '</p>';
 
@@ -536,7 +536,7 @@ class WPCF7_ConstantContact extends WPCF7_Service_OAuth2 {
 	<th scope="row"><label for="client_secret"><?php echo esc_html( __( 'App Secret', 'contact-form-7' ) ); ?></label></th>
 	<td><?php
 		if ( $this->is_active() ) {
-			echo esc_html( wpcf7_mask_password( $this->client_secret ) );
+			echo esc_html( wpcf7_mask_password( $this->client_secret, 4, 4 ) );
 			echo sprintf(
 				'<input type="hidden" value="%1$s" id="client_secret" name="client_secret" />',
 				esc_attr( $this->client_secret )

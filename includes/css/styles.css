@@ -15,7 +15,9 @@
 	border: 2px solid #00a0d2; /* Blue */
 }
 
-.wpcf7 form.init .wpcf7-response-output {
+.wpcf7 form.init .wpcf7-response-output,
+.wpcf7 form.resetting .wpcf7-response-output,
+.wpcf7 form.submitting .wpcf7-response-output {
 	display: none;
 }
 
@@ -42,65 +44,108 @@
 }
 
 .wpcf7-not-valid-tip {
-	color: #dc3232;
+	color: #dc3232; /* Red */
 	font-size: 1em;
 	font-weight: normal;
 	display: block;
 }
 
 .use-floating-validation-tip .wpcf7-not-valid-tip {
-	position: absolute;
-	top: 20%;
-	left: 20%;
+	position: relative;
+	top: -2ex;
+	left: 1em;
 	z-index: 100;
 	border: 1px solid #dc3232;
 	background: #fff;
 	padding: .2em .8em;
+	width: 24em;
 }
 
-span.wpcf7-list-item {
+.wpcf7-list-item {
 	display: inline-block;
 	margin: 0 0 0 1em;
 }
 
-span.wpcf7-list-item-label::before,
-span.wpcf7-list-item-label::after {
+.wpcf7-list-item-label::before,
+.wpcf7-list-item-label::after {
 	content: " ";
 }
 
-div.wpcf7 .ajax-loader {
+.wpcf7 .ajax-loader {
 	visibility: hidden;
 	display: inline-block;
-	background-image: url('../../assets/ajax-loader.gif');
-	width: 16px;
-	height: 16px;
+	background-color: #23282d; /* Dark Gray 800 */
+	opacity: 0.75;
+	width: 24px;
+	height: 24px;
 	border: none;
+	border-radius: 100%;
 	padding: 0;
-	margin: 0 0 0 4px;
-	vertical-align: middle;
+	margin: 0 24px;
+	position: relative;
 }
 
-div.wpcf7 .ajax-loader.is-active {
+.wpcf7 form.submitting .ajax-loader {
 	visibility: visible;
 }
 
-div.wpcf7 div.ajax-error {
-	display: none;
+.wpcf7 .ajax-loader::before {
+	content: '';
+	position: absolute;
+	background-color: #fbfbfc; /* Light Gray 100 */
+	top: 4px;
+	left: 4px;
+	width: 6px;
+	height: 6px;
+	border: none;
+	border-radius: 100%;
+	transform-origin: 8px 8px;
+	animation-name: spin;
+	animation-duration: 1000ms;
+	animation-timing-function: linear;
+	animation-iteration-count: infinite;
 }
 
-div.wpcf7 .placeheld {
-	color: #888;
+@media (prefers-reduced-motion: reduce) {
+	.wpcf7 .ajax-loader::before {
+		animation-name: blink;
+		animation-duration: 2000ms;
+	}
 }
 
-div.wpcf7 input[type="file"] {
+@keyframes spin {
+	from {
+		transform: rotate(0deg);
+	}
+
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+@keyframes blink {
+	from {
+		opacity: 0;
+	}
+
+	50% {
+		opacity: 1;
+	}
+
+	to {
+		opacity: 0;
+	}
+}
+
+.wpcf7 input[type="file"] {
 	cursor: pointer;
 }
 
-div.wpcf7 input[type="file"]:disabled {
+.wpcf7 input[type="file"]:disabled {
 	cursor: default;
 }
 
-div.wpcf7 .wpcf7-submit:disabled {
+.wpcf7 .wpcf7-submit:disabled {
 	cursor: not-allowed;
 }
 

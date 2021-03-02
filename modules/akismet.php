@@ -33,7 +33,14 @@ function wpcf7_akismet( $spam, $submission ) {
 	$c['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
 	$c['referrer'] = $_SERVER['HTTP_REFERER'];
 	$c['comment_type'] = 'contact-form';
-	$c['comment_date_gmt'] = $submission->get_meta( 'timestamp' );
+
+	$datetime = date_create_immutable(
+		'@' . $submission->get_meta( 'timestamp' )
+	);
+
+	if ( $datetime ) {
+		$c['comment_date_gmt'] = $datetime->format( DATE_ATOM );
+	}
 
 	if ( $permalink = get_permalink() ) {
 		$c['permalink'] = $permalink;

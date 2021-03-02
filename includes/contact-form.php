@@ -75,23 +75,21 @@ class WPCF7_ContactForm {
 	}
 
 	public static function get_template( $args = '' ) {
-		global $l10n;
-
-		$defaults = array( 'locale' => null, 'title' => '' );
-		$args = wp_parse_args( $args, $defaults );
+		$args = wp_parse_args( $args, array(
+			'locale' => '',
+			'title' => __( 'Untitled', 'contact-form-7' ),
+		) );
 
 		$locale = $args['locale'];
 		$title = $args['title'];
 
-		if ( $locale ) {
-			$mo_orig = $l10n['contact-form-7'];
-			wpcf7_load_textdomain( $locale );
+		if ( ! $switched = wpcf7_load_textdomain( $locale ) ) {
+			$locale = determine_locale();
 		}
 
-		self::$current = $contact_form = new self;
-		$contact_form->title =
-			( $title ? $title : __( 'Untitled', 'contact-form-7' ) );
-		$contact_form->locale = ( $locale ? $locale : get_user_locale() );
+		$contact_form = new self;
+		$contact_form->title = $title;
+		$contact_form->locale = $locale;
 
 		$properties = $contact_form->get_properties();
 
@@ -102,11 +100,14 @@ class WPCF7_ContactForm {
 		$contact_form->properties = $properties;
 
 		$contact_form = apply_filters( 'wpcf7_contact_form_default_pack',
-			$contact_form, $args );
+			$contact_form, $args
+		);
 
-		if ( isset( $mo_orig ) ) {
-			$l10n['contact-form-7'] = $mo_orig;
+		if ( $switched ) {
+			wpcf7_load_textdomain();
 		}
+
+		self::$current = $contact_form;
 
 		return $contact_form;
 	}
@@ -517,7 +518,6 @@ class WPCF7_ContactForm {
 
 		$atts = array(
 			'class' => trim( $class ),
-			'role' => 'alert',
 			'aria-hidden' => 'true',
 		);
 
@@ -536,48 +536,56 @@ class WPCF7_ContactForm {
 	}
 
 	public function screen_reader_response() {
-		$class = 'screen-reader-response';
-		$content = '';
+		$primary_response = '';
+		$validation_errors = array();
 
 		if ( $this->is_posted() ) { // Post response output for non-AJAX
 			$submission = WPCF7_Submission::get_instance();
-
-			if ( $response = $submission->get_response() ) {
-				$content = esc_html( $response );
-			}
+			$primary_response = $submission->get_response();
 
 			if ( $invalid_fields = $submission->get_invalid_fields() ) {
-				$content .= "\n" . '<ul>' . "\n";
-
 				foreach ( (array) $invalid_fields as $name => $field ) {
+					$list_item = esc_html( $field['reason'] );
+
 					if ( $field['idref'] ) {
-						$link = sprintf( '<a href="#%1$s">%2$s</a>',
+						$list_item = sprintf(
+							'<a href="#%1$s">%2$s</a>',
 							esc_attr( $field['idref'] ),
-							esc_html( $field['reason'] ) );
-						$content .= sprintf( '<li>%s</li>', $link );
-					} else {
-						$content .= sprintf( '<li>%s</li>',
-							esc_html( $field['reason'] )
+							$list_item
 						);
 					}
 
-					$content .= "\n";
-				}
+					$validation_error_id = sprintf(
+						'%1$s-ve-%2$s',
+						$this->unit_tag(),
+						$name
+					);
 
-				$content .= '</ul>' . "\n";
+					$list_item = sprintf(
+						'<li id="%1$s">%2$s</li>',
+						$validation_error_id,
+						$list_item
+					);
+
+					$validation_errors[] = $list_item;
+				}
 			}
 		}
 
-		$atts = array(
-			'class' => trim( $class ),
-			'role' => 'alert',
-			'aria-live' => 'polite',
+		$primary_response = sprintf(
+			'<p role="status" aria-live="polite" aria-atomic="true">%s</p>',
+			esc_html( $primary_response )
 		);
 
-		$atts = wpcf7_format_atts( $atts );
+		$validation_errors = sprintf(
+			'<ul>%s</ul>',
+			implode( "\n", $validation_errors )
+		);
 
-		$output = sprintf( '<div %1$s>%2$s</div>',
-			$atts, $content
+		$output = sprintf(
+			'<div class="screen-reader-response">%1$s %2$s</div>',
+			$primary_response,
+			$validation_errors
 		);
 
 		return $output;
@@ -600,7 +608,6 @@ class WPCF7_ContactForm {
 
 		$atts = array(
 			'class' => 'wpcf7-not-valid-tip',
-			'role' => 'alert',
 			'aria-hidden' => 'true',
 		);
 
@@ -651,14 +658,16 @@ class WPCF7_ContactForm {
 
 	public function form_scan_shortcode( $cond = null ) {
 		wpcf7_deprecated_function( __METHOD__, '4.6',
-			'WPCF7_ContactForm::scan_form_tags' );
+			'WPCF7_ContactForm::scan_form_tags'
+		);
 
 		return $this->scan_form_tags( $cond );
 	}
 
 	public function form_elements() {
 		return apply_filters( 'wpcf7_form_elements',
-			$this->replace_all_form_tags() );
+			$this->replace_all_form_tags()
+		);
 	}
 
 	public function collect_mail_tags( $args = '' ) {
@@ -713,14 +722,18 @@ class WPCF7_ContactForm {
 		$mail = array_filter( $mail );
 
 		foreach ( (array) $this->collect_mail_tags() as $mail_tag ) {
-			$pattern = sprintf( '/\[(_[a-z]+_)?%s([ \t]+[^]]+)?\]/',
-				preg_quote( $mail_tag, '/' ) );
+			$pattern = sprintf(
+				'/\[(_[a-z]+_)?%s([ \t]+[^]]+)?\]/',
+				preg_quote( $mail_tag, '/' )
+			);
+
 			$used = preg_grep( $pattern, $mail );
 
 			echo sprintf(
 				'<span class="%1$s">[%2$s]</span>',
 				'mailtag code ' . ( $used ? 'used' : 'unused' ),
-				esc_html( $mail_tag ) );
+				esc_html( $mail_tag )
+			);
 		}
 	}
 
@@ -739,7 +752,8 @@ class WPCF7_ContactForm {
 				'status' => 'error',
 				'message' => __(
 					"This contact form is available only for logged in users.",
-					'contact-form-7' ),
+					'contact-form-7'
+				),
 			);
 
 			return $result;

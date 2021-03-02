@@ -126,6 +126,15 @@
 				$( '#publishing-action .spinner' ).addClass( 'is-active' );
 			}
 		} );
+
+		$( '#wpcf7-sendinblue-enable-contact-list, #wpcf7-sendinblue-enable-transactional-email' ).on( 'change', function() {
+			if ( $( this ).is( ':checked' ) ) {
+				$( this ).closest( 'tr' ).removeClass( 'inactive' );
+			} else {
+				$( this ).closest( 'tr' ).addClass( 'inactive' );
+			}
+		} );
+
 	} );
 
 	wpcf7.toggleMail2 = function( checkbox ) {
@@ -150,9 +159,11 @@
 
 			var section = $( this ).attr( 'data-config-field' );
 
+			$( this ).attr( 'aria-describedby', 'wpcf7-config-error-for-' + section );
+
 			if ( errors[ section ] ) {
 				var $list = $( '<ul></ul>' ).attr( {
-					'role': 'alert',
+					'id': 'wpcf7-config-error-for-' + section,
 					'class': 'config-error'
 				} );
 

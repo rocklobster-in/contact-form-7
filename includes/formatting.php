@@ -39,8 +39,10 @@ function wpcf7_autop( $pee, $br = 1 ) {
 		$pee .= '<p>' . trim( $tinkle, "\n" ) . "</p>\n";
 	}
 
-	$pee = preg_replace( '|<p>\s*</p>|', '', $pee ); // under certain strange conditions it could create a P of entirely whitespace
 	$pee = preg_replace( '!<p>([^<]+)</(div|address|form|fieldset)>!', "<p>$1</p></$2>", $pee );
+
+	$pee = preg_replace( '|<p>\s*</p>|', '', $pee ); // under certain strange conditions it could create a P of entirely whitespace
+
 	$pee = preg_replace( '!<p>\s*(</?' . $allblocks . '[^>]*>)\s*</p>!', "$1", $pee ); // don't pee all over a tag
 	$pee = preg_replace( "|<p>(<li.+?)</p>|", "$1", $pee ); // problem with nested lists
 	$pee = preg_replace( '|<p><blockquote([^>]*)>|i', "<blockquote$1><p>", $pee );
@@ -178,167 +180,17 @@ function wpcf7_canonicalize( $text, $strto = 'lower' ) {
 	return $text;
 }
 
-/**
- * Check whether a string is a valid NAME token.
- *
- * ID and NAME tokens must begin with a letter ([A-Za-z])
- * and may be followed by any number of letters, digits ([0-9]),
- * hyphens ("-"), underscores ("_"), colons (":"), and periods (".").
- *
- * @see http://www.w3.org/TR/html401/types.html#h-6.2
- *
- * @return bool True if it is a valid name, false if not.
- */
-function wpcf7_is_name( $string ) {
-	return preg_match( '/^[A-Za-z][-A-Za-z0-9_:.]*$/', $string );
-}
-
 function wpcf7_sanitize_unit_tag( $tag ) {
 	$tag = preg_replace( '/[^A-Za-z0-9_-]/', '', $tag );
 	return $tag;
 }
 
-function wpcf7_is_email( $email ) {
-	$result = is_email( $email );
-	return apply_filters( 'wpcf7_is_email', $result, $email );
-}
-
-function wpcf7_is_url( $url ) {
-	$result = ( false !== filter_var( $url, FILTER_VALIDATE_URL ) );
-	return apply_filters( 'wpcf7_is_url', $result, $url );
-}
-
-function wpcf7_is_tel( $tel ) {
-	$pattern = '%^[+]?' // + sign
-		. '(?:\([0-9]+\)|[0-9]+)' // (1234) or 1234
-		. '(?:[/ -]*' // delimiter
-		. '(?:\([0-9]+\)|[0-9]+)' // (1234) or 1234
-		. ')*$%';
-
-	$result = preg_match( $pattern, trim( $tel ) );
-	return apply_filters( 'wpcf7_is_tel', $result, $tel );
-}
-
-function wpcf7_is_number( $number ) {
-	$result = is_numeric( $number );
-	return apply_filters( 'wpcf7_is_number', $result, $number );
-}
-
-function wpcf7_is_date( $date ) {
-	$result = preg_match( '/^([0-9]{4,})-([0-9]{2})-([0-9]{2})$/', $date, $matches );
-
-	if ( $result ) {
-		$result = checkdate( $matches[2], $matches[3], $matches[1] );
-	}
-
-	return apply_filters( 'wpcf7_is_date', $result, $date );
-}
-
-function wpcf7_is_mailbox_list( $mailbox_list ) {
-	if ( ! is_array( $mailbox_list ) ) {
-		$mailbox_text = (string) $mailbox_list;
-		$mailbox_text = wp_unslash( $mailbox_text );
-
-		$mailbox_text = preg_replace( '/\\\\(?:\"|\')/', 'esc-quote',
-			$mailbox_text );
-
-		$mailbox_text = preg_replace( '/(?:\".*?\"|\'.*?\')/', 'quoted-string',
-			$mailbox_text );
-
-		$mailbox_list = explode( ',', $mailbox_text );
-	}
-
-	$addresses = array();
-
-	foreach ( $mailbox_list as $mailbox ) {
-		if ( ! is_string( $mailbox ) ) {
-			return false;
-		}
-
-		$mailbox = trim( $mailbox );
-
-		if ( preg_match( '/<(.+)>$/', $mailbox, $matches ) ) {
-			$addr_spec = $matches[1];
-		} else {
-			$addr_spec = $mailbox;
-		}
-
-		if ( ! wpcf7_is_email( $addr_spec ) ) {
-			return false;
-		}
-
-		$addresses[] = $addr_spec;
-	}
-
-	return $addresses;
-}
-
-function wpcf7_is_email_in_domain( $email, $domain ) {
-	$email_list = wpcf7_is_mailbox_list( $email );
-	$domain = strtolower( $domain );
-
-	foreach ( $email_list as $email ) {
-		$email_domain = substr( $email, strrpos( $email, '@' ) + 1 );
-		$email_domain = strtolower( $email_domain );
-		$domain_parts = explode( '.', $domain );
-
-		do {
-			$site_domain = implode( '.', $domain_parts );
-
-			if ( $site_domain == $email_domain ) {
-				continue 2;
-			}
-
-			array_shift( $domain_parts );
-		} while ( $domain_parts );
-
-		return false;
-	}
-
-	return true;
-}
-
-function wpcf7_is_email_in_site_domain( $email ) {
-	if ( wpcf7_is_localhost() ) {
-		return true;
-	}
-
-	$site_domain = strtolower( $_SERVER['SERVER_NAME'] );
-
-	if ( preg_match( '/^[0-9.]+$/', $site_domain ) ) { // 123.456.789.012
-		return true;
-	}
-
-	if ( wpcf7_is_email_in_domain( $email, $site_domain ) ) {
-		return true;
-	}
-
-	$home_url = home_url();
-
-	// for interoperability with WordPress MU Domain Mapping plugin
-	if ( is_multisite()
-	and function_exists( 'domain_mapping_siteurl' ) ) {
-		$domain_mapping_siteurl = domain_mapping_siteurl( false );
-
-		if ( $domain_mapping_siteurl ) {
-			$home_url = $domain_mapping_siteurl;
-		}
-	}
-
-	if ( preg_match( '%^https?://([^/]+)%', $home_url, $matches ) ) {
-		$site_domain = strtolower( $matches[1] );
-
-		if ( $site_domain != strtolower( $_SERVER['SERVER_NAME'] )
-		and wpcf7_is_email_in_domain( $email, $site_domain ) ) {
-			return true;
-		}
-	}
-
-	return false;
-}
-
 function wpcf7_antiscript_file_name( $filename ) {
 	$filename = wp_basename( $filename );
+
+	$filename = preg_replace( '/[\r\n\t -]+/', '-', $filename );
+	$filename = preg_replace( '/[\pC\pZ]+/iu', '', $filename );
+
 	$parts = explode( '.', $filename );
 
 	if ( count( $parts ) < 2 ) {
@@ -367,21 +219,36 @@ function wpcf7_antiscript_file_name( $filename ) {
 	return $filename;
 }
 
-function wpcf7_mask_password( $text, $length_unmasked = 0 ) {
-	$length = strlen( $text );
-	$length_unmasked = absint( $length_unmasked );
 
-	if ( 0 == $length_unmasked ) {
-		if ( 9 < $length ) {
-			$length_unmasked = 4;
-		} elseif ( 3 < $length ) {
-			$length_unmasked = 2;
-		} else {
-			$length_unmasked = $length;
-		}
+/**
+ * Masks a password with asterisks (*).
+ *
+ * @param int $right Length of right-hand unmasked text. Default 0.
+ * @param int $left Length of left-hand unmasked text. Default 0.
+ * @return string Text of masked password.
+ */
+function wpcf7_mask_password( $text, $right = 0, $left = 0 ) {
+	$length = strlen( $text );
+
+	$right = absint( $right );
+	$left = absint( $left );
+
+	if ( $length < $right + $left ) {
+		$right = $left = 0;
 	}
 
-	$text = substr( $text, 0 - $length_unmasked );
-	$text = str_pad( $text, $length, '*', STR_PAD_LEFT );
+	if ( $length <= 48 ) {
+		$masked = str_repeat( '*', $length - ( $right + $left ) );
+	} elseif ( $right + $left < 48 ) {
+		$masked = str_repeat( '*', 48 - ( $right + $left ) );
+	} else {
+		$masked = '****';
+	}
+
+	$left_unmasked = $left ? substr( $text, 0, $left ) : '';
+	$right_unmasked = $right ? substr( $text, -1 * $right ) : '';
+
+	$text = $left_unmasked . $masked . $right_unmasked;
+
 	return $text;
 }

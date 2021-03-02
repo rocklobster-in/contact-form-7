@@ -1,24 +1,28 @@
 {
-  "name": "contact-form-7",
-  "version": "5.3.0",
-  "description": "Contact form selector block.",
-  "private": true,
-  "scripts": {
-    "start": "wp-scripts start includes/block-editor/src/index.js --output-path=includes/block-editor",
-    "build": "wp-scripts build includes/block-editor/src/index.js --output-path=includes/block-editor",
-    "packages-update": "wp-scripts packages-update"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/takayukister/contact-form-7.git"
-  },
-  "author": "takayukister",
-  "license": "GPL-2.0-only",
-  "bugs": {
-    "url": "https://github.com/takayukister/contact-form-7/issues"
-  },
-  "homepage": "https://github.com/takayukister/contact-form-7#readme",
-  "devDependencies": {
-    "@wordpress/scripts": "^12.2.1"
-  }
+	"name": "contact-form-7",
+	"version": "5.3.0",
+	"description": "Contact form selector block.",
+	"private": true,
+	"scripts": {
+		"start:front": "wp-scripts start includes/js/src/index.js --output-path=includes/js",
+		"build:front": "wp-scripts build includes/js/src/index.js --output-path=includes/js",
+		"start:block": "wp-scripts start includes/block-editor/src/index.js --output-path=includes/block-editor",
+		"build:block": "wp-scripts build includes/block-editor/src/index.js --output-path=includes/block-editor",
+		"start:recaptcha": "wp-scripts start modules/recaptcha/src/index.js --output-path=modules/recaptcha",
+		"build:recaptcha": "wp-scripts build modules/recaptcha/src/index.js --output-path=modules/recaptcha",
+		"packages-update": "wp-scripts packages-update"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/takayukister/contact-form-7.git"
+	},
+	"author": "takayukister",
+	"license": "GPL-2.0-only",
+	"bugs": {
+		"url": "https://github.com/takayukister/contact-form-7/issues"
+	},
+	"homepage": "https://github.com/takayukister/contact-form-7#readme",
+	"devDependencies": {
+		"@wordpress/scripts": "^13.0.3"
+	}
 }

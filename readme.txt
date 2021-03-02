@@ -2,9 +2,9 @@
 Contributors: takayukister
 Donate link: https://contactform7.com/donate/
 Tags: contact, form, contact form, feedback, email, ajax, captcha, akismet, multilingual
-Requires at least: 5.4
-Tested up to: 5.5
-Stable tag: 5.2.2
+Requires at least: 5.5
+Tested up to: 5.7
+Stable tag: 5.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -36,6 +36,7 @@ If you activate certain features in this plugin, the contact form submitter's pe
 * reCAPTCHA ([Google](https://policies.google.com/?hl=en))
 * Akismet ([Automattic](https://automattic.com/privacy/))
 * Constant Contact ([Endurance International Group](https://www.endurance.com/privacy))
+* [Sendinblue](https://www.sendinblue.com/legal/privacypolicy/)
 
 = Recommended plugins =
 
@@ -75,35 +76,8 @@ Do you have questions or issues with Contact Form 7? Use these support channels 
 
 For more information, see [Releases](https://contactform7.com/category/releases/).
 
-= 5.3 =
+= 5.4 =
 
-= 5.2.2 =
-
-* Fixed: A REST API call aborted with a PHP fatal error when the `WPCF7_USE_PIPE` constant value was false.
-* Introduces the `wpcf7_doing_it_wrong()` function.
-* Sets the `trigger_error()` function’s `$error_type` parameter explicitly.
-* Makes the `wpcf7_special_mail_tags` filter functions’ `$mail_tag` parameter optional.
-
-= 5.2.1 =
-
-* Makes the [contact-form-7 404 "Not Found"] message localizable.
-* REST API: Adds the `permission_callback` argument to every endpoint definition.
-* Flamingo: Uses `id()` instead of `id`, if available.
-* Fixed: The `free_text` option did not work correctly with the `exclusive` option.
-* Applies `wpcf7_mail_tag_replaced` filters even when the `$posted_data` is null.
-* Adds custom mail-tag replacement for quiz fields.
-* Admin: Updates the date column format in the list table.
-
-= 5.2 =
-
-* Submission: Introduces the `$posted_data_hash` and `$skip_spam_check` properties.
-* Submission: Introduces the `wpcf7_skip_spam_check` filter hook.
-* Contact form: Introduces the `pref()` method.
-* REST API: Adds parsed form-tags data to the response.
-* REST API: Deprecates the `wpcf7_ajax_json_echo` and `wpcf7_ajax_onload` filter hooks and introduces the `wpcf7_feedback_response` and `wpcf7_refill_response` filter hooks as alternatives.
-* Frontend CSS: Style rules for the response output refer to the `form` element’s `class` attribute.
-* Frontend JavaScript: Abolishes the use of jQuery events.
-* reCAPTCHA: Moves script code to a separate file.
-* reCAPTCHA: Changes the name of the field for reCAPTCHA response token from `g-recaptcha-response` to `_wpcf7_recaptcha_response`.
+https://contactform7.com/contact-form-7-54/
 
 == Upgrade Notice ==
