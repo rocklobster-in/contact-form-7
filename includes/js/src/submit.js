@@ -121,7 +121,7 @@ export default function submit( form, options = {} ) {
 			'.screen-reader-response [role="status"]'
 		).insertAdjacentText( 'beforeend', response.message );
 
-		form.querySelectorAll( '.wpcf7-response-output' ).forEach( div => {
+		[...form.querySelectorAll( '.wpcf7-response-output' )].forEach( div => {
 			div.innerText = response.message;
 		} );
 
@@ -149,17 +149,17 @@ export const clearResponse = form => {
 		'.screen-reader-response ul'
 	).innerText = '';
 
-	form.querySelectorAll( '.wpcf7-not-valid-tip' ).forEach( span => {
+	[...form.querySelectorAll( '.wpcf7-not-valid-tip' )].forEach( span => {
 		span.remove();
 	} );
 
-	form.querySelectorAll( '.wpcf7-form-control' ).forEach( control => {
+	[...form.querySelectorAll( '.wpcf7-form-control' )].forEach( control => {
 		control.setAttribute( 'aria-invalid', 'false' );
 		control.removeAttribute( 'aria-describedby' );
 		control.classList.remove( 'wpcf7-not-valid' );
 	} );
 
-	form.querySelectorAll( '.wpcf7-response-output' ).forEach( div => {
+	[...form.querySelectorAll( '.wpcf7-response-output' )].forEach( div => {
 		div.innerText = '';
 	} );
 };

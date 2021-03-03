@@ -1,7 +1,7 @@
 import { absInt } from './utils';
 
 export const exclusiveCheckboxHelper = form => {
-	form.querySelectorAll( '.wpcf7-exclusive-checkbox' ).forEach( element => {
+	[...form.querySelectorAll( '.wpcf7-exclusive-checkbox' )].forEach( element => {
 		element.addEventListener( 'change', event => {
 			const nameAttr = event.target.getAttribute( 'name' );
 
@@ -9,7 +9,7 @@ export const exclusiveCheckboxHelper = form => {
 				`input[type="checkbox"][name="${ nameAttr }"]`
 			);
 
-			siblings.forEach( sibling => {
+			[...siblings].forEach( sibling => {
 				if ( sibling !== event.target ) {
 					sibling.checked = false;
 				}
@@ -19,7 +19,7 @@ export const exclusiveCheckboxHelper = form => {
 };
 
 export const freeTextHelper = form => {
-	form.querySelectorAll( '.has-free-text' ).forEach( element => {
+	[...form.querySelectorAll( '.has-free-text' )].forEach( element => {
 		const freetext = element.querySelector( 'input.wpcf7-free-text' );
 
 		const checkbox = element.querySelector(
@@ -39,7 +39,7 @@ export const freeTextHelper = form => {
 };
 
 export const urlInputHelper = form => {
-	form.querySelectorAll( '.wpcf7-validates-as-url' ).forEach( element => {
+	[...form.querySelectorAll( '.wpcf7-validates-as-url' )].forEach( element => {
 		element.addEventListener( 'change', event => {
 			let val = element.value.trim();
 
@@ -64,7 +64,7 @@ export const initSubmitButton = form => {
 	const checkAcceptance = () => {
 		let accepted = true;
 
-		form.querySelectorAll( '.wpcf7-acceptance' ).forEach( parent => {
+		[...form.querySelectorAll( '.wpcf7-acceptance' )].forEach( parent => {
 			if ( ! accepted || parent.classList.contains( 'optional' ) ) {
 				return;
 			}
@@ -77,7 +77,7 @@ export const initSubmitButton = form => {
 			}
 		} );
 
-		form.querySelectorAll( '.wpcf7-submit' ).forEach( button => {
+		[...form.querySelectorAll( '.wpcf7-submit' )].forEach( button => {
 			button.disabled = ! accepted;
 		} );
 	};
@@ -127,7 +127,7 @@ export const initCharacterCount = form => {
 
 		const counters = form.querySelectorAll( '.wpcf7-character-count' );
 
-		counters.forEach( counter => {
+		[...counters].forEach( counter => {
 			const targetName = counter.getAttribute( 'data-target-name' );
 			const target = form.querySelector( `[name="${ targetName }"]` );
 

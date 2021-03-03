@@ -63,20 +63,20 @@ export const resetCaptcha = ( form, refill ) => {
 	for ( const name in refill ) {
 		const url = refill[ name ];
 
-		form.querySelectorAll( `input[name="${ name }"]` ).forEach( input => {
+		[...form.querySelectorAll( `input[name="${ name }"]` )].forEach( input => {
 			input.value = '';
 		} );
 
-		form.querySelectorAll( `img.wpcf7-captcha-${ name }` ).forEach( img => {
+		[...form.querySelectorAll( `img.wpcf7-captcha-${ name }` )].forEach( img => {
 			img.setAttribute( 'src', url );
 		} );
 
 		const match = /([0-9]+)\.(png|gif|jpeg)$/.exec( url );
 
 		if ( match ) {
-			form.querySelectorAll(
+			[...form.querySelectorAll(
 				`input[name="_wpcf7_captcha_challenge_${ name }"]`
-			).forEach( input => {
+			)].forEach( input => {
 				input.value = match[ 1 ];
 			} );
 		}
@@ -89,9 +89,9 @@ export const resetQuiz = ( form, refill ) => {
 		const question = refill[ name ][ 0 ];
 		const hashedAnswer = refill[ name ][ 1 ];
 
-		form.querySelectorAll(
+		[...form.querySelectorAll(
 			`.wpcf7-form-control-wrap.${ name }`
-		).forEach( wrap => {
+		)].forEach( wrap => {
 			wrap.querySelector( `input[name="${ name }"]` ).value = '';
 			wrap.querySelector( '.wpcf7-quiz-label' ).textContent = question;
 

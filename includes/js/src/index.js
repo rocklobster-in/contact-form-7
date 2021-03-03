@@ -12,5 +12,5 @@ document.addEventListener( 'DOMContentLoaded', event => {
 
 	const forms = document.querySelectorAll( '.wpcf7 > form' );
 
-	forms.forEach( form => wpcf7.init( form ) );
+	[...forms].forEach( form => wpcf7.init( form ) );
 } );
