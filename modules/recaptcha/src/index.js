@@ -11,6 +11,7 @@ function conditionallyRunRecaptcha(){
             for (var key in changedConsentCategory) {
                 if (changedConsentCategory.hasOwnProperty(key)) {
                     if (key === 'marketing' && changedConsentCategory[key] === 'allow') {
+                        remove_blocked_content_notice()
                         runReCaptcha()
                     }
                 }
@@ -120,12 +121,10 @@ function runInlineRecaptcha() {
     } );
 }
 
-const accept_marketing_cookies_button = document.querySelector('.wpcf7-accept-marketing-cookies');
 
-accept_marketing_cookies_button.addEventListener('click', event => {
-    wp_set_consent('marketing', 'allow');
-    document.getElementsByClassName('wpcf7-blocked-content-notice')[0].remove();
-});
-
-
-
+function remove_blocked_content_notice() {
+    var blocked_content_notice = document.getElementsByClassName('wpcf7-blocked-content-notice')[0];
+    if ( blocked_content_notice ) {
+        blocked_content_notice.parentElement.remove();
+    }
+}
