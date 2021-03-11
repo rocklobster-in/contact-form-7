@@ -1,8 +1,14 @@
-
+/**
+ * Integrated with the WP Consent API, to allow for privacy laws
+ * https://github.com/rlankhorst/wp-consent-level-api
+ *
+ * The WP Consent API is currently supported by Complianz and Cookiebot and is scheduled for integration in WordPress core.
+ *
+ * It offers a standardized API for plugins to communicate consent status to each other.
+ */
 document.addEventListener('DOMContentLoaded', event => {
 	conditionallyRunRecaptcha();
 });
-
 
 /**
  * If consent api is active:
@@ -26,9 +32,12 @@ function conditionallyRunRecaptcha(){
 	} else {
 		runReCaptcha();
 	}
-
 }
 
+/**
+ * Wrapper function to check if the consent api is active.
+ * @returns {boolean}
+ */
 
 function cf7_consent_api_active(){
     return typeof wp_has_consent == 'function';
@@ -72,7 +81,9 @@ function getScript(source, callback) {
     prior.parentNode.insertBefore(script, prior);
 }
 
-
+/**
+ * Run the inline reCaptcha scripts
+ */
 function runInlineRecaptcha() {
     wpcf7_recaptcha = {
         ...( wpcf7_recaptcha ?? {} ),
@@ -136,7 +147,6 @@ function runInlineRecaptcha() {
         } );
     } );
 }
-
 
 /**
  * Remove html of the blocked content notice above Submit button
