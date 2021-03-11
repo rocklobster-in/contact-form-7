@@ -15,7 +15,11 @@ function wpcf7_recaptcha_register_service() {
 }
 
 add_filter('wpcf7_form_elements', 'add_accept_cookies_notice_before_submit', 10, 1);
-
+/**
+ * Add "Accept marketing cookies" notice above the Submit button
+ * @param $html
+ * @return mixed
+ */
 function add_accept_cookies_notice_before_submit( $html ) {
     if ( function_exists( 'wp_has_consent' ) ) {
         $html = str_replace(
@@ -29,7 +33,13 @@ function add_accept_cookies_notice_before_submit( $html ) {
 }
 
 add_filter('script_loader_tag', 'change_recaptcha_script_to_text_plain', 10, 2);
-
+/**
+ * Change google-recaptcha script to type="text/plain" so it doesn't get executed imidiatly
+ * Only when wp_consent_level_api is active
+ * @param $tag
+ * @param $handle
+ * @return mixed
+ */
 function change_recaptcha_script_to_text_plain($tag, $handle) {
     if ( $handle != 'google-recaptcha' || ! function_exists( 'wp_has_consent' ) ) return $tag;
 

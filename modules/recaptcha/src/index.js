@@ -4,6 +4,12 @@ document.addEventListener('DOMContentLoaded', event => {
 });
 
 
+/**
+ * If consent api is active:
+ *      remove "accept marketing cookies" notice and run recaptcha when marketing cookies are accepted
+ * Else
+ *      run recaptcha
+ */
 function conditionallyRunRecaptcha(){
 	if (cf7_consent_api_active()) {
         document.addEventListener( "wp_listen_for_consent_change", function (e) {
@@ -29,6 +35,10 @@ function cf7_consent_api_active(){
 }
 
 
+/**
+ * Google recaptcha script is added as type="text/plain" so it doesn't get executed imidiately
+ * We change that back to type="text/javascript" and run the script
+ */
 function runReCaptcha(){
 	var handle = document.getElementById('google-recaptcha-js');
     var src = handle.getAttribute('src');
@@ -38,6 +48,12 @@ function runReCaptcha(){
     }
 }
 
+
+/**
+ * Executes a script with source, run callback when completed
+ * @param source
+ * @param callback
+ */
 function getScript(source, callback) {
     var script = document.createElement('script');
     var prior = document.getElementsByTagName('script')[0];
@@ -122,6 +138,9 @@ function runInlineRecaptcha() {
 }
 
 
+/**
+ * Remove html of the blocked content notice above Submit button
+ */
 function remove_blocked_content_notice() {
     var blocked_content_notice = document.getElementsByClassName('wpcf7-blocked-content-notice')[0];
     if ( blocked_content_notice ) {
