@@ -17,7 +17,7 @@ function wpcf7_recaptcha_register_service() {
 add_filter('wpcf7_form_elements', 'add_accept_cookies_notice_before_submit', 10, 1);
 
 function add_accept_cookies_notice_before_submit( $html ) {
-    if ( function_exists( 'wp_has_consent' ) && ! wp_has_consent('marketing') ) {
+    if ( function_exists( 'wp_has_consent' ) ) {
         $html = str_replace(
             '<p><input type="submit"',
             '<p><span class="wpcf7-blocked-content-notice wpcf7-accept-marketing-cookies">' .
