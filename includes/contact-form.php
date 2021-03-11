@@ -573,7 +573,7 @@ class WPCF7_ContactForm {
 		}
 
 		$primary_response = sprintf(
-			'<p role="status" aria-live="polite" aria-atomic="true">%s</p>',
+			'<span role="status" aria-live="polite" aria-atomic="true">%s</span>',
 			esc_html( $primary_response )
 		);
 
