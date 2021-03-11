@@ -14,9 +14,46 @@ function wpcf7_recaptcha_register_service() {
 	);
 }
 
+add_filter('wpcf7_form_elements', 'add_accept_cookies_notice_before_submit', 10, 1);
+/**
+ * Add "Accept marketing cookies" notice above the Submit button
+ * @param $html
+ * @return mixed
+ */
+function add_accept_cookies_notice_before_submit( $html ) {
+    if ( function_exists( 'wp_has_consent' ) ) {
+        $html = str_replace(
+            '<p><input type="submit"',
+            '<p><span class="wpcf7-blocked-content-notice wpcf7-accept-marketing-cookies">' .
+            __("Accept marketing cookies before sending the form", 'contact-form-7') . '</span></p>' .
+            '<p><input type="submit"', $html );
+    }
+
+    return $html;
+}
+
+add_filter('script_loader_tag', 'change_recaptcha_script_to_text_plain', 10, 2);
+/**
+ * Change google-recaptcha script to type="text/plain" so it doesn't get executed imidiatly
+ * Only when wp_consent_level_api is active
+ * @param $tag
+ * @param $handle
+ * @return mixed
+ */
+function change_recaptcha_script_to_text_plain($tag, $handle) {
+    if ( $handle != 'google-recaptcha' || ! function_exists( 'wp_has_consent' ) ) return $tag;
+
+    if ( strpos( $tag, 'text/javascript' ) !== false ) {
+        return str_replace( 'text/javascript', 'text/plain', $tag );
+    } else {
+        return str_replace( '<script ', '<script type="text/plain" ', $tag );
+    }
+}
+
 add_action( 'wp_enqueue_scripts', 'wpcf7_recaptcha_enqueue_scripts', 20, 0 );
 
 function wpcf7_recaptcha_enqueue_scripts() {
+
 	$service = WPCF7_RECAPTCHA::get_instance();
 
 	if ( ! $service->is_active() ) {
