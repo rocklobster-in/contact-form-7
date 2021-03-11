@@ -1,4 +1,9 @@
 <?php
+/**
+ * Tell the consent API we're following the api
+ */
+$plugin = WPCF7_PLUGIN_BASENAME;
+add_filter("wp_consent_api_registered_$plugin", function(){return true;});
 
 add_action( 'wpcf7_init', 'wpcf7_recaptcha_register_service', 10, 0 );
 
