@@ -120,5 +120,12 @@ function runInlineRecaptcha() {
     } );
 }
 
+const accept_marketing_cookies_button = document.querySelector('.wpcf7-accept-marketing-cookies');
+
+accept_marketing_cookies_button.addEventListener('click', event => {
+    wp_set_consent('marketing', 'allow');
+    document.getElementsByClassName('wpcf7-blocked-content-notice')[0].remove();
+});
+
 
 

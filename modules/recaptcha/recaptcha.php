@@ -14,9 +14,23 @@ function wpcf7_recaptcha_register_service() {
 	);
 }
 
-add_filter('script_loader_tag', 'cmplz_caos_add_data_attribute', 10, 2);
 
-function cmplz_caos_add_data_attribute($tag, $handle) {
+add_filter('wpcf7_form_elements', 'add_accept_cookies_notice_before_submit', 10, 1);
+
+function add_accept_cookies_notice_before_submit( $html ) {
+    $html = str_replace(
+            '<p><input type="submit"',
+            '<p><div class="wpcf7-blocked-content-notice wpcf7-accept-marketing-cookies" style="text-align: left; cursor: pointer;">' .
+            'Click here to accept reCaptcha cookies before sending the form. </div></p>' .
+            '<p><input type="submit" ', $html );
+
+    return $html;
+}
+
+
+add_filter('script_loader_tag', 'change_recaptcha_script_to_text_plain', 10, 2);
+
+function change_recaptcha_script_to_text_plain($tag, $handle) {
     if ( $handle != 'google-recaptcha' || ! function_exists( 'wp_has_consent' ) ) return $tag;
 
     if ( strpos( $tag, 'text/javascript' ) !== false ) {
