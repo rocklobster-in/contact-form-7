@@ -80,12 +80,12 @@ function wpcf7_recaptcha_enqueue_scripts() {
 	}
 
 	$assets = wp_parse_args( $assets, array(
-		'src' => wpcf7_plugin_url( 'modules/recaptcha/src/index.js' ),
+		'src' => wpcf7_plugin_url( 'modules/recaptcha/index.js' ),
 		'dependencies' => array(
 			'google-recaptcha',
 			'wp-polyfill',
 		),
-		'version' => WPCF7_VERSION.time(),
+		'version' => WPCF7_VERSION,
 		'in_footer' => true,
 	) );
 

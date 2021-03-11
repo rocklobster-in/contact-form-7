@@ -1,1 +1,149 @@
-!function(e){"use strict";"undefined"!=typeof wpcf7&&null!==wpcf7&&(e(function(){var t,a=e("#welcome-panel");t=function(t){e.post(ajaxurl,{action:"wpcf7-update-welcome-panel",visible:t,welcomepanelnonce:e("#welcomepanelnonce").val()})},e("a.welcome-panel-close",a).click(function(e){e.preventDefault(),a.addClass("hidden"),t(0)}),e("#contact-form-editor").tabs({active:wpcf7.activeTab,activate:function(t,a){e("#active-tab").val(a.newTab.index())}}),e("#contact-form-editor-tabs").focusin(function(t){e("#contact-form-editor .keyboard-interaction").css("visibility","visible")}).focusout(function(t){e("#contact-form-editor .keyboard-interaction").css("visibility","hidden")}),wpcf7.toggleMail2("input:checkbox.toggle-form-table"),e("input:checkbox.toggle-form-table").click(function(e){wpcf7.toggleMail2(this)}),""===e("#title").val()&&e("#title").focus(),wpcf7.titleHint(),e(".contact-form-editor-box-mail span.mailtag").click(function(e){var t=document.createRange();t.selectNodeContents(this),window.getSelection().addRange(t)}),wpcf7.updateConfigErrors(),e("[data-config-field]").change(function(){var t=e("#post_ID").val();if(t&&-1!=t){var a=[];e(this).closest("form").find("[data-config-field]").each(function(){a.push({name:e(this).attr("name").replace(/^wpcf7-/,"").replace(/-/g,"_"),value:e(this).val()})}),a.push({name:"context",value:"dry-run"}),e.ajax({method:"POST",url:wpcf7.apiSettings.getRoute("/contact-forms/"+t),beforeSend:function(e){e.setRequestHeader("X-WP-Nonce",wpcf7.apiSettings.nonce)},data:a}).done(function(e){wpcf7.configValidator.errors=e.config_errors,wpcf7.updateConfigErrors()})}}),e(window).on("beforeunload",function(t){var a=!1;if(e('#wpcf7-admin-form-element :input[type!="hidden"]').each(function(){e(this).is(":checkbox, :radio")?this.defaultChecked!=e(this).is(":checked")&&(a=!0):e(this).is("select")?e(this).find("option").each(function(){this.defaultSelected!=e(this).is(":selected")&&(a=!0)}):this.defaultValue!=e(this).val()&&(a=!0)}),a)return t.returnValue=wpcf7.saveAlert,wpcf7.saveAlert}),e("#wpcf7-admin-form-element").submit(function(){"copy"!=this.action.value&&e(window).off("beforeunload"),"save"==this.action.value&&e("#publishing-action .spinner").addClass("is-active")}),e("#wpcf7-sendinblue-enable-contact-list, #wpcf7-sendinblue-enable-transactional-email").on("change",function(){e(this).is(":checked")?e(this).closest("tr").removeClass("inactive"):e(this).closest("tr").addClass("inactive")})}),wpcf7.toggleMail2=function(t){var a=e(t),i=e("fieldset",a.closest(".contact-form-editor-box-mail"));a.is(":checked")?i.removeClass("hidden"):i.addClass("hidden")},wpcf7.updateConfigErrors=function(){var t=wpcf7.configValidator.errors,a={total:0};if(e("[data-config-field]").each(function(){e(this).removeAttr("aria-invalid"),e(this).next("ul.config-error").remove();var i=e(this).attr("data-config-field");if(e(this).attr("aria-describedby","wpcf7-config-error-for-"+i),t[i]){var n=e("<ul></ul>").attr({id:"wpcf7-config-error-for-"+i,class:"config-error"});e.each(t[i],function(t,c){var o=e("<li></li>").append(wpcf7.iconInCircle("!")).append(e('<span class="screen-reader-text"></span>').text(wpcf7.configValidator.iconAlt)).append(" ");c.link?o.append(e("<a></a>").attr("href",c.link).text(c.message)):o.text(c.message),o.appendTo(n);var r=i.replace(/^mail_\d+\./,"mail.").replace(/\..*$/,"");a[r]||(a[r]=0),a[r]+=1,a.total+=1}),e(this).after(n).attr({"aria-invalid":"true"})}}),e("#contact-form-editor-tabs > li").each(function(){var i=e(this);i.find(".icon-in-circle").remove();var n=i.attr("id").replace(/-panel-tab$/,"");e.each(t,function(e,t){if((e=e.replace(/^mail_\d+\./,"mail.")).replace(/\..*$/,"")==n.replace("-","_")){var a=wpcf7.iconInCircle("!");return i.find("a.ui-tabs-anchor").first().append(a),!1}});var c=e("#"+n+"-panel > div.config-error:first");if(c.empty(),a[n.replace("-","_")])if(c.append(wpcf7.iconInCircle("!")),1<a[n.replace("-","_")]){var o=wpcf7.configValidator.manyErrorsInTab.replace("%d",a[n.replace("-","_")]);c.append(o)}else c.append(wpcf7.configValidator.oneErrorInTab)}),e("#misc-publishing-actions .misc-pub-section.config-error").remove(),a.total){var i=e("<div></div>").addClass("misc-pub-section config-error").append(wpcf7.iconInCircle("!"));1<a.total?i.append(wpcf7.configValidator.manyErrors.replace("%d",a.total)):i.append(wpcf7.configValidator.oneError),i.append("<br />").append(e("<a></a>").attr("href",wpcf7.configValidator.docUrl).text(wpcf7.configValidator.howToCorrect)),e("#misc-publishing-actions").append(i)}},wpcf7.titleHint=function(){var t=e("#title"),a=e("#title-prompt-text");""===t.val()&&a.removeClass("screen-reader-text"),a.click(function(){e(this).addClass("screen-reader-text"),t.focus()}),t.blur(function(){""===e(this).val()&&a.removeClass("screen-reader-text")}).focus(function(){a.addClass("screen-reader-text")}).keydown(function(t){a.addClass("screen-reader-text"),e(this).unbind(t)})},wpcf7.iconInCircle=function(t){return e('<span class="icon-in-circle" aria-hidden="true"></span>').text(t)},wpcf7.apiSettings.getRoute=function(e){var t=wpcf7.apiSettings.root;return t=t.replace(wpcf7.apiSettings.namespace,wpcf7.apiSettings.namespace+e)})}(jQuery);
+
+document.addEventListener('DOMContentLoaded', event => {
+    conditionallyRunRecaptcha();
+});
+
+
+/**
+ * If consent api is active:
+ *      remove "accept marketing cookies" notice and run recaptcha when marketing cookies are accepted
+ * Else
+ *      run recaptcha
+ */
+function conditionallyRunRecaptcha(){
+    if (cf7_consent_api_active()) {
+        document.addEventListener( "wp_listen_for_consent_change", function (e) {
+            var changedConsentCategory = e.detail;
+            for (var key in changedConsentCategory) {
+                if (changedConsentCategory.hasOwnProperty(key)) {
+                    if (key === 'marketing' && changedConsentCategory[key] === 'allow') {
+                        remove_blocked_content_notice()
+                        runReCaptcha()
+                    }
+                }
+            }
+        });
+    } else {
+        runReCaptcha();
+    }
+
+}
+
+
+function cf7_consent_api_active(){
+    return typeof wp_has_consent == 'function';
+}
+
+
+/**
+ * Google recaptcha script is added as type="text/plain" so it doesn't get executed imidiately
+ * We change that back to type="text/javascript" and run the script
+ */
+function runReCaptcha(){
+    var handle = document.getElementById('google-recaptcha-js');
+    var src = handle.getAttribute('src');
+    if (src && src.length) {
+        handle.setAttribute('type', 'text/javascript');
+        getScript(src, runInlineRecaptcha);
+    }
+}
+
+
+/**
+ * Executes a script with source, run callback when completed
+ * @param source
+ * @param callback
+ */
+function getScript(source, callback) {
+    var script = document.createElement('script');
+    var prior = document.getElementsByTagName('script')[0];
+    script.async = 1;
+
+    script.onload = script.onreadystatechange = function( _, isAbort ) {
+        if(isAbort || !script.readyState || /loaded|complete/.test(script.readyState) ) {
+            script.onload = script.onreadystatechange = null;
+            script = undefined;
+
+            if(!isAbort && callback) setTimeout(callback, 0);
+        }
+    };
+
+    script.src = source;
+    prior.parentNode.insertBefore(script, prior);
+}
+
+
+function runInlineRecaptcha() {
+    wpcf7_recaptcha = {
+        ...( wpcf7_recaptcha ?? {} ),
+    };
+
+    const siteKey = wpcf7_recaptcha.sitekey;
+    const { homepage, contactform } = wpcf7_recaptcha.actions;
+
+    const execute = options => {
+        const { action, func, params } = options;
+
+        grecaptcha.execute( siteKey, {
+            action,
+        } ).then( token => {
+            const event = new CustomEvent( 'wpcf7grecaptchaexecuted', {
+                detail: {
+                    action,
+                    token,
+                },
+            } );
+
+            document.dispatchEvent( event );
+        } ).then( () => {
+            if ( typeof func === 'function' ) {
+                func( ...params );
+            }
+        } ).catch( error => console.error( error ) );
+    };
+
+    grecaptcha.ready( () => {
+        execute( {
+            action: homepage,
+        } );
+    } );
+
+    document.addEventListener( 'change', event => {
+        execute( {
+            action: contactform,
+        } );
+    } );
+
+    if ( typeof wpcf7 !== 'undefined' && typeof wpcf7.submit === 'function' ) {
+        const submit = wpcf7.submit;
+
+        wpcf7.submit = ( form, options = {} ) => {
+            execute( {
+                action: contactform,
+                func: submit,
+                params: [ form, options ],
+            } );
+        };
+    }
+
+    document.addEventListener( 'wpcf7grecaptchaexecuted', event => {
+        const fields = document.querySelectorAll(
+            'form.wpcf7-form input[name="_wpcf7_recaptcha_response"]'
+        );
+
+        fields.forEach( field => {
+            field.setAttribute( 'value', event.detail.token );
+        } );
+    } );
+}
+
+
+/**
+ * Remove html of the blocked content notice above Submit button
+ */
+function remove_blocked_content_notice() {
+    var blocked_content_notice = document.getElementsByClassName('wpcf7-blocked-content-notice')[0];
+    if ( blocked_content_notice ) {
+        blocked_content_notice.parentElement.remove();
+    }
+}
