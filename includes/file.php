@@ -238,15 +238,14 @@ function wpcf7_init_uploads() {
 	$dir = wpcf7_upload_tmp_dir();
 	wp_mkdir_p( $dir );
 
-	$htaccess_file = path_join( $dir, '.htaccess' );
+	if ( is_dir( $dir ) and is_writable( $dir ) ) {
+		$htaccess_file = path_join( $dir, '.htaccess' );
 
-	if ( file_exists( $htaccess_file ) ) {
-		return;
-	}
-
-	if ( $handle = fopen( $htaccess_file, 'w' ) ) {
-		fwrite( $handle, "Deny from all\n" );
-		fclose( $handle );
+		if ( ! file_exists( $htaccess_file )
+		and $handle = @fopen( $htaccess_file, 'w' ) ) {
+			fwrite( $handle, "Deny from all\n" );
+			fclose( $handle );
+		}
 	}
 }
 
