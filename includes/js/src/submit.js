@@ -110,6 +110,7 @@ export default function submit( form, options = {} ) {
 
 		if ( 'mail_sent' === response.status ) {
 			form.reset();
+			form.wpcf7.resetOnMailSent = true;
 		}
 
 		if ( response.invalid_fields ) {
