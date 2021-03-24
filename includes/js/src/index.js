@@ -3,6 +3,17 @@ import submit from './submit';
 import reset from './reset';
 
 document.addEventListener( 'DOMContentLoaded', event => {
+
+	if ( typeof wp === 'undefined' ) {
+		console.error( "wp is not defined." );
+		return;
+	}
+
+	if ( typeof wp.apiFetch === 'undefined' ) {
+		console.error( "wp.apiFetch is not defined." );
+		return;
+	}
+
 	wpcf7 = {
 		init,
 		submit,
