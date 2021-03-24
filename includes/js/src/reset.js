@@ -34,7 +34,8 @@ export default function reset( form ) {
 		},
 	} ).then( response => {
 
-		if ( 'sent' === detail.status ) {
+		if ( form.wpcf7.resetOnMailSent ) {
+			delete form.wpcf7.resetOnMailSent;
 			setStatus( form, 'mail_sent' );
 		} else {
 			setStatus( form, 'init' );
