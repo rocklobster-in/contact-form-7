@@ -23,10 +23,10 @@ function wpcf7_recaptcha_enqueue_scripts() {
 		return;
 	}
 
-	$urlwhitelist = WPCF7::get_option('urlwhitelist');
-	if ($urlwhitelist) {
+	$url_include_list = WPCF7::get_option('url_include_list');
+	if ($url_include_list) {
 		$url = get_permalink(get_the_ID());
-		$words = explode(',', $urlwhitelist);
+		$words = explode(',', $url_include_list);
 		$findings = false;
 		foreach($words as $word) {
 			if (stripos($url, trim($word)) !== false) {
@@ -415,8 +415,6 @@ class WPCF7_RECAPTCHA extends WPCF7_Service {
 	public function load( $action = '' ) {
 		if ( 'setup' == $action and 'POST' == $_SERVER['REQUEST_METHOD'] ) {
 			check_admin_referer( 'wpcf7-recaptcha-setup' );
-			$urlwhitelist = isset( $_POST['urlwhitelist']) ? $_POST['urlwhitelist'] : false;
-			WPCF7::update_option('urlwhitelist', $urlwhitelist);
 			if ( ! empty( $_POST['reset'] ) ) {
 				$this->reset_data();
 				$redirect_to = $this->menu_page_url( 'action=setup' );
@@ -443,6 +441,17 @@ class WPCF7_RECAPTCHA extends WPCF7_Service {
 				WPCF7::update_option( 'recaptcha_v2_v3_warning', false );
 			}
 
+			wp_safe_redirect( $redirect_to );
+			exit();
+		}
+
+		if ('performance' == $action and 'POST' == $_SERVER['REQUEST_METHOD']) {
+			check_admin_referer( 'wpcf7-recaptcha-performance' );
+			$url_include_list = isset( $_POST['url_include_list']) ? $_POST['url_include_list'] : false;
+			WPCF7::update_option('url_include_list', $url_include_list);
+			$redirect_to = $this->menu_page_url( array(
+				'message' => 'success',
+			) );
 			wp_safe_redirect( $redirect_to );
 			exit();
 		}
@@ -492,10 +501,11 @@ class WPCF7_RECAPTCHA extends WPCF7_Service {
 	}
 
 	private function display_performance() {
-		$urlwhitelist = WPCF7::get_option('urlwhitelist', '');
+		$url_include_list = WPCF7::get_option('url_include_list', '');
 		?>
 		<hr />
 		<form method="post" action="<?php echo esc_url( $this->menu_page_url( 'action=performance' ) ); ?>">
+		<?php wp_nonce_field( 'wpcf7-recaptcha-performance' ); ?>
 		<h3 class="title"><?php echo esc_html( __( 'Performance', 'contact-form-7' ) ); ?></h3>
 		<p>
 		<?php
@@ -505,12 +515,12 @@ class WPCF7_RECAPTCHA extends WPCF7_Service {
 		<table class="form-table">
 			<tbody>
 				<tr>
-					<th scope="row"><label for="urlwhitelist"><?php echo esc_html( __( 'Keywords', 'contact-form-7' ) ); ?></label></th>
+					<th scope="row"><label for="url_include_list"><?php echo esc_html( __( 'Keywords', 'contact-form-7' ) ); ?></label></th>
 					<td>
 					<?php
 						echo sprintf(
-							'<input type="text" aria-required="true" value="%1$s" id="urlwhitelist" name="urlwhitelist" class="regular-text code" />',
-							esc_attr( $urlwhitelist )
+							'<input type="text" aria-required="true" value="%1$s" id="url_include_list" name="url_include_list" class="regular-text code" />',
+							esc_attr( $url_include_list )
 						);
 					?>
 					</td>
