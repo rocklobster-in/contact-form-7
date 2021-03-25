@@ -23,6 +23,22 @@ function wpcf7_recaptcha_enqueue_scripts() {
 		return;
 	}
 
+	$urlwhitelist = WPCF7::get_option('urlwhitelist');
+	if ($urlwhitelist) {
+		$url = get_permalink(get_the_ID());
+		$words = explode(',', $urlwhitelist);
+		$findings = false;
+		foreach($words as $word) {
+			if (stripos($url, trim($word)) !== false) {
+				$findings = true;
+				break;
+			}
+		}
+		if (!$findings) {
+			return;
+		}
+	}
+
 	wp_enqueue_script( 'google-recaptcha',
 		add_query_arg(
 			array(
@@ -399,7 +415,8 @@ class WPCF7_RECAPTCHA extends WPCF7_Service {
 	public function load( $action = '' ) {
 		if ( 'setup' == $action and 'POST' == $_SERVER['REQUEST_METHOD'] ) {
 			check_admin_referer( 'wpcf7-recaptcha-setup' );
-
+			$urlwhitelist = isset( $_POST['urlwhitelist']) ? $_POST['urlwhitelist'] : false;
+			WPCF7::update_option('urlwhitelist', $urlwhitelist);
 			if ( ! empty( $_POST['reset'] ) ) {
 				$this->reset_data();
 				$redirect_to = $this->menu_page_url( 'action=setup' );
@@ -462,6 +479,8 @@ class WPCF7_RECAPTCHA extends WPCF7_Service {
 		}
 
 		if ( 'setup' == $action ) {
+			$this->display_performance();
+			echo '<hr />';
 			$this->display_setup();
 		} else {
 			echo sprintf(
@@ -470,6 +489,37 @@ class WPCF7_RECAPTCHA extends WPCF7_Service {
 				esc_html( __( 'Setup Integration', 'contact-form-7' ) )
 			);
 		}
+	}
+
+	private function display_performance() {
+		$urlwhitelist = WPCF7::get_option('urlwhitelist', '');
+		?>
+		<hr />
+		<form method="post" action="<?php echo esc_url( $this->menu_page_url( 'action=performance' ) ); ?>">
+		<h3 class="title"><?php echo esc_html( __( 'Performance', 'contact-form-7' ) ); ?></h3>
+		<p>
+		<?php
+			echo esc_html( __( 'To keep Google Page Speed scores high, only load reCAPTCHA in URLs that contain certain words.', 'contact-form-7' ) );
+		?>
+		</p>
+		<table class="form-table">
+			<tbody>
+				<tr>
+					<th scope="row"><label for="urlwhitelist"><?php echo esc_html( __( 'Keywords', 'contact-form-7' ) ); ?></label></th>
+					<td>
+					<?php
+						echo sprintf(
+							'<input type="text" aria-required="true" value="%1$s" id="urlwhitelist" name="urlwhitelist" class="regular-text code" />',
+							esc_attr( $urlwhitelist )
+						);
+					?>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<?php submit_button( __( 'Save', 'contact-form-7' ), 'small', 'reset' ); ?>
+		</form>
+		<?php
 	}
 
 	private function display_setup() {
