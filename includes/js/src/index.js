@@ -14,14 +14,19 @@ document.addEventListener( 'DOMContentLoaded', event => {
 		return;
 	}
 
+	const forms = document.querySelectorAll( '.wpcf7 > form' );
+
+	if ( typeof forms.forEach !== 'function' ) {
+		console.error( "Your browser doesn't support NodeList.forEach()." );
+		return;
+	}
+
 	wpcf7 = {
 		init,
 		submit,
 		reset,
 		...( wpcf7 ?? {} ),
 	};
-
-	const forms = document.querySelectorAll( '.wpcf7 > form' );
 
 	forms.forEach( form => wpcf7.init( form ) );
 } );
