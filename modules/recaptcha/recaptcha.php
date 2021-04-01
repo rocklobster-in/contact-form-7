@@ -23,6 +23,10 @@ function wpcf7_recaptcha_enqueue_scripts() {
 		return;
 	}
 
+	if ( ! wpcf7_load_js() ) {
+		return;
+	}
+
 	wp_enqueue_script( 'google-recaptcha',
 		add_query_arg(
 			array(
