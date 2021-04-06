@@ -28,9 +28,16 @@ if ( is_admin() ) {
 } else {
 	require_once WPCF7_PLUGIN_DIR . '/includes/controller.php';
 }
-
+/**
+ * class to load Contact Form 7 modules and interact with global options
+ */
 class WPCF7 {
 
+	/**
+	 * Load all modules that are required for Contact Form 7 to work
+	 *
+	 * @return void
+	 */
 	public static function load_modules() {
 		self::load_module( 'acceptance' );
 		self::load_module( 'akismet' );
@@ -55,6 +62,12 @@ class WPCF7 {
 		self::load_module( 'textarea' );
 	}
 
+	/**
+	 * Undocumented function
+	 *
+	 * @param String $mod the folder name of the module to load
+	 * @return void
+	 */
 	protected static function load_module( $mod ) {
 		$dir = WPCF7_PLUGIN_MODULES_DIR;
 
@@ -77,6 +90,13 @@ class WPCF7 {
 		return false;
 	}
 
+	/**
+	 * Retrieves a Contact Form 7 option value based on a Contact Form 7 option name.
+	 *
+	 * @param string $name Name of the option to retrieve. Expected to not be SQL-escaped.
+	 * @param mixed $default Optional. Default value to return if the option does not exist.
+	 * @return mixed Value set for the option. A value of any type may be returned, including array, boolean, float, integer, null, object, and string.
+	 */
 	public static function get_option( $name, $default = false ) {
 		$option = get_option( 'wpcf7' );
 
@@ -91,6 +111,19 @@ class WPCF7 {
 		}
 	}
 
+	/**
+	 * Updates the value of a Contact Form 7 option that was already added.
+	 *
+	 * You do not need to serialize values. If the value needs to be serialized, then it will be serialized before it is inserted into the database. Remember, resources cannot be serialized or added as an option.
+	 * 
+	 * If the option does not exist, it will be created.
+	 * 
+	 * This function is designed to work with or without a logged-in user. In terms of security, plugin developers should check the current user's capabilities before updating any options.
+	 * 
+	 * @param string $name Name of the option to update. Expected to not be SQL-escaped.
+	 * @param mixed $value Option value. Must be serializable if non-scalar. Expected to not be SQL-escaped.
+	 * @return void
+	 */
 	public static function update_option( $name, $value ) {
 		$option = get_option( 'wpcf7' );
 		$option = ( false === $option ) ? array() : (array) $option;
@@ -101,6 +134,13 @@ class WPCF7 {
 
 add_action( 'plugins_loaded', 'wpcf7', 10, 0 );
 
+/**
+ * loads Contact Form 7 modules and register shortcodes.
+ * 
+ * This function is called during the 'plugins_loaded' action.
+ *
+ * @return void
+ */
 function wpcf7() {
 	WPCF7::load_modules();
 
@@ -111,6 +151,13 @@ function wpcf7() {
 
 add_action( 'init', 'wpcf7_init', 10, 0 );
 
+/**
+ * Initialize the Contact Form 7 plugin.
+ * 
+ * This function is called during the 'init' action
+ *
+ * @return void
+ */
 function wpcf7_init() {
 	wpcf7_get_request_uri();
 	wpcf7_register_post_types();
@@ -120,6 +167,13 @@ function wpcf7_init() {
 
 add_action( 'admin_init', 'wpcf7_upgrade', 10, 0 );
 
+/**
+ * Performs upgrade actions when a change in the Contact Form 7 version number is detected.
+ * 
+ * This function is called during the 'admin_init' action
+ *
+ * @return void
+ */
 function wpcf7_upgrade() {
 	$old_ver = WPCF7::get_option( 'version', '0' );
 	$new_ver = WPCF7_VERSION;
@@ -137,6 +191,13 @@ function wpcf7_upgrade() {
 
 add_action( 'activate_' . WPCF7_PLUGIN_BASENAME, 'wpcf7_install', 10, 0 );
 
+/**
+ * Perform installation actions after the Contact Form 7 plugin gets activated.
+ * 
+ * This function is called during the 'activate_{{WPCF7_PLUGIN_BASENAME}}' action
+ *
+ * @return void
+ */
 function wpcf7_install() {
 	if ( $opt = get_option( 'wpcf7' ) ) {
 		return;
