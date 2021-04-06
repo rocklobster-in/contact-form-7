@@ -340,9 +340,13 @@ class WPCF7_ContactForm {
 			$lang_tag = $matches[1];
 		}
 
+		/**
+		 * #cf7-tng-start
+		 * Comment `role="form"` attribute because we must not nest forms. There is already a <form> element
+		 */
 		$html = sprintf( '<div %s>',
 			wpcf7_format_atts( array(
-				'role' => 'form',
+				// 'role' => 'form',
 				'class' => 'wpcf7',
 				'id' => $this->unit_tag(),
 				( get_option( 'html_type' ) == 'text/html' ) ? 'lang' : 'xml:lang'
@@ -350,8 +354,14 @@ class WPCF7_ContactForm {
 				'dir' => wpcf7_is_rtl( $this->locale ) ? 'rtl' : 'ltr',
 			) )
 		);
+		/* #cf7-tng-end */
 
-		$html .= "\n" . $this->screen_reader_response() . "\n";
+		/**
+		 * #cf7-tng-start
+		 * Removed creation of div.screen-reader-response
+		 */
+		// $html .= "\n" . $this->screen_reader_response() . "\n";
+		/* #cf7-tng-end */
 
 		$url = wpcf7_get_request_uri();
 
@@ -516,15 +526,25 @@ class WPCF7_ContactForm {
 			$content = $submission->get_response();
 		}
 
+		/**
+		 * #cf7-tng-start
+		 * Comment `aria-hidden="true"` attribute because we move focus on the message on submit so it should not be hidden for screen readers
+		 */
 		$atts = array(
 			'class' => trim( $class ),
-			'aria-hidden' => 'true',
+			// 'aria-hidden' => 'true',
 		);
+		/* #cf7-tng-end */
 
-		$output = sprintf( '<div %1$s>%2$s</div>',
+		/**
+		 * #cf7-tng-start
+		 * Add tabindex="-1" attribute to be able to move focus on the message on submit
+		 */
+		$output = sprintf( '<div %1$s tabindex="-1">%2$s</div>',
 			wpcf7_format_atts( $atts ),
 			esc_html( $content )
 		);
+		/* #cf7-tng-end */
 
 		$output = apply_filters( 'wpcf7_form_response_output',
 			$output, $class, $content, $this, $status
@@ -535,61 +555,70 @@ class WPCF7_ContactForm {
 		return $output;
 	}
 
-	public function screen_reader_response() {
-		$primary_response = '';
-		$validation_errors = array();
+	/**
+	 * #cf7-tng-start
+	 *
+	 * Removed screen_reader_response function.
+	 * The 'aria-describedby' attribute is planned to be used to
+	 * attach fields to their error message, leaving the use
+	 * of this container irrelevant.
+	 */
+	// public function screen_reader_response() {
+	// 	$primary_response = '';
+	// 	$validation_errors = array();
 
-		if ( $this->is_posted() ) { // Post response output for non-AJAX
-			$submission = WPCF7_Submission::get_instance();
-			$primary_response = $submission->get_response();
+	// 	if ( $this->is_posted() ) { // Post response output for non-AJAX
+	// 		$submission = WPCF7_Submission::get_instance();
+	// 		$primary_response = $submission->get_response();
 
-			if ( $invalid_fields = $submission->get_invalid_fields() ) {
-				foreach ( (array) $invalid_fields as $name => $field ) {
-					$list_item = esc_html( $field['reason'] );
+	// 		if ( $invalid_fields = $submission->get_invalid_fields() ) {
+	// 			foreach ( (array) $invalid_fields as $name => $field ) {
+	// 				$list_item = esc_html( $field['reason'] );
 
-					if ( $field['idref'] ) {
-						$list_item = sprintf(
-							'<a href="#%1$s">%2$s</a>',
-							esc_attr( $field['idref'] ),
-							$list_item
-						);
-					}
+	// 				if ( $field['idref'] ) {
+	// 					$list_item = sprintf(
+	// 						'<a href="#%1$s">%2$s</a>',
+	// 						esc_attr( $field['idref'] ),
+	// 						$list_item
+	// 					);
+	// 				}
 
-					$validation_error_id = sprintf(
-						'%1$s-ve-%2$s',
-						$this->unit_tag(),
-						$name
-					);
+	// 				$validation_error_id = sprintf(
+	// 					'%1$s-ve-%2$s',
+	// 					$this->unit_tag(),
+	// 					$name
+	// 				);
 
-					$list_item = sprintf(
-						'<li id="%1$s">%2$s</li>',
-						$validation_error_id,
-						$list_item
-					);
+	// 				$list_item = sprintf(
+	// 					'<li id="%1$s">%2$s</li>',
+	// 					$validation_error_id,
+	// 					$list_item
+	// 				);
 
-					$validation_errors[] = $list_item;
-				}
-			}
-		}
+	// 				$validation_errors[] = $list_item;
+	// 			}
+	// 		}
+	// 	}
 
-		$primary_response = sprintf(
-			'<p role="status" aria-live="polite" aria-atomic="true">%s</p>',
-			esc_html( $primary_response )
-		);
+	// 	$primary_response = sprintf(
+	// 		'<p role="status" aria-live="polite" aria-atomic="true">%s</p>',
+	// 		esc_html( $primary_response )
+	// 	);
 
-		$validation_errors = sprintf(
-			'<ul>%s</ul>',
-			implode( "\n", $validation_errors )
-		);
+	// 	$validation_errors = sprintf(
+	// 		'<ul>%s</ul>',
+	// 		implode( "\n", $validation_errors )
+	// 	);
 
-		$output = sprintf(
-			'<div class="screen-reader-response">%1$s %2$s</div>',
-			$primary_response,
-			$validation_errors
-		);
+	// 	$output = sprintf(
+	// 		'<div class="screen-reader-response">%1$s %2$s</div>',
+	// 		$primary_response,
+	// 		$validation_errors
+	// 	);
 
-		return $output;
-	}
+	// 	return $output;
+	// }
+	/* #cf7-tng-end */
 
 	public function validation_error( $name ) {
 		$error = '';
@@ -606,10 +635,15 @@ class WPCF7_ContactForm {
 			return $error;
 		}
 
+		/**
+		 * #cf7-tng-start
+		 * Comment `aria-hidden="true"` because each individual message is attached to its field with aria-describedby
+		 */
 		$atts = array(
 			'class' => 'wpcf7-not-valid-tip',
-			'aria-hidden' => 'true',
+			// 'aria-hidden' => 'true',
 		);
+		/* #cf7-tng-end */
 
 		$error = sprintf(
 			'<span %1$s>%2$s</span>',

@@ -53,17 +53,22 @@ function wpcf7_select_form_tag_handler( $tag ) {
 	$include_blank = $tag->has_option( 'include_blank' );
 	$first_as_label = $tag->has_option( 'first_as_label' );
 
-	if ( $tag->has_option( 'size' ) ) {
-		$size = $tag->get_option( 'size', 'int', true );
+	/**
+	 * #cf7-tng-start
+	 * Commenting this line adding a size attribute on fields (not allowed for accessibility reasons)
+	 */
+	// if ( $tag->has_option( 'size' ) ) {
+	// 	$size = $tag->get_option( 'size', 'int', true );
 
-		if ( $size ) {
-			$atts['size'] = $size;
-		} elseif ( $multiple ) {
-			$atts['size'] = 4;
-		} else {
-			$atts['size'] = 1;
-		}
-	}
+	// 	if ( $size ) {
+	// 		$atts['size'] = $size;
+	// 	} elseif ( $multiple ) {
+	// 		$atts['size'] = 4;
+	// 	} else {
+	// 		$atts['size'] = 1;
+	// 	}
+	// }
+	/* #cf7-tng-end */
 
 	if ( $data = (array) $tag->get_data_option() ) {
 		$tag->values = array_merge( $tag->values, array_values( $data ) );

@@ -64,6 +64,21 @@ function wpcf7_acceptance_form_tag_handler( $tag ) {
 	$item_atts['class'] = $tag->get_class_option();
 	$item_atts['id'] = $tag->get_id_option();
 
+	/**
+	 * #cf7-tng-start
+	 * Add a variable to get the ID of the field and use it for the `<label>` tag if the ID is filled in the contact form administration
+	 */
+	$item_atts_id = $tag->get_id_option();
+
+	if ( $item_atts_id != '' ) {
+		/** Add the `for` attribute on the `<label>` with the field ID as a value */
+		$item_atts_id_for = 'for="' . $item_atts_id . '"';
+	} else {
+		/** No `for` attribute on the `<label>` */
+		$item_atts_id_for = '';
+	}
+	/* #cf7-tng-end */
+
 	$item_atts = wpcf7_format_atts( $item_atts );
 
 	$content = empty( $tag->content )
@@ -83,10 +98,15 @@ function wpcf7_acceptance_form_tag_handler( $tag ) {
 				$item_atts, $content );
 		}
 
+		/**
+		 * #cf7-tng-start
+		 * Add the `for` attribute on `<label>` to attach the label to its field.
+		 */
 		$html = sprintf(
-			'<span class="wpcf7-list-item"><label>%s</label></span>',
-			$html
+			'<span class="wpcf7-list-item"><label %1$s>%2$s</label></span>',
+			$item_atts_id_for, $html
 		);
+		/* #cf7-tng-end */
 
 	} else {
 		$html = sprintf(
