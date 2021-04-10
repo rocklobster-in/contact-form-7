@@ -1,7 +1,6 @@
-import apiFetch from '@wordpress/api-fetch';
-
 import { setStatus } from './status';
 import { triggerEvent } from './event';
+import { apiFetch } from './api-fetch';
 
 export default function submit( form, options = {} ) {
 	const formData = new FormData( form );
@@ -75,7 +74,7 @@ export default function submit( form, options = {} ) {
 	};
 
 	apiFetch( {
-		path: `contact-form-7/v1/contact-forms/${ form.wpcf7.id }/feedback`,
+		endpoint: `contact-forms/${ form.wpcf7.id }/feedback`,
 		method: 'POST',
 		body: formData,
 		wpcf7: {

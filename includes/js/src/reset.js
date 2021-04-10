@@ -1,8 +1,7 @@
-import apiFetch from '@wordpress/api-fetch';
-
 import { setStatus } from './status';
 import { triggerEvent } from './event';
 import { clearResponse } from './submit';
+import { apiFetch } from './api-fetch';
 
 export default function reset( form ) {
 	const formData = new FormData( form );
@@ -25,7 +24,7 @@ export default function reset( form ) {
 	};
 
 	apiFetch( {
-		path: `contact-form-7/v1/contact-forms/${ form.wpcf7.id }/refill`,
+		endpoint: `contact-forms/${ form.wpcf7.id }/refill`,
 		method: 'GET',
 		wpcf7: {
 			endpoint: 'refill',
