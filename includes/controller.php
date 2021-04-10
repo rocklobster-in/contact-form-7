@@ -44,7 +44,6 @@ add_action(
 		$assets = wp_parse_args( $assets, array(
 			'src' => wpcf7_plugin_url( 'includes/js/index.js' ),
 			'dependencies' => array(
-				'wp-api-fetch',
 				'wp-polyfill',
 			),
 			'version' => WPCF7_VERSION,
@@ -111,7 +110,12 @@ add_action(
 function wpcf7_enqueue_scripts() {
 	wp_enqueue_script( 'contact-form-7' );
 
-	$wpcf7 = array();
+	$wpcf7 = array(
+		'api' => array(
+			'root' => esc_url_raw( get_rest_url() ),
+			'namespace' => 'contact-form-7/v1',
+		),
+	);
 
 	if ( defined( 'WP_CACHE' ) and WP_CACHE ) {
 		$wpcf7['cached'] = 1;
