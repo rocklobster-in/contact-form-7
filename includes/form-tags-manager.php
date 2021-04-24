@@ -308,15 +308,17 @@ class WPCF7_FormTagsManager {
 
 			$scanned_tag['raw_values'] = (array) $attr['values'];
 
+			
+
 			if ( WPCF7_USE_PIPE ) {
 				$pipes = new WPCF7_Pipes( $scanned_tag['raw_values'] );
-				$scanned_tag['values'] = $pipes->collect_befores();
 				$scanned_tag['pipes'] = $pipes;
+				$scanned_tag['values'] = $pipes->collect_afters();
+				$scanned_tag['labels'] = $pipes->collect_befores();
 			} else {
 				$scanned_tag['values'] = $scanned_tag['raw_values'];
+				$scanned_tag['labels'] = $scanned_tag['values'];
 			}
-
-			$scanned_tag['labels'] = $scanned_tag['values'];
 
 		} else {
 			$scanned_tag['attr'] = $attr;
