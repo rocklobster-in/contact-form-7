@@ -117,7 +117,6 @@ class WPCF7_Mail {
 		$recipient = wpcf7_strip_newline( $components['recipient'] );
 		$body = $components['body'];
 		$additional_headers = trim( $components['additional_headers'] );
-		$attachments = $components['attachments'];
 
 		$headers = "From: $sender\n";
 
@@ -131,6 +130,66 @@ class WPCF7_Mail {
 		if ( $additional_headers ) {
 			$headers .= $additional_headers . "\n";
 		}
+
+		$attachments = array_filter(
+			(array) $components['attachments'],
+			function ( $attachment ) {
+				$path = path_join( WP_CONTENT_DIR, $attachment );
+
+				if ( ! wpcf7_is_file_path_in_content_dir( $path ) ) {
+					if ( WP_DEBUG ) {
+						trigger_error(
+							sprintf(
+								/* translators: %s: Attachment file path. */
+								__( 'Failed to attach a file. %s is not in the allowed directory.', 'contact-form-7' ),
+								$path
+							),
+							E_USER_NOTICE
+						);
+					}
+
+					return false;
+				}
+
+				if ( ! is_readable( $path ) or ! is_file( $path ) ) {
+					if ( WP_DEBUG ) {
+						trigger_error(
+							sprintf(
+								/* translators: %s: Attachment file path. */
+								__( 'Failed to attach a file. %s is not a readable file.', 'contact-form-7' ),
+								$path
+							),
+							E_USER_NOTICE
+						);
+					}
+
+					return false;
+				}
+
+				static $total_size = array();
+
+				if ( ! isset( $total_size[$this->name] ) ) {
+					$total_size[$this->name] = 0;
+				}
+
+				$file_size = (int) @filesize( $path );
+
+				if ( 25 * MB_IN_BYTES < $total_size[$this->name] + $file_size ) {
+					if ( WP_DEBUG ) {
+						trigger_error(
+							__( 'Failed to attach a file. The total file size exceeds the limit of 25 megabytes.', 'contact-form-7' ),
+							E_USER_NOTICE
+						);
+					}
+
+					return false;
+				}
+
+				$total_size[$this->name] += $file_size;
+
+				return true;
+			}
+		);
 
 		return wp_mail( $recipient, $subject, $body, $headers, $attachments );
 	}
@@ -168,21 +227,18 @@ class WPCF7_Mail {
 		foreach ( explode( "\n", $template ) as $line ) {
 			$line = trim( $line );
 
-			if ( '[' == substr( $line, 0, 1 ) ) {
+			if ( '' === $line or '[' == substr( $line, 0, 1 ) ) {
 				continue;
 			}
 
-			$path = path_join( WP_CONTENT_DIR, $line );
+			$attachments[] = path_join( WP_CONTENT_DIR, $line );
+		}
 
-			if ( ! wpcf7_is_file_path_in_content_dir( $path ) ) {
-				// $path is out of WP_CONTENT_DIR
-				continue;
-			}
-
-			if ( is_readable( $path )
-			and is_file( $path ) ) {
-				$attachments[] = $path;
-			}
+		if ( $submission = WPCF7_Submission::get_instance() ) {
+			$attachments = array_merge(
+				$attachments,
+				(array) $submission->extra_attachments( $this->name )
+			);
 		}
 
 		return $attachments;
