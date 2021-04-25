@@ -10,6 +10,7 @@ class WPCF7_Submission {
 	private $posted_data_hash = null;
 	private $skip_spam_check = false;
 	private $uploaded_files = array();
+	private $extra_attachments = array();
 	private $skip_mail = false;
 	private $response = '';
 	private $invalid_fields = array();
@@ -579,6 +580,62 @@ class WPCF7_Submission {
 		$this->invalid_fields = $result->get_invalid_fields();
 
 		return $result->is_valid();
+	}
+
+
+	/**
+	 * Adds extra email attachment files that are independent from form fields.
+	 *
+	 * @param string|array $file_path A file path or an array of file paths.
+	 * @param string $template Optional. The name of the template to which
+	 *                         the files are attached.
+	 * @return bool True if it succeeds to attach a file at least,
+	 *              or false otherwise.
+	 */
+	public function add_extra_attachments( $file_path, $template = 'mail' ) {
+		if ( ! did_action( 'wpcf7_before_send_mail' ) ) {
+			return false;
+		}
+
+		$extra_attachments = array();
+
+		foreach ( (array) $file_path as $path ) {
+			$path = path_join( WP_CONTENT_DIR, $path );
+
+			if ( file_exists( $path ) ) {
+				$extra_attachments[] = $path;
+			}
+		}
+
+		if ( empty( $extra_attachments ) ) {
+			return false;
+		}
+
+		if ( ! isset( $this->extra_attachments[$template] ) ) {
+			$this->extra_attachments[$template] = array();
+		}
+
+		$this->extra_attachments[$template] = array_merge(
+			$this->extra_attachments[$template],
+			$extra_attachments
+		);
+
+		return true;
+	}
+
+
+	/**
+	 * Returns extra email attachment files.
+	 *
+	 * @param string $template An email template name.
+	 * @return array Array of file paths.
+	 */
+	public function extra_attachments( $template ) {
+		if ( isset( $this->extra_attachments[$template] ) ) {
+			return (array) $this->extra_attachments[$template];
+		}
+
+		return array();
 	}
 
 }
