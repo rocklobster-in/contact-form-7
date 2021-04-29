@@ -51,7 +51,7 @@ span.shortcode input {
 }
 
 #submitpost input.delete:hover {
-	color: #dc3232;
+	color: #dc3232; /* Red */
 }
 
 #submitpost input.delete:focus {
@@ -64,7 +64,7 @@ span.shortcode input {
 
 .keyboard-interaction {
 	visibility: hidden;
-	color: #23282d;
+	color: #23282d; /* Dark Gray 800 */
 }
 
 div.config-error, span.config-error, ul.config-error {
