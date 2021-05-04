@@ -85,6 +85,9 @@ function wpcf7_text_form_tag_handler( $tag ) {
 
 	$value = wpcf7_get_hangover( $tag->name, $value );
 
+	$value = apply_filters( 'wpcf7_default_value', $value );
+	$value = apply_filters( 'wpcf7_default_value_text', $value );
+
 	$atts['value'] = $value;
 
 	if ( wpcf7_support_html5() ) {

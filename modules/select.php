@@ -89,12 +89,12 @@ function wpcf7_select_form_tag_handler( $tag ) {
 	$html = '';
 	$hangover = wpcf7_get_hangover( $tag->name );
 
+	$values = $hangover ? $hangover : $default_choice;
+	$values = apply_filters( 'wpcf7_default_values', $values );
+	$values = apply_filters( 'wpcf7_default_values_select', $values );
+
 	foreach ( $values as $key => $value ) {
-		if ( $hangover ) {
-			$selected = in_array( $value, (array) $hangover, true );
-		} else {
-			$selected = in_array( $value, (array) $default_choice, true );
-		}
+		$selected = in_array( $value, (array) $values, true );
 
 		$item_atts = array(
 			'value' => $value,
