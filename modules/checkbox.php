@@ -92,12 +92,12 @@ function wpcf7_checkbox_form_tag_handler( $tag ) {
 
 	$hangover = wpcf7_get_hangover( $tag->name, $multiple ? array() : '' );
 
-	$values = $hangover ? $hangover : $default_choice;
-	$values = apply_filters( 'wpcf7_default_values', $values );
-	$values = apply_filters( 'wpcf7_default_values_checkbox', $values );
+	$default_values = $hangover ? $hangover : $default_choice;
+	$default_values = apply_filters( 'wpcf7_default_values', $default_values );
+	$default_values = apply_filters( 'wpcf7_default_values_checkbox', $default_values );
 
 	foreach ( $values as $key => $value ) {
-		$checked = in_array( $value, (array) $values, true );
+		$checked = in_array( $value, (array) $default_values, true );
 
 		if ( isset( $labels[$key] ) ) {
 			$label = $labels[$key];
