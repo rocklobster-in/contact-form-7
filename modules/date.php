@@ -81,8 +81,8 @@ function wpcf7_date_form_tag_handler( $tag ) {
 
 	$value = wpcf7_get_hangover( $tag->name, $value );
 
-	$value = apply_filters( 'wpcf7_default_value', $value );
-	$value = apply_filters( 'wpcf7_default_value_date', $value );
+	$value = apply_filters( 'wpcf7_default_value', $value, $tag );
+	$value = apply_filters( 'wpcf7_default_value_date', $value, $tag );
 
 	$atts['value'] = $value;
 

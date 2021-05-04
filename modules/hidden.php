@@ -25,8 +25,8 @@ function wpcf7_hidden_form_tag_handler( $tag ) {
 
 	$value = (string) reset( $tag->values );
 	$value = $tag->get_default_option( $value );
-	$value = apply_filters( 'wpcf7_default_value', $value );
-	$value = apply_filters( 'wpcf7_default_value_hidden', $value );
+	$value = apply_filters( 'wpcf7_default_value', $value, $tag );
+	$value = apply_filters( 'wpcf7_default_value_hidden', $value, $tag );
 	$atts['value'] = $value;
 
 	$atts['type'] = 'hidden';
