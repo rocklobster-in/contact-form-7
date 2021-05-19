@@ -86,8 +86,11 @@ function wpcf7_checkbox_form_tag_handler( $tag ) {
 	$values = $tag->values;
 	$labels = $tag->labels;
 
-	$values = apply_filters( 'wpcf7_options', $values, $tag );
-	$values = apply_filters( 'wpcf7_options_checkbox', $values, $tag );
+	$values = apply_filters( 'wpcf7_form_tag_values', $values, $tag );
+	$values = apply_filters( 'wpcf7_form_tag_values_checkbox', $values, $tag );
+
+	$labels = apply_filters( 'wpcf7_form_tag_labels', $labels, $tag );
+	$labels = apply_filters( 'wpcf7_form_tag_labels_checkbox', $labels, $tag );
 
 	$default_choice = $tag->get_default_option( null, array(
 		'multiple' => $multiple,
@@ -108,9 +111,6 @@ function wpcf7_checkbox_form_tag_handler( $tag ) {
 			$label = $value;
 		}
 
-		$value = apply_filters( "wpcf7_option_value", $value, $tag, $key);
-		$value = apply_filters( 'wpcf7_option_value_checkbox', $value, $tag, $key);
-
 		$item_atts = array(
 			'type' => $tag->basetype,
 			'name' => $tag->name . ( $multiple ? '[]' : '' ),
@@ -120,9 +120,6 @@ function wpcf7_checkbox_form_tag_handler( $tag ) {
 		);
 
 		$item_atts = wpcf7_format_atts( $item_atts );
-
-		$label = apply_filters( "wpcf7_option_label", $label, $tag, $key);
-		$label = apply_filters( 'wpcf7_option_label_checkbox', $label, $tag, $key);
 
 		if ( $label_first ) { // put label first, input last
 			$item = sprintf(

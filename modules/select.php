@@ -86,8 +86,11 @@ function wpcf7_select_form_tag_handler( $tag ) {
 		$values[0] = '';
 	}
 
-	$values = apply_filters( 'wpcf7_options', $values, $tag);
-	$values = apply_filters( 'wpcf7_options_select', $values, $tag);
+	$values = apply_filters( 'wpcf7_form_tag_values', $values, $tag);
+	$values = apply_filters( 'wpcf7_form_tag_values_select', $values, $tag);
+
+	$labels = apply_filters( 'wpcf7_form_tag_labels', $labels, $tag);
+	$labels = apply_filters( 'wpcf7_form_tag_labels_select', $labels, $tag);
 
 	$html = '';
 	$hangover = wpcf7_get_hangover( $tag->name );
@@ -99,9 +102,6 @@ function wpcf7_select_form_tag_handler( $tag ) {
 			$selected = in_array( $value, (array) $default_choice, true );
 		}
 
-		$value = apply_filters( "wpcf7_option_value", $value, $tag, $key);
-		$value = apply_filters( 'wpcf7_option_value_select', $value, $tag, $key);
-
 		$item_atts = array(
 			'value' => $value,
 			'selected' => $selected ? 'selected' : '',
@@ -110,9 +110,6 @@ function wpcf7_select_form_tag_handler( $tag ) {
 		$item_atts = wpcf7_format_atts( $item_atts );
 
 		$label = isset( $labels[$key] ) ? $labels[$key] : $value;
-
-		$label = apply_filters( "wpcf7_option_label", $label, $tag, $key);
-		$label = apply_filters( 'wpcf7_option_label_select', $label, $tag, $key);
 
 		$html .= sprintf( '<option %1$s>%2$s</option>',
 			$item_atts, esc_html( $label ) );
