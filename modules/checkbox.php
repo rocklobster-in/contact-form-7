@@ -78,7 +78,7 @@ function wpcf7_checkbox_form_tag_handler( $tag ) {
 				array_values( $data ),
 				array_slice( $tag->labels, -1 ) );
 		} else {
-			$tag->values = array_merge( $tag->values, array_values( $data ) );
+			$tag->values = array_merge( $tag->values, array_keys( $data ) );
 			$tag->labels = array_merge( $tag->labels, array_values( $data ) );
 		}
 	}
