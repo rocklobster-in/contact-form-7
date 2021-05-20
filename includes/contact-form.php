@@ -577,10 +577,10 @@ class WPCF7_ContactForm {
 			esc_html( $primary_response )
 		);
 
-		$validation_errors = sprintf(
+		$validation_errors = $validation_errors ? sprintf(
 			'<ul>%s</ul>',
 			implode( "\n", $validation_errors )
-		);
+		) : '';
 
 		$output = sprintf(
 			'<div class="screen-reader-response">%1$s %2$s</div>',
