@@ -97,6 +97,8 @@ function wpcf7_form_controls_class( $type, $default = '' ) {
 		$classes[] = 'wpcf7-validates-as-required';
 	}
 
+	$classes = apply_filters('wpcf7_form_controls_class'.$classes, $type, $default);
+
 	$classes = array_unique( $classes );
 
 	return implode( ' ', $classes );
