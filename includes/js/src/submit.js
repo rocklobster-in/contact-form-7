@@ -53,7 +53,6 @@ export default function submit( form, options = {} ) {
 
 		const control = wrap.querySelector( '.wpcf7-form-control' );
 		control.classList.add( 'wpcf7-not-valid' );
-		control.setAttribute( 'aria-invalid', 'true' );
 		control.setAttribute( 'aria-describedby', error.error_id );
 
 		const tip = document.createElement( 'span' );
@@ -61,6 +60,10 @@ export default function submit( form, options = {} ) {
 		tip.setAttribute( 'aria-hidden', 'true' );
 		tip.insertAdjacentText( 'beforeend', error.message );
 		wrap.appendChild( tip );
+
+		wrap.querySelectorAll( '[aria-invalid]' ).forEach( elm => {
+			elm.setAttribute( 'aria-invalid', 'true' );
+		} );
 
 		if ( control.closest( '.use-floating-validation-tip' ) ) {
 			control.addEventListener( 'focus', event => {
@@ -153,8 +156,11 @@ export const clearResponse = form => {
 		span.remove();
 	} );
 
+	form.querySelectorAll( '[aria-invalid]' ).forEach( elm => {
+		elm.setAttribute( 'aria-invalid', 'false' );
+	} );
+
 	form.querySelectorAll( '.wpcf7-form-control' ).forEach( control => {
-		control.setAttribute( 'aria-invalid', 'false' );
 		control.removeAttribute( 'aria-describedby' );
 		control.classList.remove( 'wpcf7-not-valid' );
 	} );
