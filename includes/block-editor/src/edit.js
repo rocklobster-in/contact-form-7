@@ -31,10 +31,10 @@ export default function ContactFormSelectorEdit( { attributes, setAttributes } )
 	if ( ! attributes.id ) {
 		const firstOption = options[0];
 
-		setAttributes( {
+		attributes = {
 			id: parseInt( firstOption.value ),
 			title: firstOption.label,
-		} );
+		};
 	} else if ( ! options.length ) {
 		options.push( {
 			value: attributes.id,
