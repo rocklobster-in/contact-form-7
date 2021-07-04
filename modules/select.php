@@ -75,7 +75,6 @@ function wpcf7_select_form_tag_handler( $tag ) {
 
 	$default_choice = $tag->get_default_option( null, array(
 		'multiple' => $multiple,
-		'shifted' => $include_blank,
 	) );
 
 	if ( $include_blank
@@ -105,8 +104,11 @@ function wpcf7_select_form_tag_handler( $tag ) {
 
 		$label = isset( $labels[$key] ) ? $labels[$key] : $value;
 
-		$html .= sprintf( '<option %1$s>%2$s</option>',
-			$item_atts, esc_html( $label ) );
+		$html .= sprintf(
+			'<option %1$s>%2$s</option>',
+			$item_atts,
+			esc_html( $label )
+		);
 	}
 
 	if ( $multiple ) {
