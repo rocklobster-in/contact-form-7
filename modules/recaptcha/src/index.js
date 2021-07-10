@@ -57,8 +57,9 @@ document.addEventListener( 'DOMContentLoaded', event => {
 			'form.wpcf7-form input[name="_wpcf7_recaptcha_response"]'
 		);
 
-		fields.forEach( field => {
+		for ( let i = 0; i < fields.length; i++ ) {
+			let field = fields[ i ];
 			field.setAttribute( 'value', event.detail.token );
-		} );
+		}
 	} );
 } );
