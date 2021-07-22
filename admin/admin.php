@@ -181,22 +181,6 @@ function wpcf7_admin_enqueue_scripts( $hook_suffix ) {
 }
 
 
-add_action(
-	'doing_dark_mode',
-	'wpcf7_dark_mode_support',
-	10, 1
-);
-
-function wpcf7_dark_mode_support( $user_id ) {
-	wp_enqueue_style( 'contact-form-7-admin-dark-mode',
-		wpcf7_plugin_url( 'admin/css/styles-dark-mode.css' ),
-		array( 'contact-form-7-admin' ),
-		WPCF7_VERSION,
-		'screen'
-	);
-}
-
-
 add_filter(
 	'set_screen_option_wpcf7_contact_forms_per_page',
 	function ( $result, $option, $value ) {
