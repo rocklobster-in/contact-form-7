@@ -23,6 +23,6 @@
 	},
 	"homepage": "https://github.com/takayukister/contact-form-7#readme",
 	"devDependencies": {
-		"@wordpress/scripts": "^16.1.4"
+		"@wordpress/scripts": "^17.0.0"
 	}
 }
