@@ -22,10 +22,10 @@ export default function init( form ) {
 		parent: form.closest( '.wpcf7' ),
 	};
 
-	form.querySelectorAll( '.wpcf7-submit' ).forEach( element => {
+	form.querySelectorAll( '.has-spinner' ).forEach( element => {
 		element.insertAdjacentHTML(
 			'afterend',
-			'<span class="ajax-loader"></span>'
+			'<span class="wpcf7-spinner"></span>'
 		);
 	} );
 
