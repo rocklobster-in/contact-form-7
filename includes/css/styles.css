@@ -71,7 +71,7 @@
 	content: " ";
 }
 
-.wpcf7 .ajax-loader {
+.wpcf7-spinner {
 	visibility: hidden;
 	display: inline-block;
 	background-color: #23282d; /* Dark Gray 800 */
@@ -85,11 +85,11 @@
 	position: relative;
 }
 
-.wpcf7 form.submitting .ajax-loader {
+form.submitting .wpcf7-spinner {
 	visibility: visible;
 }
 
-.wpcf7 .ajax-loader::before {
+.wpcf7-spinner::before {
 	content: '';
 	position: absolute;
 	background-color: #fbfbfc; /* Light Gray 100 */
@@ -107,7 +107,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-	.wpcf7 .ajax-loader::before {
+	.wpcf7-spinner::before {
 		animation-name: blink;
 		animation-duration: 2000ms;
 	}
