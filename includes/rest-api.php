@@ -53,6 +53,13 @@ class WPCF7_REST_Controller {
 		register_rest_route( self::namespace,
 			'/contact-forms/(?P<id>\d+)',
 			array(
+				'args' => array(
+					'id' => array(
+						'description' => __( "Unique identifier for the contact form.", 'contact-form-7' ),
+						'type' => 'integer',
+						'required' => true,
+					),
+				),
 				array(
 					'methods' => WP_REST_Server::READABLE,
 					'callback' => array( $this, 'get_contact_form' ),
@@ -107,6 +114,13 @@ class WPCF7_REST_Controller {
 		register_rest_route( self::namespace,
 			'/contact-forms/(?P<id>\d+)/feedback',
 			array(
+				'args' => array(
+					'id' => array(
+						'description' => __( "Unique identifier for the contact form.", 'contact-form-7' ),
+						'type' => 'integer',
+						'required' => true,
+					),
+				),
 				array(
 					'methods' => WP_REST_Server::CREATABLE,
 					'callback' => array( $this, 'create_feedback' ),
@@ -118,6 +132,13 @@ class WPCF7_REST_Controller {
 		register_rest_route( self::namespace,
 			'/contact-forms/(?P<id>\d+)/refill',
 			array(
+				'args' => array(
+					'id' => array(
+						'description' => __( "Unique identifier for the contact form.", 'contact-form-7' ),
+						'type' => 'integer',
+						'required' => true,
+					),
+				),
 				array(
 					'methods' => WP_REST_Server::READABLE,
 					'callback' => array( $this, 'get_refill' ),
