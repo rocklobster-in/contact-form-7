@@ -10,6 +10,8 @@
 		"build:block": "wp-scripts build includes/block-editor/src/index.js --output-path=includes/block-editor",
 		"start:recaptcha": "wp-scripts start modules/recaptcha/src/index.js --output-path=modules/recaptcha",
 		"build:recaptcha": "wp-scripts build modules/recaptcha/src/index.js --output-path=modules/recaptcha",
+		"start:stripe": "wp-scripts start modules/stripe/src/index.js --output-path=modules/stripe",
+		"build:stripe": "wp-scripts build modules/stripe/src/index.js --output-path=modules/stripe",
 		"packages-update": "wp-scripts packages-update"
 	},
 	"repository": {
