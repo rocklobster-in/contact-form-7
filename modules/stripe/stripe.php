@@ -33,7 +33,7 @@ function wpcf7_stripe_enqueue_scripts() {
 	}
 
 	wp_enqueue_style( 'wpcf7-stripe',
-		plugins_url( 'modules/stripe/style.css', CF7STRIPE_PLUGIN ),
+		wpcf7_plugin_url( 'modules/stripe/style.css' ),
 		array(), WPCF7_VERSION, 'all'
 	);
 
@@ -44,17 +44,14 @@ function wpcf7_stripe_enqueue_scripts() {
 
 	$assets = array();
 
-	$asset_file = path_join(
-		CF7STRIPE_PLUGIN_DIR,
-		'modules/stripe/index.asset.php'
-	);
+	$asset_file = wpcf7_plugin_path( 'modules/stripe/index.asset.php' );
 
 	if ( file_exists( $asset_file ) ) {
 		$assets = include( $asset_file );
 	}
 
 	$assets = wp_parse_args( $assets, array(
-		'src' => plugins_url( 'modules/stripe/index.js', CF7STRIPE_PLUGIN ),
+		'src' => wpcf7_plugin_url( 'modules/stripe/index.js' ),
 		'dependencies' => array(
 			'wp-polyfill',
 		),
