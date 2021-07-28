@@ -142,11 +142,18 @@ function wpcf7_stripe_before_send_mail( $contact_form, &$abort, $submission ) {
 	$amount = $tag->get_option( 'amount', 'int', true );
 	$currency = $tag->get_option( 'currency', '[a-zA-Z]{3}', true );
 
-	$payment_intent = $service->create_payment_intent( array(
-		'amount' => $amount ? absint( $amount ) : null,
-		'currency' => $currency ? strtolower( $currency ) : null,
-		'receipt_email' => $submission->get_posted_data( 'your-email' ),
-	) );
+	$payment_intent_params = apply_filters(
+		'wpcf7_stripe_payment_intent_parameters',
+		array(
+			'amount' => $amount ? absint( $amount ) : null,
+			'currency' => $currency ? strtolower( $currency ) : null,
+			'receipt_email' => $submission->get_posted_data( 'your-email' ),
+		)
+	);
+
+	$payment_intent = $service->create_payment_intent(
+		$payment_intent_params
+	);
 
 	if ( ! empty( $payment_intent ) ) {
 		// this should be done in more elegant way
