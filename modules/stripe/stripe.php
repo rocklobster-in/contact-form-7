@@ -80,23 +80,6 @@ function wpcf7_stripe_enqueue_scripts() {
 
 
 add_filter(
-	'wpcf7_flamingo_submit_if',
-	'wpcf7_stripe_flamingo_submit_if',
-	10, 1
-);
-
-function wpcf7_stripe_flamingo_submit_if( $cases ) {
-	$contact_form = WPCF7_ContactForm::get_current();
-
-	if ( $contact_form and $contact_form->is_true( 'stripe_verbose_mode' ) ) {
-		$cases[] = 'payment_required';
-	}
-
-	return $cases;
-}
-
-
-add_filter(
 	'wpcf7_skip_spam_check',
 	'wpcf7_stripe_skip_spam_check',
 	10, 2
