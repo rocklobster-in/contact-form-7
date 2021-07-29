@@ -5,6 +5,7 @@ if ( ! class_exists( 'WPCF7_Service' ) ) {
 }
 
 class WPCF7_Stripe extends WPCF7_Service {
+	use WPCF7_Stripe_API;
 
 	private static $instance;
 	private $api_keys;
@@ -81,66 +82,6 @@ class WPCF7_Stripe extends WPCF7_Service {
 		);
 
 		return $headers;
-	}
-
-	public function create_payment_intent( $args = '' ) {
-		if ( ! $this->is_active() ) {
-			return;
-		}
-
-		$args = wp_parse_args( $args, array(
-			'amount' => 0,
-			'currency' => '',
-			'receipt_email' => '',
-		) );
-
-		$endpoint = 'https://api.stripe.com/v1/payment_intents';
-
-		$request = array(
-			'headers' => $this->default_headers(),
-			'body' => $args,
-		);
-
-		$response = wp_remote_post( esc_url_raw( $endpoint ), $request );
-
-		if ( 200 != wp_remote_retrieve_response_code( $response ) ) {
-			if ( WP_DEBUG ) {
-				$this->log( $endpoint, $request, $response );
-			}
-
-			return false;
-		}
-
-		$response_body = wp_remote_retrieve_body( $response );
-		$response_body = json_decode( $response_body, true );
-
-		return $response_body;
-	}
-
-	public function retrieve_payment_intent( $id ) {
-		$endpoint = sprintf(
-			'https://api.stripe.com/v1/payment_intents/%s',
-			urlencode( $id )
-		);
-
-		$request = array(
-			'headers' => $this->default_headers(),
-		);
-
-		$response = wp_remote_get( esc_url_raw( $endpoint ), $request );
-
-		if ( 200 != wp_remote_retrieve_response_code( $response ) ) {
-			if ( WP_DEBUG ) {
-				$this->log( $endpoint, $request, $response );
-			}
-
-			return false;
-		}
-
-		$response_body = wp_remote_retrieve_body( $response );
-		$response_body = json_decode( $response_body, true );
-
-		return $response_body;
 	}
 
 	protected function menu_page_url( $args = '' ) {
@@ -312,4 +253,77 @@ class WPCF7_Stripe extends WPCF7_Service {
 </form>
 <?php
 	}
+}
+
+
+/**
+ * Trait for the Stripe API.
+ *
+ * @link https://stripe.com/docs/api
+ */
+trait WPCF7_Stripe_API {
+
+
+	public function create_payment_intent( $args = '' ) {
+		if ( ! $this->is_active() ) {
+			return;
+		}
+
+		$args = wp_parse_args( $args, array(
+			'amount' => 0,
+			'currency' => '',
+			'receipt_email' => '',
+		) );
+
+		$endpoint = 'https://api.stripe.com/v1/payment_intents';
+
+		$request = array(
+			'headers' => $this->default_headers(),
+			'body' => $args,
+		);
+
+		$response = wp_remote_post( esc_url_raw( $endpoint ), $request );
+
+		if ( 200 != wp_remote_retrieve_response_code( $response ) ) {
+			if ( WP_DEBUG ) {
+				$this->log( $endpoint, $request, $response );
+			}
+
+			return false;
+		}
+
+		$response_body = wp_remote_retrieve_body( $response );
+		$response_body = json_decode( $response_body, true );
+
+		return $response_body;
+	}
+
+
+	public function retrieve_payment_intent( $id ) {
+		$endpoint = sprintf(
+			'https://api.stripe.com/v1/payment_intents/%s',
+			urlencode( $id )
+		);
+
+		$request = array(
+			'headers' => $this->default_headers(),
+		);
+
+		$response = wp_remote_get( esc_url_raw( $endpoint ), $request );
+
+		if ( 200 != wp_remote_retrieve_response_code( $response ) ) {
+			if ( WP_DEBUG ) {
+				$this->log( $endpoint, $request, $response );
+			}
+
+			return false;
+		}
+
+		$response_body = wp_remote_retrieve_body( $response );
+		$response_body = json_decode( $response_body, true );
+
+		return $response_body;
+	}
+
+
 }
