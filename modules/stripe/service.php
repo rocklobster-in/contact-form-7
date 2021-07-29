@@ -263,12 +263,15 @@ class WPCF7_Stripe extends WPCF7_Service {
  */
 trait WPCF7_Stripe_API {
 
-
+	/**
+	 * Creates a Payment Intent.
+	 *
+	 * @link https://stripe.com/docs/api/payment_intents/create
+	 *
+	 * @param string|array $args Optional. Arguments to control behavior.
+	 * @return array|bool An associative array if 200 OK, false otherwise.
+	 */
 	public function create_payment_intent( $args = '' ) {
-		if ( ! $this->is_active() ) {
-			return;
-		}
-
 		$args = wp_parse_args( $args, array(
 			'amount' => 0,
 			'currency' => '',
@@ -299,6 +302,14 @@ trait WPCF7_Stripe_API {
 	}
 
 
+	/**
+	 * Retrieve a Payment Intent.
+	 *
+	 * @link https://stripe.com/docs/api/payment_intents/retrieve
+	 *
+	 * @param string $id Payment Intent identifier.
+	 * @return array|bool An associative array if 200 OK, false otherwise.
+	 */
 	public function retrieve_payment_intent( $id ) {
 		$endpoint = sprintf(
 			'https://api.stripe.com/v1/payment_intents/%s',
@@ -324,6 +335,5 @@ trait WPCF7_Stripe_API {
 
 		return $response_body;
 	}
-
 
 }
