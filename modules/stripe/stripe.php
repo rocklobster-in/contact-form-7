@@ -100,7 +100,7 @@ function wpcf7_stripe_skip_spam_check( $skip_spam_check, $submission ) {
 
 	if ( ! empty( $_POST['_wpcf7_stripe_payment_intent'] ) ) {
 		$pi_id = trim( $_POST['_wpcf7_stripe_payment_intent'] );
-		$payment_intent = $service->retrieve_payment_intent( $pi_id );
+		$payment_intent = $service->api()->retrieve_payment_intent( $pi_id );
 
 		if ( isset( $payment_intent['status'] )
 		and ( 'succeeded' === $payment_intent['status'] ) ) {
@@ -157,7 +157,7 @@ function wpcf7_stripe_before_send_mail( $contact_form, &$abort, $submission ) {
 		)
 	);
 
-	$payment_intent = $service->create_payment_intent(
+	$payment_intent = $service->api()->create_payment_intent(
 		$payment_intent_params
 	);
 
