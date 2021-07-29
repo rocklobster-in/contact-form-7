@@ -10,6 +10,7 @@ class WPCF7_Stripe extends WPCF7_Service {
 	private static $instance;
 	private $api_keys;
 
+
 	public static function get_instance() {
 		if ( empty( self::$instance ) ) {
 			self::$instance = new self;
@@ -17,6 +18,7 @@ class WPCF7_Stripe extends WPCF7_Service {
 
 		return self::$instance;
 	}
+
 
 	private function __construct() {
 		$option = WPCF7::get_option( 'stripe' );
@@ -30,24 +32,30 @@ class WPCF7_Stripe extends WPCF7_Service {
 		}
 	}
 
+
 	public function get_title() {
 		return __( 'Stripe', 'contact-form-7' );
 	}
+
 
 	public function is_active() {
 		return (bool) $this->get_api_keys();
 	}
 
+
 	public function get_api_keys() {
 		return $this->api_keys;
 	}
+
 
 	public function get_categories() {
 		return array( 'payments' );
 	}
 
+
 	public function icon() {
 	}
+
 
 	public function link() {
 		echo wpcf7_link(
@@ -56,33 +64,11 @@ class WPCF7_Stripe extends WPCF7_Service {
 		);
 	}
 
+
 	protected function log( $url, $request, $response ) {
 		wpcf7_log_remote_request( $url, $request, $response );
 	}
 
-	private function default_headers() {
-		// https://stripe.com/docs/building-plugins#setappinfo
-		$app_info = array(
-			'name' => 'WordPress Contact Form 7',
-			'partner_id' => 'pp_partner_HHbvqLh1AaO7Am',
-			'url' => 'https://contactform7.com/',
-			'version' => WPCF7_VERSION,
-		);
-
-		$ua = array(
-			'lang' => 'php',
-			'lang_version' => PHP_VERSION,
-			'application' => $app_info,
-		);
-
-		$headers = array(
-			'Authorization' => sprintf( 'Bearer %s', $this->api_keys['secret'] ),
-			'Stripe-Version' => '2020-08-27',
-			'X-Stripe-Client-User-Agent' => json_encode( $ua ),
-		);
-
-		return $headers;
-	}
 
 	protected function menu_page_url( $args = '' ) {
 		$args = wp_parse_args( $args, array() );
@@ -97,16 +83,19 @@ class WPCF7_Stripe extends WPCF7_Service {
 		return $url;
 	}
 
+
 	protected function save_data() {
 		WPCF7::update_option( 'stripe', array(
 			'api_keys' => $this->api_keys,
 		) );
 	}
 
+
 	protected function reset_data() {
 		$this->api_keys = null;
 		$this->save_data();
 	}
+
 
 	public function load( $action = '' ) {
 		if ( 'setup' == $action and 'POST' == $_SERVER['REQUEST_METHOD'] ) {
@@ -143,6 +132,7 @@ class WPCF7_Stripe extends WPCF7_Service {
 		}
 	}
 
+
 	public function admin_notice( $message = '' ) {
 		if ( 'invalid' == $message ) {
 			echo sprintf(
@@ -159,6 +149,7 @@ class WPCF7_Stripe extends WPCF7_Service {
 			);
 		}
 	}
+
 
 	public function display( $action = '' ) {
 		// https://stripe.com/docs/partners/support#intro
@@ -187,6 +178,7 @@ class WPCF7_Stripe extends WPCF7_Service {
 			);
 		}
 	}
+
 
 	private function display_setup() {
 		$api_keys = $this->get_api_keys();
@@ -334,6 +326,37 @@ trait WPCF7_Stripe_API {
 		$response_body = json_decode( $response_body, true );
 
 		return $response_body;
+	}
+
+
+	/**
+	 * Returns default set of HTTP request headers used for Stripe API.
+	 *
+	 * @link https://stripe.com/docs/building-plugins#setappinfo
+	 *
+	 * @return array An associative array of headers.
+	 */
+	private function default_headers() {
+		$app_info = array(
+			'name' => 'WordPress Contact Form 7',
+			'partner_id' => 'pp_partner_HHbvqLh1AaO7Am',
+			'url' => 'https://contactform7.com/',
+			'version' => WPCF7_VERSION,
+		);
+
+		$ua = array(
+			'lang' => 'php',
+			'lang_version' => PHP_VERSION,
+			'application' => $app_info,
+		);
+
+		$headers = array(
+			'Authorization' => sprintf( 'Bearer %s', $this->api_keys['secret'] ),
+			'Stripe-Version' => '2020-08-27',
+			'X-Stripe-Client-User-Agent' => json_encode( $ua ),
+		);
+
+		return $headers;
 	}
 
 }
