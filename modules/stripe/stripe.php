@@ -108,13 +108,9 @@ function wpcf7_stripe_skip_spam_check( $skip_spam_check, $submission ) {
 		}
 	}
 
-	if ( ! empty( $_POST['_wpcf7_posted_data_hash'] ) ) {
-		$posted_data_hash = trim( $_POST['_wpcf7_posted_data_hash'] );
-
-		if ( $posted_data_hash === $submission->get_posted_data_hash()
-		and ! empty( $submission->payment_intent ) ) {
-			$skip_spam_check = true;
-		}
+	if ( ! empty( $submission->payment_intent )
+	and $submission->verify_posted_data_hash() ) {
+		$skip_spam_check = true;
 	}
 
 	return $skip_spam_check;
