@@ -389,6 +389,10 @@ class WPCF7_Submission {
 			$hash = trim( $_POST['_wpcf7_posted_data_hash'] );
 		}
 
+		if ( '' === $hash ) {
+			return false;
+		}
+
 		$tick = $this->posted_data_hash_tick();
 
 		// Hash created 0-30 minutes ago.
