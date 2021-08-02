@@ -140,7 +140,6 @@ class WPCF7_Submission {
 	 */
 	public function get_result() {
 		$result = array(
-			'contact_form_id' => $this->contact_form->id(),
 			'status' => $this->get_status(),
 			'message' => $this->get_response(),
 		);
@@ -160,6 +159,8 @@ class WPCF7_Submission {
 				$result['posted_data_hash'] = $this->get_posted_data_hash();
 				break;
 		}
+
+		$result = apply_filters( 'wpcf7_submission_result', $result, $this );
 
 		return $result;
 	}

@@ -763,7 +763,11 @@ class WPCF7_ContactForm {
 			'skip_mail' => $args['skip_mail'],
 		) );
 
-		$result = $submission->get_result();
+		$result = array(
+			'contact_form_id' => $this->id(),
+		);
+
+		$result += $submission->get_result();
 
 		if ( $this->in_demo_mode() ) {
 			$result['demo_mode'] = true;
