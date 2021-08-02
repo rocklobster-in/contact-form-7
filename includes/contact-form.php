@@ -763,27 +763,10 @@ class WPCF7_ContactForm {
 			'skip_mail' => $args['skip_mail'],
 		) );
 
-		$result = array(
-			'contact_form_id' => $this->id(),
-			'status' => $submission->get_status(),
-			'message' => $submission->get_response(),
-			'demo_mode' => $this->in_demo_mode(),
-		);
+		$result = $submission->get_result();
 
-		if ( $submission->is( 'validation_failed' ) ) {
-			$result['invalid_fields'] = $submission->get_invalid_fields();
-		}
-
-		switch ( $submission->get_status() ) {
-			case 'init':
-			case 'validation_failed':
-			case 'acceptance_missing':
-			case 'spam':
-				$result['posted_data_hash'] = '';
-				break;
-			default:
-				$result['posted_data_hash'] = $submission->get_posted_data_hash();
-				break;
+		if ( $this->in_demo_mode() ) {
+			$result['demo_mode'] = true;
 		}
 
 		do_action( 'wpcf7_submit', $this, $result );

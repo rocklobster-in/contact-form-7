@@ -133,6 +133,38 @@ class WPCF7_Submission {
 	}
 
 
+	/**
+	 * Returns an associative array of submission result properties.
+	 *
+	 * @return array Submission result properties.
+	 */
+	public function get_result() {
+		$result = array(
+			'contact_form_id' => $this->contact_form->id(),
+			'status' => $this->get_status(),
+			'message' => $this->get_response(),
+		);
+
+		if ( $this->is( 'validation_failed' ) ) {
+			$result['invalid_fields'] = $this->get_invalid_fields();
+		}
+
+		switch ( $this->get_status() ) {
+			case 'init':
+			case 'validation_failed':
+			case 'acceptance_missing':
+			case 'spam':
+				$result['posted_data_hash'] = '';
+				break;
+			default:
+				$result['posted_data_hash'] = $this->get_posted_data_hash();
+				break;
+		}
+
+		return $result;
+	}
+
+
 	public function get_response() {
 		return $this->response;
 	}
