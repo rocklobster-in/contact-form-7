@@ -217,7 +217,7 @@ class WPCF7_Submission {
 		$url = $this->get_request_url();
 
 		$unit_tag = isset( $_POST['_wpcf7_unit_tag'] )
-			? $_POST['_wpcf7_unit_tag'] : '';
+			? wpcf7_sanitize_unit_tag( $_POST['_wpcf7_unit_tag'] ) : '';
 
 		$container_post_id = isset( $_POST['_wpcf7_container_post'] )
 			? (int) $_POST['_wpcf7_container_post'] : 0;
