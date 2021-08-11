@@ -1,7 +1,9 @@
 <?php
 
-include_once path_join( WPCF7_PLUGIN_MODULES_DIR, 'stripe/service.php' );
-include_once path_join( WPCF7_PLUGIN_MODULES_DIR, 'stripe/api.php' );
+include_once path_join(
+	WPCF7_PLUGIN_MODULES_DIR,
+	'stripe/service.php'
+);
 
 
 add_action(
