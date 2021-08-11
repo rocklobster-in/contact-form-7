@@ -191,11 +191,21 @@ class WPCF7_Submission {
 	}
 
 
+	/**
+	 * Returns an array of invalid fields information.
+	 *
+	 * @return array Invalid fields.
+	 */
 	public function get_invalid_fields() {
 		return $this->invalid_fields;
 	}
 
 
+	/**
+	 * Returns an array of invalid fields information formatted for API responses.
+	 *
+	 * @return array Invalid fields.
+	 */
 	public function get_invalid_fields_for_api_response() {
 		$invalid_fields = array();
 
