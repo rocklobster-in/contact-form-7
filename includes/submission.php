@@ -17,6 +17,7 @@ class WPCF7_Submission {
 	private $meta = array();
 	private $consent = array();
 	private $spam_log = array();
+	private $result_props = array();
 
 
 	public static function get_instance( $contact_form = null, $args = '' ) {
@@ -160,9 +161,20 @@ class WPCF7_Submission {
 				break;
 		}
 
+		$result = array_merge( $this->result_props, $result );
+
 		$result = apply_filters( 'wpcf7_submission_result', $result, $this );
 
 		return $result;
+	}
+
+
+	public function add_result_props( $args = '' ) {
+		$args = wp_parse_args( $args, array() );
+
+		$this->result_props = array_merge( $this->result_props, $args );
+
+		return true;
 	}
 
 
