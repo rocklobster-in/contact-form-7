@@ -344,7 +344,23 @@ class WPCF7_REST_Controller {
 		);
 
 		if ( 'validation_failed' == $result['status'] ) {
-			$response['invalid_fields'] = $result['invalid_fields'];
+			$invalid_fields = array();
+
+			foreach ( (array) $result['invalid_fields'] as $name => $field ) {
+				$invalid_fields[] = array(
+					'into' => 'span.wpcf7-form-control-wrap.'
+						. sanitize_html_class( $name ),
+					'message' => $field['reason'],
+					'idref' => $field['idref'],
+					'error_id' => sprintf(
+						'%1$s-ve-%2$s',
+						$unit_tag,
+						$name
+					),
+				);
+			}
+
+			$response['invalid_fields'] = $invalid_fields;
 		}
 
 		$response = wpcf7_apply_filters_deprecated(
