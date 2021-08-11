@@ -145,7 +145,7 @@ class WPCF7_Submission {
 		);
 
 		if ( $this->is( 'validation_failed' ) ) {
-			$result['invalid_fields'] = $this->get_invalid_fields();
+			$result['invalid_fields'] = $this->get_invalid_fields_for_api_response();
 		}
 
 		switch ( $this->get_status() ) {
@@ -196,6 +196,29 @@ class WPCF7_Submission {
 	}
 
 
+	public function get_invalid_fields_for_api_response() {
+		$invalid_fields = array();
+
+		foreach ( (array) $this->invalid_fields as $name => $field ) {
+			$invalid_fields[] = array(
+				'into' => sprintf(
+					'span.wpcf7-form-control-wrap.%s',
+					sanitize_html_class( $name )
+				),
+				'message' => $field['reason'],
+				'idref' => $field['idref'],
+				'error_id' => sprintf(
+					'%1$s-ve-%2$s',
+					$this->get_meta( 'unit_tag' ),
+					$name
+				),
+			);
+		}
+
+		return $invalid_fields;
+	}
+
+
 	public function get_meta( $name ) {
 		if ( isset( $this->meta[$name] ) ) {
 			return $this->meta[$name];
@@ -217,7 +240,7 @@ class WPCF7_Submission {
 		$url = $this->get_request_url();
 
 		$unit_tag = isset( $_POST['_wpcf7_unit_tag'] )
-			? $_POST['_wpcf7_unit_tag'] : '';
+			? wpcf7_sanitize_unit_tag( $_POST['_wpcf7_unit_tag'] ) : '';
 
 		$container_post_id = isset( $_POST['_wpcf7_container_post'] )
 			? (int) $_POST['_wpcf7_container_post'] : 0;
