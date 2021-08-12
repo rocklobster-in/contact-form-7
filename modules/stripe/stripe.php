@@ -155,23 +155,18 @@ function wpcf7_stripe_before_send_mail( $contact_form, &$abort, $submission ) {
 		$payment_intent_params
 	);
 
-	if ( ! empty( $payment_intent ) ) {
-		// this should be done in more elegant way
-		add_action( 'wpcf7_feedback_response',
-			function( $response, $result ) use ( $payment_intent ) {
-				$response['stripe'] = array(
-					'payment_intent' => array(
-						'id' => $payment_intent['id'],
-						'client_secret' => $payment_intent['client_secret'],
-					),
-				);
-
-				return $response;
-			},
-			10, 2
-		);
+	if ( $payment_intent ) {
+		$submission->add_result_props( array(
+			'stripe' => array(
+				'payment_intent' => array(
+					'id' => $payment_intent['id'],
+					'client_secret' => $payment_intent['client_secret'],
+				),
+			),
+		) );
 
 		$submission->set_status( 'payment_required' );
+
 		$submission->set_response(
 			__( "Payment is required. Please pay by credit card.", 'contact-form-7' )
 		);
