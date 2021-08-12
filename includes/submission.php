@@ -17,6 +17,7 @@ class WPCF7_Submission {
 	private $meta = array();
 	private $consent = array();
 	private $spam_log = array();
+	private $result_props = array();
 
 
 	public static function get_instance( $contact_form = null, $args = '' ) {
@@ -139,10 +140,10 @@ class WPCF7_Submission {
 	 * @return array Submission result properties.
 	 */
 	public function get_result() {
-		$result = array(
+		$result = array_merge( $this->result_props, array(
 			'status' => $this->get_status(),
 			'message' => $this->get_response(),
-		);
+		) );
 
 		if ( $this->is( 'validation_failed' ) ) {
 			$result['invalid_fields'] = $this->get_invalid_fields();
@@ -163,6 +164,21 @@ class WPCF7_Submission {
 		$result = apply_filters( 'wpcf7_submission_result', $result, $this );
 
 		return $result;
+	}
+
+
+	/**
+	 * Adds items to the array of submission result properties.
+	 *
+	 * @param string|array|object $args Value to add to result properties.
+	 * @return array Added result properties.
+	 */
+	public function add_result_props( $args = '' ) {
+		$args = wp_parse_args( $args, array() );
+
+		$this->result_props = array_merge( $this->result_props, $args );
+
+		return $args;
 	}
 
 

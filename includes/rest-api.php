@@ -332,24 +332,28 @@ class WPCF7_REST_Controller {
 			);
 		}
 
-		$result = $item->submit();
-
-		$unit_tag = $request->get_param( '_wpcf7_unit_tag' );
-
-		$response = array(
-			'into' => '#' . wpcf7_sanitize_unit_tag( $unit_tag ),
-			'status' => $result['status'],
-			'message' => $result['message'],
-			'posted_data_hash' => $result['posted_data_hash'],
+		$unit_tag = wpcf7_sanitize_unit_tag(
+			$request->get_param( '_wpcf7_unit_tag' )
 		);
 
-		if ( 'validation_failed' == $result['status'] ) {
+		$result = $item->submit();
+
+		$response = array_merge( $result, array(
+			'into' => sprintf( '#%s', $unit_tag ),
+			'invalid_fields' => array(),
+		) );
+
+		if ( ! empty( $result['invalid_fields'] ) ) {
 			$invalid_fields = array();
 
 			foreach ( (array) $result['invalid_fields'] as $name => $field ) {
+				$name = sanitize_html_class( $name );
+
 				$invalid_fields[] = array(
-					'into' => 'span.wpcf7-form-control-wrap.'
-						. sanitize_html_class( $name ),
+					'into' => sprintf(
+						'span.wpcf7-form-control-wrap.%s',
+						$name
+					),
 					'message' => $field['reason'],
 					'idref' => $field['idref'],
 					'error_id' => sprintf(
