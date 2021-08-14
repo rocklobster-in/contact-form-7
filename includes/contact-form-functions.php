@@ -222,6 +222,11 @@ function wpcf7_sanitize_form( $input, $default = '' ) {
 	}
 
 	$output = trim( $input );
+
+	if ( ! current_user_can( 'unfiltered_html' ) ) {
+		$output = wpcf7_kses( $output, 'form' );
+	}
+
 	return $output;
 }
 
@@ -246,6 +251,11 @@ function wpcf7_sanitize_mail( $input, $defaults = array() ) {
 	$output['sender'] = trim( $input['sender'] );
 	$output['recipient'] = trim( $input['recipient'] );
 	$output['body'] = trim( $input['body'] );
+
+	if ( ! current_user_can( 'unfiltered_html' ) ) {
+		$output['body'] = wpcf7_kses( $output['body'], 'mail' );
+	}
+
 	$output['additional_headers'] = '';
 
 	$headers = str_replace( "\r\n", "\n", $input['additional_headers'] );
