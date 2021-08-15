@@ -882,7 +882,8 @@ class WPCF7_ContactForm {
 	/* Save */
 
 	public function save() {
-		$props = $this->get_properties();
+		$title = wp_slash( $this->title );
+		$props = wp_slash( $this->get_properties() );
 
 		$post_content = implode( "\n", wpcf7_array_flatten( $props ) );
 
@@ -890,14 +891,14 @@ class WPCF7_ContactForm {
 			$post_id = wp_insert_post( array(
 				'post_type' => self::post_type,
 				'post_status' => 'publish',
-				'post_title' => $this->title,
+				'post_title' => $title,
 				'post_content' => trim( $post_content ),
 			) );
 		} else {
 			$post_id = wp_update_post( array(
 				'ID' => (int) $this->id,
 				'post_status' => 'publish',
-				'post_title' => $this->title,
+				'post_title' => $title,
 				'post_content' => trim( $post_content ),
 			) );
 		}
