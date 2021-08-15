@@ -941,7 +941,7 @@ class WPCF7_ConstantContact_ContactPostRequest {
 	}
 
 	protected function strlen( $string ) {
-		return wpcf7_count_code_units( stripslashes( $string ) );
+		return wpcf7_count_code_units( $string );
 	}
 
 }
