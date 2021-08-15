@@ -157,8 +157,7 @@ function wpcf7_checkbox_form_tag_handler( $tag ) {
 
 				if ( wpcf7_is_posted()
 				and isset( $_POST[$free_text_name] ) ) {
-					$free_text_atts['value'] = wp_unslash(
-						$_POST[$free_text_name] );
+					$free_text_atts['value'] = wp_unslash( $_POST[$free_text_name] );
 				}
 
 				$free_text_atts = wpcf7_format_atts( $free_text_atts );
