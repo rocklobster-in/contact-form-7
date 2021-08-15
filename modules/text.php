@@ -162,7 +162,7 @@ function wpcf7_text_validation_filter( $result, $tag ) {
 			$maxlength = $minlength = null;
 		}
 
-		$code_units = wpcf7_count_code_units( stripslashes( $value ) );
+		$code_units = wpcf7_count_code_units( $value );
 
 		if ( false !== $code_units ) {
 			if ( $maxlength and $maxlength < $code_units ) {
