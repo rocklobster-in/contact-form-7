@@ -373,7 +373,9 @@ class WPCF7_MailTaggedText {
 			: null;
 
 		if ( $mail_tag->get_option( 'do_not_heat' ) ) {
-			$submitted = isset( $_POST[$field_name] ) ? $_POST[$field_name] : '';
+			$submitted = isset( $_POST[$field_name] )
+				? wp_unslash( $_POST[$field_name] )
+				: '';
 		}
 
 		$replaced = $submitted;
@@ -406,7 +408,7 @@ class WPCF7_MailTaggedText {
 		);
 
 		if ( null !== $replaced ) {
-			$replaced = wp_unslash( trim( $replaced ) );
+			$replaced = trim( $replaced );
 
 			$this->replaced_tags[$tag] = $replaced;
 			return $replaced;
