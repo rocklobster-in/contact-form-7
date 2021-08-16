@@ -408,17 +408,15 @@ function wpcf7_kses_allowed_html( $context = 'form' ) {
 /**
  * Sanitizes content for allowed HTML tags for the specified context.
  *
- * @param string $input Content to filter. Slashed text is expected.
+ * @param string $input Content to filter.
  * @param string $context Context used to decide allowed tags and attributes.
  * @return string Filtered text with allowed HTML tags and attributes intact.
  */
 function wpcf7_kses( $input, $context = 'form' ) {
-	$input = stripslashes( $input );
-
 	$output = wp_kses(
 		$input,
 		wpcf7_kses_allowed_html( $context )
 	);
 
-	return addslashes( $output );
+	return $output;
 }
