@@ -34,14 +34,26 @@ class WPCF7_Pipes {
 		$this->pipes[] = $pipe;
 	}
 
-	public function do_pipe( $before ) {
+	public function do_pipe( $input ) {
 		foreach ( $this->pipes as $pipe ) {
-			if ( $pipe->before == $before ) {
-				return $pipe->after;
+			$before = html_entity_decode(
+				$pipe->before,
+				ENT_QUOTES | ENT_HTML5,
+				'UTF-8'
+			);
+
+			$after = html_entity_decode(
+				$pipe->after,
+				ENT_QUOTES | ENT_HTML5,
+				'UTF-8'
+			);
+
+			if ( $before === $input ) {
+				return $after;
 			}
 		}
 
-		return $before;
+		return $input;
 	}
 
 	public function collect_befores() {
