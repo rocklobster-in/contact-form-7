@@ -327,7 +327,17 @@ class WPCF7_Submission {
 						-1, 1
 					);
 
-					$tied_item = html_entity_decode( $tied_item, ENT_QUOTES, 'UTF-8' );
+					$last_val = html_entity_decode(
+						$last_val,
+						ENT_QUOTES | ENT_HTML5,
+						'UTF-8'
+					);
+
+					$tied_item = html_entity_decode(
+						$tied_item,
+						ENT_QUOTES | ENT_HTML5,
+						'UTF-8'
+					);
 
 					if ( $last_val === $tied_item ) {
 						$value[] = sprintf( '%s %s',
