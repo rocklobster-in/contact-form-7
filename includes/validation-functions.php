@@ -155,12 +155,16 @@ function wpcf7_is_email_in_site_domain( $email ) {
 }
 
 function wpcf7_is_file_path_in_content_dir( $path ) {
-	if ( 0 === strpos( realpath( $path ), realpath( WP_CONTENT_DIR ) ) ) {
+	if ( $real_path = realpath( $path ) ) {
+		$path = $real_path;
+	}
+
+	if ( 0 === strpos( $path, realpath( WP_CONTENT_DIR ) ) ) {
 		return true;
 	}
 
 	if ( defined( 'UPLOADS' )
-	and 0 === strpos( realpath( $path ), realpath( ABSPATH . UPLOADS ) ) ) {
+	and 0 === strpos( $path, realpath( ABSPATH . UPLOADS ) ) ) {
 		return true;
 	}
 
