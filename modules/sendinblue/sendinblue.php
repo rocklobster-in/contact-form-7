@@ -110,9 +110,7 @@ function wpcf7_sendinblue_submit( $contact_form, $result ) {
 			$last_name
 		);
 	} else {
-		$email_to_name = _x(
-			'John Doe', 'personal name placeholder', 'contact-form-7'
-		);
+		$email_to_name = '';
 	}
 
 	$service->send_email( array(
