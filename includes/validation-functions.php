@@ -154,9 +154,22 @@ function wpcf7_is_email_in_site_domain( $email ) {
 	return false;
 }
 
+
+/**
+ * Verifies that a given file path is under the directories that WordPress
+ * manages for user contents.
+ *
+ * Returns false if the file at the given path doesn't exist yet.
+ *
+ * @param string $path A file path.
+ * @return bool True if the path is under the content directories,
+ *              false otherwise.
+ */
 function wpcf7_is_file_path_in_content_dir( $path ) {
 	if ( $real_path = realpath( $path ) ) {
 		$path = $real_path;
+	} else {
+		return false;
 	}
 
 	if ( 0 === strpos( $path, realpath( WP_CONTENT_DIR ) ) ) {
