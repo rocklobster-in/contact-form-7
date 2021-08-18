@@ -236,7 +236,6 @@ add_action(
 
 function wpcf7_init_uploads() {
 	$dir = wpcf7_upload_tmp_dir();
-	wp_mkdir_p( $dir );
 
 	if ( is_dir( $dir ) and is_writable( $dir ) ) {
 		$htaccess_file = path_join( $dir, '.htaccess' );
@@ -265,12 +264,24 @@ function wpcf7_maybe_add_random_dir( $dir ) {
 }
 
 
+/**
+ * Returns the directory path for uploaded files.
+ *
+ * @return string Directory path.
+ */
 function wpcf7_upload_tmp_dir() {
 	if ( defined( 'WPCF7_UPLOADS_TMP_DIR' ) ) {
-		return WPCF7_UPLOADS_TMP_DIR;
-	} else {
-		return path_join( wpcf7_upload_dir( 'dir' ), 'wpcf7_uploads' );
+		$dir = path_join( WP_CONTENT_DIR, WPCF7_UPLOADS_TMP_DIR );
+		wp_mkdir_p( $dir );
+
+		if ( wpcf7_is_file_path_in_content_dir( $dir ) ) {
+			return $dir;
+		}
 	}
+
+	$dir = path_join( wpcf7_upload_dir( 'dir' ), 'wpcf7_uploads' );
+	wp_mkdir_p( $dir );
+	return $dir;
 }
 
 
