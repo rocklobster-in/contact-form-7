@@ -54,13 +54,18 @@ function wpcf7_is_date( $date ) {
 function wpcf7_is_mailbox_list( $mailbox_list ) {
 	if ( ! is_array( $mailbox_list ) ) {
 		$mailbox_text = (string) $mailbox_list;
-		$mailbox_text = wp_unslash( $mailbox_text );
 
-		$mailbox_text = preg_replace( '/\\\\(?:\"|\')/', 'esc-quote',
-			$mailbox_text );
+		$mailbox_text = preg_replace(
+			'/\\\\(?:\"|\')/',
+			'esc-quote',
+			$mailbox_text
+		);
 
-		$mailbox_text = preg_replace( '/(?:\".*?\"|\'.*?\')/', 'quoted-string',
-			$mailbox_text );
+		$mailbox_text = preg_replace(
+			'/(?:\".*?\"|\'.*?\')/',
+			'quoted-string',
+			$mailbox_text
+		);
 
 		$mailbox_list = explode( ',', $mailbox_text );
 	}
@@ -73,6 +78,10 @@ function wpcf7_is_mailbox_list( $mailbox_list ) {
 		}
 
 		$mailbox = trim( $mailbox );
+
+		if ( '' === $mailbox ) {
+			continue;
+		}
 
 		if ( preg_match( '/<(.+)>$/', $mailbox, $matches ) ) {
 			$addr_spec = $matches[1];
