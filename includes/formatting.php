@@ -276,7 +276,6 @@ function wpcf7_kses_allowed_html( $context = 'form' ) {
 	if ( 'form' === $context ) {
 		$additional_tags_for_form = array(
 			'button' => array(
-				'autofocus' => true,
 				'disabled' => true,
 				'name' => true,
 				'type' => true,
@@ -290,7 +289,6 @@ function wpcf7_kses_allowed_html( $context = 'form' ) {
 			'input' => array(
 				'accept' => true,
 				'alt' => true,
-				'autofocus' => true,
 				'capture' => true,
 				'checked' => true,
 				'disabled' => true,
@@ -339,14 +337,12 @@ function wpcf7_kses_allowed_html( $context = 'form' ) {
 				'value' => true,
 			),
 			'select' => array(
-				'autofocus' => true,
 				'disabled' => true,
 				'multiple' => true,
 				'name' => true,
 				'size' => true,
 			),
 			'textarea' => array(
-				'autofocus' => true,
 				'cols' => true,
 				'disabled' => true,
 				'maxlength' => true,
