@@ -216,24 +216,58 @@ function wpcf7_add_form_tag_stripe() {
 
 
 function wpcf7_stripe_form_tag_handler( $tag ) {
-	$button_label = (string) reset( $tag->values );
-
-	if ( empty( $button_label ) ) {
-		$button_label = __( 'Pay Now', 'contact-form-7' );
-	}
-
-	$html = sprintf(
-		'<div class="wpcf7-stripe">%1$s %2$s %3$s %4$s %5$s</div>',
-		'<div class="card-element"></div>',
-		'<div class="card-errors" role="alert"></div>',
-		sprintf(
-			'<button type="button">%1$s %2$s</button>',
-			esc_html( $button_label ),
-			'<span class="spinner"></span>'
-		),
-		'<input type="hidden" name="_wpcf7_stripe_payment_intent" value="" />',
-		'<div class="powered-by-stripe">Powered by <span class="logo"></span></div>'
+	$card_element = sprintf(
+		'<span %s></span>',
+		wpcf7_format_atts( array(
+			'class' => 'card-element wpcf7-form-control',
+			'aria-invalid' => 'false',
+		) )
 	);
 
-	return $html;
+	$card_element = sprintf(
+		'<span class="wpcf7-form-control-wrap hidden">%s</span>',
+		$card_element
+	);
+
+	$button_1_label = __( 'Proceed to checkout', 'contact-form-7' );
+
+	if ( isset( $tag->values[0] ) ) {
+		$button_1_label = trim( $tag->values[0] );
+	}
+
+	$button_1 = sprintf(
+		'<button %1$s>%2$s</button>',
+		wpcf7_format_atts( array(
+			'type' => 'submit',
+			'class' => 'first',
+		) ),
+		esc_html( $button_1_label )
+	);
+
+	$button_2_label = __( 'Complete payment', 'contact-form-7' );
+
+	if ( isset( $tag->values[1] ) ) {
+		$button_2_label = trim( $tag->values[1] );
+	}
+
+	$button_2 = sprintf(
+		'<button %1$s>%2$s</button>',
+		wpcf7_format_atts( array(
+			'type' => 'button',
+			'class' => 'second hidden',
+		) ),
+		esc_html( $button_2_label )
+	);
+
+	$buttons = sprintf(
+		'<span class="buttons has-spinner">%1$s %2$s</span>',
+		$button_1, $button_2
+	);
+
+	return sprintf(
+		'<div class="wpcf7-stripe">%1$s %2$s %3$s</div>',
+		$card_element,
+		$buttons,
+		'<input type="hidden" name="_wpcf7_stripe_payment_intent" value="" />'
+	);
 }

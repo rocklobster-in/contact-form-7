@@ -2,101 +2,17 @@
 	border-color: #ffb900; /* Yellow */
 }
 
-.wpcf7 .wpcf7-stripe {
-	background-color: rgb(247, 250, 252);
-	padding: 32px 32px 12px;
-	box-shadow: 0 7px 14px 0 rgba(60,66,87, 0.08), 0 3px 6px 0 rgba(0,0,0, 0.12);
-}
-
-.wpcf7 .wpcf7-stripe .card-element {
-	background-color: #fff;
+.wpcf7 .wpcf7-stripe .wpcf7-form-control {
+	display: block;
+	background: #f6f7f7;
 	padding: 12px 12px;
-	margin-bottom: 12px;
-	border: 1px solid #ccc;
-}
-
-.wpcf7 .wpcf7-stripe .card-errors {
-	color: #f00;
-}
-
-.wpcf7 .wpcf7-stripe button {
-	background-color: rgb(84, 105, 212);
-	color: #fff;
-	padding: 16px 20px;
-	margin: 14px 0 0;
-	width: 100%;
-	text-align: center;
-	box-shadow: 0 7px 14px 0 rgba(60,66,87, 0.08), 0 3px 6px 0 rgba(0,0,0, 0.12);
+	border: 1px solid #787c82;
 }
 
 .wpcf7 .wpcf7-stripe button:disabled {
 	cursor: not-allowed;
 }
 
-.wpcf7 .wpcf7-stripe button .spinner {
-	visibility: hidden;
-	display: inline-block;
-	position: relative;
-	background-image: none;
-	background-color: transparent;
-	width: 20px;
-	height: 20px;
-	border: none;
-	padding: 0;
-	margin: 0;
-	vertical-align: -30%;
-	animation: 2s linear 0s normal none infinite running spin;
-}
-
-@keyframes spin {
-	0% {
-		transform: rotate(0deg);
-	}
-
-	100% {
-		transform: rotate(359deg);
-	}
-}
-
-.wpcf7 .wpcf7-stripe button:disabled .spinner {
-	visibility: visible;
-}
-
-.wpcf7 .wpcf7-stripe button .spinner::before {
-	content: url('./spinner.svg');
-}
-
-.wpcf7 .wpcf7-stripe,
-.wpcf7 .wpcf7-stripe .card-element,
-.wpcf7 .wpcf7-stripe button {
-	font-family: Open Sans, sans-serif;
-	font-size: 14px;
-	border-radius: 4px;
-	text-decoration: none;
-	text-transform: none;
-}
-
-.wpcf7 .wpcf7-stripe .powered-by-stripe {
-	height: 24px;
-	color: #32325D;
-	text-align: center;
-	margin-top: 12px;
-}
-
-.wpcf7 .wpcf7-stripe .powered-by-stripe .logo {
-	vertical-align: -32%;
-}
-
-.wpcf7 .wpcf7-stripe .powered-by-stripe .logo::before {
-	content: url('./logo-slate.svg');
-}
-
-.wpcf7 form.sent .wpcf7-stripe,
-.wpcf7 form:not(.custom-payment-required) .wpcf7-stripe {
-	display: none;
-}
-
-.wpcf7 form.custom-payment-required:not(.sent) .wpcf7-submit,
-.wpcf7 form.custom-payment-required:not(.sent) .wpcf7-submit-parent {
+.wpcf7 .wpcf7-stripe .hidden {
 	display: none;
 }
