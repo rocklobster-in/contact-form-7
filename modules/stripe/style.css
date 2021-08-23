@@ -1,7 +1,3 @@
-.wpcf7 form.custom-payment-required .wpcf7-response-output {
-	border-color: #ffb900; /* Yellow */
-}
-
 .wpcf7 .wpcf7-stripe .wpcf7-form-control {
 	display: block;
 	background: #f6f7f7;

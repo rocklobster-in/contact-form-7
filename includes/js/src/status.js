@@ -10,6 +10,7 @@ export const setStatus = ( form, status ) => {
 		[ 'mail_failed', 'failed' ],
 		[ 'submitting', 'submitting' ],
 		[ 'resetting', 'resetting' ],
+		[ 'payment_required', 'payment-required' ],
 	] );
 
 	if ( defaultStatuses.has( status ) ) {
