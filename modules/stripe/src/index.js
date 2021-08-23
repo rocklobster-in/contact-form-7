@@ -10,13 +10,23 @@ document.addEventListener( 'DOMContentLoaded', event => {
 		return;
 	}
 
+	if ( typeof wpcf7.submit !== 'function' ) {
+		console.error( "wpcf7.submit is not defined." );
+		return;
+	}
+
 	const stripe = Stripe( wpcf7_stripe.publishable_key );
 	const elements = stripe.elements();
 
 	document.addEventListener( 'wpcf7submit', event => {
 		const unitTag = event.detail.unitTag;
-		const form = document.querySelector( `#${ unitTag } form` );
 		const errorId = `${ unitTag }-ve-stripe-card-element`;
+
+		const form = document.querySelector( `#${ unitTag } form` );
+
+		const screenReaderResponse = form.closest( '.wpcf7' ).querySelector(
+			'.screen-reader-response'
+		);
 
 		const wrap = form.querySelector( '.wpcf7-stripe .wpcf7-form-control-wrap' );
 		const button1 = form.querySelector( '.wpcf7-stripe button.first' );
@@ -33,14 +43,20 @@ document.addEventListener( 'DOMContentLoaded', event => {
 		hiddenInput.setAttribute( 'value', '' );
 
 		const setScreenReaderValidationError = error => {
+			const ul = screenReaderResponse.querySelector( 'ul' );
+
+			const oldError = ul.querySelector( `li#${ errorId }` )
+
+			if ( oldError ) {
+				oldError.remove();
+			}
+
 			const li = document.createElement( 'li' );
 
 			li.setAttribute( 'id', errorId );
 			li.insertAdjacentText( 'beforeend', error.message );
 
-			form.closest( '.wpcf7' ).querySelector(
-				'.screen-reader-response ul'
-			).appendChild( li );
+			ul.appendChild( li );
 		};
 
 		const setVisualValidationError = error => {
@@ -70,8 +86,8 @@ document.addEventListener( 'DOMContentLoaded', event => {
 		};
 
 		const clearValidationErrors = () => {
-			form.closest( '.wpcf7' ).querySelectorAll(
-				`.screen-reader-response li#${ errorId }`
+			screenReaderResponse.querySelectorAll(
+				`ul li#${ errorId }`
 			).forEach( li => {
 				li.remove();
 			} );
@@ -134,9 +150,10 @@ document.addEventListener( 'DOMContentLoaded', event => {
 					}
 				} ).then( result => {
 					clearValidationErrors();
-					form.classList.remove( 'submitting' );
 
 					if ( result.error ) {
+						form.classList.remove( 'submitting' );
+
 						const error = {
 							message: result.error.message,
 						};
