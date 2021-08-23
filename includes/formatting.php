@@ -77,6 +77,7 @@ function wpcf7_autop( $pee, $br = 1 ) {
 			'clean_pre', $pee );
 	}
 
+	$pee = preg_replace( "|<br />$|", '', $pee );
 	$pee = preg_replace( "|\n</p>$|", '</p>', $pee );
 
 	return $pee;
