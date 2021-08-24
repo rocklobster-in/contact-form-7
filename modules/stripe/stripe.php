@@ -217,7 +217,7 @@ function wpcf7_add_form_tag_stripe() {
 
 function wpcf7_stripe_form_tag_handler( $tag ) {
 	$card_element = sprintf(
-		'<span %s></span>',
+		'<div %s></div>',
 		wpcf7_format_atts( array(
 			'class' => 'card-element wpcf7-form-control',
 			'aria-invalid' => 'false',
@@ -225,7 +225,7 @@ function wpcf7_stripe_form_tag_handler( $tag ) {
 	);
 
 	$card_element = sprintf(
-		'<span class="wpcf7-form-control-wrap hidden">%s</span>',
+		'<div class="wpcf7-form-control-wrap hidden">%s</div>',
 		$card_element
 	);
 

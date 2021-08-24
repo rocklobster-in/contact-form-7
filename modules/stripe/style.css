@@ -1,3 +1,7 @@
+.wpcf7 .wpcf7-stripe .wpcf7-form-control-wrap {
+	margin: .6em 0;
+}
+
 .wpcf7 .wpcf7-stripe .wpcf7-form-control {
 	display: block;
 	background: #f6f7f7;
