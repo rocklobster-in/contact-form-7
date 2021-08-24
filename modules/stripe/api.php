@@ -69,6 +69,10 @@ class WPCF7_Stripe_API {
 			'receipt_email' => '',
 		) );
 
+		if ( ! is_email( $args['receipt_email'] ) ) {
+			unset( $args['receipt_email'] );
+		}
+
 		$endpoint = 'https://api.stripe.com/v1/payment_intents';
 
 		$request = array(
