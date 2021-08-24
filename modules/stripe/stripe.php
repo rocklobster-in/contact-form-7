@@ -10,6 +10,9 @@ add_action(
 	10, 0
 );
 
+/**
+ * Registers the Stripe service.
+ */
 function wpcf7_stripe_register_service() {
 	$integration = WPCF7_Integration::get_instance();
 
@@ -29,6 +32,9 @@ add_action(
 	10, 0
 );
 
+/**
+ * Enqueues scripts and styles for the Stripe module.
+ */
 function wpcf7_stripe_enqueue_scripts() {
 	$service = WPCF7_Stripe::get_instance();
 
@@ -89,6 +95,11 @@ add_filter(
 	10, 2
 );
 
+/**
+ * Skips the spam check if it is not necessary.
+ *
+ * @return bool True if the spam check is not necessary.
+ */
 function wpcf7_stripe_skip_spam_check( $skip_spam_check, $submission ) {
 	$service = WPCF7_Stripe::get_instance();
 
@@ -121,6 +132,9 @@ add_action(
 	10, 3
 );
 
+/**
+ * Creates Stripe's Payment Intent.
+ */
 function wpcf7_stripe_before_send_mail( $contact_form, &$abort, $submission ) {
 	$service = WPCF7_Stripe::get_instance();
 
@@ -182,6 +196,9 @@ add_filter(
 	10, 4
 );
 
+/**
+ * Registers the [_stripe_payment_link] special mail-tag.
+ */
 function wpcf7_stripe_smt( $output, $tag_name, $html, $mail_tag ) {
 	if ( '_stripe_payment_link' === $tag_name ) {
 		$submission = WPCF7_Submission::get_instance();
@@ -204,6 +221,9 @@ add_action(
 	10, 0
 );
 
+/**
+ * Registers the stripe form-tag handler.
+ */
 function wpcf7_add_form_tag_stripe() {
 	wpcf7_add_form_tag(
 		'stripe',
@@ -215,6 +235,11 @@ function wpcf7_add_form_tag_stripe() {
 }
 
 
+/**
+ * Defines the stripe form-tag handler.
+ *
+ * @return string HTML content that replaces a stripe form-tag.
+ */
 function wpcf7_stripe_form_tag_handler( $tag ) {
 	$card_element = sprintf(
 		'<div %s></div>',
