@@ -166,10 +166,14 @@ function wpcf7_strip_newline( $str ) {
 }
 
 function wpcf7_canonicalize( $text, $strto = 'lower' ) {
+	$text = html_entity_decode( $text, ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+
 	if ( function_exists( 'mb_convert_kana' )
 	and 'UTF-8' == get_option( 'blog_charset' ) ) {
 		$text = mb_convert_kana( $text, 'asKV', 'UTF-8' );
 	}
+
+	$text = preg_replace( '/[\r\n\t ]+/', ' ', $text );
 
 	if ( 'lower' == $strto ) {
 		$text = strtolower( $text );
