@@ -327,16 +327,13 @@ class WPCF7_Submission {
 						-1, 1
 					);
 
-					$last_val = html_entity_decode(
-						$last_val,
-						ENT_QUOTES | ENT_HTML5,
-						'UTF-8'
-					);
-
-					$tied_item = html_entity_decode(
-						$tied_item,
-						ENT_QUOTES | ENT_HTML5,
-						'UTF-8'
+					list( $last_val, $tied_item ) = array_map(
+						function ( $item ) {
+							return wpcf7_canonicalize( $item, array(
+								'strto' => 'as-is',
+							) );
+						},
+						array( $last_val, $tied_item )
 					);
 
 					if ( $last_val === $tied_item ) {

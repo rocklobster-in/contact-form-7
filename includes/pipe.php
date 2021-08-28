@@ -35,20 +35,22 @@ class WPCF7_Pipes {
 	}
 
 	public function do_pipe( $input ) {
+		$input_canonical = wpcf7_canonicalize( $input, array(
+			'strto' => 'as-is',
+		) );
+
 		foreach ( $this->pipes as $pipe ) {
-			$before = html_entity_decode(
-				$pipe->before,
-				ENT_QUOTES | ENT_HTML5,
-				'UTF-8'
+
+			list( $before, $after ) = array_map(
+				function ( $item ) {
+					return wpcf7_canonicalize( $item, array(
+						'strto' => 'as-is',
+					) );
+				},
+				array( $pipe->before, $pipe->after )
 			);
 
-			$after = html_entity_decode(
-				$pipe->after,
-				ENT_QUOTES | ENT_HTML5,
-				'UTF-8'
-			);
-
-			if ( $before === $input ) {
+			if ( $input_canonical === $before ) {
 				return $after;
 			}
 		}
