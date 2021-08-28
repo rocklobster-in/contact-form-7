@@ -1,5 +1,16 @@
 <?php
 
+/**
+ * Replaces double line breaks with paragraph elements.
+ *
+ * This is a variant of wpautop() that is specifically tuned for
+ * form content uses.
+ *
+ * @param string $pee The text which has to be formatted.
+ * @param bool $br Optional. If set, this will convert all remaining
+ *                 line breaks after paragraphing. Default true.
+ * @return string Text which has been converted into correct paragraph tags.
+ */
 function wpcf7_autop( $pee, $br = 1 ) {
 	if ( trim( $pee ) === '' ) {
 		return '';
@@ -83,10 +94,24 @@ function wpcf7_autop( $pee, $br = 1 ) {
 	return $pee;
 }
 
+
+/**
+ * Newline preservation help function for wpcf7_autop().
+ *
+ * @param array $matches preg_replace_callback() matches array.
+ * @return string Text including newline placeholders.
+ */
 function wpcf7_autop_preserve_newline_callback( $matches ) {
 	return str_replace( "\n", '<WPPreserveNewline />', $matches[0] );
 }
 
+
+/**
+ * Sanitizes the query variables.
+ *
+ * @param string $text Query variable.
+ * @return string Text sanitized.
+ */
 function wpcf7_sanitize_query_var( $text ) {
 	$text = wp_unslash( $text );
 	$text = wp_check_invalid_utf8( $text );
@@ -103,6 +128,13 @@ function wpcf7_sanitize_query_var( $text ) {
 	return $text;
 }
 
+
+/**
+ * Strips quote characters surrounding the input.
+ *
+ * @param string $text Input text.
+ * @return string Processed output.
+ */
 function wpcf7_strip_quote( $text ) {
 	$text = trim( $text );
 
@@ -115,6 +147,14 @@ function wpcf7_strip_quote( $text ) {
 	return $text;
 }
 
+
+/**
+ * Navigates through an array, object, or scalar, and
+ * strips quote characters surrounding the each value.
+ *
+ * @param mixed $arr The array or string to be processed.
+ * @return mixed Processed value.
+ */
 function wpcf7_strip_quote_deep( $arr ) {
 	if ( is_string( $arr ) ) {
 		return wpcf7_strip_quote( $arr );
@@ -131,6 +171,14 @@ function wpcf7_strip_quote_deep( $arr ) {
 	}
 }
 
+
+/**
+ * Normalizes newline characters.
+ *
+ * @param string $text Input text.
+ * @param string $to Optional. The newline character that is used in the output.
+ * @return string Normalized text.
+ */
 function wpcf7_normalize_newline( $text, $to = "\n" ) {
 	if ( ! is_string( $text ) ) {
 		return $text;
@@ -145,6 +193,15 @@ function wpcf7_normalize_newline( $text, $to = "\n" ) {
 	return str_replace( $nls, $to, $text );
 }
 
+
+/**
+ * Navigates through an array, object, or scalar, and
+ * normalizes newline characters in the each value.
+ *
+ * @param mixed $arr The array or string to be processed.
+ * @param string $to Optional. The newline character that is used in the output.
+ * @return mixed Processed value.
+ */
 function wpcf7_normalize_newline_deep( $arr, $to = "\n" ) {
 	if ( is_array( $arr ) ) {
 		$result = array();
@@ -159,12 +216,27 @@ function wpcf7_normalize_newline_deep( $arr, $to = "\n" ) {
 	return wpcf7_normalize_newline( $arr, $to );
 }
 
+
+/**
+ * Strips newline characters.
+ *
+ * @param string $str Input text.
+ * @return string Processed one-line text.
+ */
 function wpcf7_strip_newline( $str ) {
 	$str = (string) $str;
 	$str = str_replace( array( "\r", "\n" ), '', $str );
 	return trim( $str );
 }
 
+
+/**
+ * Canonicalizes text.
+ *
+ * @param string $text Input text.
+ * @param string|array|object $args Options.
+ * @return string Canonicalized text.
+ */
 function wpcf7_canonicalize( $text, $args = '' ) {
 	// for back-compat
 	if ( is_string( $args ) and '' !== $args
@@ -202,11 +274,25 @@ function wpcf7_canonicalize( $text, $args = '' ) {
 	return $text;
 }
 
+
+/**
+ * Sanitizes Contact Form 7's form unit-tag.
+ *
+ * @param string $tag Unit-tag.
+ * @return string Sanitized unit-tag.
+ */
 function wpcf7_sanitize_unit_tag( $tag ) {
 	$tag = preg_replace( '/[^A-Za-z0-9_-]/', '', $tag );
 	return $tag;
 }
 
+
+/**
+ * Converts a file name to one that is not executable as a script.
+ *
+ * @param string $filename File name.
+ * @return string Converted file name.
+ */
 function wpcf7_antiscript_file_name( $filename ) {
 	$filename = wp_basename( $filename );
 
