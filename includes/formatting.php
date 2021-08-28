@@ -165,7 +165,20 @@ function wpcf7_strip_newline( $str ) {
 	return trim( $str );
 }
 
-function wpcf7_canonicalize( $text, $strto = 'lower' ) {
+function wpcf7_canonicalize( $text, $args = '' ) {
+	// for back-compat
+	if ( is_string( $args ) and '' !== $args
+	and false === strpos( $args, '=' ) ) {
+		$args = array(
+			'strto' => $args,
+		);
+	}
+
+	$args = wp_parse_args( $args, array(
+		'strto' => 'lower',
+		'strip_separators' => false,
+	) );
+
 	$text = html_entity_decode( $text, ENT_QUOTES | ENT_HTML5, 'UTF-8' );
 
 	if ( function_exists( 'mb_convert_kana' )
@@ -173,11 +186,15 @@ function wpcf7_canonicalize( $text, $strto = 'lower' ) {
 		$text = mb_convert_kana( $text, 'asKV', 'UTF-8' );
 	}
 
-	$text = preg_replace( '/[\r\n\t ]+/', ' ', $text );
+	if ( $args['strip_separators'] ) {
+		$text = preg_replace( '/[\r\n\t ]+/', '', $text );
+	} else {
+		$text = preg_replace( '/[\r\n\t ]+/', ' ', $text );
+	}
 
-	if ( 'lower' == $strto ) {
+	if ( 'lower' == $args['strto'] ) {
 		$text = strtolower( $text );
-	} elseif ( 'upper' == $strto ) {
+	} elseif ( 'upper' == $args['strto'] ) {
 		$text = strtoupper( $text );
 	}
 

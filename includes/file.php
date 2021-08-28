@@ -77,7 +77,7 @@ function wpcf7_unship_uploaded_file( $file, $args = '' ) {
 		}
 
 		$filename = $name;
-		$filename = wpcf7_canonicalize( $filename, 'as-is' );
+		$filename = wpcf7_canonicalize( $filename, array( 'strto' => 'as-is' ) );
 		$filename = wpcf7_antiscript_file_name( $filename );
 
 		$filename = apply_filters( 'wpcf7_upload_file_name',
