@@ -3,6 +3,13 @@ import { triggerEvent } from './event';
 import { apiFetch } from './api-fetch';
 
 export default function submit( form, options = {} ) {
+
+	if ( wpcf7.blocked ) {
+		clearResponse( form );
+		setStatus( form, 'submitting' );
+		return;
+	}
+
 	const formData = new FormData( form );
 
 	if ( options.submitter && options.submitter.name ) {
