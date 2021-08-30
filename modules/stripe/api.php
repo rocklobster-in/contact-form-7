@@ -13,11 +13,23 @@ class WPCF7_Stripe_API {
 	private $secret;
 
 
+	/**
+	 * Constructor.
+	 *
+	 * @param string $secret Secret key.
+	 */
 	public function __construct( $secret ) {
 		$this->secret = $secret;
 	}
 
 
+	/**
+	 * Sends a debug information for a remote request to the PHP error log.
+	 *
+	 * @param string $url URL to retrieve.
+	 * @param array $request Request arguments.
+	 * @param array|WP_Error $response The response or WP_Error on failure.
+	 */
 	private function log( $url, $request, $response ) {
 		wpcf7_log_remote_request( $url, $request, $response );
 	}
