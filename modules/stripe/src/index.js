@@ -141,17 +141,40 @@ document.addEventListener( 'DOMContentLoaded', event => {
 			} );
 
 			button2.addEventListener( 'click', event => {
+				clearValidationErrors();
 				button2.disabled = true;
 				form.classList.add( 'submitting' );
+
+				if ( wpcf7.blocked ) {
+					return;
+				}
 
 				stripe.confirmCardPayment( paymentIntent.client_secret, {
 					payment_method: {
 						card: card,
 					}
 				} ).then( result => {
-					clearValidationErrors();
-
 					if ( result.error ) {
+						if ( result.error.decline_code ) {
+
+							// See https://stripe.com/docs/declines/codes
+							const redcardReasons = [
+								'fraudulent',
+								'lost_card',
+								'merchant_blacklist',
+								'pickup_card',
+								'restricted_card',
+								'security_violation',
+								'service_not_allowed',
+								'stolen_card',
+								'transaction_not_allowed',
+							];
+
+							if ( redcardReasons.includes( result.error.decline_code ) ) {
+								wpcf7.blocked = true;
+							}
+						}
+
 						form.classList.remove( 'submitting' );
 
 						const error = {
