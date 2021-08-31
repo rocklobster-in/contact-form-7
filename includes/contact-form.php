@@ -17,14 +17,30 @@ class WPCF7_ContactForm {
 	private $scanned_form_tags;
 	private $shortcode_atts = array();
 
+
+	/**
+	 * Returns count of contact forms found by the previous retrieval.
+	 *
+	 * @return int Count of contact forms.
+	 */
 	public static function count() {
 		return self::$found_items;
 	}
 
+
+	/**
+	 * Returns the contact form that is currently processed.
+	 *
+	 * @return WPCF7_ContactForm Current contact form object.
+	 */
 	public static function get_current() {
 		return self::$current;
 	}
 
+
+	/**
+	 * Registers the post type for contact forms.
+	 */
 	public static function register_post_type() {
 		register_post_type( self::post_type, array(
 			'labels' => array(
@@ -47,6 +63,13 @@ class WPCF7_ContactForm {
 		) );
 	}
 
+
+	/**
+	 * Retrieves contact form data that match given conditions.
+	 *
+	 * @param string|array $args Optional. Arguments to be passed to WP_Query.
+	 * @return array Array of WPCF7_ContactForm objects.
+	 */
 	public static function find( $args = '' ) {
 		$defaults = array(
 			'post_status' => 'any',
@@ -74,6 +97,13 @@ class WPCF7_ContactForm {
 		return $objs;
 	}
 
+
+	/**
+	 * Returns a contact form data filled by default template contents.
+	 *
+	 * @param string|array $args Optional. Contact form options.
+	 * @return WPCF7_ContactForm A new contact form object.
+	 */
 	public static function get_template( $args = '' ) {
 		$args = wp_parse_args( $args, array(
 			'locale' => '',
@@ -112,6 +142,12 @@ class WPCF7_ContactForm {
 		return $contact_form;
 	}
 
+
+	/**
+	 * Returns an instance of WPCF7_ContactForm.
+	 *
+	 * @return WPCF7_ContactForm A new contact form object.
+	 */
 	public static function get_instance( $post ) {
 		$post = get_post( $post );
 
@@ -123,6 +159,12 @@ class WPCF7_ContactForm {
 		return self::$current = new self( $post );
 	}
 
+
+	/**
+	 * Generates a "unit-tag" for the given contact form ID.
+	 *
+	 * @return string Unit-tag.
+	 */
 	private static function generate_unit_tag( $id = 0 ) {
 		static $global_count = 0;
 
@@ -144,6 +186,10 @@ class WPCF7_ContactForm {
 		return $unit_tag;
 	}
 
+
+	/**
+	 * Constructor.
+	 */
 	private function __construct( $post = null ) {
 		$post = get_post( $post );
 
