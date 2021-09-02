@@ -217,6 +217,10 @@ class WPCF7_ContactForm {
 		do_action( 'wpcf7_contact_form', $this );
 	}
 
+
+	/**
+	 * Magic method for property overloading.
+	 */
 	public function __get( $name ) {
 		$message = __( '<code>%1$s</code> property of a <code>WPCF7_ContactForm</code> object is <strong>no longer accessible</strong>. Use <code>%2$s</code> method instead.', 'contact-form-7' );
 
@@ -250,15 +254,32 @@ class WPCF7_ContactForm {
 		}
 	}
 
+
+	/**
+	 * Returns true if this contact form is not yet saved to the database.
+	 */
 	public function initial() {
 		return empty( $this->id );
 	}
 
+
+	/**
+	 * Returns the value for the given property name.
+	 *
+	 * @param string $name Property name.
+	 * @return array|string|null Property value. Null if property doesn't exist.
+	 */
 	public function prop( $name ) {
 		$props = $this->get_properties();
 		return isset( $props[$name] ) ? $props[$name] : null;
 	}
 
+
+	/**
+	 * Returns all the properties.
+	 *
+	 * @return array This contact form's properties.
+	 */
 	public function get_properties() {
 		$properties = (array) $this->properties;
 
@@ -270,12 +291,20 @@ class WPCF7_ContactForm {
 			'additional_settings' => '',
 		) );
 
-		$properties = (array) apply_filters( 'wpcf7_contact_form_properties',
-			$properties, $this );
+		$properties = (array) apply_filters(
+			'wpcf7_contact_form_properties',
+			$properties, $this
+		);
 
 		return $properties;
 	}
 
+
+	/**
+	 * Updates properties.
+	 *
+	 * @param array $properties New properties.
+	 */
 	public function set_properties( $properties ) {
 		$defaults = $this->get_properties();
 
@@ -285,22 +314,52 @@ class WPCF7_ContactForm {
 		$this->properties = $properties;
 	}
 
+
+	/**
+	 * Returns ID of this contact form.
+	 *
+	 * @return int The ID.
+	 */
 	public function id() {
 		return $this->id;
 	}
 
+
+	/**
+	 * Returns unit-tag for this contact form.
+	 *
+	 * @return string Unit-tag.
+	 */
 	public function unit_tag() {
 		return $this->unit_tag;
 	}
 
+
+	/**
+	 * Returns name (slug) of this contact form.
+	 *
+	 * @return string Name.
+	 */
 	public function name() {
 		return $this->name;
 	}
 
+
+	/**
+	 * Returns title of this contact form.
+	 *
+	 * @return string Title.
+	 */
 	public function title() {
 		return $this->title;
 	}
 
+
+	/**
+	 * Set a title for this contact form.
+	 *
+	 * @param string $title Title.
+	 */
 	public function set_title( $title ) {
 		$title = strip_tags( $title );
 		$title = trim( $title );
@@ -312,6 +371,12 @@ class WPCF7_ContactForm {
 		$this->title = $title;
 	}
 
+
+	/**
+	 * Returns the locale code of this contact form.
+	 *
+	 * @return string Locale code. Empty string if no valid locale is set.
+	 */
 	public function locale() {
 		if ( wpcf7_is_valid_locale( $this->locale ) ) {
 			return $this->locale;
@@ -320,6 +385,12 @@ class WPCF7_ContactForm {
 		}
 	}
 
+
+	/**
+	 * Sets a locale for this contact form.
+	 *
+	 * @param string $locale Locale code.
+	 */
 	public function set_locale( $locale ) {
 		$locale = trim( $locale );
 
