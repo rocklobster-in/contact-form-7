@@ -401,13 +401,23 @@ class WPCF7_ContactForm {
 		}
 	}
 
+
+	/**
+	 * Returns the specified shortcode attribute value.
+	 *
+	 * @param string $name Shortcode attribute name.
+	 * @return string|null Attribute value. Null if the attribute doesn't exist.
+	 */
 	public function shortcode_attr( $name ) {
 		if ( isset( $this->shortcode_atts[$name] ) ) {
 			return (string) $this->shortcode_atts[$name];
 		}
 	}
 
-	// Return true if this form is the same one as currently POSTed.
+
+	/**
+	 * Returns true if this contact form is identical to the submitted one.
+	 */
 	public function is_posted() {
 		if ( ! WPCF7_Submission::get_instance() ) {
 			return false;
@@ -420,8 +430,13 @@ class WPCF7_ContactForm {
 		return $this->unit_tag() === $_POST['_wpcf7_unit_tag'];
 	}
 
-	/* Generating Form HTML */
 
+	/**
+	 * Generates HTML that represents a form.
+	 *
+	 * @param string|array $args Optional. Form options.
+	 * @return string HTML output.
+	 */
 	public function form_html( $args = '' ) {
 		$args = wp_parse_args( $args, array(
 			'html_id' => '',
@@ -433,18 +448,23 @@ class WPCF7_ContactForm {
 		$this->shortcode_atts = $args;
 
 		if ( 'raw_form' == $args['output'] ) {
-			return '<pre class="wpcf7-raw-form"><code>'
-				. esc_html( $this->prop( 'form' ) ) . '</code></pre>';
+			return sprintf(
+				'<pre class="wpcf7-raw-form"><code>%s</code></pre>',
+				esc_html( $this->prop( 'form' ) )
+			);
 		}
 
 		if ( $this->is_true( 'subscribers_only' )
 		and ! current_user_can( 'wpcf7_submit', $this->id() ) ) {
 			$notice = __(
 				"This contact form is available only for logged in users.",
-				'contact-form-7' );
+				'contact-form-7'
+			);
+
 			$notice = sprintf(
 				'<p class="wpcf7-subscribers-only">%s</p>',
-				esc_html( $notice ) );
+				esc_html( $notice )
+			);
 
 			return apply_filters( 'wpcf7_subscribers_only_notice', $notice, $this );
 		}
@@ -481,10 +501,12 @@ class WPCF7_ContactForm {
 		$url = apply_filters( 'wpcf7_form_action_url', $url );
 
 		$id_attr = apply_filters( 'wpcf7_form_id_attr',
-			preg_replace( '/[^A-Za-z0-9:._-]/', '', $args['html_id'] ) );
+			preg_replace( '/[^A-Za-z0-9:._-]/', '', $args['html_id'] )
+		);
 
 		$name_attr = apply_filters( 'wpcf7_form_name_attr',
-			preg_replace( '/[^A-Za-z0-9:._-]/', '', $args['html_name'] ) );
+			preg_replace( '/[^A-Za-z0-9:._-]/', '', $args['html_name'] )
+		);
 
 		$class = 'wpcf7-form';
 
@@ -557,6 +579,10 @@ class WPCF7_ContactForm {
 		return $html;
 	}
 
+
+	/**
+	 * Returns the class name that matches the given form status.
+	 */
 	private function form_status_class_name( $status ) {
 		switch ( $status ) {
 			case 'init':
@@ -590,6 +616,10 @@ class WPCF7_ContactForm {
 		return $class;
 	}
 
+
+	/**
+	 * Returns a set of hidden fields.
+	 */
 	private function form_hidden_fields() {
 		$hidden_fields = array(
 			'_wpcf7' => $this->id(),
@@ -604,19 +634,22 @@ class WPCF7_ContactForm {
 			$hidden_fields['_wpcf7_container_post'] = (int) get_the_ID();
 		}
 
-		if ( $this->nonce_is_active() && is_user_logged_in() ) {
+		if ( $this->nonce_is_active() and is_user_logged_in() ) {
 			$hidden_fields['_wpnonce'] = wpcf7_create_nonce();
 		}
 
 		$hidden_fields += (array) apply_filters(
-			'wpcf7_form_hidden_fields', array() );
+			'wpcf7_form_hidden_fields', array()
+		);
 
 		$content = '';
 
 		foreach ( $hidden_fields as $name => $value ) {
 			$content .= sprintf(
 				'<input type="hidden" name="%1$s" value="%2$s" />',
-				esc_attr( $name ), esc_attr( $value ) ) . "\n";
+				esc_attr( $name ),
+				esc_attr( $value )
+			) . "\n";
 		}
 
 		return '<div style="display: none;">' . "\n" . $content . '</div>' . "\n";
