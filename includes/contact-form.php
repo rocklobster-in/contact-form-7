@@ -655,6 +655,10 @@ class WPCF7_ContactForm {
 		return '<div style="display: none;">' . "\n" . $content . '</div>' . "\n";
 	}
 
+
+	/**
+	 * Returns the visible response output for a form submission.
+	 */
 	public function form_response_output() {
 		$status = 'init';
 		$class = 'wpcf7-response-output';
@@ -685,6 +689,10 @@ class WPCF7_ContactForm {
 		return $output;
 	}
 
+
+	/**
+	 * Returns the response output that is only accessible from screen readers.
+	 */
 	public function screen_reader_response() {
 		$primary_response = '';
 		$validation_errors = array();
@@ -741,6 +749,12 @@ class WPCF7_ContactForm {
 		return $output;
 	}
 
+
+	/**
+	 * Returns a validation error for the specified input field.
+	 *
+	 * @param string $name Input field name.
+	 */
 	public function validation_error( $name ) {
 		$error = '';
 
@@ -770,8 +784,12 @@ class WPCF7_ContactForm {
 		return apply_filters( 'wpcf7_validation_error', $error, $name, $this );
 	}
 
-	/* Form Elements */
 
+	/**
+	 * Replaces all form-tags in the form template with corresponding HTML.
+	 *
+	 * @return string Replaced form content.
+	 */
 	public function replace_all_form_tags() {
 		$manager = WPCF7_FormTagsManager::get_instance();
 		$form = $this->prop( 'form' );
@@ -786,6 +804,7 @@ class WPCF7_ContactForm {
 
 		return $form;
 	}
+
 
 	public function form_do_shortcode() {
 		wpcf7_deprecated_function( __METHOD__, '4.6',
