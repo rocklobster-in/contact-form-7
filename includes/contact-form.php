@@ -806,13 +806,28 @@ class WPCF7_ContactForm {
 	}
 
 
+	/**
+	 * Replaces all form-tags in the form template with corresponding HTML.
+	 *
+	 * @deprecated 4.6 Use replace_all_form_tags()
+	 *
+	 * @return string Replaced form content.
+	 */
 	public function form_do_shortcode() {
 		wpcf7_deprecated_function( __METHOD__, '4.6',
-			'WPCF7_ContactForm::replace_all_form_tags' );
+			'WPCF7_ContactForm::replace_all_form_tags'
+		);
 
 		return $this->replace_all_form_tags();
 	}
 
+
+	/**
+	 * Scans form-tags from the form template.
+	 *
+	 * @param string|array|null $cond Optional. Filters. Default null.
+	 * @return array Form-tags matching the given filter conditions.
+	 */
 	public function scan_form_tags( $cond = null ) {
 		$manager = WPCF7_FormTagsManager::get_instance();
 
@@ -825,6 +840,15 @@ class WPCF7_ContactForm {
 		return $manager->filter( $tags, $cond );
 	}
 
+
+	/**
+	 * Scans form-tags from the form template.
+	 *
+	 * @deprecated 4.6 Use scan_form_tags()
+	 *
+	 * @param string|array|null $cond Optional. Filters. Default null.
+	 * @return array Form-tags matching the given filter conditions.
+	 */
 	public function form_scan_shortcode( $cond = null ) {
 		wpcf7_deprecated_function( __METHOD__, '4.6',
 			'WPCF7_ContactForm::scan_form_tags'
@@ -833,6 +857,12 @@ class WPCF7_ContactForm {
 		return $this->scan_form_tags( $cond );
 	}
 
+
+	/**
+	 * Replaces all form-tags in the form template with corresponding HTML.
+	 *
+	 * @return string Replaced form content. wpcf7_form_elements filters applied.
+	 */
 	public function form_elements() {
 		return apply_filters( 'wpcf7_form_elements',
 			$this->replace_all_form_tags()
