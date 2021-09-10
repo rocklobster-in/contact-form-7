@@ -869,6 +869,13 @@ class WPCF7_ContactForm {
 		);
 	}
 
+
+	/**
+	 * Collects mail-tags available for this contact form.
+	 *
+	 * @param string|array $args Optional. Search options.
+	 * @return array Mail-tag names.
+	 */
 	public function collect_mail_tags( $args = '' ) {
 		$manager = WPCF7_FormTagsManager::get_instance();
 
@@ -903,6 +910,12 @@ class WPCF7_ContactForm {
 		return apply_filters( 'wpcf7_collect_mail_tags', $mailtags, $args, $this );
 	}
 
+
+	/**
+	 * Prints a mail-tag suggestion list.
+	 *
+	 * @param string $for Optional. Mail template name. Default 'mail'.
+	 */
 	public function suggest_mail_tags( $for = 'mail' ) {
 		$mail = wp_parse_args( $this->prop( $for ),
 			array(
@@ -936,6 +949,13 @@ class WPCF7_ContactForm {
 		}
 	}
 
+
+	/**
+	 * Submits this contact form.
+	 *
+	 * @param string|array $args Optional. Submission options. Default empty.
+	 * @return array Result of submission.
+	 */
 	public function submit( $args = '' ) {
 		$args = wp_parse_args( $args, array(
 			'skip_mail' =>
@@ -977,8 +997,14 @@ class WPCF7_ContactForm {
 		return $result;
 	}
 
-	/* Message */
 
+	/**
+	 * Returns message used for given status.
+	 *
+	 * @param string $status Status.
+	 * @param bool $filter Optional. Whether filters are applied. Default true.
+	 * @return string Message.
+	 */
 	public function message( $status, $filter = true ) {
 		$messages = $this->prop( 'messages' );
 		$message = isset( $messages[$status] ) ? $messages[$status] : '';
@@ -990,6 +1016,14 @@ class WPCF7_ContactForm {
 		return $message;
 	}
 
+
+	/**
+	 * Filters a message.
+	 *
+	 * @param string $message Message to filter.
+	 * @param string $status Optional. Status. Default empty.
+	 * @return string Filtered message.
+	 */
 	public function filter_message( $message, $status = '' ) {
 		$message = wpcf7_mail_replace_tags( $message );
 		$message = apply_filters( 'wpcf7_display_message', $message, $status );
