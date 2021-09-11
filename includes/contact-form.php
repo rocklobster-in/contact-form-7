@@ -1032,8 +1032,13 @@ class WPCF7_ContactForm {
 		return $message;
 	}
 
-	/* Additional settings */
 
+	/**
+	 * Returns the additional setting value searched by name.
+	 *
+	 * @param string $name Name of setting.
+	 * @return string Additional setting value.
+	 */
 	public function pref( $name ) {
 		$settings = $this->additional_setting( $name );
 
@@ -1042,6 +1047,14 @@ class WPCF7_ContactForm {
 		}
 	}
 
+
+	/**
+	 * Returns additional setting values searched by name.
+	 *
+	 * @param string $name Name of setting.
+	 * @param int $max Maximum result item count.
+	 * @return array Additional setting values.
+	 */
 	public function additional_setting( $name, $max = 1 ) {
 		$settings = (array) explode( "\n", $this->prop( 'additional_settings' ) );
 
@@ -1065,6 +1078,13 @@ class WPCF7_ContactForm {
 		return $values;
 	}
 
+
+	/**
+	 * Returns true if the specified setting has a truthy string value.
+	 *
+	 * @param string $name Name of setting.
+	 * @return bool True if the setting value is 'on', 'true', or '1'.
+	 */
 	public function is_true( $name ) {
 		return in_array(
 			$this->pref( $name ),
@@ -1073,10 +1093,18 @@ class WPCF7_ContactForm {
 		);
 	}
 
+
+	/**
+	 * Returns true if this contact form is in the demo mode.
+	 */
 	public function in_demo_mode() {
 		return $this->is_true( 'demo_mode' );
 	}
 
+
+	/**
+	 * Returns true if nonce is active for this contact form.
+	 */
 	public function nonce_is_active() {
 		$is_active = WPCF7_VERIFY_NONCE;
 
