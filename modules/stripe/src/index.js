@@ -1,17 +1,38 @@
 document.addEventListener( 'DOMContentLoaded', event => {
 
+	const warnLegacyBrowser = () => {
+		const message = "This form includes a payment widget that requires a modern browser to work.";
+
+		const fields = document.querySelectorAll( 'form.wpcf7-form .wpcf7-stripe' );
+
+		for ( let i = 0; i < fields.length; i++ ) {
+			let field = fields[ i ];
+
+			let button = field.querySelector( 'button' );
+			button.disabled = true;
+
+			let warning = document.createElement( 'span' );
+			warning.setAttribute( 'class', 'wpcf7-not-valid-tip' );
+			warning.insertAdjacentText( 'beforeend', message );
+			field.appendChild( warning );
+		}
+	};
+
 	if ( typeof window.wpcf7_stripe === 'undefined' ) {
 		console.error( "window.wpcf7_stripe is not defined." );
+		warnLegacyBrowser();
 		return;
 	}
 
 	if ( typeof window.Stripe !== 'function' ) {
 		console.error( "window.Stripe is not defined." );
+		warnLegacyBrowser();
 		return;
 	}
 
 	if ( typeof wpcf7.submit !== 'function' ) {
 		console.error( "wpcf7.submit is not defined." );
+		warnLegacyBrowser();
 		return;
 	}
 
