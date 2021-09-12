@@ -1115,8 +1115,10 @@ class WPCF7_ContactForm {
 		return (bool) apply_filters( 'wpcf7_verify_nonce', $is_active, $this );
 	}
 
-	/* Upgrade */
 
+	/**
+	 * Upgrades this contact form properties.
+	 */
 	private function upgrade() {
 		$mail = $this->prop( 'mail' );
 
@@ -1140,8 +1142,12 @@ class WPCF7_ContactForm {
 		$this->properties['messages'] = $messages;
 	}
 
-	/* Save */
 
+	/**
+	 * Stores this contact form properties to the database.
+	 *
+	 * @return int The post ID on success. The value 0 on failure.
+	 */
 	public function save() {
 		$title = wp_slash( $this->title );
 		$props = wp_slash( $this->get_properties() );
@@ -1167,7 +1173,8 @@ class WPCF7_ContactForm {
 		if ( $post_id ) {
 			foreach ( $props as $prop => $value ) {
 				update_post_meta( $post_id, '_' . $prop,
-					wpcf7_normalize_newline_deep( $value ) );
+					wpcf7_normalize_newline_deep( $value )
+				);
 			}
 
 			if ( wpcf7_is_valid_locale( $this->locale ) ) {
@@ -1187,6 +1194,12 @@ class WPCF7_ContactForm {
 		return $post_id;
 	}
 
+
+	/**
+	 * Makes a copy of this contact form.
+	 *
+	 * @return WPCF7_ContactForm New contact form object.
+	 */
 	public function copy() {
 		$new = new self;
 		$new->title = $this->title . '_copy';
@@ -1196,6 +1209,10 @@ class WPCF7_ContactForm {
 		return apply_filters( 'wpcf7_copy', $new, $this );
 	}
 
+
+	/**
+	 * Deletes this contact form.
+	 */
 	public function delete() {
 		if ( $this->initial() ) {
 			return;
@@ -1209,9 +1226,14 @@ class WPCF7_ContactForm {
 		return false;
 	}
 
+
+	/**
+	 * Returns a WordPress shortcode for this contact form.
+	 */
 	public function shortcode( $args = '' ) {
 		$args = wp_parse_args( $args, array(
-			'use_old_format' => false ) );
+			'use_old_format' => false
+		) );
 
 		$title = str_replace( array( '"', '[', ']' ), '', $this->title );
 
@@ -1219,16 +1241,24 @@ class WPCF7_ContactForm {
 			$old_unit_id = (int) get_post_meta( $this->id, '_old_cf7_unit_id', true );
 
 			if ( $old_unit_id ) {
-				$shortcode = sprintf( '[contact-form %1$d "%2$s"]', $old_unit_id, $title );
+				$shortcode = sprintf(
+					'[contact-form %1$d "%2$s"]',
+					$old_unit_id,
+					$title
+				);
 			} else {
 				$shortcode = '';
 			}
 		} else {
-			$shortcode = sprintf( '[contact-form-7 id="%1$d" title="%2$s"]',
-				$this->id, $title );
+			$shortcode = sprintf(
+				'[contact-form-7 id="%1$d" title="%2$s"]',
+				$this->id,
+				$title
+			);
 		}
 
 		return apply_filters( 'wpcf7_contact_form_shortcode',
-			$shortcode, $args, $this );
+			$shortcode, $args, $this
+		);
 	}
 }
