@@ -265,9 +265,19 @@ function wpcf7_canonicalize( $text, $args = '' ) {
 	}
 
 	if ( 'lower' == $args['strto'] ) {
-		$text = strtolower( $text );
+		if ( function_exists( 'mb_strtolower' )
+		and 'UTF-8' == get_option( 'blog_charset' ) ) {
+			$text = mb_strtolower( $text, 'UTF-8' );
+		} else {
+			$text = strtolower( $text );
+		}
 	} elseif ( 'upper' == $args['strto'] ) {
-		$text = strtoupper( $text );
+		if ( function_exists( 'mb_strtoupper' )
+		and 'UTF-8' == get_option( 'blog_charset' ) ) {
+			$text = mb_strtoupper( $text, 'UTF-8' );
+		} else {
+			$text = strtoupper( $text );
+		}
 	}
 
 	$text = trim( $text );
