@@ -90,7 +90,8 @@ class WPCF7_FormTagsManager {
 		if ( isset( $this->tag_types[$tag]['features'] ) ) {
 			return (bool) array_intersect(
 				array_keys( array_filter( $this->tag_types[$tag]['features'] ) ),
-				$feature );
+				$feature
+			);
 		}
 
 		return false;
@@ -183,14 +184,16 @@ class WPCF7_FormTagsManager {
 			$content = preg_replace_callback(
 				'/' . $this->tag_regex() . '/s',
 				array( $this, 'replace_callback' ),
-				$content );
+				$content
+			);
 
 			return $content;
 		} else {
 			preg_replace_callback(
 				'/' . $this->tag_regex() . '/s',
 				array( $this, 'scan_callback' ),
-				$content );
+				$content
+			);
 
 			return $this->scanned_tags;
 		}
@@ -291,6 +294,12 @@ class WPCF7_FormTagsManager {
 			'attr' => '',
 			'content' => '',
 		);
+
+		if ( $this->tag_type_supports( $tag, 'singular' )
+		and $this->filter( $this->scanned_tags, array( 'type' => $tag ) ) ) {
+			// Another tag in the same type already exists. Ignore this one.
+			return $m[0];
+		}
 
 		if ( is_array( $attr ) ) {
 			if ( is_array( $attr['options'] ) ) {

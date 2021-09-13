@@ -230,6 +230,7 @@ function wpcf7_add_form_tag_stripe() {
 		'wpcf7_stripe_form_tag_handler',
 		array(
 			'display-block' => true,
+			'singular' => true,
 		)
 	);
 }
