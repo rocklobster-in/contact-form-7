@@ -1,9 +1,22 @@
 <?php
 
+/**
+ * Returns path to a plugin file.
+ *
+ * @param string $path File path relative to the plugin root directory.
+ * @return string Absolute file path.
+ */
 function wpcf7_plugin_path( $path = '' ) {
 	return path_join( WPCF7_PLUGIN_DIR, trim( $path, '/' ) );
 }
 
+
+/**
+ * Returns the URL to a plugin file.
+ *
+ * @param string $path File path relative to the plugin root directory.
+ * @return string URL.
+ */
 function wpcf7_plugin_url( $path = '' ) {
 	$url = plugins_url( $path, WPCF7_PLUGIN );
 
@@ -15,6 +28,13 @@ function wpcf7_plugin_url( $path = '' ) {
 	return $url;
 }
 
+
+/**
+ * Retrieves uploads directory information.
+ *
+ * @param string|bool $type Optional. Type of output. Default false.
+ * @return array|string Information about the upload directory.
+ */
 function wpcf7_upload_dir( $type = false ) {
 	$uploads = wp_get_upload_dir();
 
