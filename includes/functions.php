@@ -52,14 +52,41 @@ function wpcf7_upload_dir( $type = false ) {
 	return $uploads;
 }
 
+
+/**
+ * Verifies that a correct security nonce was used with time limit.
+ *
+ * @param string $nonce Nonce value that was used for verification.
+ * @param string $action Optional. Context to what is taking place.
+ *                       Default 'wp_rest'.
+ * @return int|bool 1 if the nonce is generated between 0-12 hours ago,
+ *                  2 if the nonce is generated between 12-24 hours ago.
+ *                  False if the nonce is invalid.
+ */
 function wpcf7_verify_nonce( $nonce, $action = 'wp_rest' ) {
 	return wp_verify_nonce( $nonce, $action );
 }
 
+
+/**
+ * Creates a cryptographic token tied to a specific action, user, user session,
+ * and window of time.
+ *
+ * @param string $action Optional. Context to what is taking place.
+ *                       Default 'wp_rest'.
+ * @return string The token.
+ */
 function wpcf7_create_nonce( $action = 'wp_rest' ) {
 	return wp_create_nonce( $action );
 }
 
+
+/**
+ * Converts multi-dimensional array to a flat array.
+ *
+ * @param mixed $input Array or item of array.
+ * @return array Flatten array.
+ */
 function wpcf7_array_flatten( $input ) {
 	if ( ! is_array( $input ) ) {
 		return array( $input );
@@ -74,6 +101,13 @@ function wpcf7_array_flatten( $input ) {
 	return $output;
 }
 
+
+/**
+ * Creates a comma-separated list from a multi-dimensional array.
+ *
+ * @param mixed $input Array or item of array.
+ * @return string Comma-separated list.
+ */
 function wpcf7_flat_join( $input ) {
 	$input = wpcf7_array_flatten( $input );
 	$output = array();
