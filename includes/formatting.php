@@ -251,11 +251,25 @@ function wpcf7_canonicalize( $text, $args = '' ) {
 		'strip_separators' => false,
 	) );
 
-	$text = html_entity_decode( $text, ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+	static $charset = null;
 
-	if ( function_exists( 'mb_convert_kana' )
-	and 'UTF-8' == get_option( 'blog_charset' ) ) {
-		$text = mb_convert_kana( $text, 'asKV', 'UTF-8' );
+	if ( ! isset( $charset ) ) {
+		$charset = get_option( 'blog_charset' );
+
+		$is_utf8 = in_array(
+			$charset,
+			array( 'utf8', 'utf-8', 'UTF8', 'UTF-8' )
+		);
+
+		if ( $is_utf8 ) {
+			$charset = 'UTF-8';
+		}
+	}
+
+	$text = html_entity_decode( $text, ENT_QUOTES | ENT_HTML5, $charset );
+
+	if ( function_exists( 'mb_convert_kana' ) ) {
+		$text = mb_convert_kana( $text, 'asKV', $charset );
 	}
 
 	if ( $args['strip_separators'] ) {
@@ -265,16 +279,14 @@ function wpcf7_canonicalize( $text, $args = '' ) {
 	}
 
 	if ( 'lower' == $args['strto'] ) {
-		if ( function_exists( 'mb_strtolower' )
-		and 'UTF-8' == get_option( 'blog_charset' ) ) {
-			$text = mb_strtolower( $text, 'UTF-8' );
+		if ( function_exists( 'mb_strtolower' ) ) {
+			$text = mb_strtolower( $text, $charset );
 		} else {
 			$text = strtolower( $text );
 		}
 	} elseif ( 'upper' == $args['strto'] ) {
-		if ( function_exists( 'mb_strtoupper' )
-		and 'UTF-8' == get_option( 'blog_charset' ) ) {
-			$text = mb_strtoupper( $text, 'UTF-8' );
+		if ( function_exists( 'mb_strtoupper' ) ) {
+			$text = mb_strtoupper( $text, $charset );
 		} else {
 			$text = strtoupper( $text );
 		}
