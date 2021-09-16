@@ -49,7 +49,13 @@ function wpcf7_disallowed_list( $spam, $submission ) {
 }
 
 function wpcf7_check_disallowed_list( $target ) {
-	$mod_keys = trim( get_option( 'disallowed_keys' ) );
+	$mod_keys = get_option( 'disallowed_keys' );
+
+	if ( is_scalar( $mod_keys ) ) {
+		$mod_keys = trim( $mod_keys );
+	} else {
+		$mod_keys = '';
+	}
 
 	if ( '' === $mod_keys ) {
 		return false;
