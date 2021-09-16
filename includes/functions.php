@@ -113,7 +113,9 @@ function wpcf7_flat_join( $input ) {
 	$output = array();
 
 	foreach ( (array) $input as $value ) {
-		$output[] = trim( (string) $value );
+		if ( is_scalar( $value ) ) {
+			$output[] = trim( (string) $value );
+		}
 	}
 
 	return implode( ', ', $output );
