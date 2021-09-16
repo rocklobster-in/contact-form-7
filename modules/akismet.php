@@ -54,6 +54,8 @@ function wpcf7_akismet( $spam, $submission ) {
 		}
 	}
 
+	$c = apply_filters( 'wpcf7_akismet_parameters', $c );
+
 	if ( wpcf7_akismet_comment_check( $c ) ) {
 		$spam = true;
 
@@ -106,7 +108,8 @@ function wpcf7_akismet_submitted_params() {
 			$tag = $tags[0];
 
 			$akismet = $tag->get_option( 'akismet',
-				'(author|author_email|author_url)', true );
+				'(author|author_email|author_url)', true
+			);
 
 			if ( $akismet ) {
 				$has_akismet_option = true;

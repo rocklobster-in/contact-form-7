@@ -1,6 +1,147 @@
 <?php
 
+abstract class WPCF7_WelcomePanelColumn {
+
+	abstract protected function icon();
+	abstract protected function title();
+	abstract protected function content();
+
+	public function print() {
+		$icon = sprintf(
+			'<span class="dashicons dashicons-%s" aria-hidden="true"></span>',
+			esc_attr( $this->icon() )
+		);
+
+		$title = sprintf(
+			'<h3>%1$s %2$s</h3>',
+			$icon,
+			$this->title()
+		);
+
+		$content = $this->content();
+
+		if ( is_array( $content ) ) {
+			$content = implode( "\n\n", $content );
+		}
+
+		$content = wp_kses_post( $content );
+		$content = wptexturize( $content );
+		$content = convert_chars( $content );
+		$content = wpautop( $content );
+
+		echo "\n";
+		echo '<div class="welcome-panel-column">';
+		echo $title;
+		echo $content;
+		echo '</div>';
+	}
+}
+
+
+class WPCF7_WelcomePanelColumn_AntiSpam extends WPCF7_WelcomePanelColumn {
+
+	protected function icon() {
+		return 'shield';
+	}
+
+	protected function title() {
+		return esc_html(
+			__( "Getting spammed? You have protection.", 'contact-form-7' )
+		);
+	}
+
+	protected function content() {
+		return array(
+			esc_html( __( "Spammers target everything; your contact forms aren&#8217;t an exception. Before you get spammed, protect your contact forms with the powerful anti-spam features Contact Form 7 provides.", 'contact-form-7' ) ),
+			sprintf(
+				/* translators: links labeled 1: 'Akismet', 2: 'reCAPTCHA', 3: 'disallowed list' */
+				esc_html( __( 'Contact Form 7 supports spam-filtering with %1$s. Intelligent %2$s blocks annoying spambots. Plus, using %3$s, you can block messages containing specified keywords or those sent from specified IP addresses.', 'contact-form-7' ) ),
+				wpcf7_link(
+					__( 'https://contactform7.com/spam-filtering-with-akismet/', 'contact-form-7' ),
+					__( 'Akismet', 'contact-form-7' )
+				),
+				wpcf7_link(
+					__( 'https://contactform7.com/recaptcha/', 'contact-form-7' ),
+					__( 'reCAPTCHA', 'contact-form-7' )
+				),
+				wpcf7_link(
+					__( 'https://contactform7.com/comment-blacklist/', 'contact-form-7' ),
+					__( 'disallowed list', 'contact-form-7' )
+				)
+			),
+		);
+	}
+}
+
+
+class WPCF7_WelcomePanelColumn_Donation extends WPCF7_WelcomePanelColumn {
+
+	protected function icon() {
+		return 'megaphone';
+	}
+
+	protected function title() {
+		return esc_html(
+			__( "Contact Form 7 needs your support.", 'contact-form-7' )
+		);
+	}
+
+	protected function content() {
+		return array(
+			esc_html( __( "It is hard to continue development and support for this plugin without contributions from users like you.", 'contact-form-7' ) ),
+			sprintf(
+				/* translators: %s: link labeled 'making a donation' */
+				esc_html( __( 'If you enjoy using Contact Form 7 and find it useful, please consider %s.', 'contact-form-7' ) ),
+				wpcf7_link(
+					__( 'https://contactform7.com/donate/', 'contact-form-7' ),
+					__( 'making a donation', 'contact-form-7' )
+				)
+			),
+			esc_html( __( "Your donation will help encourage and support the plugin&#8217;s continued development and better user support.", 'contact-form-7' ) ),
+		);
+	}
+}
+
+
+class WPCF7_WelcomePanelColumn_Flamingo extends WPCF7_WelcomePanelColumn {
+
+	protected function icon() {
+		return 'editor-help';
+	}
+
+	protected function title() {
+		return esc_html(
+			__( "Before you cry over spilt mail&#8230;", 'contact-form-7' )
+		);
+	}
+
+	protected function content() {
+		return array(
+			esc_html( __( "Contact Form 7 doesn&#8217;t store submitted messages anywhere. Therefore, you may lose important messages forever if your mail server has issues or you make a mistake in mail configuration.", 'contact-form-7' ) ),
+			sprintf(
+				/* translators: %s: link labeled 'Flamingo' */
+				esc_html( __( 'Install a message storage plugin before this happens to you. %s saves all messages through contact forms into the database. Flamingo is a free WordPress plugin created by the same author as Contact Form 7.', 'contact-form-7' ) ),
+				wpcf7_link(
+					__( 'https://contactform7.com/save-submitted-messages-with-flamingo/', 'contact-form-7' ),
+					__( 'Flamingo', 'contact-form-7' )
+				)
+			),
+		);
+	}
+}
+
+
 function wpcf7_welcome_panel() {
+	$columns = array();
+
+	if ( ! defined( 'FLAMINGO_VERSION' ) ) {
+		$columns[] = new WPCF7_WelcomePanelColumn_Flamingo();
+		$columns[] = new WPCF7_WelcomePanelColumn_AntiSpam();
+	} else {
+		$columns[] = new WPCF7_WelcomePanelColumn_AntiSpam();
+		$columns[] = new WPCF7_WelcomePanelColumn_Donation();
+	}
+
 	$classes = 'welcome-panel';
 
 	$vers = (array) get_user_meta( get_current_user_id(),
@@ -18,70 +159,13 @@ function wpcf7_welcome_panel() {
 
 	<div class="welcome-panel-content">
 		<div class="welcome-panel-column-container">
+<?php
 
-			<div class="welcome-panel-column">
-				<h3><span class="dashicons dashicons-shield" aria-hidden="true"></span> <?php echo esc_html( __( "Getting spammed? You have protection.", 'contact-form-7' ) ); ?></h3>
+	foreach ( $columns as $column ) {
+		$column->print();
+	}
 
-				<p><?php echo esc_html( __( "Spammers target everything; your contact forms aren&#8217;t an exception. Before you get spammed, protect your contact forms with the powerful anti-spam features Contact Form 7 provides.", 'contact-form-7' ) ); ?></p>
-
-				<p><?php
-	echo sprintf(
-		/* translators: links labeled 1: 'Akismet', 2: 'reCAPTCHA', 3: 'disallowed list' */
-		esc_html( __( 'Contact Form 7 supports spam-filtering with %1$s. Intelligent %2$s blocks annoying spambots. Plus, using %3$s, you can block messages containing specified keywords or those sent from specified IP addresses.', 'contact-form-7' ) ),
-		wpcf7_link(
-			__( 'https://contactform7.com/spam-filtering-with-akismet/', 'contact-form-7' ),
-			__( 'Akismet', 'contact-form-7' )
-		),
-		wpcf7_link(
-			__( 'https://contactform7.com/recaptcha/', 'contact-form-7' ),
-			__( 'reCAPTCHA', 'contact-form-7' )
-		),
-		wpcf7_link(
-			__( 'https://contactform7.com/comment-blacklist/', 'contact-form-7' ),
-			__( 'disallowed list', 'contact-form-7' )
-		)
-	);
-				?></p>
-			</div>
-
-<?php if ( defined( 'FLAMINGO_VERSION' ) ) : ?>
-			<div class="welcome-panel-column">
-				<h3><span class="dashicons dashicons-megaphone" aria-hidden="true"></span> <?php echo esc_html( __( "Contact Form 7 needs your support.", 'contact-form-7' ) ); ?></h3>
-
-				<p><?php echo esc_html( __( "It is hard to continue development and support for this plugin without contributions from users like you.", 'contact-form-7' ) ); ?></p>
-
-				<p><?php
-	echo sprintf(
-		/* translators: %s: link labeled 'making a donation' */
-		esc_html( __( 'If you enjoy using Contact Form 7 and find it useful, please consider %s.', 'contact-form-7' ) ),
-		wpcf7_link(
-			__( 'https://contactform7.com/donate/', 'contact-form-7' ),
-			__( 'making a donation', 'contact-form-7' )
-		)
-	);
-				?></p>
-
-				<p><?php echo esc_html( __( "Your donation will help encourage and support the plugin&#8217;s continued development and better user support.", 'contact-form-7' ) ); ?></p>
-			</div>
-<?php else: ?>
-			<div class="welcome-panel-column">
-				<h3><span class="dashicons dashicons-editor-help" aria-hidden="true"></span> <?php echo esc_html( __( "Before you cry over spilt mail&#8230;", 'contact-form-7' ) ); ?></h3>
-
-				<p><?php echo esc_html( __( "Contact Form 7 doesn&#8217;t store submitted messages anywhere. Therefore, you may lose important messages forever if your mail server has issues or you make a mistake in mail configuration.", 'contact-form-7' ) ); ?></p>
-
-				<p><?php
-	echo sprintf(
-		/* translators: %s: link labeled 'Flamingo' */
-		esc_html( __( 'Install a message storage plugin before this happens to you. %s saves all messages through contact forms into the database. Flamingo is a free WordPress plugin created by the same author as Contact Form 7.', 'contact-form-7' ) ),
-		wpcf7_link(
-			__( 'https://contactform7.com/save-submitted-messages-with-flamingo/', 'contact-form-7' ),
-			__( 'Flamingo', 'contact-form-7' )
-		)
-	);
-				?></p>
-			</div>
-<?php endif; ?>
-
+?>
 		</div>
 	</div>
 </div>
