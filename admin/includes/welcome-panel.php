@@ -192,6 +192,8 @@ function wpcf7_admin_ajax_welcome_panel() {
 
 	if ( empty( $_POST['visible'] ) ) {
 		$vers[] = wpcf7_version( 'only_major=1' );
+	} else {
+		$vers = array_diff( $vers, array( wpcf7_version( 'only_major=1' ) ) );
 	}
 
 	$vers = array_unique( $vers );
@@ -201,4 +203,47 @@ function wpcf7_admin_ajax_welcome_panel() {
 	);
 
 	wp_die( 1 );
+}
+
+
+add_filter(
+	'screen_settings',
+	'wpcf7_welcome_panel_screen_settings',
+	10, 2
+);
+
+function wpcf7_welcome_panel_screen_settings( $screen_settings, $screen ) {
+
+	if ( 'toplevel_page_wpcf7' !== $screen->id ) {
+		return $screen_settings;
+	}
+
+	$vers = get_user_meta( get_current_user_id(),
+		'wpcf7_hide_welcome_panel_on', true
+	);
+
+	$checkbox_id = 'wpcf7-welcome-panel-show';
+	$checked = ! in_array( wpcf7_version( 'only_major=1' ), $vers );
+
+	$checkbox = sprintf(
+		'<input %s />',
+		wpcf7_format_atts( array(
+			'id' => $checkbox_id,
+			'type' => 'checkbox',
+			'checked' => $checked ? 'checked' : null,
+		) )
+	);
+
+	$screen_settings .= sprintf( '
+<fieldset class="wpcf7-welcome-panel-options">
+<legend>%1$s</legend>
+<label for="%2$s">%3$s %4$s</label>
+</fieldset>',
+ 		esc_html( __( 'Welcome panel', 'contact-form-7' ) ),
+		esc_attr( $checkbox_id ),
+		$checkbox,
+		esc_html( __( 'Show welcome panel', 'contact-form-7' ) )
+	);
+
+	return $screen_settings;
 }
