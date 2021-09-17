@@ -121,32 +121,62 @@ function wpcf7_flat_join( $input ) {
 	return implode( ', ', $output );
 }
 
+
+/**
+ * Returns true if HTML5 is supported.
+ */
 function wpcf7_support_html5() {
 	return (bool) apply_filters( 'wpcf7_support_html5', true );
 }
 
+
+/**
+ * Returns true if HTML5 fallback is active.
+ */
 function wpcf7_support_html5_fallback() {
 	return (bool) apply_filters( 'wpcf7_support_html5_fallback', false );
 }
 
+
+/**
+ * Returns true if the Really Simple CAPTCHA plugin is used for contact forms.
+ */
 function wpcf7_use_really_simple_captcha() {
 	return apply_filters( 'wpcf7_use_really_simple_captcha',
-		WPCF7_USE_REALLY_SIMPLE_CAPTCHA );
+		WPCF7_USE_REALLY_SIMPLE_CAPTCHA
+	);
 }
 
+
+/**
+ * Returns true if config validation is active.
+ */
 function wpcf7_validate_configuration() {
 	return apply_filters( 'wpcf7_validate_configuration',
-		WPCF7_VALIDATE_CONFIGURATION );
+		WPCF7_VALIDATE_CONFIGURATION
+	);
 }
 
+
+/**
+ * Returns true if wpcf7_autop() is applied to form content.
+ */
 function wpcf7_autop_or_not() {
 	return (bool) apply_filters( 'wpcf7_autop_or_not', WPCF7_AUTOP );
 }
 
+
+/**
+ * Returns true if JavaScript for this plugin is loaded.
+ */
 function wpcf7_load_js() {
 	return apply_filters( 'wpcf7_load_js', WPCF7_LOAD_JS );
 }
 
+
+/**
+ * Returns true if CSS for this plugin is loaded.
+ */
 function wpcf7_load_css() {
 	return apply_filters( 'wpcf7_load_css', WPCF7_LOAD_CSS );
 }
