@@ -181,6 +181,13 @@ function wpcf7_load_css() {
 	return apply_filters( 'wpcf7_load_css', WPCF7_LOAD_CSS );
 }
 
+
+/**
+ * Returns a formatted string of HTML attributes.
+ *
+ * @param array $atts Associative array of attribute name and value pairs.
+ * @return string Formatted HTML attributes.
+ */
 function wpcf7_format_atts( $atts ) {
 	$html = '';
 
@@ -213,6 +220,15 @@ function wpcf7_format_atts( $atts ) {
 	return $html;
 }
 
+
+/**
+ * Builds an HTML anchor element.
+ *
+ * @param string $url Link URL.
+ * @param string $anchor_text Anchor label text.
+ * @param string|array $args Optional. Link options.
+ * @return string Formatted anchor element.
+ */
 function wpcf7_link( $url, $anchor_text, $args = '' ) {
 	$defaults = array(
 		'id' => '',
@@ -226,11 +242,16 @@ function wpcf7_link( $url, $anchor_text, $args = '' ) {
 	$link = sprintf( '<a href="%1$s"%3$s>%2$s</a>',
 		esc_url( $url ),
 		esc_html( $anchor_text ),
-		$atts ? ( ' ' . $atts ) : '' );
+		$atts ? ( ' ' . $atts ) : ''
+	);
 
 	return $link;
 }
 
+
+/**
+ * Returns the current request URL.
+ */
 function wpcf7_get_request_uri() {
 	static $request_uri = '';
 
@@ -241,6 +262,10 @@ function wpcf7_get_request_uri() {
 	return esc_url_raw( $request_uri );
 }
 
+
+/**
+ * Registers post types used for this plugin.
+ */
 function wpcf7_register_post_types() {
 	if ( class_exists( 'WPCF7_ContactForm' ) ) {
 		WPCF7_ContactForm::register_post_type();
@@ -250,6 +275,13 @@ function wpcf7_register_post_types() {
 	}
 }
 
+
+/**
+ * Returns the version string of this plugin.
+ *
+ * @param string|array $args Optional. Output options.
+ * @return string Version string.
+ */
 function wpcf7_version( $args = '' ) {
 	$defaults = array(
 		'limit' => -1,
