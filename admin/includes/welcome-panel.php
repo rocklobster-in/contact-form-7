@@ -177,12 +177,27 @@ class WPCF7_WelcomePanelColumn_Integration extends WPCF7_WelcomePanelColumn {
 function wpcf7_welcome_panel() {
 	$columns = array();
 
-	if ( ! defined( 'FLAMINGO_VERSION' ) ) {
-		$columns[] = new WPCF7_WelcomePanelColumn_Integration();
-		$columns[] = new WPCF7_WelcomePanelColumn_Flamingo();
-	} else {
+	$flamingo_is_active = defined( 'FLAMINGO_VERSION' );
+
+	$sendinblue_is_active = false;
+
+	if ( class_exists( 'WPCF7_Sendinblue' )
+	and $sendinblue = WPCF7_Sendinblue::get_instance() ) {
+		$sendinblue_is_active = $sendinblue->is_active();
+	}
+
+	if ( $flamingo_is_active and $sendinblue_is_active ) {
+		$columns[] = new WPCF7_WelcomePanelColumn_AntiSpam();
+		$columns[] = new WPCF7_WelcomePanelColumn_Donation();
+	} elseif ( $flamingo_is_active ) {
 		$columns[] = new WPCF7_WelcomePanelColumn_Integration();
 		$columns[] = new WPCF7_WelcomePanelColumn_AntiSpam();
+	} elseif ( $sendinblue_is_active ) {
+		$columns[] = new WPCF7_WelcomePanelColumn_Flamingo();
+		$columns[] = new WPCF7_WelcomePanelColumn_AntiSpam();
+	} else {
+		$columns[] = new WPCF7_WelcomePanelColumn_Flamingo();
+		$columns[] = new WPCF7_WelcomePanelColumn_Integration();
 	}
 
 	$classes = 'welcome-panel';
