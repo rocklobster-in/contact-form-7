@@ -312,12 +312,27 @@ function wpcf7_version( $args = '' ) {
 	return $ver;
 }
 
+
+/**
+ * Returns array entries that match the given version.
+ *
+ * @param string $version The version to search for.
+ * @param array $input Search target array.
+ * @return array|bool Array of matched entries. False on failure.
+ */
 function wpcf7_version_grep( $version, array $input ) {
 	$pattern = '/^' . preg_quote( (string) $version, '/' ) . '(?:\.|$)/';
 
 	return preg_grep( $pattern, $input );
 }
 
+
+/**
+ * Returns an enctype attribute value.
+ *
+ * @param string $enctype Enctype value.
+ * @return string Enctype value. Empty if not a valid enctype.
+ */
 function wpcf7_enctype_value( $enctype ) {
 	$enctype = trim( $enctype );
 
@@ -344,6 +359,13 @@ function wpcf7_enctype_value( $enctype ) {
 	return '';
 }
 
+
+/**
+ * Removes directory recursively.
+ *
+ * @param string $dir Directory path.
+ * @return bool True on success, false on failure.
+ */
 function wpcf7_rmdir_p( $dir ) {
 	if ( is_file( $dir ) ) {
 		$file = $dir;
@@ -390,7 +412,16 @@ function wpcf7_rmdir_p( $dir ) {
 	return false;
 }
 
-/* From _http_build_query in wp-includes/functions.php */
+
+/**
+ * Builds a URL-encoded query string.
+ *
+ * @see https://developer.wordpress.org/reference/functions/_http_build_query/
+ *
+ * @param array $args URL query parameters.
+ * @param string $key Optional. If specified, used to prefix key name.
+ * @return string Query string.
+ */
 function wpcf7_build_query( $args, $key = '' ) {
 	$sep = '&';
 	$ret = array();
@@ -418,12 +449,15 @@ function wpcf7_build_query( $args, $key = '' ) {
 	return implode( $sep, $ret );
 }
 
+
 /**
  * Returns the number of code units in a string.
  *
  * @see http://www.w3.org/TR/html5/infrastructure.html#code-unit-length
  *
- * @return int|bool The number of code units, or false if mb_convert_encoding is not available.
+ * @param string $string Input string.
+ * @return int|bool The number of code units, or false if
+ *                  mb_convert_encoding is not available.
  */
 function wpcf7_count_code_units( $string ) {
 	static $use_mb = null;
