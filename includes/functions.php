@@ -486,11 +486,24 @@ function wpcf7_count_code_units( $string ) {
 	return floor( $byte_count / 2 );
 }
 
+
+/**
+ * Returns true if WordPress is running on the localhost.
+ */
 function wpcf7_is_localhost() {
 	$server_name = strtolower( $_SERVER['SERVER_NAME'] );
 	return in_array( $server_name, array( 'localhost', '127.0.0.1' ) );
 }
 
+
+/**
+ * Marks a function as deprecated and informs when it has been used.
+ *
+ * @param string $function The function that was called.
+ * @param string $version The version of Contact Form 7 that deprecated
+ *                        the function.
+ * @param string $replacement The function that should have been called.
+ */
 function wpcf7_deprecated_function( $function, $version, $replacement ) {
 	if ( WP_DEBUG ) {
 		if ( function_exists( '__' ) ) {
@@ -514,6 +527,17 @@ function wpcf7_deprecated_function( $function, $version, $replacement ) {
 	}
 }
 
+
+/**
+ * Fires functions attached to a deprecated filter hook.
+ *
+ * @param string $tag The name of the filter hook.
+ * @param array $args Array of additional function arguments to be
+ *                    passed to apply_filters().
+ * @param string $version The version of Contact Form 7 that deprecated
+ *                        the hook.
+ * @param string $replacement The hook that should have been used.
+ */
 function wpcf7_apply_filters_deprecated( $tag, $args, $version, $replacement ) {
 	if ( ! has_filter( $tag ) ) {
 		return $args[0];
@@ -533,6 +557,15 @@ function wpcf7_apply_filters_deprecated( $tag, $args, $version, $replacement ) {
 	return apply_filters_ref_array( $tag, $args );
 }
 
+
+/**
+ * Marks something as being incorrectly called.
+ *
+ * @param string $function The function that was called.
+ * @param string $message A message explaining what has been done incorrectly.
+ * @param string $version The version of Contact Form 7 where the message
+ *                        was added.
+ */
 function wpcf7_doing_it_wrong( $function, $message, $version ) {
 	if ( WP_DEBUG ) {
 		if ( function_exists( '__' ) ) {
