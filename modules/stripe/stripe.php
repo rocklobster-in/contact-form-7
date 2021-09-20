@@ -190,6 +190,20 @@ function wpcf7_stripe_before_send_mail( $contact_form, &$abort, $submission ) {
 }
 
 
+/**
+ * Returns payment link URL.
+ *
+ * @param string $pi_id Payment Intent ID.
+ * @return string The URL.
+ */
+function wpcf7_stripe_get_payment_link( $pi_id ) {
+	return sprintf(
+		'https://dashboard.stripe.com/payments/%s',
+		urlencode( $pi_id )
+	);
+}
+
+
 add_filter(
 	'wpcf7_special_mail_tags',
 	'wpcf7_stripe_smt',
@@ -204,14 +218,39 @@ function wpcf7_stripe_smt( $output, $tag_name, $html, $mail_tag ) {
 		$submission = WPCF7_Submission::get_instance();
 
 		if ( ! empty( $submission->payment_intent ) ) {
-			$output = sprintf(
-				'https://dashboard.stripe.com/payments/%s',
-				urlencode( $submission->payment_intent )
-			);
+			$output = wpcf7_stripe_get_payment_link( $submission->payment_intent );
 		}
 	}
 
 	return $output;
+}
+
+
+add_filter(
+	'wpcf7_flamingo_inbound_message_parameters',
+	'wpcf7_stripe_add_flamingo_inbound_message_params',
+	10, 1
+);
+
+/**
+ * Adds Stripe-related meta data to Flamingo Inbound Message parameters.
+ */
+function wpcf7_stripe_add_flamingo_inbound_message_params( $args ) {
+	$submission = WPCF7_Submission::get_instance();
+
+	if ( empty( $submission->payment_intent ) ) {
+		return $args;
+	}
+
+	$pi_link = wpcf7_stripe_get_payment_link( $submission->payment_intent );
+
+	$meta = (array) $args['meta'];
+
+	$meta['stripe_payment_link'] = $pi_link;
+
+	$args['meta'] = $meta;
+
+	return $args;
 }
 
 
