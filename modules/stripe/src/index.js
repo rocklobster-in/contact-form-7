@@ -213,6 +213,10 @@ document.addEventListener( 'DOMContentLoaded', event => {
 			wrap.classList.add( 'hidden' );
 			button1.classList.remove( 'hidden' );
 			button2.classList.add( 'hidden' );
+
+			if ( [ 'mail_sent', 'mail_failed' ].includes( event.detail.status ) ) {
+				button1.disabled = true;
+			}
 		}
 	} );
 } );
