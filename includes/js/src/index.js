@@ -2,7 +2,10 @@ import init from './init';
 import submit from './submit';
 import reset from './reset';
 
-document.addEventListener( 'DOMContentLoaded', event => {
+(function(fn){
+	if(document.readyState != 'loading') fn();
+	else document.addEventListener('DOMContentLoaded',fn);
+})(event => {
 
 	if ( typeof wpcf7 === 'undefined' ) {
 		console.error( "wpcf7 is not defined." );
@@ -39,4 +42,4 @@ document.addEventListener( 'DOMContentLoaded', event => {
 	};
 
 	forms.forEach( form => wpcf7.init( form ) );
-} );
+});
