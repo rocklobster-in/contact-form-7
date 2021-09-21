@@ -608,6 +608,14 @@ function wpcf7_doing_it_wrong( $function, $message, $version ) {
 	}
 }
 
+
+/**
+ * Triggers an error about a remote HTTP request and response.
+ *
+ * @param string $url The resource URL.
+ * @param array $request Request arguments.
+ * @param array|WP_Error $response The response or WP_Error on failure.
+ */
 function wpcf7_log_remote_request( $url, $request, $response ) {
 	$log = sprintf(
 		/* translators: 1: response code, 2: message, 3: body, 4: URL */
@@ -627,6 +635,13 @@ function wpcf7_log_remote_request( $url, $request, $response ) {
 	}
 }
 
+
+/**
+ * Anonymizes an IP address by masking local part.
+ *
+ * @param string $ip_addr The original IP address.
+ * @return string|bool Anonymized IP address, or false on failure.
+ */
 function wpcf7_anonymize_ip_addr( $ip_addr ) {
 	if ( ! function_exists( 'inet_ntop' )
 	or ! function_exists( 'inet_pton' ) ) {
