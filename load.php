@@ -131,16 +131,22 @@ class WPCF7 {
 
 add_action( 'plugins_loaded', 'wpcf7', 10, 0 );
 
+/**
+ * Loads modules and registers WordPress shortcodes.
+ */
 function wpcf7() {
 	WPCF7::load_modules();
 
-	/* Shortcodes */
 	add_shortcode( 'contact-form-7', 'wpcf7_contact_form_tag_func' );
 	add_shortcode( 'contact-form', 'wpcf7_contact_form_tag_func' );
 }
 
+
 add_action( 'init', 'wpcf7_init', 10, 0 );
 
+/**
+ * Registers post types for contact forms.
+ */
 function wpcf7_init() {
 	wpcf7_get_request_uri();
 	wpcf7_register_post_types();
@@ -148,8 +154,12 @@ function wpcf7_init() {
 	do_action( 'wpcf7_init' );
 }
 
+
 add_action( 'admin_init', 'wpcf7_upgrade', 10, 0 );
 
+/**
+ * Upgrades option data when necessary.
+ */
 function wpcf7_upgrade() {
 	$old_ver = WPCF7::get_option( 'version', '0' );
 	$new_ver = WPCF7_VERSION;
@@ -163,10 +173,13 @@ function wpcf7_upgrade() {
 	WPCF7::update_option( 'version', $new_ver );
 }
 
-/* Install and default settings */
 
 add_action( 'activate_' . WPCF7_PLUGIN_BASENAME, 'wpcf7_install', 10, 0 );
 
+/**
+ * Callback tied to plugin activation action hook. Attempts to create
+ * initial user dataset.
+ */
 function wpcf7_install() {
 	if ( $opt = get_option( 'wpcf7' ) ) {
 		return;
