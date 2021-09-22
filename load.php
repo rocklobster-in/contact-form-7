@@ -29,8 +29,12 @@ if ( is_admin() ) {
 	require_once WPCF7_PLUGIN_DIR . '/includes/controller.php';
 }
 
+
 class WPCF7 {
 
+	/**
+	 * Loads modules from the modules directory.
+	 */
 	public static function load_modules() {
 		self::load_module( 'acceptance' );
 		self::load_module( 'akismet' );
@@ -56,6 +60,13 @@ class WPCF7 {
 		self::load_module( 'textarea' );
 	}
 
+
+	/**
+	 * Loads the specified module.
+	 *
+	 * @param string $mod Name of module.
+	 * @return bool True on success, false on failure.
+	 */
 	protected static function load_module( $mod ) {
 		$dir = WPCF7_PLUGIN_MODULES_DIR;
 
@@ -78,6 +89,16 @@ class WPCF7 {
 		return false;
 	}
 
+
+	/**
+	 * Retrieves a named entry from the option array of Contact Form 7.
+	 *
+	 * @param string $name Array item key.
+	 * @param mixed $default Optional. Default value to return if the entry
+	 *                       does not exist. Default false.
+	 * @return mixed Array value tied to the $name key. If nothing found,
+	 *               the $default value will be returned.
+	 */
 	public static function get_option( $name, $default = false ) {
 		$option = get_option( 'wpcf7' );
 
@@ -92,6 +113,13 @@ class WPCF7 {
 		}
 	}
 
+
+	/**
+	 * Update an entry value on the option array of Contact Form 7.
+	 *
+	 * @param string $name Array item key.
+	 * @param mixed $value Option value.
+	 */
 	public static function update_option( $name, $value ) {
 		$option = get_option( 'wpcf7' );
 		$option = ( false === $option ) ? array() : (array) $option;
@@ -99,6 +127,7 @@ class WPCF7 {
 		update_option( 'wpcf7', $option );
 	}
 }
+
 
 add_action( 'plugins_loaded', 'wpcf7', 10, 0 );
 
