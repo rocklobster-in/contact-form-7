@@ -9,6 +9,8 @@ class WPCF7_Stripe_API {
 
 	const api_version = '2020-08-27';
 	const partner_id = 'pp_partner_HHbvqLh1AaO7Am';
+	const app_name = 'WordPress Contact Form 7';
+	const app_url = 'https://contactform7.com/';
 
 	private $secret;
 
@@ -44,9 +46,9 @@ class WPCF7_Stripe_API {
 	 */
 	private function default_headers() {
 		$app_info = array(
-			'name' => 'WordPress Contact Form 7',
+			'name' => self::app_name,
 			'partner_id' => self::partner_id,
-			'url' => 'https://contactform7.com/',
+			'url' => self::app_url,
 			'version' => WPCF7_VERSION,
 		);
 
@@ -60,6 +62,12 @@ class WPCF7_Stripe_API {
 			'Authorization' => sprintf( 'Bearer %s', $this->secret ),
 			'Stripe-Version' => self::api_version,
 			'X-Stripe-Client-User-Agent' => json_encode( $ua ),
+			'User-Agent' => sprintf(
+				'%1$s/%2$s (%3$s)',
+				self::app_name,
+				WPCF7_VERSION,
+				self::app_url
+			),
 		);
 
 		return $headers;
