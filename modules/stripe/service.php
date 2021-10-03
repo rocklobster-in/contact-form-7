@@ -172,11 +172,16 @@ class WPCF7_Stripe extends WPCF7_Service {
 
 		if ( 'setup' == $action ) {
 			$this->display_setup();
-		} else {
+		} elseif ( is_ssl() or WP_DEBUG ) {
 			echo sprintf(
 				'<p><a href="%1$s" class="button">%2$s</a></p>',
 				esc_url( $this->menu_page_url( 'action=setup' ) ),
 				esc_html( __( 'Setup Integration', 'contact-form-7' ) )
+			);
+		} else {
+			echo sprintf(
+				'<p class="dashicons-before dashicons-warning">%s</p>',
+				esc_html( __( "Stripe is not available on this site. It requires an HTTPS-enabled site.", 'contact-form-7' ) )
 			);
 		}
 	}
