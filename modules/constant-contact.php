@@ -1,6 +1,10 @@
 <?php
 
-add_action( 'wpcf7_init', 'wpcf7_constant_contact_register_service', 20, 0 );
+add_action(
+	'wpcf7_init',
+	'wpcf7_constant_contact_register_service',
+	5, 0
+);
 
 function wpcf7_constant_contact_register_service() {
 	$integration = WPCF7_Integration::get_instance();
@@ -12,8 +16,12 @@ function wpcf7_constant_contact_register_service() {
 	$integration->add_service( 'constant_contact', $service );
 }
 
-add_action( 'wpcf7_save_contact_form',
-	'wpcf7_constant_contact_save_contact_form', 10, 1 );
+
+add_action(
+	'wpcf7_save_contact_form',
+	'wpcf7_constant_contact_save_contact_form',
+	10, 1
+);
 
 function wpcf7_constant_contact_save_contact_form( $contact_form ) {
 	$service = WPCF7_ConstantContact::get_instance();
@@ -55,6 +63,7 @@ function wpcf7_constant_contact_save_contact_form( $contact_form ) {
 
 	$service->update_contact_lists( array( $key => $list_names ) );
 }
+
 
 add_action( 'wpcf7_submit', 'wpcf7_constant_contact_submit', 10, 2 );
 
@@ -134,6 +143,7 @@ function wpcf7_constant_contact_submit( $contact_form, $result ) {
 
 	$service->create_contact( $request_builder->to_array() );
 }
+
 
 if ( ! class_exists( 'WPCF7_Service_OAuth2' ) ) {
 	return;
