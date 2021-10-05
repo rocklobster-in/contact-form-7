@@ -86,6 +86,7 @@ function wpcf7_sendinblue_submit( $contact_form, $result ) {
 			'email' => $attributes['EMAIL'],
 			'attributes' => (object) $attributes,
 			'listIds' => (array) $prop['contact_lists'],
+			'updateEnabled' => false,
 		)
 	);
 
