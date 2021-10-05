@@ -158,8 +158,8 @@ class WPCF7_Stripe extends WPCF7_Service {
 		echo '<p>' . sprintf(
 			esc_html( __( 'Stripe is a simple and powerful way to accept payments online. Stripe has no setup fees, no monthly fees, and no hidden costs. Millions of businesses rely on Stripe’s software tools to accept payments securely and expand globally. For details, see %s.', 'contact-form-7' ) ),
 			wpcf7_link(
-				__( 'https://contactform7.com/recaptcha/', 'contact-form-7' ),
-				__( 'reCAPTCHA (v3)', 'contact-form-7' )
+				__( 'https://contactform7.com/stripe-integration/', 'contact-form-7' ),
+				__( 'Stripe integration', 'contact-form-7' )
 			)
 		) . '</p>';
 
