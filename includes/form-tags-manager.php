@@ -285,6 +285,7 @@ class WPCF7_FormTagsManager {
 		$scanned_tag = array(
 			'type' => $tag,
 			'basetype' => trim( $tag, '*' ),
+			'raw_name' => '',
 			'name' => '',
 			'options' => array(),
 			'raw_values' => array(),
@@ -305,11 +306,13 @@ class WPCF7_FormTagsManager {
 			if ( is_array( $attr['options'] ) ) {
 				if ( $this->tag_type_supports( $tag, 'name-attr' )
 				and ! empty( $attr['options'] ) ) {
-					$scanned_tag['name'] = array_shift( $attr['options'] );
+					$scanned_tag['raw_name'] = array_shift( $attr['options'] );
 
-					if ( ! wpcf7_is_name( $scanned_tag['name'] ) ) {
+					if ( ! wpcf7_is_name( $scanned_tag['raw_name'] ) ) {
 						return $m[0]; // Invalid name is used. Ignore this tag.
 					}
+
+					$scanned_tag['name'] = strtr( $scanned_tag['raw_name'], '.', '_' );
 				}
 
 				$scanned_tag['options'] = (array) $attr['options'];
