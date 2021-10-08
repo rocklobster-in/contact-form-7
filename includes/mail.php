@@ -482,7 +482,7 @@ class WPCF7_MailTag {
 	}
 
 	public function field_name() {
-		return $this->name;
+		return strtr( $this->name, '.', '_' );
 	}
 
 	public function get_option( $option ) {
