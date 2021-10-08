@@ -4,6 +4,7 @@ class WPCF7_FormTag implements ArrayAccess {
 
 	public $type;
 	public $basetype;
+	public $raw_name = '';
 	public $name = '';
 	public $options = array();
 	public $raw_values = array();
