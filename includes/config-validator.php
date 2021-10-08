@@ -2,6 +2,8 @@
 
 class WPCF7_ConfigValidator {
 
+	const last_important_update = '5.5';
+
 	const error = 100;
 	const error_maybe_empty = 101;
 	const error_invalid_mailbox_syntax = 102;
