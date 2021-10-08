@@ -9,7 +9,7 @@ function wpcf7_admin_init_bulk_cv() {
 	}
 
 	$result = WPCF7::get_option( 'bulk_validate' );
-	$last_important_update = '5.1.5';
+	$last_important_update = WPCF7_ConfigValidator::last_important_update;
 
 	if ( ! empty( $result['version'] )
 	and version_compare( $last_important_update, $result['version'], '<=' ) ) {
@@ -17,10 +17,14 @@ function wpcf7_admin_init_bulk_cv() {
 	}
 
 	add_filter( 'wpcf7_admin_menu_change_notice',
-		'wpcf7_admin_menu_change_notice_bulk_cv', 10, 1 );
+		'wpcf7_admin_menu_change_notice_bulk_cv',
+		10, 1
+	);
 
 	add_action( 'wpcf7_admin_warnings',
-		'wpcf7_admin_warnings_bulk_cv', 5, 3 );
+		'wpcf7_admin_warnings_bulk_cv',
+		5, 3
+	);
 }
 
 function wpcf7_admin_menu_change_notice_bulk_cv( $counts ) {
