@@ -499,6 +499,17 @@ function wpcf7_admin_integration_page() {
 
 <h1><?php echo esc_html( __( 'Integration with External API', 'contact-form-7' ) ); ?></h1>
 
+<p><?php
+	echo sprintf(
+		/* translators: %s: link labeled 'Integration with external APIs' */
+		esc_html( __( "You can expand the possibilities of your contact forms by integrating them with external services. For details, see %s.", 'contact-form-7' ) ),
+		wpcf7_link(
+			__( 'https://contactform7.com/integration-with-external-apis/', 'contact-form-7' ),
+			__( 'Integration with external APIs', 'contact-form-7' )
+		)
+	);
+?></p>
+
 <?php
 	do_action( 'wpcf7_admin_warnings',
 		'wpcf7-integration', wpcf7_current_action(), $service
