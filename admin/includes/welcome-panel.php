@@ -276,7 +276,7 @@ function wpcf7_welcome_panel_screen_settings( $screen_settings, $screen ) {
 		return $screen_settings;
 	}
 
-	$vers = get_user_meta( get_current_user_id(),
+	$vers = (array) get_user_meta( get_current_user_id(),
 		'wpcf7_hide_welcome_panel_on', true
 	);
 
