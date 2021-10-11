@@ -12,11 +12,11 @@ add_action(
 
 class WPCF7_REST_Controller {
 
-	const namespace = 'contact-form-7/v1';
+	const route_namespace = 'contact-form-7/v1';
 
 	public function register_routes() {
 
-		register_rest_route( self::namespace,
+		register_rest_route( self::route_namespace,
 			'/contact-forms',
 			array(
 				array(
@@ -50,7 +50,7 @@ class WPCF7_REST_Controller {
 			)
 		);
 
-		register_rest_route( self::namespace,
+		register_rest_route( self::route_namespace,
 			'/contact-forms/(?P<id>\d+)',
 			array(
 				'args' => $this->get_argument_schema(),
@@ -105,7 +105,7 @@ class WPCF7_REST_Controller {
 			)
 		);
 
-		register_rest_route( self::namespace,
+		register_rest_route( self::route_namespace,
 			'/contact-forms/(?P<id>\d+)/feedback',
 			array(
 				'args' => $this->get_argument_schema(),
@@ -117,7 +117,7 @@ class WPCF7_REST_Controller {
 			)
 		);
 
-		register_rest_route( self::namespace,
+		register_rest_route( self::route_namespace,
 			'/contact-forms/(?P<id>\d+)/refill',
 			array(
 				'args' => $this->get_argument_schema(),
