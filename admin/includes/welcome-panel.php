@@ -6,7 +6,7 @@ abstract class WPCF7_WelcomePanelColumn {
 	abstract protected function title();
 	abstract protected function content();
 
-	public function print() {
+	public function print_content() {
 		$icon = sprintf(
 			'<span class="dashicons dashicons-%s" aria-hidden="true"></span>',
 			esc_attr( $this->icon() )
@@ -220,7 +220,7 @@ function wpcf7_welcome_panel() {
 <?php
 
 	foreach ( $columns as $column ) {
-		$column->print();
+		$column->print_content();
 	}
 
 ?>
