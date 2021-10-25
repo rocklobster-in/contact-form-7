@@ -4,7 +4,7 @@ Donate link: https://contactform7.com/donate/
 Tags: contact, form, contact form, feedback, email, ajax, captcha, akismet, multilingual
 Requires at least: 5.7
 Tested up to: 5.8
-Stable tag: 5.5
+Stable tag: 5.5.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -76,6 +76,11 @@ Do you have questions or issues with Contact Form 7? Use these support channels 
 == Changelog ==
 
 For more information, see [Releases](https://contactform7.com/category/releases/).
+
+= 5.5.2 =
+
+* REST API: Removes argument schema reference that causes error when the form has 'id' field.
+* Changes method names that are reserved in PHP 5.6.
 
 = 5.5.1 =
 
