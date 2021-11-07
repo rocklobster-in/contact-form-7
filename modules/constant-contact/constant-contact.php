@@ -17,11 +17,15 @@ add_action(
 	5, 0
 );
 
+/**
+ * Registers the Constant Contact service.
+ */
 function wpcf7_constant_contact_register_service() {
 	$integration = WPCF7_Integration::get_instance();
 
 	$integration->add_category( 'email_marketing',
-		__( 'Email marketing', 'contact-form-7' ) );
+		__( 'Email marketing', 'contact-form-7' )
+	);
 
 	$service = WPCF7_ConstantContact::get_instance();
 	$integration->add_service( 'constant_contact', $service );
@@ -34,6 +38,9 @@ add_action(
 	10, 1
 );
 
+/**
+ * Callback to the wpcf7_save_contact_form action hook.
+ */
 function wpcf7_constant_contact_save_contact_form( $contact_form ) {
 	$service = WPCF7_ConstantContact::get_instance();
 
@@ -78,6 +85,10 @@ function wpcf7_constant_contact_save_contact_form( $contact_form ) {
 
 add_action( 'wpcf7_submit', 'wpcf7_constant_contact_submit', 10, 2 );
 
+/**
+ * Callback to the wpcf7_submit action hook. Creates a contact
+ * based on the submission.
+ */
 function wpcf7_constant_contact_submit( $contact_form, $result ) {
 	$service = WPCF7_ConstantContact::get_instance();
 
@@ -109,7 +120,8 @@ function wpcf7_constant_contact_submit( $contact_form, $result ) {
 	}
 
 	$do_submit = apply_filters( 'wpcf7_constant_contact_submit',
-		$do_submit, $contact_form, $result );
+		$do_submit, $contact_form, $result
+	);
 
 	if ( ! $do_submit ) {
 		return;
