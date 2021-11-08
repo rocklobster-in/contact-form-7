@@ -68,25 +68,9 @@ class WPCF7 {
 	 * @return bool True on success, false on failure.
 	 */
 	protected static function load_module( $mod ) {
-		$dir = WPCF7_PLUGIN_MODULES_DIR;
-
-		if ( empty( $dir ) or ! is_dir( $dir ) ) {
-			return false;
-		}
-
-		$files = array(
-			path_join( $dir, $mod . '/' . $mod . '.php' ),
-			path_join( $dir, $mod . '.php' ),
-		);
-
-		foreach ( $files as $file ) {
-			if ( file_exists( $file ) ) {
-				include_once $file;
-				return true;
-			}
-		}
-
-		return false;
+		return false
+			|| wpcf7_include_module_file( $mod . '/' . $mod . '.php' )
+			|| wpcf7_include_module_file( $mod . '.php' );
 	}
 
 

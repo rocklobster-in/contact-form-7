@@ -30,6 +30,30 @@ function wpcf7_plugin_url( $path = '' ) {
 
 
 /**
+ * Include a file under WPCF7_PLUGIN_MODULES_DIR.
+ *
+ * @param string $path File path relative to the module dir.
+ * @return bool True on success, false on failure.
+ */
+function wpcf7_include_module_file( $path ) {
+	$dir = WPCF7_PLUGIN_MODULES_DIR;
+
+	if ( empty( $dir ) or ! is_dir( $dir ) ) {
+		return false;
+	}
+
+	$path = path_join( $dir, ltrim( $path, '/' ) );
+
+	if ( file_exists( $path ) ) {
+		include_once $path;
+		return true;
+	}
+
+	return false;
+}
+
+
+/**
  * Retrieves uploads directory information.
  *
  * @param string|bool $type Optional. Type of output. Default false.
