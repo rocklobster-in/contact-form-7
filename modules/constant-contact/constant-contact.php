@@ -1,14 +1,7 @@
 <?php
 
-include_once path_join(
-	WPCF7_PLUGIN_MODULES_DIR,
-	'constant-contact/service.php'
-);
-
-include_once path_join(
-	WPCF7_PLUGIN_MODULES_DIR,
-	'constant-contact/contact-post-request.php'
-);
+wpcf7_include_module_file( 'constant-contact/service.php' );
+wpcf7_include_module_file( 'constant-contact/contact-post-request.php' );
 
 
 add_action(

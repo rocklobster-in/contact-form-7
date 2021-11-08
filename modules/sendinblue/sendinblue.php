@@ -1,14 +1,7 @@
 <?php
 
-include_once path_join(
-	WPCF7_PLUGIN_MODULES_DIR,
-	'sendinblue/service.php'
-);
-
-include_once path_join(
-	WPCF7_PLUGIN_MODULES_DIR,
-	'sendinblue/contact-form-properties.php'
-);
+wpcf7_include_module_file( 'sendinblue/service.php' );
+wpcf7_include_module_file( 'sendinblue/contact-form-properties.php' );
 
 
 add_action( 'wpcf7_init', 'wpcf7_sendinblue_register_service', 1, 0 );
