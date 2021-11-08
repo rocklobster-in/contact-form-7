@@ -56,8 +56,7 @@ function wpcf7_constant_contact_editor_panels( $panels ) {
 			)
 		);
 
-		//$lists = $service->get_lists();
-		$lists = array();
+		$lists = $service->get_contact_lists();
 
 ?>
 <h2><?php echo esc_html( __( 'Constant Contact', 'contact-form-7' ) ); ?></h2>
@@ -117,8 +116,8 @@ function wpcf7_constant_contact_editor_panels( $panels ) {
 					wpcf7_format_atts( array(
 						'type' => 'checkbox',
 						'name' => 'wpcf7-ctct[contact_lists][]',
-						'value' => $list['id'],
-						'checked' => in_array( $list['id'], $prop['contact_lists'] )
+						'value' => $list['list_id'],
+						'checked' => in_array( $list['list_id'], $prop['contact_lists'] )
 							? 'checked'
 							: '',
 					) ),
@@ -138,18 +137,16 @@ function wpcf7_constant_contact_editor_panels( $panels ) {
 					</fieldset>
 		<?php
 
-/*
 		echo sprintf(
 			'<p><a %1$s>%2$s <span class="screen-reader-text">%3$s</span><span aria-hidden="true" class="dashicons dashicons-external"></span></a></p>',
 			wpcf7_format_atts( array(
-				'href' => 'https://my.sendinblue.com/lists',
+				'href' => 'https://app.constantcontact.com/pages/contacts/ui#lists',
 				'target' => '_blank',
 				'rel' => 'external noreferrer noopener',
 			) ),
 			esc_html( __( 'Manage your contact lists', 'contact-form-7' ) ),
 			esc_html( __( '(opens in a new tab)', 'contact-form-7' ) )
 		);
-		*/
 
 		?>
 				</td>
