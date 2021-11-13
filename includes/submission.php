@@ -316,10 +316,10 @@ class WPCF7_Submission {
 			}
 
 			if ( wpcf7_form_tag_supports( $type, 'selectable-values' ) ) {
-				$value = (array) $value;
 
 				if ( $tag->has_option( 'free_text' )
 				and isset( $posted_data[$name . '_free_text'] ) ) {
+					$value = (array) $value;
 					$last_val = array_pop( $value );
 
 					list( $tied_item ) = array_slice(
