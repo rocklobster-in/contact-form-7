@@ -13,9 +13,61 @@ function wpcf7_constant_contact_register_property( $properties, $contact_form ) 
 		return $properties;
 	}
 
-	$properties += array(
-		'constant_contact' => array(),
+	if ( isset( $properties['constant_contact'] ) ) {
+		return $properties;
+	}
+
+	$prop = array(
+		'enable_contact_list' => false,
+		'contact_lists' => array(),
 	);
+
+	$service_option = (array) WPCF7::get_option( 'constant_contact' );
+
+	$additional_settings = $contact_form->additional_setting(
+		'constant_contact',
+		false
+	);
+
+	$prop['enable_contact_list'] = ! array_filter(
+		$additional_settings,
+		function ( $setting ) {
+			return in_array( $setting, array( 'off', 'false', '0' ), true );
+		}
+	);
+
+	if ( isset( $service_option['contact_lists'] ) ) {
+		$contact_lists = (array) $service_option['contact_lists'];
+		$contact_lists_selected = array();
+
+		foreach ( $contact_lists as $list ) {
+			if ( empty( $list['selected'] ) ) {
+				continue;
+			}
+
+			foreach ( (array) $list['selected'] as $key => $val ) {
+				if ( ! isset( $contact_lists_selected[$key] ) ) {
+					$contact_lists_selected[$key] = array();
+				}
+
+				$contact_lists_selected[$key][] = $list['list_id'];
+			}
+		}
+
+		$related_keys = array(
+			sprintf( 'wpcf7_contact_form:%d', $contact_form->id() ),
+			'default',
+		);
+
+		foreach ( $related_keys as $key ) {
+			if ( ! empty( $contact_lists_selected[$key] ) ) {
+				$prop['contact_lists'] = $contact_lists_selected[$key];
+				break;
+			}
+		}
+	}
+
+	$properties['constant_contact'] = $prop;
 
 	return $properties;
 }
@@ -36,13 +88,7 @@ function wpcf7_constant_contact_editor_panels( $panels ) {
 
 	$contact_form = WPCF7_ContactForm::get_current();
 
-	$prop = wp_parse_args(
-		$contact_form->prop( 'constant_contact' ),
-		array(
-			'enable_contact_list' => false,
-			'contact_lists' => array(),
-		)
-	);
+	$prop = $contact_form->prop( 'constant_contact' );
 
 	$editor_panel = function () use ( $prop, $service ) {
 
