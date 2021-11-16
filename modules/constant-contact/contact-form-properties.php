@@ -88,7 +88,13 @@ function wpcf7_constant_contact_editor_panels( $panels ) {
 
 	$contact_form = WPCF7_ContactForm::get_current();
 
-	$prop = $contact_form->prop( 'constant_contact' );
+	$prop = wp_parse_args(
+		$contact_form->prop( 'constant_contact' ),
+		array(
+			'enable_contact_list' => false,
+			'contact_lists' => array(),
+		)
+	);
 
 	$editor_panel = function () use ( $prop, $service ) {
 
