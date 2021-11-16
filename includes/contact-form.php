@@ -303,10 +303,6 @@ class WPCF7_ContactForm {
 
 		if ( $added_properties and $post ) {
 			foreach ( $added_properties as $key => $val ) {
-				if ( ! empty( $val ) ) {
-					continue;
-				}
-
 				$properties[$key] = call_user_func(
 					$postmeta_callback,
 					$post->ID, $key, $val
