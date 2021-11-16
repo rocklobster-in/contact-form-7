@@ -124,7 +124,11 @@ class WPCF7_ContactForm {
 		$properties = $contact_form->get_properties();
 
 		foreach ( $properties as $key => $value ) {
-			$properties[$key] = WPCF7_ContactFormTemplate::get_default( $key );
+			$default_template = WPCF7_ContactFormTemplate::get_default( $key );
+
+			if ( isset( $default_template ) ) {
+				$properties[$key] = $default_template;
+			}
 		}
 
 		$contact_form->properties = $properties;
@@ -200,18 +204,10 @@ class WPCF7_ContactForm {
 			$this->title = $post->post_title;
 			$this->locale = get_post_meta( $post->ID, '_locale', true );
 
-			$properties = $this->get_properties();
-
-			foreach ( $properties as $key => $value ) {
-				if ( metadata_exists( 'post', $post->ID, '_' . $key ) ) {
-					$properties[$key] = get_post_meta( $post->ID, '_' . $key, true );
-				} elseif ( metadata_exists( 'post', $post->ID, $key ) ) {
-					$properties[$key] = get_post_meta( $post->ID, $key, true );
-				}
-			}
-
-			$this->properties = $properties;
+			$this->construct_properties( $post );
 			$this->upgrade();
+		} else {
+			$this->construct_properties();
 		}
 
 		do_action( 'wpcf7_contact_form', $this );
@@ -264,6 +260,65 @@ class WPCF7_ContactForm {
 
 
 	/**
+	 * Constructs contact form properties. This is called only once
+	 * from the constructor.
+	 */
+	private function construct_properties( $post = null ) {
+
+		$postmeta_callback = function ( $post_id, $meta_key, $default = null ) {
+			if ( metadata_exists( 'post', $post_id, '_' . $meta_key ) ) {
+				return get_post_meta( $post_id, '_' . $meta_key, true );
+			} elseif ( metadata_exists( 'post', $post_id, $meta_key ) ) {
+				return get_post_meta( $post_id, $meta_key, true );
+			} else {
+				return $default;
+			}
+		};
+
+		$builtin_properties = array(
+			'form' => '',
+			'mail' => array(),
+			'mail_2' => array(),
+			'messages' => array(),
+			'additional_settings' => '',
+		);
+
+		if ( $post ) {
+			foreach ( $builtin_properties as $key => $val ) {
+				$builtin_properties[$key] = call_user_func(
+					$postmeta_callback,
+					$post->ID, $key, $val
+				);
+			}
+		}
+
+		$this->properties = $builtin_properties;
+
+		$properties = (array) apply_filters(
+			'wpcf7_contact_form_properties',
+			$builtin_properties, $this
+		);
+
+		$added_properties = array_diff_key( $properties, $builtin_properties );
+
+		if ( $added_properties and $post ) {
+			foreach ( $added_properties as $key => $val ) {
+				if ( ! empty( $val ) ) {
+					continue;
+				}
+
+				$properties[$key] = call_user_func(
+					$postmeta_callback,
+					$post->ID, $key, $val
+				);
+			}
+		}
+
+		$this->properties = $properties;
+	}
+
+
+	/**
 	 * Returns the value for the given property name.
 	 *
 	 * @param string $name Property name.
@@ -281,22 +336,7 @@ class WPCF7_ContactForm {
 	 * @return array This contact form's properties.
 	 */
 	public function get_properties() {
-		$properties = (array) $this->properties;
-
-		$properties = wp_parse_args( $properties, array(
-			'form' => '',
-			'mail' => array(),
-			'mail_2' => array(),
-			'messages' => array(),
-			'additional_settings' => '',
-		) );
-
-		$properties = (array) apply_filters(
-			'wpcf7_contact_form_properties',
-			$properties, $this
-		);
-
-		return $properties;
+		return (array) $this->properties;
 	}
 
 
