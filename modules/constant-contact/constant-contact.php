@@ -2,6 +2,7 @@
 
 wpcf7_include_module_file( 'constant-contact/service.php' );
 wpcf7_include_module_file( 'constant-contact/contact-post-request.php' );
+wpcf7_include_module_file( 'constant-contact/contact-form-properties.php' );
 
 
 add_action(

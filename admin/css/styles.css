@@ -328,16 +328,19 @@ ul.config-error li {
 }
 
 /*
- * Sendinblue Tab
+ * Tabs for integration modules
  */
+#ctct-panel table tr.inactive ~ tr,
 #sendinblue-panel table tr.inactive ~ tr {
 	display: none;
 }
 
+#ctct-panel .dashicons,
 #sendinblue-panel .dashicons {
  	text-decoration: none;
 }
 
+#ctct-panel td p,
 #sendinblue-panel td p {
  	margin-top: 12px;
 }
