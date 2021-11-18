@@ -264,17 +264,6 @@ class WPCF7_ContactForm {
 	 * from the constructor.
 	 */
 	private function construct_properties( $post = null ) {
-
-		$postmeta_callback = function ( $post_id, $meta_key, $default = null ) {
-			if ( metadata_exists( 'post', $post_id, '_' . $meta_key ) ) {
-				return get_post_meta( $post_id, '_' . $meta_key, true );
-			} elseif ( metadata_exists( 'post', $post_id, $meta_key ) ) {
-				return get_post_meta( $post_id, $meta_key, true );
-			} else {
-				return $default;
-			}
-		};
-
 		$builtin_properties = array(
 			'form' => '',
 			'mail' => array(),
@@ -283,34 +272,47 @@ class WPCF7_ContactForm {
 			'additional_settings' => '',
 		);
 
-		if ( $post ) {
-			foreach ( $builtin_properties as $key => $val ) {
-				$builtin_properties[$key] = call_user_func(
-					$postmeta_callback,
-					$post->ID, $key, $val
-				);
-			}
-		}
-
-		$this->properties = $builtin_properties;
-
-		$properties = (array) apply_filters(
+		$this->properties = (array) apply_filters(
 			'wpcf7_contact_form_properties',
 			$builtin_properties, $this
 		);
 
-		$added_properties = array_diff_key( $properties, $builtin_properties );
+		foreach ( $this->properties as $name => $val ) {
+			$name = sanitize_key( $name );
+			$prop = $this->retrieve_property( $name );
 
-		if ( $added_properties and $post ) {
-			foreach ( $added_properties as $key => $val ) {
-				$properties[$key] = call_user_func(
-					$postmeta_callback,
-					$post->ID, $key, $val
-				);
+			if ( isset( $prop ) ) {
+				$this->properties[$name] = $prop;
+			}
+		}
+	}
+
+
+	/**
+	 * Retrieves contact form property of the specified name from the database.
+	 *
+	 * @param string $name Property name.
+	 * @return array|string|null Property value. Null if property doesn't exist.
+	 */
+	private function retrieve_property( $name ) {
+		$property = null;
+
+		if ( ! $this->initial() ) {
+			$post_id = $this->id;
+
+			if ( metadata_exists( 'post', $post_id, '_' . $name ) ) {
+				$property = get_post_meta( $post_id, '_' . $name, true );
+			} elseif ( metadata_exists( 'post', $post_id, $name ) ) {
+				$property = get_post_meta( $post_id, $name, true );
 			}
 		}
 
-		$this->properties = $properties;
+		$property = apply_filters(
+			"wpcf7_contact_form_property_{$name}",
+			$property, $this
+		);
+
+		return $property;
 	}
 
 
