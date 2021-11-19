@@ -92,6 +92,37 @@ function wpcf7_constant_contact_setup_property( $property, $contact_form ) {
 }
 
 
+add_action(
+	'wpcf7_save_contact_form',
+	'wpcf7_constant_contact_save_contact_form',
+	10, 1
+);
+
+function wpcf7_constant_contact_save_contact_form( $contact_form ) {
+	$service = WPCF7_ConstantContact::get_instance();
+
+	if ( ! $service->is_active() ) {
+		return;
+	}
+
+	$prop = isset( $_POST['wpcf7-ctct'] )
+		? (array) $_POST['wpcf7-ctct']
+		: array();
+
+	$prop = wp_parse_args(
+		$prop,
+		array(
+			'enable_contact_list' => false,
+			'contact_lists' => array(),
+		)
+	);
+
+	$contact_form->set_properties( array(
+		'constant_contact' => $prop,
+	) );
+}
+
+
 add_filter(
 	'wpcf7_editor_panels',
 	'wpcf7_constant_contact_editor_panels',
