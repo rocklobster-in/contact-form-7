@@ -26,13 +26,6 @@ function wpcf7_constant_contact_register_service() {
 }
 
 
-add_action(
-	'wpcf7_save_contact_form',
-	'wpcf7_constant_contact_save_contact_form',
-	10, 1
-);
-
-
 add_action( 'wpcf7_submit', 'wpcf7_constant_contact_submit', 10, 2 );
 
 /**
