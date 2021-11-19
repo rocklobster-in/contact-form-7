@@ -272,19 +272,44 @@ class WPCF7_ContactForm {
 			'additional_settings' => '',
 		);
 
-		$this->properties = (array) apply_filters(
-			'wpcf7_contact_form_properties',
+		$properties = apply_filters(
+			'wpcf7_pre_construct_contact_form_properties',
 			$builtin_properties, $this
 		);
 
-		foreach ( $this->properties as $name => $val ) {
-			$name = sanitize_key( $name );
+		// Filtering out properties with invalid name
+		$properties = array_filter(
+			$properties,
+			function ( $key ) {
+				$sanitized_key = sanitize_key( $key );
+				return $key === $sanitized_key;
+			},
+			ARRAY_FILTER_USE_KEY
+		);
+
+		foreach ( $properties as $name => $val ) {
 			$prop = $this->retrieve_property( $name );
 
 			if ( isset( $prop ) ) {
-				$this->properties[$name] = $prop;
+				$properties[$name] = $prop;
 			}
 		}
+
+		$this->properties = $properties;
+
+		foreach ( $properties as $name => $val ) {
+			$properties[$name] = apply_filters(
+				"wpcf7_contact_form_property_{$name}",
+				$val, $this
+			);
+		}
+
+		$properties = (array) apply_filters(
+			'wpcf7_contact_form_properties',
+			$properties, $this
+		);
+
+		$this->properties = $properties;
 	}
 
 
@@ -306,11 +331,6 @@ class WPCF7_ContactForm {
 				$property = get_post_meta( $post_id, $name, true );
 			}
 		}
-
-		$property = apply_filters(
-			"wpcf7_contact_form_property_{$name}",
-			$property, $this
-		);
 
 		return $property;
 	}
