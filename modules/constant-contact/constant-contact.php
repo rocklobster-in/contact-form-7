@@ -26,57 +26,6 @@ function wpcf7_constant_contact_register_service() {
 }
 
 
-add_action(
-	'wpcf7_save_contact_form',
-	'wpcf7_constant_contact_save_contact_form',
-	10, 1
-);
-
-/**
- * Callback to the wpcf7_save_contact_form action hook.
- */
-function wpcf7_constant_contact_save_contact_form( $contact_form ) {
-	$service = WPCF7_ConstantContact::get_instance();
-
-	if ( ! $service->is_active() ) {
-		return;
-	}
-
-	$additional_settings = $contact_form->additional_setting(
-		'constant_contact',
-		false
-	);
-
-	$list_names = array();
-
-	$pattern = '/[\t ]*('
-		. "'[^']*'"
-		. '|'
-		. '"[^"]*"'
-		. '|'
-		. '[^,]*?'
-		. ')[\t ]*(?:[,]+|$)/';
-
-	foreach ( $additional_settings as $setting ) {
-		if ( preg_match_all( $pattern, $setting, $matches ) ) {
-			foreach ( $matches[1] as $match ) {
-				$name = trim( wpcf7_strip_quote( $match ) );
-
-				if ( '' !== $name ) {
-					$list_names[] = $name;
-				}
-			}
-		}
-	}
-
-	$list_names = array_unique( $list_names );
-
-	$key = sprintf( 'wpcf7_contact_form:%d', $contact_form->id() );
-
-	$service->update_contact_lists( array( $key => $list_names ) );
-}
-
-
 add_action( 'wpcf7_submit', 'wpcf7_constant_contact_submit', 10, 2 );
 
 /**
