@@ -1,7 +1,7 @@
 <?php
 
 add_filter(
-	'wpcf7_contact_form_properties',
+	'wpcf7_pre_construct_contact_form_properties',
 	'wpcf7_constant_contact_register_property',
 	10, 2
 );
@@ -26,7 +26,15 @@ add_filter(
 );
 
 function wpcf7_constant_contact_setup_property( $property, $contact_form ) {
-	if ( isset( $property ) ) {
+	if ( ! empty( $property ) ) {
+		$property = wp_parse_args(
+			$property,
+			array(
+				'enable_contact_list' => false,
+				'contact_lists' => array(),
+			)
+		);
+
 		return $property;
 	}
 

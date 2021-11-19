@@ -1,7 +1,7 @@
 <?php
 
 add_filter(
-	'wpcf7_contact_form_properties',
+	'wpcf7_pre_construct_contact_form_properties',
 	'wpcf7_sendinblue_register_property',
 	10, 2
 );
@@ -9,13 +9,11 @@ add_filter(
 function wpcf7_sendinblue_register_property( $properties, $contact_form ) {
 	$service = WPCF7_Sendinblue::get_instance();
 
-	if ( ! $service->is_active() ) {
-		return $properties;
+	if ( $service->is_active() ) {
+		$properties += array(
+			'sendinblue' => array(),
+		);
 	}
-
-	$properties += array(
-		'sendinblue' => array(),
-	);
 
 	return $properties;
 }
