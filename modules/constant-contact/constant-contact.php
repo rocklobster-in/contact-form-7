@@ -50,16 +50,10 @@ function wpcf7_constant_contact_submit( $contact_form, $result ) {
 		$do_submit = false;
 	}
 
-	$additional_settings = $contact_form->additional_setting(
-		'constant_contact',
-		false
-	);
+	$prop = $contact_form->prop( 'constant_contact' );
 
-	foreach ( $additional_settings as $setting ) {
-		if ( in_array( $setting, array( 'off', 'false', '0' ), true ) ) {
-			$do_submit = false;
-			break;
-		}
+	if ( empty( $prop['enable_contact_list'] ) ) {
+		$do_submit = false;
 	}
 
 	$do_submit = apply_filters( 'wpcf7_constant_contact_submit',

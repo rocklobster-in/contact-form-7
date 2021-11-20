@@ -93,15 +93,12 @@ class WPCF7_ConstantContact_ContactPostRequest {
 
 		$contact_form = $submission->get_contact_form();
 
-		if ( $contact_form->additional_setting( 'constant_contact' ) ) {
-			$key = sprintf( 'wpcf7_contact_form:%d', $contact_form->id() );
-		} else {
-			$key = 'default';
-		}
+		$prop = $contact_form->prop( 'constant_contact' );
 
-		foreach ( (array) $contact_lists as $list ) {
-			if ( ! empty( $list['selected'][$key] ) ) {
-				$this->add_list_membership( $list['list_id'] );
+		if ( ! empty( $prop['enable_contact_list'] )
+		and ! empty( $prop['contact_lists'] ) ) {
+			foreach ( (array) $prop['contact_lists'] as $list_id ) {
+				$this->add_list_membership( $list_id );
 			}
 		}
 	}
