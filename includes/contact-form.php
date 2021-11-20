@@ -304,6 +304,8 @@ class WPCF7_ContactForm {
 			);
 		}
 
+		$this->properties = $properties;
+
 		$properties = (array) apply_filters(
 			'wpcf7_contact_form_properties',
 			$properties, $this
