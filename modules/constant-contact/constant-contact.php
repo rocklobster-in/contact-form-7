@@ -50,6 +50,15 @@ function wpcf7_constant_contact_submit( $contact_form, $result ) {
 		$do_submit = false;
 	}
 
+
+
+
+
+
+
+
+
+
 	$additional_settings = $contact_form->additional_setting(
 		'constant_contact',
 		false
