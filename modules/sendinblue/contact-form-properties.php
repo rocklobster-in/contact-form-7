@@ -6,6 +6,9 @@ add_filter(
 	10, 2
 );
 
+/**
+ * Registers the sendinblue contact form property.
+ */
 function wpcf7_sendinblue_register_property( $properties, $contact_form ) {
 	$service = WPCF7_Sendinblue::get_instance();
 
@@ -25,6 +28,9 @@ add_action(
 	10, 3
 );
 
+/**
+ * Saves the sendinblue property value.
+ */
 function wpcf7_sendinblue_save_contact_form( $contact_form, $args, $context ) {
 	$service = WPCF7_Sendinblue::get_instance();
 
@@ -62,6 +68,9 @@ add_filter(
 	10, 1
 );
 
+/**
+ * Builds the editor panel for the sendinblue property.
+ */
 function wpcf7_sendinblue_editor_panels( $panels ) {
 	$service = WPCF7_Sendinblue::get_instance();
 
