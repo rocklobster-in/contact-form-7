@@ -154,29 +154,6 @@ class WPCF7_ConstantContact extends WPCF7_Service_OAuth2 {
 			wp_safe_redirect( $this->menu_page_url( 'action=setup' ) );
 			exit();
 		}
-
-		if ( 'edit' == $action and 'POST' == $_SERVER['REQUEST_METHOD'] ) {
-			check_admin_referer( 'wpcf7-constant-contact-edit' );
-
-			$list_ids = isset( $_POST['contact_lists'] )
-				? (array) $_POST['contact_lists']
-				: array();
-
-			$this->update_contact_lists( array( 'default' => $list_ids ) );
-
-			wp_safe_redirect( $this->menu_page_url(
-				array(
-					'action' => 'setup',
-					'message' => 'updated',
-				)
-			) );
-
-			exit();
-		}
-
-		if ( $this->is_active() ) {
-			$this->update_contact_lists();
-		}
 	}
 
 	public function email_exists( $email ) {
@@ -437,48 +414,6 @@ class WPCF7_ConstantContact extends WPCF7_Service_OAuth2 {
 			submit_button(
 				__( 'Connect to the Constant Contact API', 'contact-form-7' )
 			);
-		}
-?>
-</form>
-
-<?php
-		if ( $this->is_active() and ! empty( $this->contact_lists ) ) {
-?>
-<form method="post" action="<?php echo esc_url( $this->menu_page_url( 'action=edit' ) ); ?>">
-<?php wp_nonce_field( 'wpcf7-constant-contact-edit' ); ?>
-<table class="form-table">
-<tbody>
-<tr>
-	<th scope="row"><?php echo esc_html( _x( 'Contact Lists', 'Constant Contact', 'contact-form-7' ) ); ?></th>
-	<td>
-		<fieldset>
-		<legend class="screen-reader-text"><span><?php echo esc_html( _x( "Contact Lists: Select lists to which newly added contacts are to belong.", 'Constant Contact', 'contact-form-7' ) ); ?></span></legend>
-		<p class="description"><?php echo esc_html( __( "Select lists to which newly added contacts are to belong.", 'contact-form-7' ) ); ?></p>
-		<ul class="checkboxes"><?php
-			foreach ( $this->contact_lists as $list ) {
-				echo sprintf(
-					'<li><input %1$s /> <label for="%2$s">%3$s</label></li>',
-					wpcf7_format_atts( array(
-						'type' => 'checkbox',
-						'name' => 'contact_lists[]',
-						'value' => $list['list_id'],
-						'id' => 'contact_list_' . $list['list_id'],
-						'checked' => empty( $list['selected']['default'] )
-							? ''
-							: 'checked',
-					) ),
-					esc_attr( 'contact_list_' . $list['list_id'] ),
-					esc_html( $list['name'] )
-				);
-			}
-		?></ul>
-		</fieldset>
-	</td>
-</tr>
-</tbody>
-</table>
-<?php
-			submit_button();
 		}
 ?>
 </form>
