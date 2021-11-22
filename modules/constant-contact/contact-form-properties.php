@@ -43,6 +43,10 @@ function wpcf7_constant_contact_setup_property( $property, $contact_form ) {
 		'contact_lists' => array(),
 	);
 
+	if ( $contact_form->initial() ) {
+		return $property;
+	}
+
 	$service_option = (array) WPCF7::get_option( 'constant_contact' );
 
 	$additional_settings = $contact_form->additional_setting(
