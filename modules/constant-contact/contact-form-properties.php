@@ -6,6 +6,9 @@ add_filter(
 	10, 2
 );
 
+/**
+ * Registers the constant_contact contact form property.
+ */
 function wpcf7_constant_contact_register_property( $properties, $contact_form ) {
 	$service = WPCF7_ConstantContact::get_instance();
 
@@ -25,6 +28,10 @@ add_filter(
 	10, 2
 );
 
+/**
+ * Sets up the constant_contact property value. For back-compat, this attempts
+ * to take over the value from old settings if the property is empty.
+ */
 function wpcf7_constant_contact_setup_property( $property, $contact_form ) {
 	if ( ! empty( $property ) ) {
 		$property = wp_parse_args(
@@ -102,6 +109,9 @@ add_action(
 	10, 1
 );
 
+/**
+ * Saves the constant_contact property value.
+ */
 function wpcf7_constant_contact_save_contact_form( $contact_form ) {
 	$service = WPCF7_ConstantContact::get_instance();
 
@@ -133,6 +143,9 @@ add_filter(
 	10, 1
 );
 
+/**
+ * Builds the editor panel for the constant_contact property.
+ */
 function wpcf7_constant_contact_editor_panels( $panels ) {
 	$service = WPCF7_ConstantContact::get_instance();
 
