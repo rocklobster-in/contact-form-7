@@ -213,7 +213,7 @@ add_filter(
 /**
  * Registers the [_stripe_payment_link] special mail-tag.
  */
-function wpcf7_stripe_smt( $output, $tag_name, $html, $mail_tag ) {
+function wpcf7_stripe_smt( $output, $tag_name, $html, $mail_tag = null ) {
 	if ( '_stripe_payment_link' === $tag_name ) {
 		$submission = WPCF7_Submission::get_instance();
 
