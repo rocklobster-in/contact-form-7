@@ -46,7 +46,7 @@ function wpcf7_constant_contact_setup_property( $property, $contact_form ) {
 	}
 
 	$property = array(
-		'enable_contact_list' => false,
+		'enable_contact_list' => true,
 		'contact_lists' => array(),
 	);
 
