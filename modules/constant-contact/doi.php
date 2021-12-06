@@ -12,35 +12,49 @@ function wpcf7_constant_contact_doi_register_agent() {
 	}
 
 	doihelper_register_agent( 'wpcf7_constant_contact', array(
-		'optin_callback' => function ( $properties ) {
-			$service = WPCF7_ConstantContact::get_instance();
+		'optin_callback' => apply_filters(
+			'wpcf7_constant_contact_doi_optin_callback',
+			'wpcf7_constant_contact_doi_default_optin_callback'
+		),
+		'email_callback' => apply_filters(
+			'wpcf7_constant_contact_doi_email_callback',
+			'wpcf7_constant_contact_doi_default_email_callback'
+		),
+	) );
+}
 
-			if ( $service->is_active() ) {
-				$service->create_contact( $properties );
-			}
-		},
-		'email_callback' => function ( $args ) {
-			$site_title = wp_specialchars_decode(
-				get_bloginfo( 'name' ),
-				ENT_QUOTES
-			);
 
-			$link = add_query_arg(
-				array( 'doitoken' => $args['token'] ),
-				home_url()
-			);
+function wpcf7_constant_contact_doi_default_optin_callback( $properties ) {
+	$service = WPCF7_ConstantContact::get_instance();
 
-			$to = $args['email_to'];
+	if ( $service->is_active() ) {
+		$service->create_contact( $properties );
+	}
+}
 
-			$subject = sprintf(
-				/* translators: %s: blog name */
-				__( 'Opt-in confirmation from %s', 'contact-form-7' ),
-				$site_title
-			);
 
-			$message = sprintf(
-				/* translators: 1: blog name, 2: confirmation link */
-				__( 'Hello,
+function wpcf7_constant_contact_doi_default_email_callback( $args ) {
+	$site_title = wp_specialchars_decode(
+		get_bloginfo( 'name' ),
+		ENT_QUOTES
+	);
+
+	$link = add_query_arg(
+		array( 'doitoken' => $args['token'] ),
+		home_url()
+	);
+
+	$to = $args['email_to'];
+
+	$subject = sprintf(
+		/* translators: %s: blog name */
+		__( 'Opt-in confirmation from %s', 'contact-form-7' ),
+		$site_title
+	);
+
+	$message = sprintf(
+		/* translators: 1: blog name, 2: confirmation link */
+		__( 'Hello,
 
 This is a confirmation email sent from %1$s.
 
@@ -52,13 +66,11 @@ If it was not your intention, or if you have no idea why you received this messa
 
 Sincerely,
 %1$s', 'contact-form-7' ),
-				$site_title,
-				$link
-			);
+		$site_title,
+		$link
+	);
 
-			wp_mail( $to, $subject, $message );
-		},
-	) );
+	wp_mail( $to, $subject, $message );
 }
 
 
