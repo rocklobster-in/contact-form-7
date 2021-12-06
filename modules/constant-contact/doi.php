@@ -1,4 +1,10 @@
 <?php
+/**
+ * Double Opt-In Helper-related functions
+ *
+ * @link https://contactform7.com/doi-helper/
+ */
+
 
 add_action(
 	'doihelper_init',
@@ -6,6 +12,9 @@ add_action(
 	10, 0
 );
 
+/**
+ * Registers wpcf7_constant_contact as an agent.
+ */
 function wpcf7_constant_contact_doi_register_agent() {
 	if ( ! function_exists( 'doihelper_register_agent' ) ) {
 		return;
@@ -24,6 +33,9 @@ function wpcf7_constant_contact_doi_register_agent() {
 }
 
 
+/**
+ * Default optin_callback function.
+ */
 function wpcf7_constant_contact_doi_default_optin_callback( $properties ) {
 	$service = WPCF7_ConstantContact::get_instance();
 
@@ -33,6 +45,9 @@ function wpcf7_constant_contact_doi_default_optin_callback( $properties ) {
 }
 
 
+/**
+ * Default email_callback function.
+ */
 function wpcf7_constant_contact_doi_default_email_callback( $args ) {
 	$site_title = wp_specialchars_decode(
 		get_bloginfo( 'name' ),
@@ -74,6 +89,9 @@ Sincerely,
 }
 
 
+/**
+ * Creates a DOI session.
+ */
 function wpcf7_constant_contact_doi_create_session( $args = '' ) {
 	if ( ! function_exists( 'doihelper_start_session' ) ) {
 		return false;
