@@ -2,6 +2,7 @@
 
 wpcf7_include_module_file( 'sendinblue/service.php' );
 wpcf7_include_module_file( 'sendinblue/contact-form-properties.php' );
+wpcf7_include_module_file( 'sendinblue/doi.php' );
 
 
 add_action( 'wpcf7_init', 'wpcf7_sendinblue_register_service', 1, 0 );
