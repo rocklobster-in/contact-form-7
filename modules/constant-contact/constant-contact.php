@@ -104,12 +104,13 @@ function wpcf7_constant_contact_submit( $contact_form, $result ) {
 			return;
 		}
 
-		$token = wpcf7_constant_contact_doi_create_session( array(
+		$doi_session_args = array(
 			'email_to' => $email,
 			'properties' => $request_builder->to_array(),
-		) );
+		);
 
-		if ( $token ) {
+		if ( wpcf7_do_doi( $contact_form, $doi_session_args )
+		and wpcf7_constant_contact_doi_create_session( $doi_session_args ) ) {
 			return;
 		}
 	}
