@@ -1,5 +1,14 @@
 <?php
+/**
+ * Double Opt-In Helper-related functions
+ *
+ * @link https://contactform7.com/doi-helper/
+ */
 
+
+/**
+ * Determines whether double opt-in is applied to the contact form.
+ */
 function wpcf7_do_doi( $agent_name, $contact_form, $args = '' ) {
 	$do_doi = ! array_filter(
 		$contact_form->additional_setting( 'doi', false ),
@@ -14,6 +23,9 @@ function wpcf7_do_doi( $agent_name, $contact_form, $args = '' ) {
 }
 
 
+/**
+ * Registers an agent for double opt-in.
+ */
 function wpcf7_doi_register_agent( $agent_name, $args ) {
 	if ( ! function_exists( 'doihelper_register_agent' ) ) {
 		return;
@@ -27,6 +39,9 @@ function wpcf7_doi_register_agent( $agent_name, $args ) {
 }
 
 
+/**
+ * Creates a double opt-in session.
+ */
 function wpcf7_doi_create_session( $agent_name, $args ) {
 	if ( ! function_exists( 'doihelper_start_session' ) ) {
 		return false;
@@ -40,6 +55,9 @@ function wpcf7_doi_create_session( $agent_name, $args ) {
 }
 
 
+/**
+ * Default email_callback function.
+ */
 function wpcf7_doi_default_email_callback( $args ) {
 	if ( ! isset( $args['token'] ) or ! isset( $args['email_to'] ) ) {
 		return;
