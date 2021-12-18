@@ -110,7 +110,7 @@ function wpcf7_constant_contact_submit( $contact_form, $result ) {
 		);
 
 		if ( wpcf7_do_doi( 'constant_contact', $contact_form, $doi_session_args )
-		and wpcf7_constant_contact_doi_create_session( $doi_session_args ) ) {
+		and wpcf7_doi_create_session( 'constant_contact', $doi_session_args ) ) {
 			return;
 		}
 	}
