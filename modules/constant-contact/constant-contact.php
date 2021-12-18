@@ -109,7 +109,7 @@ function wpcf7_constant_contact_submit( $contact_form, $result ) {
 			'properties' => $request_builder->to_array(),
 		);
 
-		if ( wpcf7_do_doi( $contact_form, $doi_session_args )
+		if ( wpcf7_do_doi( 'constant_contact', $contact_form, $doi_session_args )
 		and wpcf7_constant_contact_doi_create_session( $doi_session_args ) ) {
 			return;
 		}
