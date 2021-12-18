@@ -97,5 +97,11 @@ function wpcf7_constant_contact_doi_create_session( $args = '' ) {
 		return false;
 	}
 
+	$do_doi = apply_filters( 'wpcf7_do_doi', true, 'constant_contact', $args );
+
+	if ( ! $do_doi ) {
+		return false;
+	}
+
 	return doihelper_start_session( 'wpcf7_constant_contact', $args );
 }
