@@ -16,11 +16,7 @@ add_action(
  * Registers wpcf7_constant_contact as an agent.
  */
 function wpcf7_constant_contact_doi_register_agent() {
-	if ( ! function_exists( 'doihelper_register_agent' ) ) {
-		return;
-	}
-
-	doihelper_register_agent( 'wpcf7_constant_contact', array(
+	wpcf7_doi_register_agent( 'constant_contact', array(
 		'optin_callback' => apply_filters(
 			'wpcf7_constant_contact_doi_optin_callback',
 			'wpcf7_constant_contact_doi_default_optin_callback'
