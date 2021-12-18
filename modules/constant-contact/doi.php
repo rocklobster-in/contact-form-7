@@ -87,15 +87,3 @@ Sincerely,
 
 	wp_mail( $to, $subject, $message );
 }
-
-
-/**
- * Creates a DOI session.
- */
-function wpcf7_constant_contact_doi_create_session( $args = '' ) {
-	if ( ! function_exists( 'doihelper_start_session' ) ) {
-		return false;
-	}
-
-	return doihelper_start_session( 'wpcf7_constant_contact', $args );
-}
