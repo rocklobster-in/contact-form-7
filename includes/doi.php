@@ -1,6 +1,6 @@
 <?php
 
-function wpcf7_do_doi( $contact_form, $args = '' ) {
+function wpcf7_do_doi( $agent_name, $contact_form, $args = '' ) {
 	$do_doi = ! array_filter(
 		$contact_form->additional_setting( 'doi', false ),
 		function ( $setting ) {
@@ -8,5 +8,7 @@ function wpcf7_do_doi( $contact_form, $args = '' ) {
 		}
 	);
 
-	return apply_filters( 'wpcf7_do_doi', $do_doi, 'constant_contact', $args );
+	return apply_filters( 'wpcf7_do_doi', $do_doi,
+		$agent_name, $contact_form, $args
+	);
 }
