@@ -17,7 +17,6 @@ require_once WPCF7_PLUGIN_DIR . '/includes/file.php';
 require_once WPCF7_PLUGIN_DIR . '/includes/validation-functions.php';
 require_once WPCF7_PLUGIN_DIR . '/includes/validation.php';
 require_once WPCF7_PLUGIN_DIR . '/includes/submission.php';
-require_once WPCF7_PLUGIN_DIR . '/includes/doi.php';
 require_once WPCF7_PLUGIN_DIR . '/includes/upgrade.php';
 require_once WPCF7_PLUGIN_DIR . '/includes/integration.php';
 require_once WPCF7_PLUGIN_DIR . '/includes/config-validator.php';
@@ -44,6 +43,7 @@ class WPCF7 {
 		self::load_module( 'count' );
 		self::load_module( 'date' );
 		self::load_module( 'disallowed-list' );
+		self::load_module( 'doi-helper' );
 		self::load_module( 'file' );
 		self::load_module( 'flamingo' );
 		self::load_module( 'hidden' );
