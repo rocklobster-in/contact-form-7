@@ -70,10 +70,13 @@ function wpcf7_sendinblue_submit( $contact_form, $result ) {
 
 	$attributes = wpcf7_sendinblue_collect_parameters();
 
-	$contact_params = null;
+	$params = array(
+		'contact' => array(),
+		'email' => array(),
+	);
 
 	if ( ! empty( $attributes['EMAIL'] ) or ! empty( $attributes['SMS'] ) ) {
-		$contact_params = apply_filters(
+		$params['contact'] = apply_filters(
 			'wpcf7_sendinblue_contact_parameters',
 			array(
 				'email' => $attributes['EMAIL'],
@@ -83,8 +86,6 @@ function wpcf7_sendinblue_submit( $contact_form, $result ) {
 			)
 		);
 	}
-
-	$email_params = null;
 
 	if ( $prop['enable_transactional_email'] and $prop['email_template'] ) {
 		$first_name = isset( $attributes['FIRSTNAME'] )
@@ -106,7 +107,7 @@ function wpcf7_sendinblue_submit( $contact_form, $result ) {
 			$email_to_name = '';
 		}
 
-		$email_params = apply_filters(
+		$params['email'] = apply_filters(
 			'wpcf7_sendinblue_email_parameters',
 			array(
 				'templateId' => absint( $prop['email_template'] ),
@@ -122,11 +123,11 @@ function wpcf7_sendinblue_submit( $contact_form, $result ) {
 		);
 	}
 
-	if ( $contact_params ) {
-		$contact_id = $service->create_contact( $contact_params );
+	if ( ! empty( $params['contact'] ) ) {
+		$contact_id = $service->create_contact( $params['contact'] );
 
-		if ( $contact_id and $email_params ) {
-			$service->send_email( $email_params );
+		if ( $contact_id and ! empty( $params['email'] ) ) {
+			$service->send_email( $params['email'] );
 		}
 	}
 }
