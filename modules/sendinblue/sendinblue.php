@@ -124,13 +124,18 @@ function wpcf7_sendinblue_submit( $contact_form, $result ) {
 	}
 
 	if ( is_email( $attributes['EMAIL'] ) ) {
-		$doi_session_args = array(
-			'email_to' => $attributes['EMAIL'],
-			'properties' => $params,
-		);
+		$token = null;
 
-		if ( wpcf7_do_doi( 'sendinblue', $contact_form, $doi_session_args )
-		and wpcf7_doi_create_session( 'sendinblue', $doi_session_args ) ) {
+		do_action_ref_array( 'wpcf7_doi', array(
+			'wpcf7_sendinblue',
+			array(
+				'email_to' => $attributes['EMAIL'],
+				'properties' => $params,
+			),
+			&$token,
+		) );
+
+		if ( isset( $token ) ) {
 			return;
 		}
 	}

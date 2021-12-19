@@ -104,13 +104,18 @@ function wpcf7_constant_contact_submit( $contact_form, $result ) {
 			return;
 		}
 
-		$doi_session_args = array(
-			'email_to' => $email,
-			'properties' => $request_builder->to_array(),
-		);
+		$token = null;
 
-		if ( wpcf7_do_doi( 'constant_contact', $contact_form, $doi_session_args )
-		and wpcf7_doi_create_session( 'constant_contact', $doi_session_args ) ) {
+		do_action_ref_array( 'wpcf7_doi', array(
+			'wpcf7_constant_contact',
+			array(
+				'email_to' => $email,
+				'properties' => $request_builder->to_array(),
+			),
+			&$token,
+		) );
+
+		if ( isset( $token ) ) {
 			return;
 		}
 	}
