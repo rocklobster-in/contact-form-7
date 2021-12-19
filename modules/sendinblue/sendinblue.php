@@ -123,6 +123,18 @@ function wpcf7_sendinblue_submit( $contact_form, $result ) {
 		);
 	}
 
+	if ( is_email( $attributes['EMAIL'] ) ) {
+		$doi_session_args = array(
+			'email_to' => $attributes['EMAIL'],
+			'properties' => $params,
+		);
+
+		if ( wpcf7_do_doi( 'sendinblue', $contact_form, $doi_session_args )
+		and wpcf7_doi_create_session( 'sendinblue', $doi_session_args ) ) {
+			return;
+		}
+	}
+
 	if ( ! empty( $params['contact'] ) ) {
 		$contact_id = $service->create_contact( $params['contact'] );
 

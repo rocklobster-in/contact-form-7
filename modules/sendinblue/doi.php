@@ -35,8 +35,16 @@ function wpcf7_sendinblue_doi_register_agent() {
 function wpcf7_sendinblue_doi_default_optin_callback( $properties ) {
 	$service = WPCF7_Sendinblue::get_instance();
 
-	if ( $service->is_active() ) {
-		$service->create_contact( $properties );
+	if ( ! $service->is_active() ) {
+		return;
+	}
+
+	if ( ! empty( $properties['contact'] ) ) {
+		$contact_id = $service->create_contact( $properties['contact'] );
+
+		if ( $contact_id and ! empty( $properties['email'] ) ) {
+			$service->send_email( $properties['email'] );
+		}
 	}
 }
 
