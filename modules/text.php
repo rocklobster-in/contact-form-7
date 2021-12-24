@@ -106,6 +106,76 @@ function wpcf7_text_form_tag_handler( $tag ) {
 }
 
 
+add_action(
+	'wpcf7_swv_add_rules',
+	'wpcf7_text_swv_add_rules',
+	10, 2
+);
+
+function wpcf7_text_swv_add_rules( $generator, $tags ) {
+	foreach ( $tags as $tag ) {
+
+		if ( 'text' === $tag->basetype ) {
+			if ( $tag->is_required() ) {
+				$generator->add_rule( $tag->name, 'required', array(
+					'message' => wpcf7_get_message( 'invalid_required' ),
+				) );
+			}
+		}
+
+		if ( 'email' === $tag->basetype ) {
+			if ( $tag->is_required() ) {
+				$generator->add_rule( $tag->name, 'required', array(
+					'message' => wpcf7_get_message( 'invalid_required' ),
+				) );
+			}
+
+			$generator->add_rule( $tag->name, 'email', array(
+				'message' => wpcf7_get_message( 'invalid_email' ),
+			) );
+		}
+
+		if ( 'url' === $tag->basetype ) {
+			if ( $tag->is_required() ) {
+				$generator->add_rule( $tag->name, 'required', array(
+					'message' => wpcf7_get_message( 'invalid_required' ),
+				) );
+			}
+
+			$generator->add_rule( $tag->name, 'url', array(
+				'message' => wpcf7_get_message( 'invalid_url' ),
+			) );
+		}
+
+		if ( 'tel' === $tag->basetype ) {
+			if ( $tag->is_required() ) {
+				$generator->add_rule( $tag->name, 'required', array(
+					'message' => wpcf7_get_message( 'invalid_required' ),
+				) );
+			}
+
+			$generator->add_rule( $tag->name, 'tel', array(
+				'message' => wpcf7_get_message( 'invalid_tel' ),
+			) );
+		}
+
+		if ( $maxlength = $tag->get_maxlength_option() ) {
+			$generator->add_rule( $tag->name, 'maxlength', array(
+				'threshold' => absint( $maxlength ),
+				'message' => wpcf7_get_message( 'invalid_too_long' ),
+			) );
+		}
+
+		if ( $minlength = $tag->get_minlength_option() ) {
+			$generator->add_rule( $tag->name, 'minlength', array(
+				'threshold' => absint( $minlength ),
+				'message' => wpcf7_get_message( 'invalid_too_short' ),
+			) );
+		}
+	}
+}
+
+
 /* Validation filter */
 
 add_filter( 'wpcf7_validate_text', 'wpcf7_text_validation_filter', 10, 2 );
