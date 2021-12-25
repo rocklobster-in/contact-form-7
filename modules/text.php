@@ -159,18 +159,20 @@ function wpcf7_text_swv_add_rules( $generator, $tags ) {
 			) );
 		}
 
-		if ( $maxlength = $tag->get_maxlength_option() ) {
-			$generator->add_rule( $tag->name, 'maxlength', array(
-				'threshold' => absint( $maxlength ),
-				'message' => wpcf7_get_message( 'invalid_too_long' ),
-			) );
-		}
+		if ( in_array( $tag->basetype, array( 'text', 'email', 'url', 'tel' ) ) ) {
+			if ( $maxlength = $tag->get_maxlength_option() ) {
+				$generator->add_rule( $tag->name, 'maxlength', array(
+					'threshold' => absint( $maxlength ),
+					'message' => wpcf7_get_message( 'invalid_too_long' ),
+				) );
+			}
 
-		if ( $minlength = $tag->get_minlength_option() ) {
-			$generator->add_rule( $tag->name, 'minlength', array(
-				'threshold' => absint( $minlength ),
-				'message' => wpcf7_get_message( 'invalid_too_short' ),
-			) );
+			if ( $minlength = $tag->get_minlength_option() ) {
+				$generator->add_rule( $tag->name, 'minlength', array(
+					'threshold' => absint( $minlength ),
+					'message' => wpcf7_get_message( 'invalid_too_short' ),
+				) );
+			}
 		}
 	}
 }
