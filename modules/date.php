@@ -102,6 +102,47 @@ function wpcf7_date_form_tag_handler( $tag ) {
 }
 
 
+add_action(
+	'wpcf7_swv_add_rules',
+	'wpcf7_date_swv_add_rules',
+	10, 2
+);
+
+function wpcf7_date_swv_add_rules( $generator, $tags ) {
+	foreach ( $tags as $tag ) {
+
+		if ( in_array( $tag->basetype, array( 'date' ) ) ) {
+			if ( $tag->is_required() ) {
+				$generator->add_rule( $tag->name, 'required', array(
+					'message' => wpcf7_get_message( 'invalid_required' ),
+				) );
+			}
+
+			$generator->add_rule( $tag->name, 'date', array(
+				'message' => wpcf7_get_message( 'invalid_date' ),
+			) );
+
+			$min = $tag->get_date_option( 'min' );
+			$max = $tag->get_date_option( 'max' );
+
+			if ( false !== $min ) {
+				$generator->add_rule( $tag->name, 'min', array(
+					'threshold' => $min,
+					'message' => wpcf7_get_message( 'date_too_early' ),
+				) );
+			}
+
+			if ( false !== $max ) {
+				$generator->add_rule( $tag->name, 'max', array(
+					'threshold' => $max,
+					'message' => wpcf7_get_message( 'date_too_late' ),
+				) );
+			}
+		}
+	}
+}
+
+
 /* Validation filter */
 
 add_filter( 'wpcf7_validate_date', 'wpcf7_date_validation_filter', 10, 2 );
