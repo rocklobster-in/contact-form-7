@@ -92,6 +92,47 @@ function wpcf7_number_form_tag_handler( $tag ) {
 }
 
 
+add_action(
+	'wpcf7_swv_add_rules',
+	'wpcf7_number_swv_add_rules',
+	10, 2
+);
+
+function wpcf7_number_swv_add_rules( $generator, $tags ) {
+	foreach ( $tags as $tag ) {
+
+		if ( in_array( $tag->basetype, array( 'number', 'range' ) ) ) {
+			if ( $tag->is_required() ) {
+				$generator->add_rule( $tag->name, 'required', array(
+					'message' => wpcf7_get_message( 'invalid_required' ),
+				) );
+			}
+
+			$generator->add_rule( $tag->name, 'number', array(
+				'message' => wpcf7_get_message( 'invalid_number' ),
+			) );
+
+			$min = $tag->get_option( 'min', 'signed_int', true );
+			$max = $tag->get_option( 'max', 'signed_int', true );
+
+			if ( false !== $min ) {
+				$generator->add_rule( $tag->name, 'min', array(
+					'threshold' => (float) $min,
+					'message' => wpcf7_get_message( 'number_too_small' ),
+				) );
+			}
+
+			if ( false !== $max ) {
+				$generator->add_rule( $tag->name, 'max', array(
+					'threshold' => (float) $max,
+					'message' => wpcf7_get_message( 'number_too_large' ),
+				) );
+			}
+		}
+	}
+}
+
+
 /* Validation filter */
 
 add_filter( 'wpcf7_validate_number', 'wpcf7_number_validation_filter', 10, 2 );
