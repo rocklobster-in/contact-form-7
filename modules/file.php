@@ -67,6 +67,38 @@ function wpcf7_file_form_tag_handler( $tag ) {
 }
 
 
+add_action(
+	'wpcf7_swv_add_rules',
+	'wpcf7_file_swv_add_rules',
+	10, 2
+);
+
+function wpcf7_file_swv_add_rules( $generator, $tags ) {
+	foreach ( $tags as $tag ) {
+
+		if ( in_array( $tag->basetype, array( 'file' ) ) ) {
+			if ( $tag->is_required() ) {
+				$generator->add_rule( $tag->name, 'required', array(
+					'message' => wpcf7_get_message( 'invalid_required' ),
+				) );
+			}
+
+			$generator->add_rule( $tag->name, 'file', array(
+				'accept' => explode( ',',
+					wpcf7_acceptable_filetypes( $tag->get_option( 'filetypes' ), 'attr' )
+				),
+				'message' => wpcf7_get_message( 'upload_file_type_invalid' ),
+			) );
+
+			$generator->add_rule( $tag->name, 'max', array(
+				'threshold' => $tag->get_limit_option(),
+				'message' => wpcf7_get_message( 'upload_file_too_large' ),
+			) );
+		}
+	}
+}
+
+
 /* Validation + upload handling filter */
 
 add_filter( 'wpcf7_validate_file', 'wpcf7_file_validation_filter', 10, 3 );
