@@ -102,12 +102,6 @@ function wpcf7_number_swv_add_rules( $generator, $tags ) {
 	foreach ( $tags as $tag ) {
 
 		if ( in_array( $tag->basetype, array( 'number', 'range' ) ) ) {
-			if ( $tag->is_required() ) {
-				$generator->add_rule( $tag->name, 'required', array(
-					'message' => wpcf7_get_message( 'invalid_required' ),
-				) );
-			}
-
 			$generator->add_rule( $tag->name, 'number', array(
 				'message' => wpcf7_get_message( 'invalid_number' ),
 			) );

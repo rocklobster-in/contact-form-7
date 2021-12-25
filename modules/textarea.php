@@ -100,12 +100,6 @@ function wpcf7_textarea_swv_add_rules( $generator, $tags ) {
 	foreach ( $tags as $tag ) {
 
 		if ( 'textarea' === $tag->basetype ) {
-			if ( $tag->is_required() ) {
-				$generator->add_rule( $tag->name, 'required', array(
-					'message' => wpcf7_get_message( 'invalid_required' ),
-				) );
-			}
-
 			if ( $maxlength = $tag->get_maxlength_option() ) {
 				$generator->add_rule( $tag->name, 'maxlength', array(
 					'threshold' => absint( $maxlength ),

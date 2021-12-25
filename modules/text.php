@@ -115,45 +115,19 @@ add_action(
 function wpcf7_text_swv_add_rules( $generator, $tags ) {
 	foreach ( $tags as $tag ) {
 
-		if ( 'text' === $tag->basetype ) {
-			if ( $tag->is_required() ) {
-				$generator->add_rule( $tag->name, 'required', array(
-					'message' => wpcf7_get_message( 'invalid_required' ),
-				) );
-			}
-		}
-
 		if ( 'email' === $tag->basetype ) {
-			if ( $tag->is_required() ) {
-				$generator->add_rule( $tag->name, 'required', array(
-					'message' => wpcf7_get_message( 'invalid_required' ),
-				) );
-			}
-
 			$generator->add_rule( $tag->name, 'email', array(
 				'message' => wpcf7_get_message( 'invalid_email' ),
 			) );
 		}
 
 		if ( 'url' === $tag->basetype ) {
-			if ( $tag->is_required() ) {
-				$generator->add_rule( $tag->name, 'required', array(
-					'message' => wpcf7_get_message( 'invalid_required' ),
-				) );
-			}
-
 			$generator->add_rule( $tag->name, 'url', array(
 				'message' => wpcf7_get_message( 'invalid_url' ),
 			) );
 		}
 
 		if ( 'tel' === $tag->basetype ) {
-			if ( $tag->is_required() ) {
-				$generator->add_rule( $tag->name, 'required', array(
-					'message' => wpcf7_get_message( 'invalid_required' ),
-				) );
-			}
-
 			$generator->add_rule( $tag->name, 'tel', array(
 				'message' => wpcf7_get_message( 'invalid_tel' ),
 			) );

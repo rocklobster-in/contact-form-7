@@ -9,6 +9,12 @@ function wpcf7_swv_generate_schema( WPCF7_ContactForm $contact_form ) {
 
 	$tags = $contact_form->scan_form_tags();
 
+	do_action(
+		'wpcf7_swv_pre_add_rules',
+		$generator,
+		$tags
+	);
+
 	foreach ( $tags as $tag ) {
 		$type = $tag->type;
 
@@ -26,6 +32,24 @@ function wpcf7_swv_generate_schema( WPCF7_ContactForm $contact_form ) {
 	);
 
 	return $generator->generate_schema();
+}
+
+
+add_action(
+	'wpcf7_swv_pre_add_rules',
+	'wpcf7_swv_add_common_rules',
+	10, 2
+);
+
+function wpcf7_swv_add_common_rules( $generator, $tags ) {
+	foreach ( $tags as $tag ) {
+
+		if ( $tag->is_required() ) {
+			$generator->add_rule( $tag->name, 'required', array(
+				'message' => wpcf7_get_message( 'invalid_required' ),
+			) );
+		}
+	}
 }
 
 

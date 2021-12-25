@@ -112,12 +112,6 @@ function wpcf7_date_swv_add_rules( $generator, $tags ) {
 	foreach ( $tags as $tag ) {
 
 		if ( in_array( $tag->basetype, array( 'date' ) ) ) {
-			if ( $tag->is_required() ) {
-				$generator->add_rule( $tag->name, 'required', array(
-					'message' => wpcf7_get_message( 'invalid_required' ),
-				) );
-			}
-
 			$generator->add_rule( $tag->name, 'date', array(
 				'message' => wpcf7_get_message( 'invalid_date' ),
 			) );

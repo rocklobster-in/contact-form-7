@@ -77,12 +77,6 @@ function wpcf7_file_swv_add_rules( $generator, $tags ) {
 	foreach ( $tags as $tag ) {
 
 		if ( in_array( $tag->basetype, array( 'file' ) ) ) {
-			if ( $tag->is_required() ) {
-				$generator->add_rule( $tag->name, 'required', array(
-					'message' => wpcf7_get_message( 'invalid_required' ),
-				) );
-			}
-
 			$generator->add_rule( $tag->name, 'file', array(
 				'accept' => explode( ',',
 					wpcf7_acceptable_filetypes( $tag->get_option( 'filetypes' ), 'attr' )
