@@ -183,6 +183,24 @@ function wpcf7_checkbox_form_tag_handler( $tag ) {
 }
 
 
+add_action(
+	'wpcf7_swv_add_rules',
+	'wpcf7_checkbox_swv_add_rules',
+	10, 2
+);
+
+function wpcf7_checkbox_swv_add_rules( $generator, $tags ) {
+	foreach ( $tags as $tag ) {
+
+		if ( 'radio' === $tag->type ) {
+			$generator->add_rule( $tag->name, 'required', array(
+				'message' => wpcf7_get_message( 'invalid_required' ),
+			) );
+		}
+	}
+}
+
+
 /* Validation filter */
 
 add_filter( 'wpcf7_validate_checkbox',
