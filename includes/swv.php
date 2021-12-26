@@ -65,11 +65,8 @@ class WPCF7_SWV_Schema {
 			'message' => __( "Invalid value.", 'contact-form-7' ),
 		) );
 
-		if ( ! isset( $this->rules[$field] ) ) {
-			$this->rules[$field] = array();
-		}
-
-		$this->rules[$field][] = array(
+		$this->rules[] = array(
+			'field' => $field,
 			'rule' => sanitize_key( $rule ),
 		) + $args;
 	}
