@@ -404,7 +404,7 @@ class WPCF7_REST_Controller {
 			);
 		}
 
-		$response = wpcf7_swv_generate_schema( $item );
+		$response = $item->get_schema();
 
 		return rest_ensure_response( $response );
 	}

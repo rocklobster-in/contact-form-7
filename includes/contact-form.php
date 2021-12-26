@@ -16,6 +16,7 @@ class WPCF7_ContactForm {
 	private $responses_count = 0;
 	private $scanned_form_tags;
 	private $shortcode_atts = array();
+	private $schema;
 
 
 	/**
@@ -488,6 +489,15 @@ class WPCF7_ContactForm {
 		}
 
 		return $this->unit_tag() === $_POST['_wpcf7_unit_tag'];
+	}
+
+
+	public function get_schema() {
+		if ( ! isset( $this->schema ) ) {
+			$this->schema = wpcf7_swv_generate_schema( $this );
+		}
+
+		return $this->schema;
 	}
 
 
