@@ -404,7 +404,9 @@ class WPCF7_REST_Controller {
 			);
 		}
 
-		$response = $item->get_schema();
+		$schema = $item->get_schema();
+
+		$response = isset( $schema ) ? $schema->to_array() : array();
 
 		return rest_ensure_response( $response );
 	}

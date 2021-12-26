@@ -5,13 +5,13 @@
 
 
 function wpcf7_swv_generate_schema( WPCF7_ContactForm $contact_form ) {
-	$generator = new WPCF7_SWV_SchemaGenerator();
+	$schema = new WPCF7_SWV_Schema();
 
 	$tags = $contact_form->scan_form_tags();
 
 	do_action(
 		'wpcf7_swv_pre_add_rules',
-		$generator,
+		$schema,
 		$tags
 	);
 
@@ -20,18 +20,18 @@ function wpcf7_swv_generate_schema( WPCF7_ContactForm $contact_form ) {
 
 		do_action(
 			"wpcf7_swv_add_rules_for_{$type}",
-			$generator,
+			$schema,
 			$tag
 		);
 	}
 
 	do_action(
 		'wpcf7_swv_add_rules',
-		$generator,
+		$schema,
 		$tags
 	);
 
-	return $generator->generate_schema();
+	return $schema;
 }
 
 
@@ -41,11 +41,11 @@ add_action(
 	10, 2
 );
 
-function wpcf7_swv_add_common_rules( $generator, $tags ) {
+function wpcf7_swv_add_common_rules( $schema, $tags ) {
 	foreach ( $tags as $tag ) {
 
 		if ( $tag->is_required() ) {
-			$generator->add_rule( $tag->name, 'required', array(
+			$schema->add_rule( $tag->name, 'required', array(
 				'message' => wpcf7_get_message( 'invalid_required' ),
 			) );
 		}
@@ -53,7 +53,7 @@ function wpcf7_swv_add_common_rules( $generator, $tags ) {
 }
 
 
-class WPCF7_SWV_SchemaGenerator {
+class WPCF7_SWV_Schema {
 
 	private $rules = array();
 
@@ -74,7 +74,7 @@ class WPCF7_SWV_SchemaGenerator {
 		) + $args;
 	}
 
-	public function generate_schema() {
+	public function to_array() {
 		return array(
 			'rules' => $this->rules,
 		);

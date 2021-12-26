@@ -108,11 +108,11 @@ add_action(
 	10, 2
 );
 
-function wpcf7_date_swv_add_rules( $generator, $tags ) {
+function wpcf7_date_swv_add_rules( $schema, $tags ) {
 	foreach ( $tags as $tag ) {
 
 		if ( in_array( $tag->basetype, array( 'date' ) ) ) {
-			$generator->add_rule( $tag->name, 'date', array(
+			$schema->add_rule( $tag->name, 'date', array(
 				'message' => wpcf7_get_message( 'invalid_date' ),
 			) );
 
@@ -120,14 +120,14 @@ function wpcf7_date_swv_add_rules( $generator, $tags ) {
 			$max = $tag->get_date_option( 'max' );
 
 			if ( false !== $min ) {
-				$generator->add_rule( $tag->name, 'min', array(
+				$schema->add_rule( $tag->name, 'min', array(
 					'threshold' => $min,
 					'message' => wpcf7_get_message( 'date_too_early' ),
 				) );
 			}
 
 			if ( false !== $max ) {
-				$generator->add_rule( $tag->name, 'max', array(
+				$schema->add_rule( $tag->name, 'max', array(
 					'threshold' => $max,
 					'message' => wpcf7_get_message( 'date_too_late' ),
 				) );

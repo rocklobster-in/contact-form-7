@@ -112,37 +112,37 @@ add_action(
 	10, 2
 );
 
-function wpcf7_text_swv_add_rules( $generator, $tags ) {
+function wpcf7_text_swv_add_rules( $schema, $tags ) {
 	foreach ( $tags as $tag ) {
 
 		if ( 'email' === $tag->basetype ) {
-			$generator->add_rule( $tag->name, 'email', array(
+			$schema->add_rule( $tag->name, 'email', array(
 				'message' => wpcf7_get_message( 'invalid_email' ),
 			) );
 		}
 
 		if ( 'url' === $tag->basetype ) {
-			$generator->add_rule( $tag->name, 'url', array(
+			$schema->add_rule( $tag->name, 'url', array(
 				'message' => wpcf7_get_message( 'invalid_url' ),
 			) );
 		}
 
 		if ( 'tel' === $tag->basetype ) {
-			$generator->add_rule( $tag->name, 'tel', array(
+			$schema->add_rule( $tag->name, 'tel', array(
 				'message' => wpcf7_get_message( 'invalid_tel' ),
 			) );
 		}
 
 		if ( in_array( $tag->basetype, array( 'text', 'email', 'url', 'tel' ) ) ) {
 			if ( $maxlength = $tag->get_maxlength_option() ) {
-				$generator->add_rule( $tag->name, 'maxlength', array(
+				$schema->add_rule( $tag->name, 'maxlength', array(
 					'threshold' => absint( $maxlength ),
 					'message' => wpcf7_get_message( 'invalid_too_long' ),
 				) );
 			}
 
 			if ( $minlength = $tag->get_minlength_option() ) {
-				$generator->add_rule( $tag->name, 'minlength', array(
+				$schema->add_rule( $tag->name, 'minlength', array(
 					'threshold' => absint( $minlength ),
 					'message' => wpcf7_get_message( 'invalid_too_short' ),
 				) );

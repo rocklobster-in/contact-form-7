@@ -189,11 +189,11 @@ add_action(
 	10, 2
 );
 
-function wpcf7_checkbox_swv_add_rules( $generator, $tags ) {
+function wpcf7_checkbox_swv_add_rules( $schema, $tags ) {
 	foreach ( $tags as $tag ) {
 
 		if ( 'radio' === $tag->type ) {
-			$generator->add_rule( $tag->name, 'required', array(
+			$schema->add_rule( $tag->name, 'required', array(
 				'message' => wpcf7_get_message( 'invalid_required' ),
 			) );
 		}

@@ -98,11 +98,11 @@ add_action(
 	10, 2
 );
 
-function wpcf7_number_swv_add_rules( $generator, $tags ) {
+function wpcf7_number_swv_add_rules( $schema, $tags ) {
 	foreach ( $tags as $tag ) {
 
 		if ( in_array( $tag->basetype, array( 'number', 'range' ) ) ) {
-			$generator->add_rule( $tag->name, 'number', array(
+			$schema->add_rule( $tag->name, 'number', array(
 				'message' => wpcf7_get_message( 'invalid_number' ),
 			) );
 
@@ -110,14 +110,14 @@ function wpcf7_number_swv_add_rules( $generator, $tags ) {
 			$max = $tag->get_option( 'max', 'signed_int', true );
 
 			if ( false !== $min ) {
-				$generator->add_rule( $tag->name, 'min', array(
+				$schema->add_rule( $tag->name, 'min', array(
 					'threshold' => (float) $min,
 					'message' => wpcf7_get_message( 'number_too_small' ),
 				) );
 			}
 
 			if ( false !== $max ) {
-				$generator->add_rule( $tag->name, 'max', array(
+				$schema->add_rule( $tag->name, 'max', array(
 					'threshold' => (float) $max,
 					'message' => wpcf7_get_message( 'number_too_large' ),
 				) );

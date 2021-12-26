@@ -96,19 +96,19 @@ add_action(
 	10, 2
 );
 
-function wpcf7_textarea_swv_add_rules( $generator, $tags ) {
+function wpcf7_textarea_swv_add_rules( $schema, $tags ) {
 	foreach ( $tags as $tag ) {
 
 		if ( 'textarea' === $tag->basetype ) {
 			if ( $maxlength = $tag->get_maxlength_option() ) {
-				$generator->add_rule( $tag->name, 'maxlength', array(
+				$schema->add_rule( $tag->name, 'maxlength', array(
 					'threshold' => absint( $maxlength ),
 					'message' => wpcf7_get_message( 'invalid_too_long' ),
 				) );
 			}
 
 			if ( $minlength = $tag->get_minlength_option() ) {
-				$generator->add_rule( $tag->name, 'minlength', array(
+				$schema->add_rule( $tag->name, 'minlength', array(
 					'threshold' => absint( $minlength ),
 					'message' => wpcf7_get_message( 'invalid_too_short' ),
 				) );
