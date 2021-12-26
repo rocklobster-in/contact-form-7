@@ -65,16 +65,35 @@ class WPCF7_SWV_Schema {
 			'message' => __( "Invalid value.", 'contact-form-7' ),
 		) );
 
-		$this->rules[] = array(
-			'field' => $field,
-			'rule' => sanitize_key( $rule ),
-		) + $args;
+		$this->rules[] = new WPCF7_SWV_Rule(
+			array(
+				'field' => $field,
+				'rule' => sanitize_key( $rule ),
+			) + $args
+		);
 	}
 
 	public function to_array() {
 		return array(
-			'rules' => $this->rules,
+			'rules' => array_map(
+				function ( $rule ) {
+					return $rule->to_array();
+				},
+				$this->rules
+			),
 		);
 	}
+}
 
+
+class WPCF7_SWV_Rule {
+	private $properties = array();
+
+	public function __construct( $properties = '' ) {
+		$this->properties = wp_parse_args( $properties, array() );
+	}
+
+	public function to_array() {
+		return $this->properties;
+	}
 }
