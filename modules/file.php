@@ -84,7 +84,7 @@ function wpcf7_file_swv_add_rules( $schema, $tags ) {
 				'message' => wpcf7_get_message( 'upload_file_type_invalid' ),
 			) );
 
-			$schema->add_rule( $tag->name, 'max', array(
+			$schema->add_rule( $tag->name, 'maxfilesize', array(
 				'threshold' => $tag->get_limit_option(),
 				'message' => wpcf7_get_message( 'upload_file_too_large' ),
 			) );
