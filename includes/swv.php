@@ -47,6 +47,7 @@ function wpcf7_swv_add_common_rules( $schema, $tags ) {
 		if ( $tag->is_required() ) {
 			$schema->add_rule( $tag->name, 'required', array(
 				'message' => wpcf7_get_message( 'invalid_required' ),
+				'context' => 'all',
 			) );
 		}
 	}
