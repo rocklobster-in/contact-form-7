@@ -110,14 +110,14 @@ function wpcf7_number_swv_add_rules( $schema, $tags ) {
 			$max = $tag->get_option( 'max', 'signed_int', true );
 
 			if ( false !== $min ) {
-				$schema->add_rule( $tag->name, 'min', array(
+				$schema->add_rule( $tag->name, 'minnumber', array(
 					'threshold' => (float) $min,
 					'message' => wpcf7_get_message( 'number_too_small' ),
 				) );
 			}
 
 			if ( false !== $max ) {
-				$schema->add_rule( $tag->name, 'max', array(
+				$schema->add_rule( $tag->name, 'maxnumber', array(
 					'threshold' => (float) $max,
 					'message' => wpcf7_get_message( 'number_too_large' ),
 				) );

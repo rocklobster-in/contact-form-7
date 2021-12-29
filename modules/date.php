@@ -120,14 +120,14 @@ function wpcf7_date_swv_add_rules( $schema, $tags ) {
 			$max = $tag->get_date_option( 'max' );
 
 			if ( false !== $min ) {
-				$schema->add_rule( $tag->name, 'min', array(
+				$schema->add_rule( $tag->name, 'mindate', array(
 					'threshold' => $min,
 					'message' => wpcf7_get_message( 'date_too_early' ),
 				) );
 			}
 
 			if ( false !== $max ) {
-				$schema->add_rule( $tag->name, 'max', array(
+				$schema->add_rule( $tag->name, 'maxdate', array(
 					'threshold' => $max,
 					'message' => wpcf7_get_message( 'date_too_late' ),
 				) );
