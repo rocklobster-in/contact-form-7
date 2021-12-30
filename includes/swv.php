@@ -167,3 +167,110 @@ class WPCF7_SWV_Schema {
 		);
 	}
 }
+
+
+class WPCF7_SWV_Validation {
+
+	public static function required( $input ) {
+		$input = wpcf7_array_flatten( $input );
+
+		return (bool) array_filter( $input,
+			function ( $i ) {
+				return isset( $i ) && '' !== $i;
+			}
+		);
+	}
+
+	public static function email( $input ) {
+		$input = wpcf7_array_flatten( $input );
+
+		foreach ( $input as $i ) {
+			if ( '' !== $i and ! wpcf7_is_email( $i ) ) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	public static function url( $input ) {
+		$input = wpcf7_array_flatten( $input );
+
+		foreach ( $input as $i ) {
+			if ( '' !== $i and ! wpcf7_is_url( $i ) ) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	public static function tel( $input ) {
+		$input = wpcf7_array_flatten( $input );
+
+		foreach ( $input as $i ) {
+			if ( '' !== $i and ! wpcf7_is_tel( $i ) ) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	public static function number( $input ) {
+		$input = wpcf7_array_flatten( $input );
+
+		foreach ( $input as $i ) {
+			if ( '' !== $i and ! wpcf7_is_number( $i ) ) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	public static function date( $input ) {
+		$input = wpcf7_array_flatten( $input );
+
+		foreach ( $input as $i ) {
+			if ( '' !== $i and ! wpcf7_is_date( $i ) ) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	public static function file( $input ) {
+
+	}
+
+	public static function minlength( $input, $threshold ) {
+
+	}
+
+	public static function maxlength( $input, $threshold ) {
+
+	}
+
+	public static function minnumber( $input, $threshold ) {
+
+	}
+
+	public static function maxnumber( $input, $threshold ) {
+
+	}
+
+	public static function mindate( $input, $threshold ) {
+
+	}
+
+	public static function maxdate( $input, $threshold ) {
+
+	}
+
+	public static function maxfilesize( $input, $threshold ) {
+
+	}
+
+}
