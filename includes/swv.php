@@ -246,11 +246,47 @@ class WPCF7_SWV_Validation {
 	}
 
 	public static function minlength( $input, $threshold ) {
+		$input = wpcf7_array_flatten( $input );
 
+		$input = array_filter( $input,
+			function ( $i ) {
+				return isset( $i ) && '' !== $i;
+			}
+		);
+
+		if ( empty( $input ) ) {
+			return true;
+		}
+
+		$total = 0;
+
+		foreach ( $input as $i ) {
+			$total += wpcf7_count_code_units( $i );
+		}
+
+		return $threshold <= $total;
 	}
 
 	public static function maxlength( $input, $threshold ) {
+		$input = wpcf7_array_flatten( $input );
 
+		$input = array_filter( $input,
+			function ( $i ) {
+				return isset( $i ) && '' !== $i;
+			}
+		);
+
+		if ( empty( $input ) ) {
+			return true;
+		}
+
+		$total = 0;
+
+		foreach ( $input as $i ) {
+			$total += wpcf7_count_code_units( $i );
+		}
+
+		return $total <= $threshold;
 	}
 
 	public static function minnumber( $input, $threshold ) {
