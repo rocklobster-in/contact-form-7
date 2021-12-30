@@ -96,6 +96,47 @@ class WPCF7_SWV_Schema {
 		) + $args;
 	}
 
+	public function get_rules( $cond = '' ) {
+		$cond = wp_parse_args( $cond, array(
+			'field' => '',
+			'context' => 'default',
+		) );
+
+		$rules = array_filter( $this->rules,
+			function ( $rule ) use ( $cond ) {
+				if ( $cond['field'] ) {
+					if ( ! isset( $rule['field'] )
+					or $rule['field'] !== $cond['field'] ) {
+						return false;
+					}
+				}
+
+				if ( $cond['context'] ) {
+					if ( 'all' === $cond['context'] or 'all' === $rule['context'] ) {
+						// continue
+					} else {
+						if ( 'default' === $cond['context'] ) {
+							$cond['context'] = 'text';
+						}
+
+						if ( ! isset( $rule['context'] )
+						or 'default' === $rule['context'] ) {
+							$rule['context'] = 'text';
+						}
+
+						if ( $cond['context'] !== $rule['context'] ) {
+							return false;
+						}
+					}
+				}
+
+				return true;
+			}
+		);
+
+		return $rules;
+	}
+
 	public function validate( $input ) {
 		$invalid_fields = array();
 
