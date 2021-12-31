@@ -173,19 +173,17 @@ class WPCF7_SWV_Validation {
 
 	public static function required( $input ) {
 		$input = wpcf7_array_flatten( $input );
+		$input = wpcf7_exclude_blank( $input );
 
-		return (bool) array_filter( $input,
-			function ( $i ) {
-				return isset( $i ) && '' !== $i;
-			}
-		);
+		return ! empty( $input );
 	}
 
 	public static function email( $input ) {
 		$input = wpcf7_array_flatten( $input );
+		$input = wpcf7_exclude_blank( $input );
 
 		foreach ( $input as $i ) {
-			if ( '' !== $i and ! wpcf7_is_email( $i ) ) {
+			if ( ! wpcf7_is_email( $i ) ) {
 				return false;
 			}
 		}
@@ -195,9 +193,10 @@ class WPCF7_SWV_Validation {
 
 	public static function url( $input ) {
 		$input = wpcf7_array_flatten( $input );
+		$input = wpcf7_exclude_blank( $input );
 
 		foreach ( $input as $i ) {
-			if ( '' !== $i and ! wpcf7_is_url( $i ) ) {
+			if ( ! wpcf7_is_url( $i ) ) {
 				return false;
 			}
 		}
@@ -207,9 +206,10 @@ class WPCF7_SWV_Validation {
 
 	public static function tel( $input ) {
 		$input = wpcf7_array_flatten( $input );
+		$input = wpcf7_exclude_blank( $input );
 
 		foreach ( $input as $i ) {
-			if ( '' !== $i and ! wpcf7_is_tel( $i ) ) {
+			if ( ! wpcf7_is_tel( $i ) ) {
 				return false;
 			}
 		}
@@ -219,9 +219,10 @@ class WPCF7_SWV_Validation {
 
 	public static function number( $input ) {
 		$input = wpcf7_array_flatten( $input );
+		$input = wpcf7_exclude_blank( $input );
 
 		foreach ( $input as $i ) {
-			if ( '' !== $i and ! wpcf7_is_number( $i ) ) {
+			if ( ! wpcf7_is_number( $i ) ) {
 				return false;
 			}
 		}
@@ -231,9 +232,10 @@ class WPCF7_SWV_Validation {
 
 	public static function date( $input ) {
 		$input = wpcf7_array_flatten( $input );
+		$input = wpcf7_exclude_blank( $input );
 
 		foreach ( $input as $i ) {
-			if ( '' !== $i and ! wpcf7_is_date( $i ) ) {
+			if ( ! wpcf7_is_date( $i ) ) {
 				return false;
 			}
 		}
@@ -247,12 +249,7 @@ class WPCF7_SWV_Validation {
 
 	public static function minlength( $input, $threshold ) {
 		$input = wpcf7_array_flatten( $input );
-
-		$input = array_filter( $input,
-			function ( $i ) {
-				return isset( $i ) && '' !== $i;
-			}
-		);
+		$input = wpcf7_exclude_blank( $input );
 
 		if ( empty( $input ) ) {
 			return true;
@@ -269,12 +266,7 @@ class WPCF7_SWV_Validation {
 
 	public static function maxlength( $input, $threshold ) {
 		$input = wpcf7_array_flatten( $input );
-
-		$input = array_filter( $input,
-			function ( $i ) {
-				return isset( $i ) && '' !== $i;
-			}
-		);
+		$input = wpcf7_exclude_blank( $input );
 
 		if ( empty( $input ) ) {
 			return true;

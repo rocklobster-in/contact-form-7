@@ -127,6 +127,21 @@ function wpcf7_array_flatten( $input ) {
 
 
 /**
+ * Excludes unset or blank text values from the given array.
+ *
+ * @param array $input The array.
+ * @return array Array without blank text values.
+ */
+function wpcf7_exclude_blank( $input ) {
+	return array_filter( $input,
+		function ( $i ) {
+			return isset( $i ) && '' !== $i;
+		}
+	);
+}
+
+
+/**
  * Creates a comma-separated list from a multi-dimensional array.
  *
  * @param mixed $input Array or item of array.
