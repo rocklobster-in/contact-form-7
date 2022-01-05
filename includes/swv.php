@@ -54,27 +54,26 @@ function wpcf7_swv_add_common_rules( $schema, $tags ) {
 }
 
 
-add_filter(
-	'wpcf7_validate',
-	'wpcf7_swv_validate',
-	10, 2
-);
+function wpcf7_swv_validate( $schema, $context = 'default' ) {
+	$rules = $schema->get_rules( array( 'context' => $context ) );
 
-function wpcf7_swv_validate( $result, $tags ) {
-	$submission = WPCF7_Submission::get_instance();
-
-	if ( ! $submission ) {
-		return $result;
+	if ( 'text' === $context or 'default' === $context ) {
+		$input = $_POST;
+	} elseif ( 'file' === $context ) {
+		$input = $_FILES;
+	} else {
+		$input = array();
 	}
 
-	$contact_form = $submission->get_contact_form();
-	$schema = $contact_form->get_schema();
+	foreach ( $rules as $r ) {
+		$rule = WPCF7_SWV_Rule::create_instance( $r );
 
-	foreach ( $schema->validate( $_POST ) as $error ) {
-		$result->invalidate( $error['field'], $error['message'] );
+		if ( ! $rule ) {
+			continue;
+		}
+
+		yield $rule->validate( $input );
 	}
-
-	return $result;
 }
 
 
@@ -137,30 +136,6 @@ class WPCF7_SWV_Schema {
 		return $rules;
 	}
 
-	public function validate( $input ) {
-		$invalid_fields = array();
-
-		foreach ( $this->rules as $rule ) {
-			if ( isset( $rule['field'] )
-			and in_array( $rule['field'], $invalid_fields, true ) ) {
-				continue;
-			}
-
-			if ( ! isset( $rule['rule'] ) ) {
-				continue;
-			}
-
-			// Todo: Implement error creation
-			$error = $rule;
-
-			if ( ! empty( $error['field'] ) ) {
-				$invalid_fields[] = $error['field'];
-			}
-
-			yield $error;
-		}
-	}
-
 	public function to_array() {
 		return array(
 			'rules' => $this->rules,
@@ -169,16 +144,66 @@ class WPCF7_SWV_Schema {
 }
 
 
-class WPCF7_SWV_Validation {
+abstract class WPCF7_SWV_Rule {
+	private $properties = array();
 
-	public static function required( $input ) {
+	public static function create_instance( $rule ) {
+		if ( ! isset( $rule['rule'] ) ) {
+			return;
+		}
+
+		switch ( $rule['rule'] ) {
+			case 'required':
+				return new WPCF7_SWV_RequiredRule( $rule );
+			case 'email':
+				return new WPCF7_SWV_EmailRule( $rule );
+			case 'url':
+				return new WPCF7_SWV_URLRule( $rule );
+			case 'tel':
+				return new WPCF7_SWV_TelRule( $rule );
+			case 'number':
+				return new WPCF7_SWV_NumberRule( $rule );
+			case 'date':
+				return new WPCF7_SWV_DateRule( $rule );
+			case 'file':
+				return new WPCF7_SWV_FileRule( $rule );
+			case 'minlength':
+				return new WPCF7_SWV_MinLengthRule( $rule );
+			case 'maxlength':
+				return new WPCF7_SWV_MaxLengthRule( $rule );
+			case 'minnumber':
+				return new WPCF7_SWV_MinNumberRule( $rule );
+			case 'maxnumber':
+				return new WPCF7_SWV_MaxNumberRule( $rule );
+			case 'mindate':
+				return new WPCF7_SWV_MinDateRule( $rule );
+			case 'maxdate':
+				return new WPCF7_SWV_MaxDateRule( $rule );
+			case 'maxfilesize':
+				return new WPCF7_SWV_MaxFileSizeRule( $rule );
+		}
+	}
+
+	public function __construct( $properties = '' ) {
+		$this->properties = wp_parse_args( $properties, array() );
+	}
+
+	abstract public function validate( $input );
+}
+
+
+class WPCF7_SWV_RequiredRule extends WPCF7_SWV_Rule {
+	public function validate( $input ) {
 		$input = wpcf7_array_flatten( $input );
 		$input = wpcf7_exclude_blank( $input );
 
 		return ! empty( $input );
 	}
+}
 
-	public static function email( $input ) {
+
+class WPCF7_SWV_EmailRule extends WPCF7_SWV_Rule {
+	public function validate( $input ) {
 		$input = wpcf7_array_flatten( $input );
 		$input = wpcf7_exclude_blank( $input );
 
@@ -190,8 +215,11 @@ class WPCF7_SWV_Validation {
 
 		return true;
 	}
+}
 
-	public static function url( $input ) {
+
+class WPCF7_SWV_URLRule extends WPCF7_SWV_Rule {
+	public function validate( $input ) {
 		$input = wpcf7_array_flatten( $input );
 		$input = wpcf7_exclude_blank( $input );
 
@@ -203,8 +231,11 @@ class WPCF7_SWV_Validation {
 
 		return true;
 	}
+}
 
-	public static function tel( $input ) {
+
+class WPCF7_SWV_TelRule extends WPCF7_SWV_Rule {
+	public function validate( $input ) {
 		$input = wpcf7_array_flatten( $input );
 		$input = wpcf7_exclude_blank( $input );
 
@@ -216,8 +247,11 @@ class WPCF7_SWV_Validation {
 
 		return true;
 	}
+}
 
-	public static function number( $input ) {
+
+class WPCF7_SWV_NumberRule extends WPCF7_SWV_Rule {
+	public function validate( $input ) {
 		$input = wpcf7_array_flatten( $input );
 		$input = wpcf7_exclude_blank( $input );
 
@@ -229,8 +263,11 @@ class WPCF7_SWV_Validation {
 
 		return true;
 	}
+}
 
-	public static function date( $input ) {
+
+class WPCF7_SWV_DateRule extends WPCF7_SWV_Rule {
+	public function validate( $input ) {
 		$input = wpcf7_array_flatten( $input );
 		$input = wpcf7_exclude_blank( $input );
 
@@ -242,12 +279,17 @@ class WPCF7_SWV_Validation {
 
 		return true;
 	}
+}
 
-	public static function file( $input ) {
 
+class WPCF7_SWV_FileRule extends WPCF7_SWV_Rule {
+	public function validate( $input ) {
 	}
+}
 
-	public static function minlength( $input, $threshold ) {
+
+class WPCF7_SWV_MinLengthRule extends WPCF7_SWV_Rule {
+	public function validate( $input ) {
 		$input = wpcf7_array_flatten( $input );
 		$input = wpcf7_exclude_blank( $input );
 
@@ -260,11 +302,16 @@ class WPCF7_SWV_Validation {
 		foreach ( $input as $i ) {
 			$total += wpcf7_count_code_units( $i );
 		}
+
+		$threshold = (int) $this->properties['threshold'];
 
 		return $threshold <= $total;
 	}
+}
 
-	public static function maxlength( $input, $threshold ) {
+
+class WPCF7_SWV_MaxLengthRule extends WPCF7_SWV_Rule {
+	public function validate( $input ) {
 		$input = wpcf7_array_flatten( $input );
 		$input = wpcf7_exclude_blank( $input );
 
@@ -278,27 +325,38 @@ class WPCF7_SWV_Validation {
 			$total += wpcf7_count_code_units( $i );
 		}
 
+		$threshold = (int) $this->properties['threshold'];
+
 		return $total <= $threshold;
 	}
+}
 
-	public static function minnumber( $input, $threshold ) {
 
+class WPCF7_SWV_MinNumberRule extends WPCF7_SWV_Rule {
+	public function validate( $input ) {
 	}
+}
 
-	public static function maxnumber( $input, $threshold ) {
 
+class WPCF7_SWV_MaxNumberRule extends WPCF7_SWV_Rule {
+	public function validate( $input ) {
 	}
+}
 
-	public static function mindate( $input, $threshold ) {
 
+class WPCF7_SWV_MinDateRule extends WPCF7_SWV_Rule {
+	public function validate( $input ) {
 	}
+}
 
-	public static function maxdate( $input, $threshold ) {
 
+class WPCF7_SWV_MaxDateRule extends WPCF7_SWV_Rule {
+	public function validate( $input ) {
 	}
+}
 
-	public static function maxfilesize( $input, $threshold ) {
 
+class WPCF7_SWV_MaxFileSizeRule extends WPCF7_SWV_Rule {
+	public function validate( $input ) {
 	}
-
 }
