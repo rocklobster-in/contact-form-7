@@ -82,13 +82,11 @@ function wpcf7_file_swv_add_rules( $schema, $tags ) {
 					wpcf7_acceptable_filetypes( $tag->get_option( 'filetypes' ), 'attr' )
 				),
 				'message' => wpcf7_get_message( 'upload_file_type_invalid' ),
-				'context' => 'file',
 			) );
 
 			$schema->add_rule( $tag->name, 'maxfilesize', array(
 				'threshold' => $tag->get_limit_option(),
 				'message' => wpcf7_get_message( 'upload_file_too_large' ),
-				'context' => 'file',
 			) );
 		}
 	}
