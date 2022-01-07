@@ -168,8 +168,6 @@ abstract class WPCF7_SWV_Rule {
 			$input = null;
 		} elseif ( 'text' === $context ) {
 			$input = isset( $_POST[$field] ) ? $_POST[$field] : '';
-			$input = wpcf7_array_flatten( $input );
-			$input = wpcf7_exclude_blank( $input );
 		} elseif ( 'file' === $context ) {
 			$input = isset( $_FILES[$field] ) ? $_FILES[$field] : array();
 		} else {
@@ -193,9 +191,10 @@ class WPCF7_SWV_RequiredRule extends WPCF7_SWV_Rule {
 
 		if ( 'file' === $context ) {
 			$input = isset( $input['tmp_name'] ) ? $input['tmp_name'] : '';
-			$input = wpcf7_array_flatten( $input );
-			$input = wpcf7_exclude_blank( $input );
 		}
+
+		$input = wpcf7_array_flatten( $input );
+		$input = wpcf7_exclude_blank( $input );
 
 		return ! empty( $input );
 	}
@@ -209,6 +208,8 @@ class WPCF7_SWV_EmailRule extends WPCF7_SWV_Rule {
 		}
 
 		$input = (array) $this->get_input( $context );
+		$input = wpcf7_array_flatten( $input );
+		$input = wpcf7_exclude_blank( $input );
 
 		foreach ( $input as $i ) {
 			if ( ! wpcf7_is_email( $i ) ) {
@@ -228,6 +229,8 @@ class WPCF7_SWV_URLRule extends WPCF7_SWV_Rule {
 		}
 
 		$input = (array) $this->get_input( $context );
+		$input = wpcf7_array_flatten( $input );
+		$input = wpcf7_exclude_blank( $input );
 
 		foreach ( $input as $i ) {
 			if ( ! wpcf7_is_url( $i ) ) {
@@ -247,6 +250,8 @@ class WPCF7_SWV_TelRule extends WPCF7_SWV_Rule {
 		}
 
 		$input = (array) $this->get_input( $context );
+		$input = wpcf7_array_flatten( $input );
+		$input = wpcf7_exclude_blank( $input );
 
 		foreach ( $input as $i ) {
 			if ( ! wpcf7_is_tel( $i ) ) {
@@ -266,6 +271,8 @@ class WPCF7_SWV_NumberRule extends WPCF7_SWV_Rule {
 		}
 
 		$input = (array) $this->get_input( $context );
+		$input = wpcf7_array_flatten( $input );
+		$input = wpcf7_exclude_blank( $input );
 
 		foreach ( $input as $i ) {
 			if ( ! wpcf7_is_number( $i ) ) {
@@ -285,6 +292,8 @@ class WPCF7_SWV_DateRule extends WPCF7_SWV_Rule {
 		}
 
 		$input = (array) $this->get_input( $context );
+		$input = wpcf7_array_flatten( $input );
+		$input = wpcf7_exclude_blank( $input );
 
 		foreach ( $input as $i ) {
 			if ( ! wpcf7_is_date( $i ) ) {
@@ -310,6 +319,8 @@ class WPCF7_SWV_MinLengthRule extends WPCF7_SWV_Rule {
 		}
 
 		$input = (array) $this->get_input( $context );
+		$input = wpcf7_array_flatten( $input );
+		$input = wpcf7_exclude_blank( $input );
 
 		if ( empty( $input ) ) {
 			return true;
@@ -335,6 +346,8 @@ class WPCF7_SWV_MaxLengthRule extends WPCF7_SWV_Rule {
 		}
 
 		$input = (array) $this->get_input( $context );
+		$input = wpcf7_array_flatten( $input );
+		$input = wpcf7_exclude_blank( $input );
 
 		if ( empty( $input ) ) {
 			return true;
