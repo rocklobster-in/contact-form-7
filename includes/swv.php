@@ -177,6 +177,16 @@ abstract class WPCF7_SWV_Rule {
 		return $input;
 	}
 
+	private function error( $code, $message = null ) {
+		if ( ! isset( $message ) ) {
+			$message = isset( $this->properties['message'] )
+				? trim( $this->properties['message'] )
+				: '';
+		}
+
+		return new WP_Error( $code, $message );
+	}
+
 	abstract public function validate( $input );
 }
 
@@ -196,7 +206,11 @@ class WPCF7_SWV_RequiredRule extends WPCF7_SWV_Rule {
 		$input = wpcf7_array_flatten( $input );
 		$input = wpcf7_exclude_blank( $input );
 
-		return ! empty( $input );
+		if ( empty( $input ) ) {
+			return $this->error( 'wpcf7_invalid_required' );
+		}
+
+		return true;
 	}
 }
 
@@ -213,7 +227,7 @@ class WPCF7_SWV_EmailRule extends WPCF7_SWV_Rule {
 
 		foreach ( $input as $i ) {
 			if ( ! wpcf7_is_email( $i ) ) {
-				return false;
+				return $this->error( 'wpcf7_invalid_email' );
 			}
 		}
 
@@ -234,7 +248,7 @@ class WPCF7_SWV_URLRule extends WPCF7_SWV_Rule {
 
 		foreach ( $input as $i ) {
 			if ( ! wpcf7_is_url( $i ) ) {
-				return false;
+				return $this->error( 'wpcf7_invalid_url' );
 			}
 		}
 
@@ -255,7 +269,7 @@ class WPCF7_SWV_TelRule extends WPCF7_SWV_Rule {
 
 		foreach ( $input as $i ) {
 			if ( ! wpcf7_is_tel( $i ) ) {
-				return false;
+				return $this->error( 'wpcf7_invalid_tel' );
 			}
 		}
 
@@ -276,7 +290,7 @@ class WPCF7_SWV_NumberRule extends WPCF7_SWV_Rule {
 
 		foreach ( $input as $i ) {
 			if ( ! wpcf7_is_number( $i ) ) {
-				return false;
+				return $this->error( 'wpcf7_invalid_number' );
 			}
 		}
 
@@ -297,7 +311,7 @@ class WPCF7_SWV_DateRule extends WPCF7_SWV_Rule {
 
 		foreach ( $input as $i ) {
 			if ( ! wpcf7_is_date( $i ) ) {
-				return false;
+				return $this->error( 'wpcf7_invalid_date' );
 			}
 		}
 
@@ -334,7 +348,11 @@ class WPCF7_SWV_MinLengthRule extends WPCF7_SWV_Rule {
 
 		$threshold = (int) $this->properties['threshold'];
 
-		return $threshold <= $total;
+		if ( $threshold <= $total ) {
+			return true;
+		} else {
+			return $this->error( 'wpcf7_invalid_minlength' );
+		}
 	}
 }
 
@@ -361,7 +379,11 @@ class WPCF7_SWV_MaxLengthRule extends WPCF7_SWV_Rule {
 
 		$threshold = (int) $this->properties['threshold'];
 
-		return $total <= $threshold;
+		if ( $total <= $threshold ) {
+			return true;
+		} else {
+			return $this->error( 'wpcf7_invalid_maxlength' );
+		}
 	}
 }
 
