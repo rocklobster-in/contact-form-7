@@ -40,18 +40,12 @@ class WPCF7_Pipes {
 		) );
 
 		foreach ( $this->pipes as $pipe ) {
+			$before_canonical = wpcf7_canonicalize( $pipe->before, array(
+				'strto' => 'as-is',
+			) );
 
-			list( $before, $after ) = array_map(
-				function ( $item ) {
-					return wpcf7_canonicalize( $item, array(
-						'strto' => 'as-is',
-					) );
-				},
-				array( $pipe->before, $pipe->after )
-			);
-
-			if ( $input_canonical === $before ) {
-				return $after;
+			if ( $input_canonical === $before_canonical ) {
+				return $pipe->after;
 			}
 		}
 
