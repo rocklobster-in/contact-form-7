@@ -7,7 +7,7 @@
 	}
 
 	$( function() {
-		var welcomePanel = $( '#welcome-panel' );
+		var welcomePanel = $( '#wpcf7-welcome-panel' );
 		var updateWelcomePanel;
 
 		updateWelcomePanel = function( visible ) {
