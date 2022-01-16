@@ -1,5 +1,14 @@
 <?php
+/**
+ * Pipe-related classes.
+ *
+ * @link https://contactform7.com/selectable-recipient-with-pipes/
+ */
 
+
+/**
+ * Class representing a pair of pipe.
+ */
 class WPCF7_Pipe {
 
 	public $before = '';
@@ -19,6 +28,10 @@ class WPCF7_Pipe {
 	}
 }
 
+
+/**
+ * Class representing a list of pipes.
+ */
 class WPCF7_Pipes {
 
 	private $pipes = array();
