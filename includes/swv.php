@@ -63,7 +63,9 @@ function wpcf7_swv_validate( $schema, $context ) {
 			continue;
 		}
 
-		yield $rule->validate( $context );
+		if ( $rule->match( $context ) ) {
+			yield $rule->validate( $context );
+		}
 	}
 }
 
@@ -187,7 +189,23 @@ abstract class WPCF7_SWV_Rule {
 		return new WP_Error( $code, $message );
 	}
 
-	abstract public function validate( $input );
+	public function match( $context ) {
+		if ( ! empty( $context['field'] ) ) {
+			if ( empty( $this->properties['field'] ) ) {
+				return false;
+			}
+
+			if ( $this->properties['field'] !== $context['field'] ) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	public function validate( $context ) {
+		return true;
+	}
 }
 
 
