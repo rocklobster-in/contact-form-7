@@ -210,11 +210,20 @@ abstract class WPCF7_SWV_Rule {
 
 
 class WPCF7_SWV_RequiredRule extends WPCF7_SWV_Rule {
-	public function validate( $context ) {
-		if ( 'text' !== $context and 'file' !== $context ) {
-			return;
+
+	public function match( $context ) {
+		if ( false === parent::match( $context ) ) {
+			return false;
 		}
 
+		if ( empty( $context['text'] ) and empty( $context['file'] ) ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	public function validate( $context ) {
 		$input = $this->get_input( $context );
 
 		if ( 'file' === $context ) {
@@ -234,11 +243,20 @@ class WPCF7_SWV_RequiredRule extends WPCF7_SWV_Rule {
 
 
 class WPCF7_SWV_EmailRule extends WPCF7_SWV_Rule {
-	public function validate( $context ) {
-		if ( 'text' !== $context ) {
-			return;
+
+	public function match( $context ) {
+		if ( false === parent::match( $context ) ) {
+			return false;
 		}
 
+		if ( empty( $context['text'] ) ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	public function validate( $context ) {
 		$input = (array) $this->get_input( $context );
 		$input = wpcf7_array_flatten( $input );
 		$input = wpcf7_exclude_blank( $input );
@@ -255,11 +273,20 @@ class WPCF7_SWV_EmailRule extends WPCF7_SWV_Rule {
 
 
 class WPCF7_SWV_URLRule extends WPCF7_SWV_Rule {
-	public function validate( $context ) {
-		if ( 'text' !== $context ) {
-			return;
+
+	public function match( $context ) {
+		if ( false === parent::match( $context ) ) {
+			return false;
 		}
 
+		if ( empty( $context['text'] ) ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	public function validate( $context ) {
 		$input = (array) $this->get_input( $context );
 		$input = wpcf7_array_flatten( $input );
 		$input = wpcf7_exclude_blank( $input );
@@ -276,11 +303,20 @@ class WPCF7_SWV_URLRule extends WPCF7_SWV_Rule {
 
 
 class WPCF7_SWV_TelRule extends WPCF7_SWV_Rule {
-	public function validate( $context ) {
-		if ( 'text' !== $context ) {
-			return;
+
+	public function match( $context ) {
+		if ( false === parent::match( $context ) ) {
+			return false;
 		}
 
+		if ( empty( $context['text'] ) ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	public function validate( $context ) {
 		$input = (array) $this->get_input( $context );
 		$input = wpcf7_array_flatten( $input );
 		$input = wpcf7_exclude_blank( $input );
@@ -297,11 +333,20 @@ class WPCF7_SWV_TelRule extends WPCF7_SWV_Rule {
 
 
 class WPCF7_SWV_NumberRule extends WPCF7_SWV_Rule {
-	public function validate( $context ) {
-		if ( 'text' !== $context ) {
-			return;
+
+	public function match( $context ) {
+		if ( false === parent::match( $context ) ) {
+			return false;
 		}
 
+		if ( empty( $context['text'] ) ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	public function validate( $context ) {
 		$input = (array) $this->get_input( $context );
 		$input = wpcf7_array_flatten( $input );
 		$input = wpcf7_exclude_blank( $input );
@@ -318,11 +363,20 @@ class WPCF7_SWV_NumberRule extends WPCF7_SWV_Rule {
 
 
 class WPCF7_SWV_DateRule extends WPCF7_SWV_Rule {
-	public function validate( $context ) {
-		if ( 'text' !== $context ) {
-			return;
+
+	public function match( $context ) {
+		if ( false === parent::match( $context ) ) {
+			return false;
 		}
 
+		if ( empty( $context['text'] ) ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	public function validate( $context ) {
 		$input = (array) $this->get_input( $context );
 		$input = wpcf7_array_flatten( $input );
 		$input = wpcf7_exclude_blank( $input );
@@ -345,11 +399,20 @@ class WPCF7_SWV_FileRule extends WPCF7_SWV_Rule {
 
 
 class WPCF7_SWV_MinLengthRule extends WPCF7_SWV_Rule {
-	public function validate( $context ) {
-		if ( 'text' !== $context ) {
-			return;
+
+	public function match( $context ) {
+		if ( false === parent::match( $context ) ) {
+			return false;
 		}
 
+		if ( empty( $context['text'] ) ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	public function validate( $context ) {
 		$input = (array) $this->get_input( $context );
 		$input = wpcf7_array_flatten( $input );
 		$input = wpcf7_exclude_blank( $input );
@@ -376,11 +439,20 @@ class WPCF7_SWV_MinLengthRule extends WPCF7_SWV_Rule {
 
 
 class WPCF7_SWV_MaxLengthRule extends WPCF7_SWV_Rule {
-	public function validate( $context ) {
-		if ( 'text' !== $context ) {
-			return;
+
+	public function match( $context ) {
+		if ( false === parent::match( $context ) ) {
+			return false;
 		}
 
+		if ( empty( $context['text'] ) ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	public function validate( $context ) {
 		$input = (array) $this->get_input( $context );
 		$input = wpcf7_array_flatten( $input );
 		$input = wpcf7_exclude_blank( $input );
