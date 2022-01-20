@@ -359,30 +359,26 @@ ul.config-error li {
 /*
  * Welcome Panel
  */
-.welcome-panel .welcome-panel-column,
-.welcome-panel .welcome-panel-column:first-child {
-	width: 48%;
-	padding: 0 2% 0 0;
-	margin: 0 0 1em 0;
+.wpcf7-welcome-panel {
+	position: relative;
+	overflow: auto;
+	margin: 16px 0;
+	padding: 23px 10px 0;
+	border: 1px solid #c3c4c7;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+	background: #fff;
+	font-size: 13px;
+	line-height: 1.7;
 }
 
-@media screen and (max-width: 870px) {
-	.welcome-panel .welcome-panel-column,
-	.welcome-panel .welcome-panel-column:first-child {
-		display: block;
-		float: none;
-		width: 100%;
-	}
-}
-
-.welcome-panel h3 {
+.wpcf7-welcome-panel h3 {
 	font-size: 16px;
 	font-weight: 600;
 	line-height: 2.1em;
 	margin: 1em 0 1.2em;
 }
 
-.welcome-panel h3 .dashicons {
+.wpcf7-welcome-panel h3 .dashicons {
 	position: relative;
 	top: -2px;
 	display: inline-block;
@@ -391,12 +387,75 @@ ul.config-error li {
 	font-size: 40px;
 }
 
-.welcome-panel p a {
+.wpcf7-welcome-panel p {
+	color: #646970;
+}
+
+.wpcf7-welcome-panel p a {
 	font-weight: bold;
 }
 
-.welcome-panel-close {
+.wpcf7-welcome-panel .welcome-panel-close {
+	position: absolute;
 	z-index: 2;
+	top: 10px;
+	right: 10px;
+	padding: 10px 15px 10px 21px;
+	font-size: 13px;
+	line-height: 1.23076923; /* Chrome rounding, needs to be 16px equivalent */
+	text-decoration: none;
+}
+
+.wpcf7-welcome-panel .welcome-panel-close::before {
+	background: 0 0;
+	color: #787c82;
+	content: "\f153";
+	display: block;
+	font: normal 16px/20px dashicons;
+	speak: never;
+	height: 20px;
+	text-align: center;
+	width: 20px;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	position: absolute;
+	top: 8px;
+	left: 0;
+	transition: all .1s ease-in-out;
+}
+
+.wpcf7-welcome-panel .welcome-panel-content {
+	display: block;
+	margin-left: 13px;
+	max-width: 1500px;
+	min-height: auto;
+}
+
+.wpcf7-welcome-panel .welcome-panel-column-container {
+	clear: both;
+	position: relative;
+}
+
+.wpcf7-welcome-panel .welcome-panel-column {
+	display: block;
+	width: 48%;
+	min-width: 200px;
+	float: left;
+	padding: 0 2% 0 0;
+	margin: 0 0 1em 0;
+}
+
+@media screen and (max-width: 870px) {
+	.wpcf7-welcome-panel .welcome-panel-column {
+		display: block;
+		float: none;
+		width: 100%;
+	}
+}
+
+.wpcf7-welcome-panel .welcome-panel-column p {
+	margin-top: 7px;
+	color: #3c434a;
 }
 
 /*

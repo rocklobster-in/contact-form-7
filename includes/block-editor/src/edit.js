@@ -1,19 +1,14 @@
-import apiFetch from '@wordpress/api-fetch';
 import { __ } from '@wordpress/i18n';
 import { useInstanceId } from '@wordpress/compose';
 import { SelectControl } from '@wordpress/components';
 
-const contactForms = new Map();
+export default function ContactFormSelectorEdit( { attributes, setAttributes } ) {
+	const contactForms = new Map();
 
-apiFetch( {
-	path: 'contact-form-7/v1/contact-forms?per_page=20',
-} ).then( response => {
-	Object.entries( response ).forEach( ( [ key, value ] ) => {
+	Object.entries( window.wpcf7.contactForms ).forEach( ( [ key, value ] ) => {
 		contactForms.set( value.id, value );
 	} );
-} );
 
-export default function ContactFormSelectorEdit( { attributes, setAttributes } ) {
 	if ( ! contactForms.size && ! attributes.id ) {
 		return(
 			<div className="components-placeholder">
