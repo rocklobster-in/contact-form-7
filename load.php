@@ -15,6 +15,7 @@ require_once WPCF7_PLUGIN_DIR . '/includes/mail.php';
 require_once WPCF7_PLUGIN_DIR . '/includes/special-mail-tags.php';
 require_once WPCF7_PLUGIN_DIR . '/includes/file.php';
 require_once WPCF7_PLUGIN_DIR . '/includes/swv.php';
+require_once WPCF7_PLUGIN_DIR . '/includes/swv-rules.php';
 require_once WPCF7_PLUGIN_DIR . '/includes/validation-functions.php';
 require_once WPCF7_PLUGIN_DIR . '/includes/validation.php';
 require_once WPCF7_PLUGIN_DIR . '/includes/submission.php';
