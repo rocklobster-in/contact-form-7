@@ -50,20 +50,16 @@ abstract class WPCF7_SWV_Rule {
 		}
 	}
 
-	protected function get_input( $context = 'text' ) {
+	protected function get_input( $context ) {
 		$field = $this->get_property( 'field' );
 
-		if ( '' === $field ) {
-			$input = null;
-		} elseif ( 'text' === $context ) {
-			$input = isset( $_POST[$field] ) ? $_POST[$field] : '';
-		} elseif ( 'file' === $context ) {
-			$input = isset( $_FILES[$field] ) ? $_FILES[$field] : array();
-		} else {
-			$input = null;
+		if ( ! empty( $context['text'] ) ) {
+			return isset( $_POST[$field] ) ? $_POST[$field] : '';
 		}
 
-		return $input;
+		if ( ! empty( $context['file'] ) ) {
+			return isset( $_FILES[$field] ) ? $_FILES[$field] : array();
+		}
 	}
 
 	protected function error( $code, $message = null ) {
@@ -77,10 +73,17 @@ abstract class WPCF7_SWV_Rule {
 	public function match( $context ) {
 		$field = $this->get_property( 'field' );
 
-		if ( ! empty( $context['field'] ) ) {
-			if ( ! in_array( $field, (array) $context['field'], true ) ) {
+		if ( isset( $context['validity'][$field] ) ) {
+			$validity = $context['validity'][$field];
+
+			if ( is_wp_error( $validity ) or ! $validity ) {
 				return false;
 			}
+		}
+
+		if ( ! empty( $context['field'] )
+		and ! in_array( $field, (array) $context['field'], true ) ) {
+			return false;
 		}
 
 		return true;
