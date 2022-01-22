@@ -51,9 +51,7 @@ abstract class WPCF7_SWV_Rule {
 	}
 
 	protected function get_input( $context = 'text' ) {
-		$field = isset( $this->properties['field'] )
-			? trim( $this->properties['field'] )
-			: '';
+		$field = $this->get_property( 'field' );
 
 		if ( '' === $field ) {
 			$input = null;
@@ -70,21 +68,17 @@ abstract class WPCF7_SWV_Rule {
 
 	protected function error( $code, $message = null ) {
 		if ( ! isset( $message ) ) {
-			$message = isset( $this->properties['message'] )
-				? trim( $this->properties['message'] )
-				: '';
+			$message = $this->get_property( 'message' );
 		}
 
 		return new WP_Error( $code, $message );
 	}
 
 	public function match( $context ) {
-		if ( ! empty( $context['field'] ) ) {
-			if ( empty( $this->properties['field'] ) ) {
-				return false;
-			}
+		$field = $this->get_property( 'field' );
 
-			if ( $this->properties['field'] !== $context['field'] ) {
+		if ( ! empty( $context['field'] ) ) {
+			if ( ! in_array( $field, (array) $context['field'], true ) ) {
 				return false;
 			}
 		}
