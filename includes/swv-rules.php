@@ -44,7 +44,7 @@ abstract class WPCF7_SWV_Rule {
 		$this->properties = wp_parse_args( $properties, array() );
 	}
 
-	private function get_input( $context = 'text' ) {
+	protected function get_input( $context = 'text' ) {
 		$field = isset( $this->properties['field'] )
 			? trim( $this->properties['field'] )
 			: '';
@@ -62,7 +62,7 @@ abstract class WPCF7_SWV_Rule {
 		return $input;
 	}
 
-	private function error( $code, $message = null ) {
+	protected function error( $code, $message = null ) {
 		if ( ! isset( $message ) ) {
 			$message = isset( $this->properties['message'] )
 				? trim( $this->properties['message'] )
