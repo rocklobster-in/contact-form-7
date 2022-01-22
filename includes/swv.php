@@ -53,8 +53,13 @@ function wpcf7_swv_add_common_rules( $schema, $tags ) {
 }
 
 
-function wpcf7_swv_validate( $schema, $context ) {
-	$rules = $schema->get_rules();
+function wpcf7_swv_validate( $rules, $context = '' ) {
+	$context = wp_parse_args( $context, array(
+		'text' => false,
+		'file' => false,
+		'field' => array(),
+		'validity' => array(),
+	) );
 
 	foreach ( $rules as $r ) {
 		$rule = WPCF7_SWV_Rule::create_instance( $r );
@@ -64,7 +69,13 @@ function wpcf7_swv_validate( $schema, $context ) {
 		}
 
 		if ( $rule->match( $context ) ) {
-			yield $rule->validate( $context );
+			$result = $rule->validate( $context );
+
+			if ( isset( $r['field'] ) ) {
+				$context['validity'][$r['field']] = $result;
+			}
+
+			yield $result;
 		}
 	}
 }
