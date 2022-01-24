@@ -100,18 +100,24 @@ function wpcf7_textarea_swv_add_rules( $schema, $tags ) {
 	foreach ( $tags as $tag ) {
 
 		if ( 'textarea' === $tag->basetype ) {
-			if ( $maxlength = $tag->get_maxlength_option() ) {
-				$schema->add_rule( $tag->name, 'maxlength', array(
-					'threshold' => absint( $maxlength ),
-					'message' => wpcf7_get_message( 'invalid_too_long' ),
-				) );
+			if ( $minlength = $tag->get_minlength_option() ) {
+				$schema->add_rule(
+					wpcf7_swv_create_rule( 'minlength', array(
+						'field' => $tag->name,
+						'threshold' => absint( $minlength ),
+						'message' => wpcf7_get_message( 'invalid_too_short' ),
+					) )
+				);
 			}
 
-			if ( $minlength = $tag->get_minlength_option() ) {
-				$schema->add_rule( $tag->name, 'minlength', array(
-					'threshold' => absint( $minlength ),
-					'message' => wpcf7_get_message( 'invalid_too_short' ),
-				) );
+			if ( $maxlength = $tag->get_maxlength_option() ) {
+				$schema->add_rule(
+					wpcf7_swv_create_rule( 'maxlength', array(
+						'field' => $tag->name,
+						'threshold' => absint( $maxlength ),
+						'message' => wpcf7_get_message( 'invalid_too_long' ),
+					) )
+				);
 			}
 		}
 	}

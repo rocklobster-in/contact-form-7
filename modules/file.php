@@ -77,17 +77,23 @@ function wpcf7_file_swv_add_rules( $schema, $tags ) {
 	foreach ( $tags as $tag ) {
 
 		if ( in_array( $tag->basetype, array( 'file' ) ) ) {
-			$schema->add_rule( $tag->name, 'file', array(
-				'accept' => explode( ',',
-					wpcf7_acceptable_filetypes( $tag->get_option( 'filetypes' ), 'attr' )
-				),
-				'message' => wpcf7_get_message( 'upload_file_type_invalid' ),
-			) );
+			$schema->add_rule(
+				wpcf7_swv_create_rule( 'file', array(
+					'field' => $tag->name,
+					'accept' => explode( ',', wpcf7_acceptable_filetypes(
+						$tag->get_option( 'filetypes' ), 'attr'
+					) ),
+					'message' => wpcf7_get_message( 'upload_file_type_invalid' ),
+				) )
+			);
 
-			$schema->add_rule( $tag->name, 'maxfilesize', array(
-				'threshold' => $tag->get_limit_option(),
-				'message' => wpcf7_get_message( 'upload_file_too_large' ),
-			) );
+			$schema->add_rule(
+				wpcf7_swv_create_rule( 'maxfilesize', array(
+					'field' => $tag->name,
+					'threshold' => $tag->get_limit_option(),
+					'message' => wpcf7_get_message( 'upload_file_too_large' ),
+				) )
+			);
 		}
 	}
 }

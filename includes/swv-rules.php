@@ -1,101 +1,8 @@
 <?php
 
-abstract class WPCF7_SWV_Rule {
-	private $properties = array();
-
-	public static function create_instance( $rule ) {
-		if ( ! isset( $rule['rule'] ) ) {
-			return;
-		}
-
-		switch ( $rule['rule'] ) {
-			case 'required':
-				return new WPCF7_SWV_RequiredRule( $rule );
-			case 'email':
-				return new WPCF7_SWV_EmailRule( $rule );
-			case 'url':
-				return new WPCF7_SWV_URLRule( $rule );
-			case 'tel':
-				return new WPCF7_SWV_TelRule( $rule );
-			case 'number':
-				return new WPCF7_SWV_NumberRule( $rule );
-			case 'date':
-				return new WPCF7_SWV_DateRule( $rule );
-			case 'file':
-				return new WPCF7_SWV_FileRule( $rule );
-			case 'minlength':
-				return new WPCF7_SWV_MinLengthRule( $rule );
-			case 'maxlength':
-				return new WPCF7_SWV_MaxLengthRule( $rule );
-			case 'minnumber':
-				return new WPCF7_SWV_MinNumberRule( $rule );
-			case 'maxnumber':
-				return new WPCF7_SWV_MaxNumberRule( $rule );
-			case 'mindate':
-				return new WPCF7_SWV_MinDateRule( $rule );
-			case 'maxdate':
-				return new WPCF7_SWV_MaxDateRule( $rule );
-			case 'maxfilesize':
-				return new WPCF7_SWV_MaxFileSizeRule( $rule );
-		}
-	}
-
-	public function __construct( $properties = '' ) {
-		$this->properties = wp_parse_args( $properties, array() );
-	}
-
-	protected function get_property( $name ) {
-		if ( isset( $this->properties[$name] ) ) {
-			return $this->properties[$name];
-		}
-	}
-
-	protected function get_input( $context ) {
-		$field = $this->get_property( 'field' );
-
-		if ( ! empty( $context['text'] ) ) {
-			return isset( $_POST[$field] ) ? $_POST[$field] : '';
-		}
-
-		if ( ! empty( $context['file'] ) ) {
-			return isset( $_FILES[$field] ) ? $_FILES[$field] : array();
-		}
-	}
-
-	protected function error( $code, $message = null ) {
-		if ( ! isset( $message ) ) {
-			$message = $this->get_property( 'message' );
-		}
-
-		return new WP_Error( $code, $message );
-	}
-
-	public function match( $context ) {
-		$field = $this->get_property( 'field' );
-
-		if ( isset( $context['validity'][$field] ) ) {
-			$validity = $context['validity'][$field];
-
-			if ( is_wp_error( $validity ) or ! $validity ) {
-				return false;
-			}
-		}
-
-		if ( ! empty( $context['field'] )
-		and ! in_array( $field, (array) $context['field'], true ) ) {
-			return false;
-		}
-
-		return true;
-	}
-
-	public function validate( $context ) {
-		return true;
-	}
-}
-
-
 class WPCF7_SWV_RequiredRule extends WPCF7_SWV_Rule {
+
+	const rule_name = 'required';
 
 	public function match( $context ) {
 		if ( false === parent::match( $context ) ) {
@@ -125,10 +32,16 @@ class WPCF7_SWV_RequiredRule extends WPCF7_SWV_Rule {
 
 		return true;
 	}
+
+	public function to_array() {
+		return array( 'rule' => self::rule_name ) + (array) $this->properties;
+	}
 }
 
 
 class WPCF7_SWV_EmailRule extends WPCF7_SWV_Rule {
+
+	const rule_name = 'email';
 
 	public function match( $context ) {
 		if ( false === parent::match( $context ) ) {
@@ -155,10 +68,16 @@ class WPCF7_SWV_EmailRule extends WPCF7_SWV_Rule {
 
 		return true;
 	}
+
+	public function to_array() {
+		return array( 'rule' => self::rule_name ) + (array) $this->properties;
+	}
 }
 
 
 class WPCF7_SWV_URLRule extends WPCF7_SWV_Rule {
+
+	const rule_name = 'url';
 
 	public function match( $context ) {
 		if ( false === parent::match( $context ) ) {
@@ -185,10 +104,16 @@ class WPCF7_SWV_URLRule extends WPCF7_SWV_Rule {
 
 		return true;
 	}
+
+	public function to_array() {
+		return array( 'rule' => self::rule_name ) + (array) $this->properties;
+	}
 }
 
 
 class WPCF7_SWV_TelRule extends WPCF7_SWV_Rule {
+
+	const rule_name = 'tel';
 
 	public function match( $context ) {
 		if ( false === parent::match( $context ) ) {
@@ -215,10 +140,16 @@ class WPCF7_SWV_TelRule extends WPCF7_SWV_Rule {
 
 		return true;
 	}
+
+	public function to_array() {
+		return array( 'rule' => self::rule_name ) + (array) $this->properties;
+	}
 }
 
 
 class WPCF7_SWV_NumberRule extends WPCF7_SWV_Rule {
+
+	const rule_name = 'number';
 
 	public function match( $context ) {
 		if ( false === parent::match( $context ) ) {
@@ -245,10 +176,16 @@ class WPCF7_SWV_NumberRule extends WPCF7_SWV_Rule {
 
 		return true;
 	}
+
+	public function to_array() {
+		return array( 'rule' => self::rule_name ) + (array) $this->properties;
+	}
 }
 
 
 class WPCF7_SWV_DateRule extends WPCF7_SWV_Rule {
+
+	const rule_name = 'date';
 
 	public function match( $context ) {
 		if ( false === parent::match( $context ) ) {
@@ -275,16 +212,29 @@ class WPCF7_SWV_DateRule extends WPCF7_SWV_Rule {
 
 		return true;
 	}
+
+	public function to_array() {
+		return array( 'rule' => self::rule_name ) + (array) $this->properties;
+	}
 }
 
 
 class WPCF7_SWV_FileRule extends WPCF7_SWV_Rule {
+
+	const rule_name = 'file';
+
 	public function validate( $context ) {
+	}
+
+	public function to_array() {
+		return array( 'rule' => self::rule_name ) + (array) $this->properties;
 	}
 }
 
 
 class WPCF7_SWV_MinLengthRule extends WPCF7_SWV_Rule {
+
+	const rule_name = 'minlength';
 
 	public function match( $context ) {
 		if ( false === parent::match( $context ) ) {
@@ -321,10 +271,16 @@ class WPCF7_SWV_MinLengthRule extends WPCF7_SWV_Rule {
 			return $this->error( 'wpcf7_invalid_minlength' );
 		}
 	}
+
+	public function to_array() {
+		return array( 'rule' => self::rule_name ) + (array) $this->properties;
+	}
 }
 
 
 class WPCF7_SWV_MaxLengthRule extends WPCF7_SWV_Rule {
+
+	const rule_name = 'maxlength';
 
 	public function match( $context ) {
 		if ( false === parent::match( $context ) ) {
@@ -361,34 +317,73 @@ class WPCF7_SWV_MaxLengthRule extends WPCF7_SWV_Rule {
 			return $this->error( 'wpcf7_invalid_maxlength' );
 		}
 	}
+
+	public function to_array() {
+		return array( 'rule' => self::rule_name ) + (array) $this->properties;
+	}
 }
 
 
 class WPCF7_SWV_MinNumberRule extends WPCF7_SWV_Rule {
+
+	const rule_name = 'minnumber';
+
 	public function validate( $context ) {
+	}
+
+	public function to_array() {
+		return array( 'rule' => self::rule_name ) + (array) $this->properties;
 	}
 }
 
 
 class WPCF7_SWV_MaxNumberRule extends WPCF7_SWV_Rule {
+
+	const rule_name = 'maxnumber';
+
 	public function validate( $context ) {
+	}
+
+	public function to_array() {
+		return array( 'rule' => self::rule_name ) + (array) $this->properties;
 	}
 }
 
 
 class WPCF7_SWV_MinDateRule extends WPCF7_SWV_Rule {
+
+	const rule_name = 'mindate';
+
 	public function validate( $context ) {
+	}
+
+	public function to_array() {
+		return array( 'rule' => self::rule_name ) + (array) $this->properties;
 	}
 }
 
 
 class WPCF7_SWV_MaxDateRule extends WPCF7_SWV_Rule {
+
+	const rule_name = 'maxdate';
+
 	public function validate( $context ) {
+	}
+
+	public function to_array() {
+		return array( 'rule' => self::rule_name ) + (array) $this->properties;
 	}
 }
 
 
 class WPCF7_SWV_MaxFileSizeRule extends WPCF7_SWV_Rule {
+
+	const rule_name = 'maxfilesize';
+
 	public function validate( $context ) {
+	}
+
+	public function to_array() {
+		return array( 'rule' => self::rule_name ) + (array) $this->properties;
 	}
 }
