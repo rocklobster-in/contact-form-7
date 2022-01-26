@@ -4,55 +4,6 @@
  */
 
 
-add_action(
-	'wpcf7_swv_pre_add_rules',
-	'wpcf7_swv_add_common_rules',
-	10, 2
-);
-
-function wpcf7_swv_add_common_rules( $schema, $tags ) {
-	foreach ( $tags as $tag ) {
-
-		if ( $tag->is_required() ) {
-			$schema->add_rule(
-				wpcf7_swv_create_rule( 'required', array(
-					'field' => $tag->name,
-					'message' => wpcf7_get_message( 'invalid_required' ),
-				) )
-			);
-		}
-	}
-}
-
-
-function wpcf7_swv_validate( $rules, $context = '' ) {
-	$context = wp_parse_args( $context, array(
-		'text' => false,
-		'file' => false,
-		'field' => array(),
-		'validity' => array(),
-	) );
-
-	foreach ( $rules as $r ) {
-		$rule = WPCF7_SWV_Rule::create_instance( $r );
-
-		if ( ! $rule ) {
-			continue;
-		}
-
-		if ( $rule->match( $context ) ) {
-			$result = $rule->validate( $context );
-
-			if ( isset( $r['field'] ) ) {
-				$context['validity'][$r['field']] = $result;
-			}
-
-			yield $result;
-		}
-	}
-}
-
-
 function wpcf7_swv_load_rules() {
 	$rules = array(
 		'required',
@@ -114,6 +65,27 @@ function wpcf7_swv_create_rule( $rule_name, $properties = '' ) {
 			return new WPCF7_SWV_MaxDateRule( $properties );
 		case 'maxfilesize':
 			return new WPCF7_SWV_MaxFileSizeRule( $properties );
+	}
+}
+
+
+add_action(
+	'wpcf7_swv_pre_add_rules',
+	'wpcf7_swv_add_common_rules',
+	10, 2
+);
+
+function wpcf7_swv_add_common_rules( $schema, $tags ) {
+	foreach ( $tags as $tag ) {
+
+		if ( $tag->is_required() ) {
+			$schema->add_rule(
+				wpcf7_swv_create_rule( 'required', array(
+					'field' => $tag->name,
+					'message' => wpcf7_get_message( 'invalid_required' ),
+				) )
+			);
+		}
 	}
 }
 
