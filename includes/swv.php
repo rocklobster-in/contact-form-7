@@ -127,6 +127,15 @@ abstract class WPCF7_SWV_Rule {
 	}
 
 	public function match( $context ) {
+		if ( isset( $context['validity'] )
+		and $context['validity'] instanceof WPCF7_Validation ) {
+			$field = $this->get_property( 'field' );
+
+			if ( $field and ! $context['validity']->is_valid( $field ) ) {
+				return false;
+			}
+		}
+
 		return true;
 	}
 
@@ -136,6 +145,12 @@ abstract class WPCF7_SWV_Rule {
 
 	public function to_array() {
 		return (array) $this->properties;
+	}
+
+	protected function get_property( $name ) {
+		if ( isset( $this->properties[$name] ) ) {
+			return $this->properties[$name];
+		}
 	}
 
 }
