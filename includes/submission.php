@@ -508,6 +508,17 @@ class WPCF7_Submission {
 
 		$result = new WPCF7_Validation();
 
+		$schema = $this->contact_form->get_schema();
+
+		if ( isset( $schema ) ) {
+			$schema->validate( array(
+				'text' => true,
+				'file' => false,
+				'field' => array(),
+				'validity' => $result,
+			) );
+		}
+
 		$tags = $this->contact_form->scan_form_tags( array(
 		  'feature' => '! file-uploading',
 		) );
