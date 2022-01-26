@@ -84,7 +84,38 @@ function wpcf7_swv_validate( $rules, $context = '' ) {
 }
 
 
+function wpcf7_swv_load_rules() {
+	$rules = array(
+		'required',
+		'email',
+		'url',
+		'tel',
+		'number',
+		'date',
+		'file',
+		'minlength',
+		'maxlength',
+		'minnumber',
+		'maxnumber',
+		'mindate',
+		'maxdate',
+		'maxfilesize',
+	);
+
+	foreach ( $rules as $rule ) {
+		$file = sprintf( '%s.php', $rule );
+		$path = path_join( WPCF7_PLUGIN_DIR . '/includes/swv/rules', $file );
+
+		if ( file_exists( $path ) ) {
+			include_once $path;
+		}
+	}
+}
+
+
 function wpcf7_swv_create_rule( $rule_name, $properties = '' ) {
+	wpcf7_swv_load_rules();
+
 	switch ( $rule_name ) {
 		case 'required':
 			return new WPCF7_SWV_RequiredRule( $properties );
