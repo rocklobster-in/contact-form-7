@@ -4,37 +4,6 @@
  */
 
 
-function wpcf7_swv_generate_schema( WPCF7_ContactForm $contact_form ) {
-	$schema = new WPCF7_SWV_Schema();
-
-	$tags = $contact_form->scan_form_tags();
-
-	do_action(
-		'wpcf7_swv_pre_add_rules',
-		$schema,
-		$tags
-	);
-
-	foreach ( $tags as $tag ) {
-		$type = $tag->type;
-
-		do_action(
-			"wpcf7_swv_add_rules_for_{$type}",
-			$schema,
-			$tag
-		);
-	}
-
-	do_action(
-		'wpcf7_swv_add_rules',
-		$schema,
-		$tags
-	);
-
-	return $schema;
-}
-
-
 add_action(
 	'wpcf7_swv_pre_add_rules',
 	'wpcf7_swv_add_common_rules',
