@@ -3,6 +3,8 @@
  * Schema-Woven Validation API
  */
 
+require_once 'schema-holder.php';
+
 
 function wpcf7_swv_load_rules() {
 	$rules = array(
