@@ -4,6 +4,7 @@ trait WPCF7_SWV_SchemaHolder {
 
 	protected $schema;
 
+
 	/**
 	 * Retrieves SWV schema for this contact form.
 	 *
@@ -26,6 +27,11 @@ trait WPCF7_SWV_SchemaHolder {
 		do_action( 'wpcf7_swv_add_rules', $schema, $tags );
 
 		return $this->schema = $schema;
+	}
+
+
+	public function validate_schema( $context ) {
+		$this->schema->validate( $context );
 	}
 
 }
