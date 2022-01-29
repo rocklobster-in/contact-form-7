@@ -17,13 +17,16 @@ class WPCF7_SWV_DateRule extends WPCF7_SWV_Rule {
 	}
 
 	public function validate( $context ) {
-		$input = (array) $this->get_input( $context );
+		$field = $this->get_property( 'field' );
+		$input = isset( $_POST[$field] ) ? $_POST[$field] : '';
 		$input = wpcf7_array_flatten( $input );
 		$input = wpcf7_exclude_blank( $input );
 
 		foreach ( $input as $i ) {
 			if ( ! wpcf7_is_date( $i ) ) {
-				return $this->error( 'wpcf7_invalid_date' );
+				return new WP_Error( 'wpcf7_invalid_date',
+					$this->get_property( 'message' )
+				);
 			}
 		}
 

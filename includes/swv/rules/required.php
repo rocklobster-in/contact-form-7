@@ -17,17 +17,22 @@ class WPCF7_SWV_RequiredRule extends WPCF7_SWV_Rule {
 	}
 
 	public function validate( $context ) {
-		$input = $this->get_input( $context );
+		$field = $this->get_property( 'field' );
 
-		if ( 'file' === $context ) {
-			$input = isset( $input['tmp_name'] ) ? $input['tmp_name'] : '';
+		if ( ! empty( $context['text'] ) ) {
+			$input = isset( $_POST[$field] ) ? $_POST[$field] : '';
+		} elseif ( ! empty( $context['file'] ) ) {
+			$input = isset( $_FILES[$field]['tmp_name'] )
+				? $_FILES[$field]['tmp_name'] : '';
 		}
 
 		$input = wpcf7_array_flatten( $input );
 		$input = wpcf7_exclude_blank( $input );
 
 		if ( empty( $input ) ) {
-			return $this->error( 'wpcf7_invalid_required' );
+			return new WP_Error( 'wpcf7_invalid_required',
+				$this->get_property( 'message' )
+			);
 		}
 
 		return true;

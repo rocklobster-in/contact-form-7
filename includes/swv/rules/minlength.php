@@ -17,7 +17,8 @@ class WPCF7_SWV_MinLengthRule extends WPCF7_SWV_Rule {
 	}
 
 	public function validate( $context ) {
-		$input = (array) $this->get_input( $context );
+		$field = $this->get_property( 'field' );
+		$input = isset( $_POST[$field] ) ? $_POST[$field] : '';
 		$input = wpcf7_array_flatten( $input );
 		$input = wpcf7_exclude_blank( $input );
 
@@ -31,12 +32,14 @@ class WPCF7_SWV_MinLengthRule extends WPCF7_SWV_Rule {
 			$total += wpcf7_count_code_units( $i );
 		}
 
-		$threshold = (int) $this->properties['threshold'];
+		$threshold = (int) $this->get_property( 'threshold' );
 
 		if ( $threshold <= $total ) {
 			return true;
 		} else {
-			return $this->error( 'wpcf7_invalid_minlength' );
+			return new WP_Error( 'wpcf7_invalid_minlength',
+				$this->get_property( 'message' )
+			);
 		}
 	}
 
