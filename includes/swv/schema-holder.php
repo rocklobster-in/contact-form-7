@@ -6,7 +6,7 @@ trait WPCF7_SWV_SchemaHolder {
 
 
 	/**
-	 * Retrieves SWV schema for this contact form.
+	 * Retrieves SWV schema for this holder object (contact form).
 	 *
 	 * @return WPCF7_SWV_Schema The schema object.
 	 */
@@ -30,8 +30,12 @@ trait WPCF7_SWV_SchemaHolder {
 	}
 
 
+	/**
+	 * Validates form inputs based on the schema and given context.
+	 */
 	public function validate_schema( $context ) {
-		$this->schema->validate( $context );
+		$schema = $this->get_schema();
+		$schema->validate( $context );
 	}
 
 }
