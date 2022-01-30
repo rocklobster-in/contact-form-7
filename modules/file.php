@@ -99,25 +99,6 @@ function wpcf7_file_swv_add_rules( $schema, $tags ) {
 }
 
 
-/* Validation + upload handling filter */
-
-add_filter( 'wpcf7_validate_file', 'wpcf7_file_validation_filter', 10, 3 );
-add_filter( 'wpcf7_validate_file*', 'wpcf7_file_validation_filter', 10, 3 );
-
-function wpcf7_file_validation_filter( $result, $tag, $args ) {
-	$args = wp_parse_args( $args, array() );
-
-	if ( isset( $args['uploaded_files'] ) ) {
-		$maybe_error = $args['uploaded_files'];
-
-		if ( is_wp_error( $maybe_error ) ) {
-			$result->invalidate( $tag, $maybe_error->get_error_message() );
-		}
-	}
-
-	return $result;
-}
-
 add_filter( 'wpcf7_mail_tag_replaced_file', 'wpcf7_file_mail_tag', 10, 4 );
 add_filter( 'wpcf7_mail_tag_replaced_file*', 'wpcf7_file_mail_tag', 10, 4 );
 

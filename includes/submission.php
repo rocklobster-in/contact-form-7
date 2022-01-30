@@ -735,7 +735,9 @@ class WPCF7_Submission {
 
 			$new_files = wpcf7_unship_uploaded_file( $file, $args );
 
-			if ( ! is_wp_error( $new_files ) ) {
+			if ( is_wp_error( $new_files ) ) {
+				$result->invalidate( $tag, $new_files );
+			} else {
 				$this->add_uploaded_file( $tag->name, $new_files );
 			}
 
