@@ -24,9 +24,16 @@ class WPCF7_SWV_NumberRule extends WPCF7_SWV_Rule {
 
 		foreach ( $input as $i ) {
 			if ( ! wpcf7_is_number( $i ) ) {
-				return new WP_Error( 'wpcf7_invalid_number',
-					$this->get_property( 'message' )
-				);
+				if ( isset( $context['validity'] )
+				and $context['validity'] instanceof WPCF7_Validation ) {
+					$error = new WP_Error( 'wpcf7_invalid_number',
+						$this->get_property( 'message' )
+					);
+
+					$context['validity']->invalidate( $field, $error );
+				}
+
+				return false;
 			}
 		}
 
