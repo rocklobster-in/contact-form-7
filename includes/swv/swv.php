@@ -141,13 +141,32 @@ abstract class WPCF7_SWV_CompositeRule extends WPCF7_SWV_Rule {
 	}
 
 	public function match( $context ) {
+		if ( false === parent::match( $context ) ) {
+			return false;
+		}
+
 		return true;
 	}
 
 	public function validate( $context ) {
+		if ( isset( $context['validity'] )
+		and $context['validity'] instanceof WPCF7_Validation ) {
+			$validity = $context['validity'];
+		}
+
 		foreach ( $this->rules as $rule ) {
 			if ( $rule->match( $context ) ) {
-				$rule->validate( $context );
+				$results = $rule->validate( $context );
+
+				if ( $results instanceof Iterator ) {
+					foreach ( $results as $field => $result ) {
+						if ( isset( $validity ) and is_wp_error( $result ) ) {
+							$validity->invalidate( $field, $result );
+						}
+
+						yield $field => $result;
+					}
+				}
 			}
 		}
 

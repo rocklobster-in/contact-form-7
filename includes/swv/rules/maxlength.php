@@ -37,15 +37,11 @@ class WPCF7_SWV_MaxLengthRule extends WPCF7_SWV_Rule {
 		if ( $total <= $threshold ) {
 			return true;
 		} else {
-			if ( isset( $context['validity'] )
-			and $context['validity'] instanceof WPCF7_Validation ) {
-				$error = new WP_Error( 'wpcf7_invalid_maxlength',
-					$this->get_property( 'message' )
-				);
+			$error = new WP_Error( 'wpcf7_invalid_maxlength',
+				$this->get_property( 'message' )
+			);
 
-				$context['validity']->invalidate( $field, $error );
-			}
-
+			yield $field => $error;
 			return false;
 		}
 	}
