@@ -101,10 +101,16 @@ abstract class WPCF7_SWV_Rule {
 	}
 
 	public function match( $context ) {
+		$field = $this->get_property( 'field' );
+
+		if ( ! empty( $context['field'] ) ) {
+			if ( $field and ! in_array( $field, (array) $context['field'], true ) ) {
+				return false;
+			}
+		}
+
 		if ( isset( $context['validity'] )
 		and $context['validity'] instanceof WPCF7_Validation ) {
-			$field = $this->get_property( 'field' );
-
 			if ( $field and ! $context['validity']->is_valid( $field ) ) {
 				return false;
 			}
@@ -141,10 +147,6 @@ abstract class WPCF7_SWV_CompositeRule extends WPCF7_SWV_Rule {
 	}
 
 	public function match( $context ) {
-		if ( false === parent::match( $context ) ) {
-			return false;
-		}
-
 		return true;
 	}
 
