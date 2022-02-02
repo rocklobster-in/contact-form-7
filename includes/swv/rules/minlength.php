@@ -37,12 +37,9 @@ class WPCF7_SWV_MinLengthRule extends WPCF7_SWV_Rule {
 		if ( $threshold <= $total ) {
 			return true;
 		} else {
-			$error = new WP_Error( 'wpcf7_invalid_minlength',
+			return new WP_Error( 'wpcf7_invalid_minlength',
 				$this->get_property( 'message' )
 			);
-
-			yield $field => $error;
-			return false;
 		}
 	}
 

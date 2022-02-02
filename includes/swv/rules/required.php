@@ -30,12 +30,9 @@ class WPCF7_SWV_RequiredRule extends WPCF7_SWV_Rule {
 		$input = wpcf7_exclude_blank( $input );
 
 		if ( empty( $input ) ) {
-			$error = new WP_Error( 'wpcf7_invalid_required',
+			return new WP_Error( 'wpcf7_invalid_required',
 				$this->get_property( 'message' )
 			);
-
-			yield $field => $error;
-			return false;
 		}
 
 		return true;

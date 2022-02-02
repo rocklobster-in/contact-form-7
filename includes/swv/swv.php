@@ -100,18 +100,15 @@ abstract class WPCF7_SWV_Rule {
 		$this->properties = wp_parse_args( $properties, array() );
 	}
 
+	public function get_field_name() {
+		return $this->get_property( 'field' );
+	}
+
 	public function match( $context ) {
-		$field = $this->get_property( 'field' );
+		$field = $this->get_field_name();
 
 		if ( ! empty( $context['field'] ) ) {
 			if ( $field and ! in_array( $field, (array) $context['field'], true ) ) {
-				return false;
-			}
-		}
-
-		if ( isset( $context['validity'] )
-		and $context['validity'] instanceof WPCF7_Validation ) {
-			if ( $field and ! $context['validity']->is_valid( $field ) ) {
 				return false;
 			}
 		}
@@ -146,32 +143,17 @@ abstract class WPCF7_SWV_CompositeRule extends WPCF7_SWV_Rule {
 		}
 	}
 
+	public function rules() {
+		foreach ( $this->rules as $rule ) {
+			yield $rule;
+		}
+	}
+
 	public function match( $context ) {
 		return true;
 	}
 
 	public function validate( $context ) {
-		if ( isset( $context['validity'] )
-		and $context['validity'] instanceof WPCF7_Validation ) {
-			$validity = $context['validity'];
-		}
-
-		foreach ( $this->rules as $rule ) {
-			if ( $rule->match( $context ) ) {
-				$results = $rule->validate( $context );
-
-				if ( $results instanceof Iterator ) {
-					foreach ( $results as $field => $result ) {
-						if ( isset( $validity ) and is_wp_error( $result ) ) {
-							$validity->invalidate( $field, $result );
-						}
-
-						yield $field => $result;
-					}
-				}
-			}
-		}
-
 		return true;
 	}
 
