@@ -9,6 +9,7 @@ require_once WPCF7_PLUGIN_DIR . '/includes/swv/schema-holder.php';
 function wpcf7_swv_load_rules() {
 	$rules = array(
 		'required',
+		'requiredfile',
 		'email',
 		'url',
 		'tel',
@@ -41,6 +42,8 @@ function wpcf7_swv_create_rule( $rule_name, $properties = '' ) {
 	switch ( $rule_name ) {
 		case 'required':
 			return new WPCF7_SWV_RequiredRule( $properties );
+		case 'requiredfile':
+			return new WPCF7_SWV_RequiredFileRule( $properties );
 		case 'email':
 			return new WPCF7_SWV_EmailRule( $properties );
 		case 'url':
@@ -81,12 +84,21 @@ function wpcf7_swv_add_common_rules( $schema, $tags ) {
 	foreach ( $tags as $tag ) {
 
 		if ( $tag->is_required() ) {
-			$schema->add_rule(
-				wpcf7_swv_create_rule( 'required', array(
-					'field' => $tag->name,
-					'message' => wpcf7_get_message( 'invalid_required' ),
-				) )
-			);
+			if ( wpcf7_form_tag_supports( $tag->type, 'file-uploading' ) ) {
+				$schema->add_rule(
+					wpcf7_swv_create_rule( 'requiredfile', array(
+						'field' => $tag->name,
+						'message' => wpcf7_get_message( 'invalid_required' ),
+					) )
+				);
+			} else {
+				$schema->add_rule(
+					wpcf7_swv_create_rule( 'required', array(
+						'field' => $tag->name,
+						'message' => wpcf7_get_message( 'invalid_required' ),
+					) )
+				);
+			}
 		}
 	}
 }
