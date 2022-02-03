@@ -733,6 +733,7 @@ class WPCF7_Submission {
 				'required' => $tag->is_required(),
 				'filetypes' => $tag->get_option( 'filetypes' ),
 				'limit' => $tag->get_limit_option(),
+				'schema' => $this->contact_form->get_schema(),
 			);
 
 			$new_files = wpcf7_unship_uploaded_file( $file, $args );

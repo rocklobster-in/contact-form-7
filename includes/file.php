@@ -33,10 +33,15 @@ function wpcf7_unship_uploaded_file( $file, $args = '' ) {
 		}
 	}
 
-	if ( $args['required'] and ! array_filter( $tmp_names ) ) {
-		return new WP_Error( 'wpcf7_invalid_required',
-			wpcf7_get_message( 'invalid_required' )
-		);
+	if ( isset( $args['schema'] ) and isset( $args['name'] ) ) {
+		$result = $args['schema']->validate( array(
+			'file' => true,
+			'field' => $args['name'],
+		) );
+
+		if ( is_wp_error( $result ) ) {
+			return $result;
+		}
 	}
 
 	// File type validation
