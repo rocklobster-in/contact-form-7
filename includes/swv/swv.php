@@ -167,10 +167,12 @@ abstract class WPCF7_SWV_CompositeRule extends WPCF7_SWV_Rule {
 
 	public function validate( $context ) {
 		foreach ( $this->rules() as $rule ) {
-			$result = $rule->validate( $context );
+			if ( $rule->match( $context ) ) {
+				$result = $rule->validate( $context );
 
-			if ( is_wp_error( $result ) ) {
-				return $result;
+				if ( is_wp_error( $result ) ) {
+					return $result;
+				}
 			}
 		}
 
