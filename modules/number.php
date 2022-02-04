@@ -116,7 +116,7 @@ function wpcf7_number_swv_add_rules( $schema, $tags ) {
 				$schema->add_rule(
 					wpcf7_swv_create_rule( 'minnumber', array(
 						'field' => $tag->name,
-						'threshold' => (float) $min,
+						'threshold' => $min,
 						'message' => wpcf7_get_message( 'number_too_small' ),
 					) )
 				);
@@ -126,7 +126,7 @@ function wpcf7_number_swv_add_rules( $schema, $tags ) {
 				$schema->add_rule(
 					wpcf7_swv_create_rule( 'maxnumber', array(
 						'field' => $tag->name,
-						'threshold' => (float) $max,
+						'threshold' => $max,
 						'message' => wpcf7_get_message( 'number_too_large' ),
 					) )
 				);
