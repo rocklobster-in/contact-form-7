@@ -112,12 +112,8 @@ abstract class WPCF7_SWV_Rule {
 		$this->properties = wp_parse_args( $properties, array() );
 	}
 
-	public function get_field_name() {
-		return $this->get_property( 'field' );
-	}
-
 	public function match( $context ) {
-		$field = $this->get_field_name();
+		$field = $this->get_property( 'field' );
 
 		if ( ! empty( $context['field'] ) ) {
 			if ( $field and ! in_array( $field, (array) $context['field'], true ) ) {
@@ -136,7 +132,7 @@ abstract class WPCF7_SWV_Rule {
 		return (array) $this->properties;
 	}
 
-	protected function get_property( $name ) {
+	public function get_property( $name ) {
 		if ( isset( $this->properties[$name] ) ) {
 			return $this->properties[$name];
 		}

@@ -44,7 +44,7 @@ trait WPCF7_SWV_SchemaHolder {
 					call_user_func( $callback, $child_rule );
 				}
 			} else {
-				$field = $rule->get_field_name();
+				$field = $rule->get_property( 'field' );
 
 				if ( $validity->is_valid( $field ) ) {
 					$result = $rule->validate( $context );
