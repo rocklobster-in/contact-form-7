@@ -136,37 +136,6 @@ function wpcf7_number_swv_add_rules( $schema, $tags ) {
 }
 
 
-/* Validation filter */
-
-add_filter( 'wpcf7_validate_number', 'wpcf7_number_validation_filter', 10, 2 );
-add_filter( 'wpcf7_validate_number*', 'wpcf7_number_validation_filter', 10, 2 );
-add_filter( 'wpcf7_validate_range', 'wpcf7_number_validation_filter', 10, 2 );
-add_filter( 'wpcf7_validate_range*', 'wpcf7_number_validation_filter', 10, 2 );
-
-function wpcf7_number_validation_filter( $result, $tag ) {
-	$name = $tag->name;
-
-	$value = isset( $_POST[$name] )
-		? trim( strtr( (string) $_POST[$name], "\n", " " ) )
-		: '';
-
-	$min = $tag->get_option( 'min', 'signed_int', true );
-	$max = $tag->get_option( 'max', 'signed_int', true );
-
-	if ( $tag->is_required() and '' === $value ) {
-		$result->invalidate( $tag, wpcf7_get_message( 'invalid_required' ) );
-	} elseif ( '' !== $value and ! wpcf7_is_number( $value ) ) {
-		$result->invalidate( $tag, wpcf7_get_message( 'invalid_number' ) );
-	} elseif ( '' !== $value and false !== $min and (float) $value < (float) $min ) {
-		$result->invalidate( $tag, wpcf7_get_message( 'number_too_small' ) );
-	} elseif ( '' !== $value and false !== $max and (float) $max < (float) $value ) {
-		$result->invalidate( $tag, wpcf7_get_message( 'number_too_large' ) );
-	}
-
-	return $result;
-}
-
-
 /* Messages */
 
 add_filter( 'wpcf7_messages', 'wpcf7_number_messages', 10, 1 );

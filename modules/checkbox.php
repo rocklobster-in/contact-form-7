@@ -204,28 +204,6 @@ function wpcf7_checkbox_swv_add_rules( $schema, $tags ) {
 }
 
 
-/* Validation filter */
-
-add_filter( 'wpcf7_validate_checkbox',
-	'wpcf7_checkbox_validation_filter', 10, 2 );
-add_filter( 'wpcf7_validate_checkbox*',
-	'wpcf7_checkbox_validation_filter', 10, 2 );
-add_filter( 'wpcf7_validate_radio',
-	'wpcf7_checkbox_validation_filter', 10, 2 );
-
-function wpcf7_checkbox_validation_filter( $result, $tag ) {
-	$name = $tag->name;
-	$is_required = $tag->is_required() || 'radio' == $tag->type;
-	$value = isset( $_POST[$name] ) ? (array) $_POST[$name] : array();
-
-	if ( $is_required and empty( $value ) ) {
-		$result->invalidate( $tag, wpcf7_get_message( 'invalid_required' ) );
-	}
-
-	return $result;
-}
-
-
 /* Tag generator */
 
 add_action( 'wpcf7_admin_init',

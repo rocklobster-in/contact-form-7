@@ -146,35 +146,6 @@ function wpcf7_date_swv_add_rules( $schema, $tags ) {
 }
 
 
-/* Validation filter */
-
-add_filter( 'wpcf7_validate_date', 'wpcf7_date_validation_filter', 10, 2 );
-add_filter( 'wpcf7_validate_date*', 'wpcf7_date_validation_filter', 10, 2 );
-
-function wpcf7_date_validation_filter( $result, $tag ) {
-	$name = $tag->name;
-
-	$min = $tag->get_date_option( 'min' );
-	$max = $tag->get_date_option( 'max' );
-
-	$value = isset( $_POST[$name] )
-		? trim( strtr( (string) $_POST[$name], "\n", " " ) )
-		: '';
-
-	if ( $tag->is_required() and '' === $value ) {
-		$result->invalidate( $tag, wpcf7_get_message( 'invalid_required' ) );
-	} elseif ( '' !== $value and ! wpcf7_is_date( $value ) ) {
-		$result->invalidate( $tag, wpcf7_get_message( 'invalid_date' ) );
-	} elseif ( '' !== $value and ! empty( $min ) and $value < $min ) {
-		$result->invalidate( $tag, wpcf7_get_message( 'date_too_early' ) );
-	} elseif ( '' !== $value and ! empty( $max ) and $max < $value ) {
-		$result->invalidate( $tag, wpcf7_get_message( 'date_too_late' ) );
-	}
-
-	return $result;
-}
-
-
 /* Messages */
 
 add_filter( 'wpcf7_messages', 'wpcf7_date_messages', 10, 1 );

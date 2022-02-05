@@ -128,32 +128,6 @@ function wpcf7_select_form_tag_handler( $tag ) {
 }
 
 
-/* Validation filter */
-
-add_filter( 'wpcf7_validate_select', 'wpcf7_select_validation_filter', 10, 2 );
-add_filter( 'wpcf7_validate_select*', 'wpcf7_select_validation_filter', 10, 2 );
-
-function wpcf7_select_validation_filter( $result, $tag ) {
-	$name = $tag->name;
-
-	$has_value = isset( $_POST[$name] ) && '' !== $_POST[$name];
-
-	if ( $has_value and $tag->has_option( 'multiple' ) ) {
-		$vals = array_filter( (array) $_POST[$name], function( $val ) {
-			return '' !== $val;
-		} );
-
-		$has_value = ! empty( $vals );
-	}
-
-	if ( $tag->is_required() and ! $has_value ) {
-		$result->invalidate( $tag, wpcf7_get_message( 'invalid_required' ) );
-	}
-
-	return $result;
-}
-
-
 /* Tag generator */
 
 add_action( 'wpcf7_admin_init', 'wpcf7_add_tag_generator_menu', 25, 0 );
