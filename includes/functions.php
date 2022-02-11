@@ -534,7 +534,7 @@ function wpcf7_deprecated_function( $function, $version, $replacement ) {
 			trigger_error(
 				sprintf(
 					/* translators: 1: PHP function name, 2: version number, 3: alternative function name */
-					__( '%1$s is <strong>deprecated</strong> since Contact Form 7 version %2$s! Use %3$s instead.', 'contact-form-7' ),
+					__( 'Function %1$s is <strong>deprecated</strong> since Contact Form 7 version %2$s! Use %3$s instead.', 'contact-form-7' ),
 					$function, $version, $replacement
 				),
 				E_USER_DEPRECATED
@@ -542,7 +542,7 @@ function wpcf7_deprecated_function( $function, $version, $replacement ) {
 		} else {
 			trigger_error(
 				sprintf(
-					'%1$s is <strong>deprecated</strong> since Contact Form 7 version %2$s! Use %3$s instead.',
+					'Function %1$s is <strong>deprecated</strong> since Contact Form 7 version %2$s! Use %3$s instead.',
 					$function, $version, $replacement
 				),
 				E_USER_DEPRECATED
@@ -571,7 +571,7 @@ function wpcf7_apply_filters_deprecated( $tag, $args, $version, $replacement ) {
 		trigger_error(
 			sprintf(
 				/* translators: 1: WordPress hook name, 2: version number, 3: alternative hook name */
-				__( '%1$s is <strong>deprecated</strong> since Contact Form 7 version %2$s! Use %3$s instead.', 'contact-form-7' ),
+				__( 'Hook %1$s is <strong>deprecated</strong> since Contact Form 7 version %2$s! Use %3$s instead.', 'contact-form-7' ),
 				$tag, $version, $replacement
 			),
 			E_USER_DEPRECATED
@@ -604,7 +604,7 @@ function wpcf7_doing_it_wrong( $function, $message, $version ) {
 			trigger_error(
 				sprintf(
 					/* translators: Developer debugging message. 1: PHP function name, 2: Explanatory message, 3: Contact Form 7 version number. */
-					__( '%1$s was called incorrectly. %2$s %3$s', 'contact-form-7' ),
+					__( 'Function %1$s was called incorrectly. %2$s %3$s', 'contact-form-7' ),
 					$function,
 					$message,
 					$version
@@ -621,7 +621,7 @@ function wpcf7_doing_it_wrong( $function, $message, $version ) {
 
 			trigger_error(
 				sprintf(
-					'%1$s was called incorrectly. %2$s %3$s',
+					'Function %1$s was called incorrectly. %2$s %3$s',
 					$function,
 					$message,
 					$version
