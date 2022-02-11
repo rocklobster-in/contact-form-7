@@ -1,14 +1,9 @@
-import apiFetch from '@wordpress/api-fetch';
 import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
 
-window.wpcf7 = window.wpcf7 ?? {};
-
-apiFetch( {
-	path: 'contact-form-7/v1/contact-forms?per_page=20',
-} ).then( response => {
-	window.wpcf7.contactForms = response;
-} );
+window.wpcf7 = window.wpcf7 ?? {
+	contactForms: [],
+};
 
 import icon from './icon';
 import edit from './edit';
