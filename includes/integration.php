@@ -9,9 +9,18 @@ class WPCF7_Integration {
 
 	private function __construct() {}
 
+	public static function get_builtin_categories() {
+		return array(
+			'spam_protection' => __( 'Spam protection', 'contact-form-7' ),
+			'email_marketing' => __( 'Email marketing', 'contact-form-7' ),
+			'payments' => __( 'Payments', 'contact-form-7' ),
+		);
+	}
+
 	public static function get_instance() {
 		if ( empty( self::$instance ) ) {
 			self::$instance = new self;
+			self::$instance->categories = self::get_builtin_categories();
 		}
 
 		return self::$instance;
