@@ -1,7 +1,7 @@
 {
 	"name": "contact-form-7",
-	"version": "5.3.0",
-	"description": "Contact form selector block.",
+	"version": "5.5.5",
+	"description": "JavaScript packages for Contact Form 7.",
 	"private": true,
 	"scripts": {
 		"start:front": "wp-scripts start includes/js/src/index.js --output-path=includes/js",
