@@ -18,10 +18,6 @@ add_action(
 function wpcf7_constant_contact_register_service() {
 	$integration = WPCF7_Integration::get_instance();
 
-	$integration->add_category( 'email_marketing',
-		__( 'Email marketing', 'contact-form-7' )
-	);
-
 	$service = WPCF7_ConstantContact::get_instance();
 	$integration->add_service( 'constant_contact', $service );
 }

@@ -5,10 +5,6 @@ add_action( 'wpcf7_init', 'wpcf7_recaptcha_register_service', 15, 0 );
 function wpcf7_recaptcha_register_service() {
 	$integration = WPCF7_Integration::get_instance();
 
-	$integration->add_category( 'captcha',
-		__( 'CAPTCHA', 'contact-form-7' )
-	);
-
 	$integration->add_service( 'recaptcha',
 		WPCF7_RECAPTCHA::get_instance()
 	);
@@ -241,7 +237,7 @@ class WPCF7_RECAPTCHA extends WPCF7_Service {
 	}
 
 	public function get_categories() {
-		return array( 'captcha' );
+		return array( 'spam_protection' );
 	}
 
 	public function icon() {

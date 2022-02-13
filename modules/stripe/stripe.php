@@ -16,10 +16,6 @@ add_action(
 function wpcf7_stripe_register_service() {
 	$integration = WPCF7_Integration::get_instance();
 
-	$integration->add_category( 'payments',
-		__( 'Payments', 'contact-form-7' )
-	);
-
 	$integration->add_service( 'stripe',
 		WPCF7_Stripe::get_instance()
 	);

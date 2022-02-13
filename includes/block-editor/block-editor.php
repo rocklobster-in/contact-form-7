@@ -44,4 +44,28 @@ function wpcf7_init_block_editor_assets() {
 			'editor_script' => 'contact-form-7-block-editor',
 		)
 	);
+
+	$contact_forms = array_map(
+		function ( $contact_form ) {
+			return array(
+				'id' => $contact_form->id(),
+				'slug' => $contact_form->name(),
+				'title' => $contact_form->title(),
+				'locale' => $contact_form->locale(),
+			);
+		},
+		WPCF7_ContactForm::find( array(
+			'posts_per_page' => 20,
+		) )
+	);
+
+	wp_add_inline_script(
+		'contact-form-7-block-editor',
+		sprintf(
+			'window.wpcf7 = {contactForms:%s};',
+			json_encode( $contact_forms )
+		),
+		'before'
+	);
+
 }
