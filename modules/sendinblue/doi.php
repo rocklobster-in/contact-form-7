@@ -21,6 +21,10 @@ function wpcf7_sendinblue_doi_register_agent() {
 	}
 
 	doihelper_register_agent( 'wpcf7_sendinblue', array(
+		'acceptance_period' => apply_filters(
+			'wpcf7_sendinblue_doi_acceptance_period',
+			24 * HOUR_IN_SECONDS
+		),
 		'optin_callback' => apply_filters(
 			'wpcf7_sendinblue_doi_optin_callback',
 			'wpcf7_sendinblue_doi_default_optin_callback'
