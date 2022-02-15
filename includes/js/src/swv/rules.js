@@ -5,6 +5,6 @@ export const required = function ( formData ) {
 	const values = getFieldValues( formData, this.field );
 
 	if ( 0 === values.length ) {
-		throw new ValidationError( 'invalid_required', this.message );
+		throw new ValidationError( this );
 	}
 };

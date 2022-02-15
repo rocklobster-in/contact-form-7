@@ -12,7 +12,7 @@ export default function validate( form, context ) {
 		return field === context.field;
 	} ).forEach( ( { rule, ...properties } ) => {
 		if ( 'function' === typeof validators[rule] ) {
-			validators[rule].call( properties, formData );
+			validators[rule].call( { rule, ...properties }, formData );
 		}
 	} );
 }
