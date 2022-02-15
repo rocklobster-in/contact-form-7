@@ -83,6 +83,14 @@ export default function init( form ) {
 	} );
 
 	form.addEventListener( 'change', event => {
-		wpcf7.validate( form );
+		const context = {
+			field: event.target.name,
+		};
+
+		try {
+			wpcf7.validate( form, context );
+		} catch ( error ) {
+			console.error( error );
+		}
 	} );
 }
