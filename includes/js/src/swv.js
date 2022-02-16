@@ -1,8 +1,4 @@
-import { required } from './swv/rules';
-
-const validators = {
-	required,
-};
+import * as validators from './swv/rules';
 
 export default function validate( form, context ) {
 	const rules = form.wpcf7.schema.rules ?? [];
