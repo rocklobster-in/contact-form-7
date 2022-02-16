@@ -135,7 +135,9 @@ class WPCF7_Mail {
 			(array) $components['attachments'],
 			function ( $attachment ) {
 				$path = path_join( WP_CONTENT_DIR, $attachment );
-
+				if ( defined( 'WPCF7_UPLOADS_TMP_DIR' ) ) {
+					$path = path_join( wpcf7_upload_tmp_dir(), $attachment );
+				}
 				if ( ! wpcf7_is_file_path_in_content_dir( $path ) ) {
 					if ( WP_DEBUG ) {
 						trigger_error(

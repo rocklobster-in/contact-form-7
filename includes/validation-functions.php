@@ -185,6 +185,12 @@ function wpcf7_is_file_path_in_content_dir( $path ) {
 		return true;
 	}
 
+	if ( defined ('WPCF7_UPLOADS_TMP_IN_WP_CONTENT')
+	and ! WPCF7_UPLOADS_TMP_IN_WP_CONTENT
+	and 0 === strpos( $path, wpcf7_upload_tmp_dir() ) ) {
+		return true;
+	}
+
 	if ( defined( 'UPLOADS' )
 	and 0 === strpos( $path, realpath( ABSPATH . UPLOADS ) ) ) {
 		return true;

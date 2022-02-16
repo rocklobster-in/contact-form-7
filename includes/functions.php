@@ -68,7 +68,7 @@ function wpcf7_upload_dir( $type = false ) {
 	) );
 
 	if ( 'dir' == $type ) {
-		return $uploads['dir'];
+		return realpath( $uploads['dir'] );
 	} if ( 'url' == $type ) {
 		return $uploads['url'];
 	}
