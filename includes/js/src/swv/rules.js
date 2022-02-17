@@ -18,7 +18,11 @@ export const required = function ( formData ) {
  * Verifies required file fields are filled in.
  */
 export const requiredfile = function ( formData ) {
+	const values = getFieldValues( formData, this.field );
 
+	if ( 0 === values.length ) {
+		throw new ValidationError( this );
+	}
 };
 
 
