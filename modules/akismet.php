@@ -70,6 +70,10 @@ function wpcf7_akismet( $spam, $submission ) {
 	return $spam;
 }
 
+
+/**
+ * Returns true if Akismet is active and has a valid API key.
+ */
 function wpcf7_akismet_is_available() {
 	if ( is_callable( array( 'Akismet', 'get_api_key' ) ) ) {
 		return (bool) Akismet::get_api_key();
@@ -78,6 +82,11 @@ function wpcf7_akismet_is_available() {
 	return false;
 }
 
+
+/**
+ * Returns an array of parameters based on the current form submission.
+ * Returns false if Akismet is not active on the contact form.
+ */
 function wpcf7_akismet_submitted_params() {
 	$akismet_tags = array_filter(
 		wpcf7_scan_form_tags(),
@@ -172,6 +181,13 @@ function wpcf7_akismet_submitted_params() {
 	return $params;
 }
 
+
+/**
+ * Sends data to Akismet.
+ *
+ * @param array $comment Submission and environment data.
+ * @return bool True if Akismet called it spam, or false otherwise.
+ */
 function wpcf7_akismet_comment_check( $comment ) {
 	$spam = false;
 	$query_string = wpcf7_build_query( $comment );
