@@ -7,8 +7,12 @@ if ( ! class_exists( 'WPCF7_Service_OAuth2' ) ) {
 class WPCF7_ConstantContact extends WPCF7_Service_OAuth2 {
 
 	const service_name = 'constant_contact';
-	const authorization_endpoint = 'https://api.cc.email/v3/idfed';
-	const token_endpoint = 'https://idfed.constantcontact.com/as/token.oauth2';
+
+	const authorization_endpoint
+		= 'https://authz.constantcontact.com/oauth2/default/v1/authorize';
+
+	const token_endpoint
+		= 'https://authz.constantcontact.com/oauth2/default/v1/token';
 
 	private static $instance;
 	protected $contact_lists = array();
@@ -54,15 +58,15 @@ class WPCF7_ConstantContact extends WPCF7_Service_OAuth2 {
 
 	public function auth_redirect() {
 		$auth = isset( $_GET['auth'] ) ? trim( $_GET['auth'] ) : '';
-		$code = isset( $_GET['code'] ) ? trim( $_GET['code'] ) : '';
 
-		if ( self::service_name === $auth and $code
+		if ( self::service_name === $auth
 		and current_user_can( 'wpcf7_manage_integration' ) ) {
 			$redirect_to = add_query_arg(
 				array(
 					'service' => self::service_name,
 					'action' => 'auth_redirect',
-					'code' => $code,
+					'code' => isset( $_GET['code'] ) ? trim( $_GET['code'] ) : '',
+					'state' => isset( $_GET['state'] ) ? trim( $_GET['state'] ) : '',
 				),
 				menu_page_url( 'wpcf7-integration', false )
 			);
@@ -125,7 +129,7 @@ class WPCF7_ConstantContact extends WPCF7_Service_OAuth2 {
 		$url = menu_page_url( 'wpcf7-integration', false );
 		$url = add_query_arg( array( 'service' => self::service_name ), $url );
 
-		if ( ! empty( $args) ) {
+		if ( ! empty( $args ) ) {
 			$url = add_query_arg( $args, $url );
 		}
 
@@ -133,7 +137,30 @@ class WPCF7_ConstantContact extends WPCF7_Service_OAuth2 {
 	}
 
 	public function load( $action = '' ) {
-		parent::load( $action );
+		if ( 'auth_redirect' == $action ) {
+			$code = isset( $_GET['code'] ) ? urldecode( $_GET['code'] ) : '';
+			$state = isset( $_GET['state'] ) ? urldecode( $_GET['state'] ) : '';
+
+			if ( $code and $state
+			and wpcf7_verify_nonce( $state, 'wpcf7_constant_contact_authorize' ) ) {
+				$response = $this->request_token( $code );
+			}
+
+			if ( ! empty( $this->access_token ) ) {
+				$message = 'success';
+			} else {
+				$message = 'failed';
+			}
+
+			wp_safe_redirect( $this->menu_page_url(
+				array(
+					'action' => 'setup',
+					'message' => $message,
+				)
+			) );
+
+			exit();
+		}
 
 		if ( 'setup' == $action and 'POST' == $_SERVER['REQUEST_METHOD'] ) {
 			check_admin_referer( 'wpcf7-constant-contact-setup' );
@@ -148,10 +175,27 @@ class WPCF7_ConstantContact extends WPCF7_Service_OAuth2 {
 					? trim( $_POST['client_secret'] ) : '';
 
 				$this->save_data();
-				$this->authorize( 'contact_data' );
+				$this->authorize( 'contact_data offline_access' );
 			}
 
 			wp_safe_redirect( $this->menu_page_url( 'action=setup' ) );
+			exit();
+		}
+	}
+
+	protected function authorize( $scope = '' ) {
+		$endpoint = add_query_arg(
+			array_map( 'urlencode', array(
+				'response_type' => 'code',
+				'client_id' => $this->client_id,
+				'redirect_uri' => $this->get_redirect_uri(),
+				'scope' => $scope,
+				'state' => wpcf7_create_nonce( 'wpcf7_constant_contact_authorize' ),
+			) ),
+			$this->authorization_endpoint
+		);
+
+		if ( wp_redirect( esc_url_raw( $endpoint ) ) ) {
 			exit();
 		}
 	}
