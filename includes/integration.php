@@ -1,4 +1,9 @@
 <?php
+/**
+ * Integration API
+ *
+ * @link https://contactform7.com/integration-with-external-apis/
+ */
 
 class WPCF7_Integration {
 
@@ -9,6 +14,12 @@ class WPCF7_Integration {
 
 	private function __construct() {}
 
+
+	/**
+	 * Returns initially supported service categories.
+	 *
+	 * @return array Service categories.
+	 */
 	public static function get_builtin_categories() {
 		return array(
 			'spam_protection' => __( 'Spam protection', 'contact-form-7' ),
@@ -17,6 +28,12 @@ class WPCF7_Integration {
 		);
 	}
 
+
+	/**
+	 * Returns the singleton instance of this class.
+	 *
+	 * @return WPCF7_Integration The instance.
+	 */
 	public static function get_instance() {
 		if ( empty( self::$instance ) ) {
 			self::$instance = new self;
@@ -26,6 +43,10 @@ class WPCF7_Integration {
 		return self::$instance;
 	}
 
+
+	/**
+	 * Adds a service to the services list.
+	 */
 	public function add_service( $name, WPCF7_Service $service ) {
 		$name = sanitize_key( $name );
 
@@ -37,6 +58,10 @@ class WPCF7_Integration {
 		$this->services[$name] = $service;
 	}
 
+
+	/**
+	 * Adds a service category to the categories list.
+	 */
 	public function add_category( $name, $title ) {
 		$name = sanitize_key( $name );
 
@@ -48,6 +73,12 @@ class WPCF7_Integration {
 		$this->categories[$name] = $title;
 	}
 
+
+	/**
+	 * Returns true if a service with the name exists in the services list.
+	 *
+	 * @param string $name The name of service to search.
+	 */
 	public function service_exists( $name = '' ) {
 		if ( '' == $name ) {
 			return (bool) count( $this->services );
@@ -56,6 +87,14 @@ class WPCF7_Integration {
 		}
 	}
 
+
+	/**
+	 * Returns a service object with the name.
+	 *
+	 * @param string $name The name of service.
+	 * @return WPCF7_Service|bool The service object if it exists,
+	 *                            false otherwise.
+	 */
 	public function get_service( $name ) {
 		if ( $this->service_exists( $name ) ) {
 			return $this->services[$name];
@@ -64,6 +103,10 @@ class WPCF7_Integration {
 		}
 	}
 
+
+	/**
+	 * Prints services list.
+	 */
 	public function list_services( $args = '' ) {
 		$args = wp_parse_args( $args, array(
 			'include' => array(),
