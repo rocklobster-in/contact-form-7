@@ -1,9 +1,18 @@
 <?php
+/**
+ * reCAPTCHA module main file
+ *
+ * @link https://contactform7.com/recaptcha/
+ */
 
 wpcf7_include_module_file( 'recaptcha/service.php' );
 
+
 add_action( 'wpcf7_init', 'wpcf7_recaptcha_register_service', 15, 0 );
 
+/**
+ * Registers the reCAPTCHA service.
+ */
 function wpcf7_recaptcha_register_service() {
 	$integration = WPCF7_Integration::get_instance();
 
@@ -12,8 +21,16 @@ function wpcf7_recaptcha_register_service() {
 	);
 }
 
-add_action( 'wp_enqueue_scripts', 'wpcf7_recaptcha_enqueue_scripts', 20, 0 );
 
+add_action(
+	'wp_enqueue_scripts',
+	'wpcf7_recaptcha_enqueue_scripts',
+	20, 0
+);
+
+/**
+ * Enqueues frontend scripts for reCAPTCHA.
+ */
 function wpcf7_recaptcha_enqueue_scripts() {
 	$service = WPCF7_RECAPTCHA::get_instance();
 
@@ -78,10 +95,16 @@ function wpcf7_recaptcha_enqueue_scripts() {
 	);
 }
 
-add_filter( 'wpcf7_form_hidden_fields',
-	'wpcf7_recaptcha_add_hidden_fields', 100, 1
+
+add_filter(
+	'wpcf7_form_hidden_fields',
+	'wpcf7_recaptcha_add_hidden_fields',
+	100, 1
 );
 
+/**
+ * Adds hidden form field for reCAPTCHA.
+ */
 function wpcf7_recaptcha_add_hidden_fields( $fields ) {
 	$service = WPCF7_RECAPTCHA::get_instance();
 
@@ -94,8 +117,12 @@ function wpcf7_recaptcha_add_hidden_fields( $fields ) {
 	) );
 }
 
+
 add_filter( 'wpcf7_spam', 'wpcf7_recaptcha_verify_response', 9, 2 );
 
+/**
+ * Verifies reCAPTCHA token on the server side.
+ */
 function wpcf7_recaptcha_verify_response( $spam, $submission ) {
 	if ( $spam ) {
 		return $spam;
@@ -118,13 +145,19 @@ function wpcf7_recaptcha_verify_response( $spam, $submission ) {
 		if ( '' === $token ) {
 			$submission->add_spam_log( array(
 				'agent' => 'recaptcha',
-				'reason' => __( 'reCAPTCHA response token is empty.', 'contact-form-7' ),
+				'reason' => __(
+					'reCAPTCHA response token is empty.',
+					'contact-form-7'
+				),
 			) );
 		} else {
 			$submission->add_spam_log( array(
 				'agent' => 'recaptcha',
 				'reason' => sprintf(
-					__( 'reCAPTCHA score (%1$.2f) is lower than the threshold (%2$.2f).', 'contact-form-7' ),
+					__(
+						'reCAPTCHA score (%1$.2f) is lower than the threshold (%2$.2f).',
+						'contact-form-7'
+					),
 					$service->get_last_score(),
 					$service->get_threshold()
 				),
@@ -135,8 +168,12 @@ function wpcf7_recaptcha_verify_response( $spam, $submission ) {
 	return $spam;
 }
 
+
 add_action( 'wpcf7_init', 'wpcf7_recaptcha_add_form_tag_recaptcha', 10, 0 );
 
+/**
+ * Registers form-tag types for reCAPTCHA.
+ */
 function wpcf7_recaptcha_add_form_tag_recaptcha() {
 	$service = WPCF7_RECAPTCHA::get_instance();
 
@@ -150,8 +187,12 @@ function wpcf7_recaptcha_add_form_tag_recaptcha() {
 	);
 }
 
+
 add_action( 'wpcf7_upgrade', 'wpcf7_upgrade_recaptcha_v2_v3', 10, 2 );
 
+/**
+ * Adds warnings for users upgrading from reCAPTCHA v2 to v3.
+ */
 function wpcf7_upgrade_recaptcha_v2_v3( $new_ver, $old_ver ) {
 	if ( version_compare( '5.1-dev', $old_ver, '<=' ) ) {
 		return;
@@ -168,32 +209,53 @@ function wpcf7_upgrade_recaptcha_v2_v3( $new_ver, $old_ver ) {
 	WPCF7::update_option( 'recaptcha', null );
 }
 
+
 add_action( 'wpcf7_admin_menu', 'wpcf7_admin_init_recaptcha_v2_v3', 10, 0 );
 
+/**
+ * Adds filters and actions for warnings.
+ */
 function wpcf7_admin_init_recaptcha_v2_v3() {
 	if ( ! WPCF7::get_option( 'recaptcha_v2_v3_warning' ) ) {
 		return;
 	}
 
-	add_filter( 'wpcf7_admin_menu_change_notice',
-		'wpcf7_admin_menu_change_notice_recaptcha_v2_v3', 10, 1 );
+	add_filter(
+		'wpcf7_admin_menu_change_notice',
+		'wpcf7_admin_menu_change_notice_recaptcha_v2_v3',
+		10, 1
+	);
 
-	add_action( 'wpcf7_admin_warnings',
-		'wpcf7_admin_warnings_recaptcha_v2_v3', 5, 3 );
+	add_action(
+		'wpcf7_admin_warnings',
+		'wpcf7_admin_warnings_recaptcha_v2_v3',
+		5, 3
+	);
 }
 
+
+/**
+ * Increments the admin menu counter for the Integration page.
+ */
 function wpcf7_admin_menu_change_notice_recaptcha_v2_v3( $counts ) {
 	$counts['wpcf7-integration'] += 1;
 	return $counts;
 }
 
+
+/**
+ * Prints warnings on the admin screen.
+ */
 function wpcf7_admin_warnings_recaptcha_v2_v3( $page, $action, $object ) {
 	if ( 'wpcf7-integration' !== $page ) {
 		return;
 	}
 
 	$message = sprintf(
-		esc_html( __( "API keys for reCAPTCHA v3 are different from those for v2; keys for v2 don&#8217;t work with the v3 API. You need to register your sites again to get new keys for v3. For details, see %s.", 'contact-form-7' ) ),
+		esc_html( __(
+			"API keys for reCAPTCHA v3 are different from those for v2; keys for v2 don&#8217;t work with the v3 API. You need to register your sites again to get new keys for v3. For details, see %s.",
+			'contact-form-7'
+		) ),
 		wpcf7_link(
 			__( 'https://contactform7.com/recaptcha/', 'contact-form-7' ),
 			__( 'reCAPTCHA (v3)', 'contact-form-7' )
