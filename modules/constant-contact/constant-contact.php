@@ -1,4 +1,9 @@
 <?php
+/**
+ * Constant Contact module main file
+ *
+ * @link https://contactform7.com/constant-contact-integration/
+ */
 
 wpcf7_include_module_file( 'constant-contact/service.php' );
 wpcf7_include_module_file( 'constant-contact/contact-post-request.php' );
