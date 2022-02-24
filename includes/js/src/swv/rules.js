@@ -30,7 +30,14 @@ export const requiredfile = function ( formData ) {
  * Verifies email fields have email values.
  */
 export const email = function ( formData ) {
+	const values = getFieldValues( formData, this.field );
 
+	// https://html.spec.whatwg.org/multipage/input.html#email-state-(type=email)
+	const regExp = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+
+	if ( ! values.every( text => text.match( regExp ) ) ) {
+		throw new ValidationError( this );
+	}
 };
 
 
