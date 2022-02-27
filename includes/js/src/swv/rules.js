@@ -102,15 +102,18 @@ export const number = function ( formData ) {
 	const values = getFieldValues( formData, this.field );
 
 	// https://html.spec.whatwg.org/multipage/input.html#number-state-(type=number)
-	// Intentionally not supporting exponent (e) notation.
 	const isValidFloatingPointNumber = text => {
 		text = text.trim();
 
-		if ( /^[-]?[0-9]+$/.test( text ) ) {
+		if ( /^[-]?[0-9]+(?:[eE][+-]?[0-9]+)?$/.test( text ) ) {
 			return true;
 		}
 
-		return /^[-]?(?:[0-9]+)?[.][0-9]+$/.test( text );
+		if ( /^[-]?(?:[0-9]+)?[.][0-9]+(?:[eE][+-]?[0-9]+)?$/.test( text ) ) {
+			return true;
+		}
+
+		return false;
 	};
 
 	if ( ! values.every( isValidFloatingPointNumber ) ) {
