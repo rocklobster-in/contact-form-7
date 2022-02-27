@@ -126,7 +126,16 @@ export const number = function ( formData ) {
  * Verifies date fields have date values.
  */
 export const date = function ( formData ) {
+	const values = getFieldValues( formData, this.field );
 
+	// https://html.spec.whatwg.org/multipage/input.html#date-state-(type=date)
+	const isValidDateString = text => {
+		return /^[0-9]{4,}-[0-9]{2}-[0-9]{2}$/.test( text.trim() );
+	};
+
+	if ( ! values.every( isValidDateString ) ) {
+		throw new ValidationError( this );
+	}
 };
 
 
