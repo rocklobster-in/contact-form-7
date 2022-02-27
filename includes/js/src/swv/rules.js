@@ -99,7 +99,23 @@ export const tel = function ( formData ) {
  * Verifies number fields have number values.
  */
 export const number = function ( formData ) {
+	const values = getFieldValues( formData, this.field );
 
+	// https://html.spec.whatwg.org/multipage/input.html#number-state-(type=number)
+	// Intentionally not supporting exponent (e) notation.
+	const isValidFloatingPointNumber = text => {
+		text = text.trim();
+
+		if ( /^[-]?[0-9]+$/.test( text ) ) {
+			return true;
+		}
+
+		return /^[-]?(?:[0-9]+)?[.][0-9]+$/.test( text );
+	};
+
+	if ( ! values.every( isValidFloatingPointNumber ) ) {
+		throw new ValidationError( this );
+	}
 };
 
 
