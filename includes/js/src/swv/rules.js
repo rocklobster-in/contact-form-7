@@ -35,7 +35,7 @@ export const email = function ( formData ) {
 	// https://html.spec.whatwg.org/multipage/input.html#email-state-(type=email)
 	const regExp = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 
-	if ( ! values.every( text => text.match( regExp ) ) ) {
+	if ( ! values.every( text => regExp.test( text.trim() ) ) ) {
 		throw new ValidationError( this );
 	}
 };
@@ -45,7 +45,30 @@ export const email = function ( formData ) {
  * Verifies URL fields have URL values.
  */
 export const url = function ( formData ) {
+	const values = getFieldValues( formData, this.field );
 
+	// https://html.spec.whatwg.org/multipage/input.html#url-state-(type=url)
+	// Intentionally applying a loose validation
+	// for consistency with implementation in current major browsers.
+	const isAbsoluteUrl = text => {
+		const found = text.trim().match(
+			/^([a-z][a-z0-9.+-]*):([^\p{C}\p{Z}]+)$/iu
+		);
+
+		if ( ! found ) {
+			return false;
+		} else if ( /^(?:ftp|http|https|ws|wss)$/i.test( found[1] ) ) {
+			return /^\/\/.+$/iu.test( found[2] );
+		} else if ( /^file$/i.test( found[1] ) ) {
+			return /^\/\/.+$/iu.test( found[2] );
+		} else {
+			return /^.+$/iu.test( found[2] );
+		}
+	};
+
+	if ( ! values.every( isAbsoluteUrl ) ) {
+		throw new ValidationError( this );
+	}
 };
 
 
