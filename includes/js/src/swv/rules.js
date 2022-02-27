@@ -76,7 +76,22 @@ export const url = function ( formData ) {
  * Verifies telephone number fields have telephone number values.
  */
 export const tel = function ( formData ) {
+	const values = getFieldValues( formData, this.field );
 
+	// https://html.spec.whatwg.org/multipage/input.html#telephone-state-(type=tel)
+	const isTelephoneNumber = text => {
+		text = text.trim();
+
+		if ( /[\r\n\p{C}]/.test( text ) ) {
+			return false;
+		}
+
+		return /[0-9]/.test( text );
+	};
+
+	if ( ! values.every( isTelephoneNumber ) ) {
+		throw new ValidationError( this );
+	}
 };
 
 
