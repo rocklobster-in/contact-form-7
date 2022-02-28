@@ -171,7 +171,19 @@ export const file = function ( formData ) {
  * Verifies string values are not shorter than threshold.
  */
 export const minlength = function ( formData ) {
+	const values = getFieldValues( formData, this.field );
 
+	let totalLength = 0;
+
+	values.forEach( val => {
+		if ( 'string' === typeof val ) {
+			totalLength += val.length;
+		}
+	} );
+
+	if ( totalLength < this.threshold ) {
+		throw new ValidationError( this );
+	}
 };
 
 
@@ -179,7 +191,19 @@ export const minlength = function ( formData ) {
  * Verifies string values are not longer than threshold.
  */
 export const maxlength = function ( formData ) {
+	const values = getFieldValues( formData, this.field );
 
+	let totalLength = 0;
+
+	values.forEach( val => {
+		if ( 'string' === typeof val ) {
+			totalLength += val.length;
+		}
+	} );
+
+	if ( this.threshold < totalLength ) {
+		throw new ValidationError( this );
+	}
 };
 
 
