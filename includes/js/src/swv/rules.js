@@ -181,7 +181,7 @@ export const minlength = function ( formData ) {
 		}
 	} );
 
-	if ( totalLength < this.threshold ) {
+	if ( totalLength < parseInt( this.threshold ) ) {
 		throw new ValidationError( this );
 	}
 };
@@ -201,7 +201,7 @@ export const maxlength = function ( formData ) {
 		}
 	} );
 
-	if ( this.threshold < totalLength ) {
+	if ( parseInt( this.threshold ) < totalLength ) {
 		throw new ValidationError( this );
 	}
 };
@@ -211,7 +211,19 @@ export const maxlength = function ( formData ) {
  * Verifies numerical values are not smaller than threshold.
  */
 export const minnumber = function ( formData ) {
+	const values = getFieldValues( formData, this.field );
 
+	const isAcceptableNumber = text => {
+		if ( parseFloat( text ) < parseFloat( this.threshold ) ) {
+			return false;
+		}
+
+		return true;
+	};
+
+	if ( ! values.every( isAcceptableNumber ) ) {
+		throw new ValidationError( this );
+	}
 };
 
 
@@ -219,7 +231,19 @@ export const minnumber = function ( formData ) {
  * Verifies numerical values are not larger than threshold.
  */
 export const maxnumber = function ( formData ) {
+	const values = getFieldValues( formData, this.field );
 
+	const isAcceptableNumber = text => {
+		if ( parseFloat( this.threshold ) < parseFloat( text ) ) {
+			return false;
+		}
+
+		return true;
+	};
+
+	if ( ! values.every( isAcceptableNumber ) ) {
+		throw new ValidationError( this );
+	}
 };
 
 
