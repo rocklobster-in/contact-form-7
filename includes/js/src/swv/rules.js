@@ -143,7 +143,27 @@ export const date = function ( formData ) {
  * Verifies file fields have file values.
  */
 export const file = function ( formData ) {
+	const values = getFieldValues( formData, this.field );
 
+	const isAcceptableFile = file => {
+		if ( file instanceof File ) {
+			return this.accept?.some( fileType => {
+				if ( /^\.[a-z0-9]+$/i.test( fileType ) ) {
+					return file.name.toLowerCase().endsWith( fileType.toLowerCase() );
+				}
+
+				// Todo: MIME type check
+
+				return false;
+			} );
+		}
+
+		return false;
+	};
+
+	if ( ! values.every( isAcceptableFile ) ) {
+		throw new ValidationError( this );
+	}
 };
 
 
