@@ -175,9 +175,9 @@ export const minlength = function ( formData ) {
 
 	let totalLength = 0;
 
-	values.forEach( val => {
-		if ( 'string' === typeof val ) {
-			totalLength += val.length;
+	values.forEach( text => {
+		if ( 'string' === typeof text ) {
+			totalLength += text.length;
 		}
 	} );
 
@@ -195,9 +195,9 @@ export const maxlength = function ( formData ) {
 
 	let totalLength = 0;
 
-	values.forEach( val => {
-		if ( 'string' === typeof val ) {
-			totalLength += val.length;
+	values.forEach( text => {
+		if ( 'string' === typeof text ) {
+			totalLength += text.length;
 		}
 	} );
 
@@ -303,5 +303,17 @@ export const maxdate = function ( formData ) {
  * Verifies file values are not larger in file size than threshold.
  */
 export const maxfilesize = function ( formData ) {
+	const values = getFieldValues( formData, this.field );
 
+	let totalVolume = 0;
+
+	values.forEach( file => {
+		if ( file instanceof File ) {
+			totalVolume += file.size;
+		}
+	} );
+
+	if ( parseInt( this.threshold ) < totalVolume ) {
+		throw new ValidationError( this );
+	}
 };
