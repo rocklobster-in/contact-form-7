@@ -251,7 +251,25 @@ export const maxnumber = function ( formData ) {
  * Verifies date values are not earlier than threshold.
  */
 export const mindate = function ( formData ) {
+	const values = getFieldValues( formData, this.field );
 
+	const isAcceptableDate = text => {
+		text = text.trim();
+
+		if (
+			/^[0-9]{4,}-[0-9]{2}-[0-9]{2}$/.test( text ) &&
+			/^[0-9]{4,}-[0-9]{2}-[0-9]{2}$/.test( this.threshold ) &&
+			text < this.threshold
+		) {
+			return false;
+		}
+
+		return true;
+	};
+
+	if ( ! values.every( isAcceptableDate ) ) {
+		throw new ValidationError( this );
+	}
 };
 
 
@@ -259,7 +277,25 @@ export const mindate = function ( formData ) {
  * Verifies date values are not later than threshold.
  */
 export const maxdate = function ( formData ) {
+	const values = getFieldValues( formData, this.field );
 
+	const isAcceptableDate = text => {
+		text = text.trim();
+
+		if (
+			/^[0-9]{4,}-[0-9]{2}-[0-9]{2}$/.test( text ) &&
+			/^[0-9]{4,}-[0-9]{2}-[0-9]{2}$/.test( this.threshold ) &&
+			this.threshold < text
+		) {
+			return false;
+		}
+
+		return true;
+	};
+
+	if ( ! values.every( isAcceptableDate ) ) {
+		throw new ValidationError( this );
+	}
 };
 
 
