@@ -183,8 +183,11 @@ abstract class WPCF7_SWV_CompositeRule extends WPCF7_SWV_Rule {
 			$this->rules
 		);
 
-		return array(
-			'rules' => $rules_arrays,
+		return array_merge(
+			parent::to_array(),
+			array(
+				'rules' => $rules_arrays,
+			)
 		);
 	}
 
@@ -192,5 +195,13 @@ abstract class WPCF7_SWV_CompositeRule extends WPCF7_SWV_Rule {
 
 
 class WPCF7_SWV_Schema extends WPCF7_SWV_CompositeRule {
+
+	const version = 'CIOS v20220302';
+
+	public function __construct( $properties = '' ) {
+		$this->properties = wp_parse_args( $properties, array(
+			'version' => self::version,
+		) );
+	}
 
 }

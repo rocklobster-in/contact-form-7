@@ -15,7 +15,12 @@ trait WPCF7_SWV_SchemaHolder {
 			return $this->schema;
 		}
 
-		$schema = new WPCF7_SWV_Schema();
+		$locale = is_callable( array( $this, 'locale' ) ) ? $this->locale() : '';
+
+		$schema = new WPCF7_SWV_Schema( array(
+			'locale' => $locale,
+		) );
+
 		$tags = $this->scan_form_tags();
 
 		do_action( 'wpcf7_swv_pre_add_rules', $schema, $tags );
