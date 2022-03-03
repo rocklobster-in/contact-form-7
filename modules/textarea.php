@@ -91,43 +91,44 @@ function wpcf7_textarea_form_tag_handler( $tag ) {
 
 
 add_action(
-	'wpcf7_swv_add_rules',
-	'wpcf7_textarea_swv_add_rules',
+	'wpcf7_swv_create_schema',
+	'wpcf7_swv_add_textarea_rules',
 	10, 2
 );
 
-function wpcf7_textarea_swv_add_rules( $schema, $tags ) {
+function wpcf7_swv_add_textarea_rules( $schema, $contact_form ) {
+	$tags = $contact_form->scan_form_tags( array(
+		'type' => array( 'textarea', 'textarea*' ),
+	) );
+
 	foreach ( $tags as $tag ) {
+		if ( $tag->is_required() ) {
+			$schema->add_rule(
+				wpcf7_swv_create_rule( 'required', array(
+					'field' => $tag->name,
+					'message' => wpcf7_get_message( 'invalid_required' ),
+				) )
+			);
+		}
 
-		if ( 'textarea' === $tag->basetype ) {
-			if ( $tag->is_required() ) {
-				$schema->add_rule(
-					wpcf7_swv_create_rule( 'required', array(
-						'field' => $tag->name,
-						'message' => wpcf7_get_message( 'invalid_required' ),
-					) )
-				);
-			}
+		if ( $minlength = $tag->get_minlength_option() ) {
+			$schema->add_rule(
+				wpcf7_swv_create_rule( 'minlength', array(
+					'field' => $tag->name,
+					'threshold' => absint( $minlength ),
+					'message' => wpcf7_get_message( 'invalid_too_short' ),
+				) )
+			);
+		}
 
-			if ( $minlength = $tag->get_minlength_option() ) {
-				$schema->add_rule(
-					wpcf7_swv_create_rule( 'minlength', array(
-						'field' => $tag->name,
-						'threshold' => absint( $minlength ),
-						'message' => wpcf7_get_message( 'invalid_too_short' ),
-					) )
-				);
-			}
-
-			if ( $maxlength = $tag->get_maxlength_option() ) {
-				$schema->add_rule(
-					wpcf7_swv_create_rule( 'maxlength', array(
-						'field' => $tag->name,
-						'threshold' => absint( $maxlength ),
-						'message' => wpcf7_get_message( 'invalid_too_long' ),
-					) )
-				);
-			}
+		if ( $maxlength = $tag->get_maxlength_option() ) {
+			$schema->add_rule(
+				wpcf7_swv_create_rule( 'maxlength', array(
+					'field' => $tag->name,
+					'threshold' => absint( $maxlength ),
+					'message' => wpcf7_get_message( 'invalid_too_long' ),
+				) )
+			);
 		}
 	}
 }

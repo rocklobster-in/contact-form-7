@@ -15,21 +15,11 @@ trait WPCF7_SWV_SchemaHolder {
 			return $this->schema;
 		}
 
-		$locale = isset( $this->locale ) ? $this->locale : '';
-
 		$schema = new WPCF7_SWV_Schema( array(
-			'locale' => $locale,
+			'locale' => isset( $this->locale ) ? $this->locale : '',
 		) );
 
-		$tags = $this->scan_form_tags();
-
-		do_action( 'wpcf7_swv_pre_add_rules', $schema, $tags );
-
-		foreach ( $tags as $tag ) {
-			do_action( "wpcf7_swv_add_rules_for_{$tag->type}", $schema, $tag );
-		}
-
-		do_action( 'wpcf7_swv_add_rules', $schema, $tags );
+		do_action( 'wpcf7_swv_create_schema', $schema, $this );
 
 		return $this->schema = $schema;
 	}

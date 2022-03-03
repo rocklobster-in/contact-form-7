@@ -184,22 +184,23 @@ function wpcf7_checkbox_form_tag_handler( $tag ) {
 
 
 add_action(
-	'wpcf7_swv_add_rules',
-	'wpcf7_checkbox_swv_add_rules',
+	'wpcf7_swv_create_schema',
+	'wpcf7_swv_add_checkbox_rules',
 	10, 2
 );
 
-function wpcf7_checkbox_swv_add_rules( $schema, $tags ) {
-	foreach ( $tags as $tag ) {
+function wpcf7_swv_add_checkbox_rules( $schema, $contact_form ) {
+	$tags = $contact_form->scan_form_tags( array(
+		'type' => array( 'checkbox*', 'radio' ),
+	) );
 
-		if ( 'checkbox*' === $tag->type or 'radio' === $tag->type ) {
-			$schema->add_rule(
-				wpcf7_swv_create_rule( 'required', array(
-					'field' => $tag->name,
-					'message' => wpcf7_get_message( 'invalid_required' ),
-				) )
-			);
-		}
+	foreach ( $tags as $tag ) {
+		$schema->add_rule(
+			wpcf7_swv_create_rule( 'required', array(
+				'field' => $tag->name,
+				'message' => wpcf7_get_message( 'invalid_required' ),
+			) )
+		);
 	}
 }
 

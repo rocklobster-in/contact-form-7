@@ -93,53 +93,54 @@ function wpcf7_number_form_tag_handler( $tag ) {
 
 
 add_action(
-	'wpcf7_swv_add_rules',
-	'wpcf7_number_swv_add_rules',
+	'wpcf7_swv_create_schema',
+	'wpcf7_swv_add_number_rules',
 	10, 2
 );
 
-function wpcf7_number_swv_add_rules( $schema, $tags ) {
+function wpcf7_swv_add_number_rules( $schema, $contact_form ) {
+	$tags = $contact_form->scan_form_tags( array(
+		'type' => array( 'number', 'range', 'number*', 'range*' ),
+	) );
+
 	foreach ( $tags as $tag ) {
-
-		if ( in_array( $tag->basetype, array( 'number', 'range' ) ) ) {
-			if ( $tag->is_required() ) {
-				$schema->add_rule(
-					wpcf7_swv_create_rule( 'required', array(
-						'field' => $tag->name,
-						'message' => wpcf7_get_message( 'invalid_required' ),
-					) )
-				);
-			}
-
+		if ( $tag->is_required() ) {
 			$schema->add_rule(
-				wpcf7_swv_create_rule( 'number', array(
+				wpcf7_swv_create_rule( 'required', array(
 					'field' => $tag->name,
-					'message' => wpcf7_get_message( 'invalid_number' ),
+					'message' => wpcf7_get_message( 'invalid_required' ),
 				) )
 			);
+		}
 
-			$min = $tag->get_option( 'min', 'signed_int', true );
-			$max = $tag->get_option( 'max', 'signed_int', true );
+		$schema->add_rule(
+			wpcf7_swv_create_rule( 'number', array(
+				'field' => $tag->name,
+				'message' => wpcf7_get_message( 'invalid_number' ),
+			) )
+		);
 
-			if ( false !== $min ) {
-				$schema->add_rule(
-					wpcf7_swv_create_rule( 'minnumber', array(
-						'field' => $tag->name,
-						'threshold' => $min,
-						'message' => wpcf7_get_message( 'number_too_small' ),
-					) )
-				);
-			}
+		$min = $tag->get_option( 'min', 'signed_int', true );
+		$max = $tag->get_option( 'max', 'signed_int', true );
 
-			if ( false !== $max ) {
-				$schema->add_rule(
-					wpcf7_swv_create_rule( 'maxnumber', array(
-						'field' => $tag->name,
-						'threshold' => $max,
-						'message' => wpcf7_get_message( 'number_too_large' ),
-					) )
-				);
-			}
+		if ( false !== $min ) {
+			$schema->add_rule(
+				wpcf7_swv_create_rule( 'minnumber', array(
+					'field' => $tag->name,
+					'threshold' => $min,
+					'message' => wpcf7_get_message( 'number_too_small' ),
+				) )
+			);
+		}
+
+		if ( false !== $max ) {
+			$schema->add_rule(
+				wpcf7_swv_create_rule( 'maxnumber', array(
+					'field' => $tag->name,
+					'threshold' => $max,
+					'message' => wpcf7_get_message( 'number_too_large' ),
+				) )
+			);
 		}
 	}
 }

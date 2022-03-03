@@ -103,53 +103,54 @@ function wpcf7_date_form_tag_handler( $tag ) {
 
 
 add_action(
-	'wpcf7_swv_add_rules',
-	'wpcf7_date_swv_add_rules',
+	'wpcf7_swv_create_schema',
+	'wpcf7_swv_add_date_rules',
 	10, 2
 );
 
-function wpcf7_date_swv_add_rules( $schema, $tags ) {
+function wpcf7_swv_add_date_rules( $schema, $contact_form ) {
+	$tags = $contact_form->scan_form_tags( array(
+		'type' => array( 'date', 'date*' ),
+	) );
+
 	foreach ( $tags as $tag ) {
-
-		if ( in_array( $tag->basetype, array( 'date' ) ) ) {
-			if ( $tag->is_required() ) {
-				$schema->add_rule(
-					wpcf7_swv_create_rule( 'required', array(
-						'field' => $tag->name,
-						'message' => wpcf7_get_message( 'invalid_required' ),
-					) )
-				);
-			}
-
+		if ( $tag->is_required() ) {
 			$schema->add_rule(
-				wpcf7_swv_create_rule( 'date', array(
+				wpcf7_swv_create_rule( 'required', array(
 					'field' => $tag->name,
-					'message' => wpcf7_get_message( 'invalid_date' ),
+					'message' => wpcf7_get_message( 'invalid_required' ),
 				) )
 			);
+		}
 
-			$min = $tag->get_date_option( 'min' );
-			$max = $tag->get_date_option( 'max' );
+		$schema->add_rule(
+			wpcf7_swv_create_rule( 'date', array(
+				'field' => $tag->name,
+				'message' => wpcf7_get_message( 'invalid_date' ),
+			) )
+		);
 
-			if ( false !== $min ) {
-				$schema->add_rule(
-					wpcf7_swv_create_rule( 'mindate', array(
-						'field' => $tag->name,
-						'threshold' => $min,
-						'message' => wpcf7_get_message( 'date_too_early' ),
-					) )
-				);
-			}
+		$min = $tag->get_date_option( 'min' );
+		$max = $tag->get_date_option( 'max' );
 
-			if ( false !== $max ) {
-				$schema->add_rule(
-					wpcf7_swv_create_rule( 'maxdate', array(
-						'field' => $tag->name,
-						'threshold' => $max,
-						'message' => wpcf7_get_message( 'date_too_late' ),
-					) )
-				);
-			}
+		if ( false !== $min ) {
+			$schema->add_rule(
+				wpcf7_swv_create_rule( 'mindate', array(
+					'field' => $tag->name,
+					'threshold' => $min,
+					'message' => wpcf7_get_message( 'date_too_early' ),
+				) )
+			);
+		}
+
+		if ( false !== $max ) {
+			$schema->add_rule(
+				wpcf7_swv_create_rule( 'maxdate', array(
+					'field' => $tag->name,
+					'threshold' => $max,
+					'message' => wpcf7_get_message( 'date_too_late' ),
+				) )
+			);
 		}
 	}
 }

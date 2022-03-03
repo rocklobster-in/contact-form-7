@@ -107,17 +107,17 @@ function wpcf7_text_form_tag_handler( $tag ) {
 
 
 add_action(
-	'wpcf7_swv_add_rules',
-	'wpcf7_text_swv_add_rules',
+	'wpcf7_swv_create_schema',
+	'wpcf7_swv_add_text_rules',
 	10, 2
 );
 
-function wpcf7_text_swv_add_rules( $schema, $tags ) {
-	foreach ( $tags as $tag ) {
-		if ( ! in_array( $tag->basetype, array( 'text', 'email', 'url', 'tel' ) ) ) {
-			continue;
-		}
+function wpcf7_swv_add_text_rules( $schema, $contact_form ) {
+	$tags = $contact_form->scan_form_tags( array(
+		'type' => array( 'text', 'email', 'url', 'tel', 'text*', 'email*', 'url*', 'tel*' ),
+	) );
 
+	foreach ( $tags as $tag ) {
 		if ( $tag->is_required() ) {
 			$schema->add_rule(
 				wpcf7_swv_create_rule( 'required', array(
