@@ -112,6 +112,15 @@ function wpcf7_date_swv_add_rules( $schema, $tags ) {
 	foreach ( $tags as $tag ) {
 
 		if ( in_array( $tag->basetype, array( 'date' ) ) ) {
+			if ( $tag->is_required() ) {
+				$schema->add_rule(
+					wpcf7_swv_create_rule( 'required', array(
+						'field' => $tag->name,
+						'message' => wpcf7_get_message( 'invalid_required' ),
+					) )
+				);
+			}
+
 			$schema->add_rule(
 				wpcf7_swv_create_rule( 'date', array(
 					'field' => $tag->name,

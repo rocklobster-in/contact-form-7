@@ -114,6 +114,18 @@ add_action(
 
 function wpcf7_text_swv_add_rules( $schema, $tags ) {
 	foreach ( $tags as $tag ) {
+		if ( ! in_array( $tag->basetype, array( 'text', 'email', 'url', 'tel' ) ) ) {
+			continue;
+		}
+
+		if ( $tag->is_required() ) {
+			$schema->add_rule(
+				wpcf7_swv_create_rule( 'required', array(
+					'field' => $tag->name,
+					'message' => wpcf7_get_message( 'invalid_required' ),
+				) )
+			);
+		}
 
 		if ( 'email' === $tag->basetype ) {
 			$schema->add_rule(
@@ -142,26 +154,24 @@ function wpcf7_text_swv_add_rules( $schema, $tags ) {
 			);
 		}
 
-		if ( in_array( $tag->basetype, array( 'text', 'email', 'url', 'tel' ) ) ) {
-			if ( $minlength = $tag->get_minlength_option() ) {
-				$schema->add_rule(
-					wpcf7_swv_create_rule( 'minlength', array(
-						'field' => $tag->name,
-						'threshold' => absint( $minlength ),
-						'message' => wpcf7_get_message( 'invalid_too_short' ),
-					) )
-				);
-			}
+		if ( $minlength = $tag->get_minlength_option() ) {
+			$schema->add_rule(
+				wpcf7_swv_create_rule( 'minlength', array(
+					'field' => $tag->name,
+					'threshold' => absint( $minlength ),
+					'message' => wpcf7_get_message( 'invalid_too_short' ),
+				) )
+			);
+		}
 
-			if ( $maxlength = $tag->get_maxlength_option() ) {
-				$schema->add_rule(
-					wpcf7_swv_create_rule( 'maxlength', array(
-						'field' => $tag->name,
-						'threshold' => absint( $maxlength ),
-						'message' => wpcf7_get_message( 'invalid_too_long' ),
-					) )
-				);
-			}
+		if ( $maxlength = $tag->get_maxlength_option() ) {
+			$schema->add_rule(
+				wpcf7_swv_create_rule( 'maxlength', array(
+					'field' => $tag->name,
+					'threshold' => absint( $maxlength ),
+					'message' => wpcf7_get_message( 'invalid_too_long' ),
+				) )
+			);
 		}
 	}
 }

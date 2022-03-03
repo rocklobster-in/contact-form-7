@@ -74,36 +74,6 @@ function wpcf7_swv_create_rule( $rule_name, $properties = '' ) {
 }
 
 
-add_action(
-	'wpcf7_swv_pre_add_rules',
-	'wpcf7_swv_add_common_rules',
-	10, 2
-);
-
-function wpcf7_swv_add_common_rules( $schema, $tags ) {
-	foreach ( $tags as $tag ) {
-
-		if ( $tag->is_required() ) {
-			if ( wpcf7_form_tag_supports( $tag->type, 'file-uploading' ) ) {
-				$schema->add_rule(
-					wpcf7_swv_create_rule( 'requiredfile', array(
-						'field' => $tag->name,
-						'message' => wpcf7_get_message( 'invalid_required' ),
-					) )
-				);
-			} else {
-				$schema->add_rule(
-					wpcf7_swv_create_rule( 'required', array(
-						'field' => $tag->name,
-						'message' => wpcf7_get_message( 'invalid_required' ),
-					) )
-				);
-			}
-		}
-	}
-}
-
-
 abstract class WPCF7_SWV_Rule {
 
 	protected $properties = array();

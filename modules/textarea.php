@@ -100,6 +100,15 @@ function wpcf7_textarea_swv_add_rules( $schema, $tags ) {
 	foreach ( $tags as $tag ) {
 
 		if ( 'textarea' === $tag->basetype ) {
+			if ( $tag->is_required() ) {
+				$schema->add_rule(
+					wpcf7_swv_create_rule( 'required', array(
+						'field' => $tag->name,
+						'message' => wpcf7_get_message( 'invalid_required' ),
+					) )
+				);
+			}
+
 			if ( $minlength = $tag->get_minlength_option() ) {
 				$schema->add_rule(
 					wpcf7_swv_create_rule( 'minlength', array(

@@ -128,6 +128,26 @@ function wpcf7_select_form_tag_handler( $tag ) {
 }
 
 
+add_action(
+	'wpcf7_swv_add_rules',
+	'wpcf7_select_swv_add_rules',
+	10, 2
+);
+
+function wpcf7_select_swv_add_rules( $schema, $tags ) {
+	foreach ( $tags as $tag ) {
+		if ( 'select*' === $tag->type ) {
+			$schema->add_rule(
+				wpcf7_swv_create_rule( 'required', array(
+					'field' => $tag->name,
+					'message' => wpcf7_get_message( 'invalid_required' ),
+				) )
+			);
+		}
+	}
+}
+
+
 /* Tag generator */
 
 add_action( 'wpcf7_admin_init', 'wpcf7_add_tag_generator_menu', 25, 0 );

@@ -77,6 +77,15 @@ function wpcf7_file_swv_add_rules( $schema, $tags ) {
 	foreach ( $tags as $tag ) {
 
 		if ( in_array( $tag->basetype, array( 'file' ) ) ) {
+			if ( $tag->is_required() ) {
+				$schema->add_rule(
+					wpcf7_swv_create_rule( 'requiredfile', array(
+						'field' => $tag->name,
+						'message' => wpcf7_get_message( 'invalid_required' ),
+					) )
+				);
+			}
+
 			$schema->add_rule(
 				wpcf7_swv_create_rule( 'file', array(
 					'field' => $tag->name,

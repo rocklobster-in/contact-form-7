@@ -192,7 +192,7 @@ add_action(
 function wpcf7_checkbox_swv_add_rules( $schema, $tags ) {
 	foreach ( $tags as $tag ) {
 
-		if ( 'radio' === $tag->type ) {
+		if ( 'checkbox*' === $tag->type or 'radio' === $tag->type ) {
 			$schema->add_rule(
 				wpcf7_swv_create_rule( 'required', array(
 					'field' => $tag->name,
