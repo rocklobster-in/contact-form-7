@@ -15,7 +15,7 @@ trait WPCF7_SWV_SchemaHolder {
 			return $this->schema;
 		}
 
-		$locale = is_callable( array( $this, 'locale' ) ) ? $this->locale() : '';
+		$locale = isset( $this->locale ) ? $this->locale : '';
 
 		$schema = new WPCF7_SWV_Schema( array(
 			'locale' => $locale,
