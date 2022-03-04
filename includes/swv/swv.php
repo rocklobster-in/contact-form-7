@@ -74,6 +74,29 @@ function wpcf7_swv_create_rule( $rule_name, $properties = '' ) {
 }
 
 
+function wpcf7_swv_get_meta_schema() {
+	return array(
+		'$schema' => 'https://json-schema.org/draft/2020-12/schema',
+		'title' => 'Contact Form 7 SWV',
+		'description' => 'Contact Form 7 SWV meta-schema',
+		'type' => 'object',
+		'properties' => array(
+			'version' => array(
+				'type' => 'string',
+			),
+			'locale' => array(
+				'type' => 'string',
+			),
+			'rules' => array(
+				'type' => 'object',
+				'properties' => array(
+				),
+			),
+		),
+	);
+}
+
+
 abstract class WPCF7_SWV_Rule {
 
 	protected $properties = array();
@@ -166,7 +189,7 @@ abstract class WPCF7_SWV_CompositeRule extends WPCF7_SWV_Rule {
 
 class WPCF7_SWV_Schema extends WPCF7_SWV_CompositeRule {
 
-	const version = 'CIOS v20220302';
+	const version = 'Contact Form 7 SWV Schema 2022-03';
 
 	public function __construct( $properties = '' ) {
 		$this->properties = wp_parse_args( $properties, array(

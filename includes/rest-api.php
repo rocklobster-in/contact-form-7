@@ -123,6 +123,7 @@ class WPCF7_REST_Controller {
 					'callback' => array( $this, 'get_schema' ),
 					'permission_callback' => '__return_true',
 				),
+				'schema' => 'wpcf7_swv_get_meta_schema',
 			)
 		);
 
