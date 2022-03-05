@@ -68,8 +68,21 @@ function wpcf7_swv_get_meta_schema() {
 				'type' => 'string',
 			),
 			'rules' => array(
-				'type' => 'object',
-				'properties' => array(
+				'type' => 'array',
+				'items' => array(
+					'type' => 'object',
+					'properties' => array(
+						'rule' => array(
+							'type' => 'string',
+						),
+						'field' => array(
+							'type' => 'string',
+						),
+						'error' => array(
+							'type' => 'string',
+						),
+					),
+					'required' => array( 'rule' ),
 				),
 			),
 		),
