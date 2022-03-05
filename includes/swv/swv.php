@@ -29,6 +29,8 @@ function wpcf7_swv_available_rules() {
 }
 
 
+add_action( 'wpcf7_init', 'wpcf7_swv_load_rules', 10, 0 );
+
 function wpcf7_swv_load_rules() {
 	$rules = wpcf7_swv_available_rules();
 
@@ -45,8 +47,6 @@ function wpcf7_swv_load_rules() {
 
 function wpcf7_swv_create_rule( $rule_name, $properties = '' ) {
 	$rules = wpcf7_swv_available_rules();
-
-	wpcf7_swv_load_rules();
 
 	if ( isset( $rules[$rule_name] ) ) {
 		return new $rules[$rule_name]( $properties );
