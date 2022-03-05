@@ -6,26 +6,33 @@
 require_once WPCF7_PLUGIN_DIR . '/includes/swv/schema-holder.php';
 
 
-function wpcf7_swv_load_rules() {
+function wpcf7_swv_available_rules() {
 	$rules = array(
-		'required',
-		'requiredfile',
-		'email',
-		'url',
-		'tel',
-		'number',
-		'date',
-		'file',
-		'minlength',
-		'maxlength',
-		'minnumber',
-		'maxnumber',
-		'mindate',
-		'maxdate',
-		'maxfilesize',
+		'required' => 'WPCF7_SWV_RequiredRule',
+		'requiredfile' => 'WPCF7_SWV_RequiredFileRule',
+		'email' => 'WPCF7_SWV_EmailRule',
+		'url' => 'WPCF7_SWV_URLRule',
+		'tel' => 'WPCF7_SWV_TelRule',
+		'number' => 'WPCF7_SWV_NumberRule',
+		'date' => 'WPCF7_SWV_DateRule',
+		'file' => 'WPCF7_SWV_FileRule',
+		'minlength' => 'WPCF7_SWV_MinLengthRule',
+		'maxlength' => 'WPCF7_SWV_MaxLengthRule',
+		'minnumber' => 'WPCF7_SWV_MinNumberRule',
+		'maxnumber' => 'WPCF7_SWV_MaxNumberRule',
+		'mindate' => 'WPCF7_SWV_MinDateRule',
+		'maxdate' => 'WPCF7_SWV_MaxDateRule',
+		'maxfilesize' => 'WPCF7_SWV_MaxFileSizeRule',
 	);
 
-	foreach ( $rules as $rule ) {
+	return apply_filters( 'wpcf7_swv_available_rules', $rules );
+}
+
+
+function wpcf7_swv_load_rules() {
+	$rules = wpcf7_swv_available_rules();
+
+	foreach ( array_keys( $rules ) as $rule ) {
 		$file = sprintf( '%s.php', $rule );
 		$path = path_join( WPCF7_PLUGIN_DIR . '/includes/swv/rules', $file );
 
@@ -37,39 +44,12 @@ function wpcf7_swv_load_rules() {
 
 
 function wpcf7_swv_create_rule( $rule_name, $properties = '' ) {
+	$rules = wpcf7_swv_available_rules();
+
 	wpcf7_swv_load_rules();
 
-	switch ( $rule_name ) {
-		case 'required':
-			return new WPCF7_SWV_RequiredRule( $properties );
-		case 'requiredfile':
-			return new WPCF7_SWV_RequiredFileRule( $properties );
-		case 'email':
-			return new WPCF7_SWV_EmailRule( $properties );
-		case 'url':
-			return new WPCF7_SWV_URLRule( $properties );
-		case 'tel':
-			return new WPCF7_SWV_TelRule( $properties );
-		case 'number':
-			return new WPCF7_SWV_NumberRule( $properties );
-		case 'date':
-			return new WPCF7_SWV_DateRule( $properties );
-		case 'file':
-			return new WPCF7_SWV_FileRule( $properties );
-		case 'minlength':
-			return new WPCF7_SWV_MinLengthRule( $properties );
-		case 'maxlength':
-			return new WPCF7_SWV_MaxLengthRule( $properties );
-		case 'minnumber':
-			return new WPCF7_SWV_MinNumberRule( $properties );
-		case 'maxnumber':
-			return new WPCF7_SWV_MaxNumberRule( $properties );
-		case 'mindate':
-			return new WPCF7_SWV_MinDateRule( $properties );
-		case 'maxdate':
-			return new WPCF7_SWV_MaxDateRule( $properties );
-		case 'maxfilesize':
-			return new WPCF7_SWV_MaxFileSizeRule( $properties );
+	if ( isset( $rules[$rule_name] ) ) {
+		return new $rules[$rule_name]( $properties );
 	}
 }
 
