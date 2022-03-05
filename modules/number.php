@@ -108,7 +108,7 @@ function wpcf7_swv_add_number_rules( $schema, $contact_form ) {
 			$schema->add_rule(
 				wpcf7_swv_create_rule( 'required', array(
 					'field' => $tag->name,
-					'message' => wpcf7_get_message( 'invalid_required' ),
+					'error' => wpcf7_get_message( 'invalid_required' ),
 				) )
 			);
 		}
@@ -116,7 +116,7 @@ function wpcf7_swv_add_number_rules( $schema, $contact_form ) {
 		$schema->add_rule(
 			wpcf7_swv_create_rule( 'number', array(
 				'field' => $tag->name,
-				'message' => wpcf7_get_message( 'invalid_number' ),
+				'error' => wpcf7_get_message( 'invalid_number' ),
 			) )
 		);
 
@@ -128,7 +128,7 @@ function wpcf7_swv_add_number_rules( $schema, $contact_form ) {
 				wpcf7_swv_create_rule( 'minnumber', array(
 					'field' => $tag->name,
 					'threshold' => $min,
-					'message' => wpcf7_get_message( 'number_too_small' ),
+					'error' => wpcf7_get_message( 'number_too_small' ),
 				) )
 			);
 		}
@@ -138,7 +138,7 @@ function wpcf7_swv_add_number_rules( $schema, $contact_form ) {
 				wpcf7_swv_create_rule( 'maxnumber', array(
 					'field' => $tag->name,
 					'threshold' => $max,
-					'message' => wpcf7_get_message( 'number_too_large' ),
+					'error' => wpcf7_get_message( 'number_too_large' ),
 				) )
 			);
 		}

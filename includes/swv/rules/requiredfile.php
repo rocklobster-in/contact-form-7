@@ -27,7 +27,7 @@ class WPCF7_SWV_RequiredFileRule extends WPCF7_SWV_Rule {
 
 		if ( empty( $input ) ) {
 			return new WP_Error( 'wpcf7_invalid_requiredfile',
-				$this->get_property( 'message' )
+				$this->get_property( 'error' )
 			);
 		}
 

@@ -1,6 +1,6 @@
-export function ValidationError( { rule, field, message, ...properties } ) {
+export function ValidationError( { rule, field, error, ...properties } ) {
 	this.rule = rule;
 	this.field = field;
-	this.message = message;
+	this.error = error;
 	this.properties = properties;
 }

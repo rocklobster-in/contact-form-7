@@ -31,7 +31,7 @@ class WPCF7_SWV_FileRule extends WPCF7_SWV_Rule {
 
 			if ( false === $last_period_pos ) { // no period
 				return new WP_Error( 'wpcf7_invalid_file',
-					$this->get_property( 'message' )
+					$this->get_property( 'error' )
 				);
 			}
 
@@ -39,7 +39,7 @@ class WPCF7_SWV_FileRule extends WPCF7_SWV_Rule {
 
 			if ( ! in_array( $suffix, $accept, true ) ) {
 				return new WP_Error( 'wpcf7_invalid_file',
-					$this->get_property( 'message' )
+					$this->get_property( 'error' )
 				);
 			}
 		}

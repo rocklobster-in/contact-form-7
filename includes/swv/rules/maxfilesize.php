@@ -30,7 +30,7 @@ class WPCF7_SWV_MaxFileSizeRule extends WPCF7_SWV_Rule {
 
 		if ( $threshold < array_sum( $input ) ) {
 			return new WP_Error( 'wpcf7_invalid_maxfilesize',
-				$this->get_property( 'message' )
+				$this->get_property( 'error' )
 			);
 		}
 

@@ -83,7 +83,7 @@ function wpcf7_swv_add_file_rules( $schema, $contact_form ) {
 			$schema->add_rule(
 				wpcf7_swv_create_rule( 'requiredfile', array(
 					'field' => $tag->name,
-					'message' => wpcf7_get_message( 'invalid_required' ),
+					'error' => wpcf7_get_message( 'invalid_required' ),
 				) )
 			);
 		}
@@ -94,7 +94,7 @@ function wpcf7_swv_add_file_rules( $schema, $contact_form ) {
 				'accept' => explode( ',', wpcf7_acceptable_filetypes(
 					$tag->get_option( 'filetypes' ), 'attr'
 				) ),
-				'message' => wpcf7_get_message( 'upload_file_type_invalid' ),
+				'error' => wpcf7_get_message( 'upload_file_type_invalid' ),
 			) )
 		);
 
@@ -102,7 +102,7 @@ function wpcf7_swv_add_file_rules( $schema, $contact_form ) {
 			wpcf7_swv_create_rule( 'maxfilesize', array(
 				'field' => $tag->name,
 				'threshold' => $tag->get_limit_option(),
-				'message' => wpcf7_get_message( 'upload_file_too_large' ),
+				'error' => wpcf7_get_message( 'upload_file_too_large' ),
 			) )
 		);
 	}

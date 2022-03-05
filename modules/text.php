@@ -122,7 +122,7 @@ function wpcf7_swv_add_text_rules( $schema, $contact_form ) {
 			$schema->add_rule(
 				wpcf7_swv_create_rule( 'required', array(
 					'field' => $tag->name,
-					'message' => wpcf7_get_message( 'invalid_required' ),
+					'error' => wpcf7_get_message( 'invalid_required' ),
 				) )
 			);
 		}
@@ -131,7 +131,7 @@ function wpcf7_swv_add_text_rules( $schema, $contact_form ) {
 			$schema->add_rule(
 				wpcf7_swv_create_rule( 'email', array(
 					'field' => $tag->name,
-					'message' => wpcf7_get_message( 'invalid_email' ),
+					'error' => wpcf7_get_message( 'invalid_email' ),
 				) )
 			);
 		}
@@ -140,7 +140,7 @@ function wpcf7_swv_add_text_rules( $schema, $contact_form ) {
 			$schema->add_rule(
 				wpcf7_swv_create_rule( 'url', array(
 					'field' => $tag->name,
-					'message' => wpcf7_get_message( 'invalid_url' ),
+					'error' => wpcf7_get_message( 'invalid_url' ),
 				) )
 			);
 		}
@@ -149,7 +149,7 @@ function wpcf7_swv_add_text_rules( $schema, $contact_form ) {
 			$schema->add_rule(
 				wpcf7_swv_create_rule( 'tel', array(
 					'field' => $tag->name,
-					'message' => wpcf7_get_message( 'invalid_tel' ),
+					'error' => wpcf7_get_message( 'invalid_tel' ),
 				) )
 			);
 		}
@@ -159,7 +159,7 @@ function wpcf7_swv_add_text_rules( $schema, $contact_form ) {
 				wpcf7_swv_create_rule( 'minlength', array(
 					'field' => $tag->name,
 					'threshold' => absint( $minlength ),
-					'message' => wpcf7_get_message( 'invalid_too_short' ),
+					'error' => wpcf7_get_message( 'invalid_too_short' ),
 				) )
 			);
 		}
@@ -169,7 +169,7 @@ function wpcf7_swv_add_text_rules( $schema, $contact_form ) {
 				wpcf7_swv_create_rule( 'maxlength', array(
 					'field' => $tag->name,
 					'threshold' => absint( $maxlength ),
-					'message' => wpcf7_get_message( 'invalid_too_long' ),
+					'error' => wpcf7_get_message( 'invalid_too_long' ),
 				) )
 			);
 		}

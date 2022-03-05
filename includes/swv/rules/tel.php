@@ -25,7 +25,7 @@ class WPCF7_SWV_TelRule extends WPCF7_SWV_Rule {
 		foreach ( $input as $i ) {
 			if ( ! wpcf7_is_tel( $i ) ) {
 				return new WP_Error( 'wpcf7_invalid_tel',
-					$this->get_property( 'message' )
+					$this->get_property( 'error' )
 				);
 			}
 		}

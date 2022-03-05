@@ -38,7 +38,7 @@ class WPCF7_SWV_MinLengthRule extends WPCF7_SWV_Rule {
 			return true;
 		} else {
 			return new WP_Error( 'wpcf7_invalid_minlength',
-				$this->get_property( 'message' )
+				$this->get_property( 'error' )
 			);
 		}
 	}

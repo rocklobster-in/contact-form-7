@@ -26,7 +26,7 @@ class WPCF7_SWV_RequiredRule extends WPCF7_SWV_Rule {
 
 		if ( empty( $input ) ) {
 			return new WP_Error( 'wpcf7_invalid_required',
-				$this->get_property( 'message' )
+				$this->get_property( 'error' )
 			);
 		}
 

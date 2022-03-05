@@ -118,7 +118,7 @@ function wpcf7_swv_add_date_rules( $schema, $contact_form ) {
 			$schema->add_rule(
 				wpcf7_swv_create_rule( 'required', array(
 					'field' => $tag->name,
-					'message' => wpcf7_get_message( 'invalid_required' ),
+					'error' => wpcf7_get_message( 'invalid_required' ),
 				) )
 			);
 		}
@@ -126,7 +126,7 @@ function wpcf7_swv_add_date_rules( $schema, $contact_form ) {
 		$schema->add_rule(
 			wpcf7_swv_create_rule( 'date', array(
 				'field' => $tag->name,
-				'message' => wpcf7_get_message( 'invalid_date' ),
+				'error' => wpcf7_get_message( 'invalid_date' ),
 			) )
 		);
 
@@ -138,7 +138,7 @@ function wpcf7_swv_add_date_rules( $schema, $contact_form ) {
 				wpcf7_swv_create_rule( 'mindate', array(
 					'field' => $tag->name,
 					'threshold' => $min,
-					'message' => wpcf7_get_message( 'date_too_early' ),
+					'error' => wpcf7_get_message( 'date_too_early' ),
 				) )
 			);
 		}
@@ -148,7 +148,7 @@ function wpcf7_swv_add_date_rules( $schema, $contact_form ) {
 				wpcf7_swv_create_rule( 'maxdate', array(
 					'field' => $tag->name,
 					'threshold' => $max,
-					'message' => wpcf7_get_message( 'date_too_late' ),
+					'error' => wpcf7_get_message( 'date_too_late' ),
 				) )
 			);
 		}

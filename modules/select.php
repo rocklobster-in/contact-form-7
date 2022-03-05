@@ -143,7 +143,7 @@ function wpcf7_swv_add_select_rules( $schema, $contact_form ) {
 		$schema->add_rule(
 			wpcf7_swv_create_rule( 'required', array(
 				'field' => $tag->name,
-				'message' => wpcf7_get_message( 'invalid_required' ),
+				'error' => wpcf7_get_message( 'invalid_required' ),
 			) )
 		);
 	}

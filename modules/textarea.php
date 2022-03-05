@@ -106,7 +106,7 @@ function wpcf7_swv_add_textarea_rules( $schema, $contact_form ) {
 			$schema->add_rule(
 				wpcf7_swv_create_rule( 'required', array(
 					'field' => $tag->name,
-					'message' => wpcf7_get_message( 'invalid_required' ),
+					'error' => wpcf7_get_message( 'invalid_required' ),
 				) )
 			);
 		}
@@ -116,7 +116,7 @@ function wpcf7_swv_add_textarea_rules( $schema, $contact_form ) {
 				wpcf7_swv_create_rule( 'minlength', array(
 					'field' => $tag->name,
 					'threshold' => absint( $minlength ),
-					'message' => wpcf7_get_message( 'invalid_too_short' ),
+					'error' => wpcf7_get_message( 'invalid_too_short' ),
 				) )
 			);
 		}
@@ -126,7 +126,7 @@ function wpcf7_swv_add_textarea_rules( $schema, $contact_form ) {
 				wpcf7_swv_create_rule( 'maxlength', array(
 					'field' => $tag->name,
 					'threshold' => absint( $maxlength ),
-					'message' => wpcf7_get_message( 'invalid_too_long' ),
+					'error' => wpcf7_get_message( 'invalid_too_long' ),
 				) )
 			);
 		}
