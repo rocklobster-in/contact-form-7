@@ -74,9 +74,11 @@ function wpcf7_swv_get_meta_schema() {
 					'properties' => array(
 						'rule' => array(
 							'type' => 'string',
+							'enum' => array_keys( wpcf7_swv_available_rules() ),
 						),
 						'field' => array(
 							'type' => 'string',
+							'pattern' => '^[A-Za-z][-A-Za-z0-9_:]*$',
 						),
 						'error' => array(
 							'type' => 'string',
