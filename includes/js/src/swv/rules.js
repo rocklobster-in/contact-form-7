@@ -1,12 +1,11 @@
-import { getFieldValues } from './utils';
 import { ValidationError } from './error';
 
 
 /**
  * Verifies required fields are filled in.
  */
-export const required = function ( formData ) {
-	const values = getFieldValues( formData, this.field );
+export const required = function ( formDataTree ) {
+	const values = formDataTree.getAll( this.field );
 
 	if ( 0 === values.length ) {
 		throw new ValidationError( this );
@@ -17,8 +16,8 @@ export const required = function ( formData ) {
 /**
  * Verifies required file fields are filled in.
  */
-export const requiredfile = function ( formData ) {
-	const values = getFieldValues( formData, this.field );
+export const requiredfile = function ( formDataTree ) {
+	const values = formDataTree.getAll( this.field );
 
 	if ( 0 === values.length ) {
 		throw new ValidationError( this );
@@ -29,8 +28,8 @@ export const requiredfile = function ( formData ) {
 /**
  * Verifies email fields have email values.
  */
-export const email = function ( formData ) {
-	const values = getFieldValues( formData, this.field );
+export const email = function ( formDataTree ) {
+	const values = formDataTree.getAll( this.field );
 
 	// https://html.spec.whatwg.org/multipage/input.html#email-state-(type=email)
 	const regExp = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
@@ -44,8 +43,8 @@ export const email = function ( formData ) {
 /**
  * Verifies URL fields have URL values.
  */
-export const url = function ( formData ) {
-	const values = getFieldValues( formData, this.field );
+export const url = function ( formDataTree ) {
+	const values = formDataTree.getAll( this.field );
 
 	// https://html.spec.whatwg.org/multipage/input.html#url-state-(type=url)
 	// Intentionally applying a loose validation
@@ -75,8 +74,8 @@ export const url = function ( formData ) {
 /**
  * Verifies telephone number fields have telephone number values.
  */
-export const tel = function ( formData ) {
-	const values = getFieldValues( formData, this.field );
+export const tel = function ( formDataTree ) {
+	const values = formDataTree.getAll( this.field );
 
 	// https://html.spec.whatwg.org/multipage/input.html#telephone-state-(type=tel)
 	const isTelephoneNumber = text => {
@@ -98,8 +97,8 @@ export const tel = function ( formData ) {
 /**
  * Verifies number fields have number values.
  */
-export const number = function ( formData ) {
-	const values = getFieldValues( formData, this.field );
+export const number = function ( formDataTree ) {
+	const values = formDataTree.getAll( this.field );
 
 	// https://html.spec.whatwg.org/multipage/input.html#number-state-(type=number)
 	const isValidFloatingPointNumber = text => {
@@ -125,8 +124,8 @@ export const number = function ( formData ) {
 /**
  * Verifies date fields have date values.
  */
-export const date = function ( formData ) {
-	const values = getFieldValues( formData, this.field );
+export const date = function ( formDataTree ) {
+	const values = formDataTree.getAll( this.field );
 
 	// https://html.spec.whatwg.org/multipage/input.html#date-state-(type=date)
 	const isValidDateString = text => {
@@ -142,8 +141,8 @@ export const date = function ( formData ) {
 /**
  * Verifies file fields have file values.
  */
-export const file = function ( formData ) {
-	const values = getFieldValues( formData, this.field );
+export const file = function ( formDataTree ) {
+	const values = formDataTree.getAll( this.field );
 
 	const isAcceptableFile = file => {
 		if ( file instanceof File ) {
@@ -170,8 +169,8 @@ export const file = function ( formData ) {
 /**
  * Verifies string values are not shorter than threshold.
  */
-export const minlength = function ( formData ) {
-	const values = getFieldValues( formData, this.field );
+export const minlength = function ( formDataTree ) {
+	const values = formDataTree.getAll( this.field );
 
 	let totalLength = 0;
 
@@ -190,8 +189,8 @@ export const minlength = function ( formData ) {
 /**
  * Verifies string values are not longer than threshold.
  */
-export const maxlength = function ( formData ) {
-	const values = getFieldValues( formData, this.field );
+export const maxlength = function ( formDataTree ) {
+	const values = formDataTree.getAll( this.field );
 
 	let totalLength = 0;
 
@@ -210,8 +209,8 @@ export const maxlength = function ( formData ) {
 /**
  * Verifies numerical values are not smaller than threshold.
  */
-export const minnumber = function ( formData ) {
-	const values = getFieldValues( formData, this.field );
+export const minnumber = function ( formDataTree ) {
+	const values = formDataTree.getAll( this.field );
 
 	const isAcceptableNumber = text => {
 		if ( parseFloat( text ) < parseFloat( this.threshold ) ) {
@@ -230,8 +229,8 @@ export const minnumber = function ( formData ) {
 /**
  * Verifies numerical values are not larger than threshold.
  */
-export const maxnumber = function ( formData ) {
-	const values = getFieldValues( formData, this.field );
+export const maxnumber = function ( formDataTree ) {
+	const values = formDataTree.getAll( this.field );
 
 	const isAcceptableNumber = text => {
 		if ( parseFloat( this.threshold ) < parseFloat( text ) ) {
@@ -250,8 +249,8 @@ export const maxnumber = function ( formData ) {
 /**
  * Verifies date values are not earlier than threshold.
  */
-export const mindate = function ( formData ) {
-	const values = getFieldValues( formData, this.field );
+export const mindate = function ( formDataTree ) {
+	const values = formDataTree.getAll( this.field );
 
 	const isAcceptableDate = text => {
 		text = text.trim();
@@ -276,8 +275,8 @@ export const mindate = function ( formData ) {
 /**
  * Verifies date values are not later than threshold.
  */
-export const maxdate = function ( formData ) {
-	const values = getFieldValues( formData, this.field );
+export const maxdate = function ( formDataTree ) {
+	const values = formDataTree.getAll( this.field );
 
 	const isAcceptableDate = text => {
 		text = text.trim();
@@ -302,8 +301,8 @@ export const maxdate = function ( formData ) {
 /**
  * Verifies file values are not larger in file size than threshold.
  */
-export const maxfilesize = function ( formData ) {
-	const values = getFieldValues( formData, this.field );
+export const maxfilesize = function ( formDataTree ) {
+	const values = formDataTree.getAll( this.field );
 
 	let totalVolume = 0;
 
