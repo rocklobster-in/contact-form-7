@@ -93,23 +93,27 @@ export const email = function ( formDataTree ) {
 export const url = function ( formDataTree ) {
 	const values = formDataTree.getAll( this.field );
 
-	// https://html.spec.whatwg.org/multipage/input.html#url-state-(type=url)
-	// Intentionally applying a loose validation
-	// for consistency with implementation in current major browsers.
 	const isAbsoluteUrl = text => {
-		const found = text.trim().match(
-			/^([a-z][a-z0-9.+-]*):([^\p{C}\p{Z}]+)$/iu
-		);
+		text = text.trim();
 
-		if ( ! found ) {
+		if ( '' === text ) {
 			return false;
-		} else if ( /^(?:ftp|http|https|ws|wss)$/i.test( found[1] ) ) {
-			return /^\/\/.+$/iu.test( found[2] );
-		} else if ( /^file$/i.test( found[1] ) ) {
-			return /^\/\/.+$/iu.test( found[2] );
-		} else {
-			return /^.+$/iu.test( found[2] );
 		}
+
+		try {
+			const urlObj = new URL( text );
+			const protocol = urlObj.protocol.replace( /:$/, '' );
+			return isAllowedProtocol( protocol );
+		} catch {
+			return false;
+		}
+	};
+
+	const isAllowedProtocol = protocol => {
+		// https://developer.wordpress.org/reference/functions/wp_allowed_protocols/
+		const allowedProtocols = [ 'http', 'https', 'ftp', 'ftps', 'mailto', 'news', 'irc', 'irc6', 'ircs', 'gopher', 'nntp', 'feed', 'telnet', 'mms', 'rtsp', 'sms', 'svn', 'tel', 'fax', 'xmpp', 'webcal', 'urn' ];
+
+		return -1 !== allowedProtocols.indexOf( protocol );
 	};
 
 	if ( ! values.every( isAbsoluteUrl ) ) {
