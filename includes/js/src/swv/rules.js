@@ -128,15 +128,11 @@ export const url = function ( formDataTree ) {
 export const tel = function ( formDataTree ) {
 	const values = formDataTree.getAll( this.field );
 
-	// https://html.spec.whatwg.org/multipage/input.html#telephone-state-(type=tel)
 	const isTelephoneNumber = text => {
 		text = text.trim();
+		text = text.replaceAll( /[()/.*#\s-]+/g, ' ' );
 
-		if ( /[\r\n\p{C}]/.test( text ) ) {
-			return false;
-		}
-
-		return /[0-9]/.test( text );
+		return /^[+]?[0-9 ]+$/.test( text );
 	};
 
 	if ( ! values.every( isTelephoneNumber ) ) {
