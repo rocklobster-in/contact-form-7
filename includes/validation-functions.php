@@ -21,7 +21,8 @@ function wpcf7_is_email( $email ) {
 }
 
 function wpcf7_is_url( $url ) {
-	$result = ( false !== filter_var( $url, FILTER_VALIDATE_URL ) );
+	$scheme = wp_parse_url( $url, PHP_URL_SCHEME );
+	$result = $scheme && in_array( $scheme, wp_allowed_protocols(), true );
 	return apply_filters( 'wpcf7_is_url', $result, $url );
 }
 
