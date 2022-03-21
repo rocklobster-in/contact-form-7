@@ -130,9 +130,9 @@ export const tel = function ( formDataTree ) {
 
 	const isTelephoneNumber = text => {
 		text = text.trim();
-		text = text.replaceAll( /[()/.*#\s-]+/g, ' ' );
+		text = text.replaceAll( /[()/.*#\s-]+/g, '' );
 
-		return /^[+]?[0-9 ]+$/.test( text );
+		return /^[+]?[0-9]+$/.test( text );
 	};
 
 	if ( ! values.every( isTelephoneNumber ) ) {
