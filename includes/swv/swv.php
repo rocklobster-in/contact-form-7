@@ -83,6 +83,15 @@ function wpcf7_swv_get_meta_schema() {
 						'error' => array(
 							'type' => 'string',
 						),
+						'accept' => array(
+							'type' => 'array',
+							'items' => array(
+								'type' => 'string',
+							),
+						),
+						'threshold' => array(
+							'type' => 'string',
+						),
 					),
 					'required' => array( 'rule' ),
 				),
