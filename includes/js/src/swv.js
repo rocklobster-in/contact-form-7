@@ -3,6 +3,7 @@ import FormDataTree from './swv/form-data-tree';
 
 export default function validate( form, context ) {
 	const rules = form.wpcf7.schema.rules ?? [];
+	const validators = validate.validators ?? {};
 	const formDataTree = new FormDataTree( form );
 
 	rules.filter( ( { field, ...properties } ) => {
@@ -13,3 +14,5 @@ export default function validate( form, context ) {
 		}
 	} );
 }
+
+validate.validators = validators;
