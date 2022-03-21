@@ -33,7 +33,20 @@ function wpcf7_is_tel( $tel ) {
 }
 
 function wpcf7_is_number( $number ) {
-	$result = is_numeric( $number );
+	$result = false;
+
+	$patterns = array(
+		'/^[-]?[0-9]+(?:[eE][+-]?[0-9]+)?$/',
+		'/^[-]?(?:[0-9]+)?[.][0-9]+(?:[eE][+-]?[0-9]+)?$/',
+	);
+
+	foreach ( $patterns as $pattern ) {
+		if ( preg_match( $pattern, $number ) ) {
+			$result = true;
+			break;
+		}
+	}
+
 	return apply_filters( 'wpcf7_is_number', $result, $number );
 }
 
