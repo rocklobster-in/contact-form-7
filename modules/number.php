@@ -100,7 +100,7 @@ add_action(
 
 function wpcf7_swv_add_number_rules( $schema, $contact_form ) {
 	$tags = $contact_form->scan_form_tags( array(
-		'type' => array( 'number', 'range', 'number*', 'range*' ),
+		'basetype' => array( 'number', 'range' ),
 	) );
 
 	foreach ( $tags as $tag ) {

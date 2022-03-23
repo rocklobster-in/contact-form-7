@@ -110,7 +110,7 @@ add_action(
 
 function wpcf7_swv_add_date_rules( $schema, $contact_form ) {
 	$tags = $contact_form->scan_form_tags( array(
-		'type' => array( 'date', 'date*' ),
+		'basetype' => array( 'date' ),
 	) );
 
 	foreach ( $tags as $tag ) {
