@@ -208,10 +208,6 @@ class WPCF7_FormTagsManager {
 			$tags = $this->scanned_tags;
 		}
 
-		if ( empty( $tags ) ) {
-			return array();
-		}
-
 		$cond = wp_parse_args( $cond, array(
 			'type' => array(),
 			'basetype' => array(),
@@ -219,49 +215,53 @@ class WPCF7_FormTagsManager {
 			'feature' => '',
 		) );
 
-		$type = array_filter( (array) $cond['type'] );
-		$basetype = array_filter( (array) $cond['basetype'] );
-		$name = array_filter( (array) $cond['name'] );
-		$feature = is_string( $cond['feature'] ) ? trim( $cond['feature'] ) : '';
+		$cond = array(
+			'type' => array_filter( (array) $cond['type'] ),
+			'basetype' => array_filter( (array) $cond['basetype'] ),
+			'name' => array_filter( (array) $cond['name'] ),
+			'feature' => is_string( $cond['feature'] )
+				? trim( $cond['feature'] ) : '',
+		);
 
-		if ( '!' == substr( $feature, 0, 1 ) ) {
-			$feature_negative = true;
-			$feature = trim( substr( $feature, 1 ) );
-		} else {
-			$feature_negative = false;
-		}
+		$tags = array_filter(
+			(array) $tags,
+			function ( $tag ) use ( $cond ) {
+				$tag = new WPCF7_FormTag( $tag );
 
-		$output = array();
-
-		foreach ( $tags as $tag ) {
-			$tag = new WPCF7_FormTag( $tag );
-
-			if ( $type and ! in_array( $tag->type, $type, true ) ) {
-				continue;
-			}
-
-			if ( $basetype and ! in_array( $tag->basetype, $basetype, true ) ) {
-				continue;
-			}
-
-			if ( $name and ! in_array( $tag->name, $name, true ) ) {
-				continue;
-			}
-
-			if ( $feature ) {
-				if ( ! $this->tag_type_supports( $tag->type, $feature )
-				and ! $feature_negative ) {
-					continue;
-				} elseif ( $this->tag_type_supports( $tag->type, $feature )
-				and $feature_negative ) {
-					continue;
+				if ( $cond['type']
+				and ! in_array( $tag->type, $cond['type'], true ) ) {
+					return false;
 				}
+
+				if ( $cond['basetype']
+				and ! in_array( $tag->basetype, $cond['basetype'], true ) ) {
+					return false;
+				}
+
+				if ( $cond['name']
+				and ! in_array( $tag->name, $cond['name'], true ) ) {
+					return false;
+				}
+
+				if ( $cond['feature'] ) {
+					if ( '!' === substr( $cond['feature'], 0, 1 ) ) { // Negation
+						$cond['feature'] = trim( substr( $cond['feature'], 1 ) );
+
+						if ( $this->tag_type_supports( $tag->type, $cond['feature'] ) ) {
+							return false;
+						}
+					} else {
+						if ( ! $this->tag_type_supports( $tag->type, $cond['feature'] ) ) {
+							return false;
+						}
+					}
+				}
+
+				return true;
 			}
+		);
 
-			$output[] = $tag;
-		}
-
-		return $output;
+		return $tags;
 	}
 
 	private function tag_regex() {
