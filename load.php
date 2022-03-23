@@ -8,6 +8,7 @@ require_once WPCF7_PLUGIN_DIR . '/includes/pipe.php';
 require_once WPCF7_PLUGIN_DIR . '/includes/form-tag.php';
 require_once WPCF7_PLUGIN_DIR . '/includes/form-tags-manager.php';
 require_once WPCF7_PLUGIN_DIR . '/includes/shortcodes.php';
+require_once WPCF7_PLUGIN_DIR . '/includes/swv/swv.php';
 require_once WPCF7_PLUGIN_DIR . '/includes/contact-form-functions.php';
 require_once WPCF7_PLUGIN_DIR . '/includes/contact-form-template.php';
 require_once WPCF7_PLUGIN_DIR . '/includes/contact-form.php';

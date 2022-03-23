@@ -128,29 +128,25 @@ function wpcf7_select_form_tag_handler( $tag ) {
 }
 
 
-/* Validation filter */
+add_action(
+	'wpcf7_swv_create_schema',
+	'wpcf7_swv_add_select_rules',
+	10, 2
+);
 
-add_filter( 'wpcf7_validate_select', 'wpcf7_select_validation_filter', 10, 2 );
-add_filter( 'wpcf7_validate_select*', 'wpcf7_select_validation_filter', 10, 2 );
+function wpcf7_swv_add_select_rules( $schema, $contact_form ) {
+	$tags = $contact_form->scan_form_tags( array(
+		'type' => array( 'select*' ),
+	) );
 
-function wpcf7_select_validation_filter( $result, $tag ) {
-	$name = $tag->name;
-
-	$has_value = isset( $_POST[$name] ) && '' !== $_POST[$name];
-
-	if ( $has_value and $tag->has_option( 'multiple' ) ) {
-		$vals = array_filter( (array) $_POST[$name], function( $val ) {
-			return '' !== $val;
-		} );
-
-		$has_value = ! empty( $vals );
+	foreach ( $tags as $tag ) {
+		$schema->add_rule(
+			wpcf7_swv_create_rule( 'required', array(
+				'field' => $tag->name,
+				'error' => wpcf7_get_message( 'invalid_required' ),
+			) )
+		);
 	}
-
-	if ( $tag->is_required() and ! $has_value ) {
-		$result->invalidate( $tag, wpcf7_get_message( 'invalid_required' ) );
-	}
-
-	return $result;
 }
 
 

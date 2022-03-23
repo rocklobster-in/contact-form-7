@@ -33,34 +33,15 @@ function wpcf7_unship_uploaded_file( $file, $args = '' ) {
 		}
 	}
 
-	if ( $args['required'] and ! array_filter( $tmp_names ) ) {
-		return new WP_Error( 'wpcf7_invalid_required',
-			wpcf7_get_message( 'invalid_required' )
-		);
-	}
+	if ( isset( $args['schema'] ) and isset( $args['name'] ) ) {
+		$result = $args['schema']->validate( array(
+			'file' => true,
+			'field' => $args['name'],
+		) );
 
-	// File type validation
-	$file_type_pattern = wpcf7_acceptable_filetypes(
-		$args['filetypes'], 'regex'
-	);
-
-	$file_type_pattern = '/\.(' . $file_type_pattern . ')$/i';
-
-	foreach ( $names as $name ) {
-		if ( ! empty( $name ) and ! preg_match( $file_type_pattern, $name ) ) {
-			return new WP_Error( 'wpcf7_upload_file_type_invalid',
-				wpcf7_get_message( 'upload_file_type_invalid' )
-			);
+		if ( is_wp_error( $result ) ) {
+			return $result;
 		}
-	}
-
-	// File size validation
-	$total_size = array_sum( $sizes );
-
-	if ( $args['limit'] < $total_size ) {
-		return new WP_Error( 'wpcf7_upload_file_too_large',
-			wpcf7_get_message( 'upload_file_too_large' )
-		);
 	}
 
 	// Move uploaded file to tmp dir
