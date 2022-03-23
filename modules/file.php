@@ -75,7 +75,7 @@ add_action(
 
 function wpcf7_swv_add_file_rules( $schema, $contact_form ) {
 	$tags = $contact_form->scan_form_tags( array(
-		'type' => array( 'file', 'file*' ),
+		'basetype' => array( 'file' ),
 	) );
 
 	foreach ( $tags as $tag ) {

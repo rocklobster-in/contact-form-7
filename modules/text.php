@@ -114,7 +114,7 @@ add_action(
 
 function wpcf7_swv_add_text_rules( $schema, $contact_form ) {
 	$tags = $contact_form->scan_form_tags( array(
-		'type' => array( 'text', 'email', 'url', 'tel', 'text*', 'email*', 'url*', 'tel*' ),
+		'basetype' => array( 'text', 'email', 'url', 'tel' ),
 	) );
 
 	foreach ( $tags as $tag ) {

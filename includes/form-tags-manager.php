@@ -214,11 +214,13 @@ class WPCF7_FormTagsManager {
 
 		$cond = wp_parse_args( $cond, array(
 			'type' => array(),
+			'basetype' => array(),
 			'name' => array(),
 			'feature' => '',
 		) );
 
 		$type = array_filter( (array) $cond['type'] );
+		$basetype = array_filter( (array) $cond['basetype'] );
 		$name = array_filter( (array) $cond['name'] );
 		$feature = is_string( $cond['feature'] ) ? trim( $cond['feature'] ) : '';
 
@@ -235,6 +237,10 @@ class WPCF7_FormTagsManager {
 			$tag = new WPCF7_FormTag( $tag );
 
 			if ( $type and ! in_array( $tag->type, $type, true ) ) {
+				continue;
+			}
+
+			if ( $basetype and ! in_array( $tag->basetype, $basetype, true ) ) {
 				continue;
 			}
 
