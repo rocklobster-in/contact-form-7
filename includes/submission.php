@@ -508,6 +508,15 @@ class WPCF7_Submission {
 
 		$result = new WPCF7_Validation();
 
+		$this->contact_form->validate_schema(
+			array(
+				'text' => true,
+				'file' => false,
+				'field' => array(),
+			),
+			$result
+		);
+
 		$tags = $this->contact_form->scan_form_tags( array(
 		  'feature' => '! file-uploading',
 		) );
@@ -726,11 +735,14 @@ class WPCF7_Submission {
 				'required' => $tag->is_required(),
 				'filetypes' => $tag->get_option( 'filetypes' ),
 				'limit' => $tag->get_limit_option(),
+				'schema' => $this->contact_form->get_schema(),
 			);
 
 			$new_files = wpcf7_unship_uploaded_file( $file, $args );
 
-			if ( ! is_wp_error( $new_files ) ) {
+			if ( is_wp_error( $new_files ) ) {
+				$result->invalidate( $tag, $new_files );
+			} else {
 				$this->add_uploaded_file( $tag->name, $new_files );
 			}
 

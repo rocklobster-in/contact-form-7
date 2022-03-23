@@ -106,74 +106,74 @@ function wpcf7_text_form_tag_handler( $tag ) {
 }
 
 
-/* Validation filter */
+add_action(
+	'wpcf7_swv_create_schema',
+	'wpcf7_swv_add_text_rules',
+	10, 2
+);
 
-add_filter( 'wpcf7_validate_text', 'wpcf7_text_validation_filter', 10, 2 );
-add_filter( 'wpcf7_validate_text*', 'wpcf7_text_validation_filter', 10, 2 );
-add_filter( 'wpcf7_validate_email', 'wpcf7_text_validation_filter', 10, 2 );
-add_filter( 'wpcf7_validate_email*', 'wpcf7_text_validation_filter', 10, 2 );
-add_filter( 'wpcf7_validate_url', 'wpcf7_text_validation_filter', 10, 2 );
-add_filter( 'wpcf7_validate_url*', 'wpcf7_text_validation_filter', 10, 2 );
-add_filter( 'wpcf7_validate_tel', 'wpcf7_text_validation_filter', 10, 2 );
-add_filter( 'wpcf7_validate_tel*', 'wpcf7_text_validation_filter', 10, 2 );
+function wpcf7_swv_add_text_rules( $schema, $contact_form ) {
+	$tags = $contact_form->scan_form_tags( array(
+		'type' => array( 'text', 'email', 'url', 'tel', 'text*', 'email*', 'url*', 'tel*' ),
+	) );
 
-function wpcf7_text_validation_filter( $result, $tag ) {
-	$name = $tag->name;
+	foreach ( $tags as $tag ) {
+		if ( $tag->is_required() ) {
+			$schema->add_rule(
+				wpcf7_swv_create_rule( 'required', array(
+					'field' => $tag->name,
+					'error' => wpcf7_get_message( 'invalid_required' ),
+				) )
+			);
+		}
 
-	$value = isset( $_POST[$name] )
-		? trim( wp_unslash( strtr( (string) $_POST[$name], "\n", " " ) ) )
-		: '';
+		if ( 'email' === $tag->basetype ) {
+			$schema->add_rule(
+				wpcf7_swv_create_rule( 'email', array(
+					'field' => $tag->name,
+					'error' => wpcf7_get_message( 'invalid_email' ),
+				) )
+			);
+		}
 
-	if ( 'text' == $tag->basetype ) {
-		if ( $tag->is_required() and '' === $value ) {
-			$result->invalidate( $tag, wpcf7_get_message( 'invalid_required' ) );
+		if ( 'url' === $tag->basetype ) {
+			$schema->add_rule(
+				wpcf7_swv_create_rule( 'url', array(
+					'field' => $tag->name,
+					'error' => wpcf7_get_message( 'invalid_url' ),
+				) )
+			);
+		}
+
+		if ( 'tel' === $tag->basetype ) {
+			$schema->add_rule(
+				wpcf7_swv_create_rule( 'tel', array(
+					'field' => $tag->name,
+					'error' => wpcf7_get_message( 'invalid_tel' ),
+				) )
+			);
+		}
+
+		if ( $minlength = $tag->get_minlength_option() ) {
+			$schema->add_rule(
+				wpcf7_swv_create_rule( 'minlength', array(
+					'field' => $tag->name,
+					'threshold' => absint( $minlength ),
+					'error' => wpcf7_get_message( 'invalid_too_short' ),
+				) )
+			);
+		}
+
+		if ( $maxlength = $tag->get_maxlength_option() ) {
+			$schema->add_rule(
+				wpcf7_swv_create_rule( 'maxlength', array(
+					'field' => $tag->name,
+					'threshold' => absint( $maxlength ),
+					'error' => wpcf7_get_message( 'invalid_too_long' ),
+				) )
+			);
 		}
 	}
-
-	if ( 'email' == $tag->basetype ) {
-		if ( $tag->is_required() and '' === $value ) {
-			$result->invalidate( $tag, wpcf7_get_message( 'invalid_required' ) );
-		} elseif ( '' !== $value and ! wpcf7_is_email( $value ) ) {
-			$result->invalidate( $tag, wpcf7_get_message( 'invalid_email' ) );
-		}
-	}
-
-	if ( 'url' == $tag->basetype ) {
-		if ( $tag->is_required() and '' === $value ) {
-			$result->invalidate( $tag, wpcf7_get_message( 'invalid_required' ) );
-		} elseif ( '' !== $value and ! wpcf7_is_url( $value ) ) {
-			$result->invalidate( $tag, wpcf7_get_message( 'invalid_url' ) );
-		}
-	}
-
-	if ( 'tel' == $tag->basetype ) {
-		if ( $tag->is_required() and '' === $value ) {
-			$result->invalidate( $tag, wpcf7_get_message( 'invalid_required' ) );
-		} elseif ( '' !== $value and ! wpcf7_is_tel( $value ) ) {
-			$result->invalidate( $tag, wpcf7_get_message( 'invalid_tel' ) );
-		}
-	}
-
-	if ( '' !== $value ) {
-		$maxlength = $tag->get_maxlength_option();
-		$minlength = $tag->get_minlength_option();
-
-		if ( $maxlength and $minlength and $maxlength < $minlength ) {
-			$maxlength = $minlength = null;
-		}
-
-		$code_units = wpcf7_count_code_units( $value );
-
-		if ( false !== $code_units ) {
-			if ( $maxlength and $maxlength < $code_units ) {
-				$result->invalidate( $tag, wpcf7_get_message( 'invalid_too_long' ) );
-			} elseif ( $minlength and $code_units < $minlength ) {
-				$result->invalidate( $tag, wpcf7_get_message( 'invalid_too_short' ) );
-			}
-		}
-	}
-
-	return $result;
 }
 
 

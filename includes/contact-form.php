@@ -2,6 +2,8 @@
 
 class WPCF7_ContactForm {
 
+	use WPCF7_SWV_SchemaHolder;
+
 	const post_type = 'wpcf7_contact_form';
 
 	private static $found_items = 0;

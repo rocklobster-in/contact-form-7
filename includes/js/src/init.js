@@ -1,5 +1,6 @@
 import { absInt } from './utils';
 import { resetCaptcha, resetQuiz } from './reset';
+import { apiFetch } from './api-fetch';
 
 import {
 	exclusiveCheckboxHelper,
@@ -20,6 +21,7 @@ export default function init( form ) {
 		unitTag: formData.get( '_wpcf7_unit_tag' ),
 		containerPost: absInt( formData.get( '_wpcf7_container_post' ) ),
 		parent: form.closest( '.wpcf7' ),
+		schema: {},
 	};
 
 	form.querySelectorAll( '.has-spinner' ).forEach( element => {
@@ -70,6 +72,25 @@ export default function init( form ) {
 
 		if ( event.detail.apiResponse.quiz ) {
 			resetQuiz( form, event.detail.apiResponse.quiz );
+		}
+	} );
+
+	apiFetch( {
+		endpoint: `contact-forms/${ form.wpcf7.id }/feedback/schema`,
+		method: 'GET',
+	} ).then( response => {
+		form.wpcf7.schema = response;
+	} );
+
+	form.addEventListener( 'change', event => {
+		const context = {
+			field: event.target.name,
+		};
+
+		try {
+			wpcf7.validate( form, context );
+		} catch ( error ) {
+			console.error( error );
 		}
 	} );
 }

@@ -1,6 +1,7 @@
 import init from './init';
 import submit from './submit';
 import reset from './reset';
+import validate from './swv';
 
 document.addEventListener( 'DOMContentLoaded', event => {
 
@@ -35,6 +36,7 @@ document.addEventListener( 'DOMContentLoaded', event => {
 		init,
 		submit,
 		reset,
+		validate,
 		...( wpcf7 ?? {} ),
 	};
 

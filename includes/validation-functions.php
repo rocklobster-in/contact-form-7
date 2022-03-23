@@ -21,23 +21,32 @@ function wpcf7_is_email( $email ) {
 }
 
 function wpcf7_is_url( $url ) {
-	$result = ( false !== filter_var( $url, FILTER_VALIDATE_URL ) );
+	$scheme = wp_parse_url( $url, PHP_URL_SCHEME );
+	$result = $scheme && in_array( $scheme, wp_allowed_protocols(), true );
 	return apply_filters( 'wpcf7_is_url', $result, $url );
 }
 
 function wpcf7_is_tel( $tel ) {
-	$pattern = '%^[+]?' // + sign
-		. '(?:\([0-9]+\)|[0-9]+)' // (1234) or 1234
-		. '(?:[/ -]*' // delimiter
-		. '(?:\([0-9]+\)|[0-9]+)' // (1234) or 1234
-		. ')*$%';
-
-	$result = preg_match( $pattern, trim( $tel ) );
+	$tel = preg_replace( '%[()/.*#\s-]+%', '', $tel );
+	$result = preg_match( '/^[+]?[0-9]+$/', $tel );
 	return apply_filters( 'wpcf7_is_tel', $result, $tel );
 }
 
 function wpcf7_is_number( $number ) {
-	$result = is_numeric( $number );
+	$result = false;
+
+	$patterns = array(
+		'/^[-]?[0-9]+(?:[eE][+-]?[0-9]+)?$/',
+		'/^[-]?(?:[0-9]+)?[.][0-9]+(?:[eE][+-]?[0-9]+)?$/',
+	);
+
+	foreach ( $patterns as $pattern ) {
+		if ( preg_match( $pattern, $number ) ) {
+			$result = true;
+			break;
+		}
+	}
+
 	return apply_filters( 'wpcf7_is_number', $result, $number );
 }
 
