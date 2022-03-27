@@ -257,7 +257,7 @@ class WPCF7_FormTagsManager {
 			}
 		);
 
-		return $tags;
+		return array_values( $tags );
 	}
 
 	private function tag_regex() {
