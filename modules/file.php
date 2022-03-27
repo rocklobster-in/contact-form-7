@@ -38,7 +38,8 @@ function wpcf7_file_form_tag_handler( $tag ) {
 	$atts['tabindex'] = $tag->get_option( 'tabindex', 'signed_int', true );
 
 	$atts['accept'] = wpcf7_acceptable_filetypes(
-		$tag->get_option( 'filetypes' ), 'attr' );
+		$tag->get_option( 'filetypes' ), 'attr'
+	);
 
 	if ( $tag->is_required() ) {
 		$atts['aria-required'] = 'true';
