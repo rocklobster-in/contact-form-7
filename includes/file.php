@@ -143,6 +143,33 @@ function wpcf7_file_form_enctype_filter( $enctype ) {
 
 
 /**
+ * Converts a MIME type string to an array of corresponding file extensions.
+ *
+ * @param string $mime MIME type.
+ *                     Wildcard (*) is available for the subtype part.
+ * @return array Corresponding file extensions.
+ */
+function wpcf7_convert_mime_to_ext( $mime ) {
+	static $mime_types = array();
+
+	$mime_types = wp_get_mime_types();
+
+	$results = array();
+
+	if ( preg_match( '%^([a-z]+)/([*]|[a-z0-9.+-]+)$%i', $mime, $matches ) ) {
+		foreach ( $mime_types as $key => $val ) {
+			if ( '*' === $matches[2] and str_starts_with( $val, $matches[1] . '/' )
+		 	or $val === $matches[0] ) {
+				$results = array_merge( $results, explode( '|', $key ) );
+			}
+		}
+	}
+
+	return array_filter( array_unique( $results ) );
+}
+
+
+/**
  * Returns a formatted list of acceptable filetypes.
  *
  * @param string|array $types Optional. Array of filetypes.
@@ -150,8 +177,7 @@ function wpcf7_file_form_enctype_filter( $enctype ) {
  * @return string Formatted list of acceptable filetypes.
  */
 function wpcf7_acceptable_filetypes( $types = 'default', $format = 'regex' ) {
-	if ( 'default' === $types
-	or empty( $types ) ) {
+	if ( 'default' === $types or empty( $types ) ) {
 		$types = array(
 			'jpg',
 			'jpeg',
