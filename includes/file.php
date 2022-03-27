@@ -179,67 +179,59 @@ function wpcf7_convert_mime_to_ext( $mime ) {
 function wpcf7_acceptable_filetypes( $types = 'default', $format = 'regex' ) {
 	if ( 'default' === $types or empty( $types ) ) {
 		$types = array(
-			'jpg',
-			'jpeg',
-			'png',
-			'gif',
-			'pdf',
-			'doc',
-			'docx',
-			'ppt',
-			'pptx',
-			'odt',
-			'avi',
-			'ogg',
-			'm4a',
-			'mov',
-			'mp3',
-			'mp4',
-			'mpg',
-			'wav',
-			'wmv',
+			'audio/*',
+			'video/*',
+			'image/*',
 		);
 	} else {
-		$types_tmp = (array) $types;
-		$types = array();
-
-		foreach ( $types_tmp as $val ) {
-			if ( is_string( $val ) ) {
-				$val = preg_split( '/[\s|,]+/', $val );
-			}
-
-			$types = array_merge( $types, (array) $val );
-		}
-	}
-
-	$types = array_unique( array_filter( $types ) );
-
-	$output = '';
-
-	foreach ( $types as $type ) {
-		$type = trim( $type, ' ,.|' );
-
-		$type = str_replace(
-			array( '.', '+', '*', '?' ),
-			array( '\.', '\+', '\*', '\?' ),
-			$type
+		$types = array_map(
+			function ( $type ) {
+				if ( is_string( $type ) ) {
+					return preg_split( '/[\s|,]+/', strtolower( $type ) );
+				}
+			},
+			(array) $types
 		);
 
-		if ( '' === $type ) {
-			continue;
-		}
-
-		if ( 'attr' === $format
-		or 'attribute' === $format ) {
-			$output .= sprintf( '.%s', $type );
-			$output .= ',';
-		} else {
-			$output .= $type;
-			$output .= '|';
-		}
+		$types = wpcf7_array_flatten( $types );
+		$types = array_filter( array_unique( $types ) );
 	}
 
-	return trim( $output, ' ,|' );
+	if ( 'attr' === $format or 'attribute' === $format ) {
+		$types = array_map(
+			function ( $type ) {
+				if ( false === strpos( $type, '/' ) ) {
+					return sprintf( '.%s', trim( $type, '.' ) );
+				} elseif ( wpcf7_convert_mime_to_ext( $type ) ) {
+					return $type;
+				}
+			},
+			$types
+		);
+
+		$types = array_filter( $types );
+
+		return implode( ',', $types );
+
+	} elseif ( 'regex' === $format ) {
+		$types = array_map(
+			function ( $type ) {
+				if ( false === strpos( $type, '/' ) ) {
+					return preg_quote( trim( $type, '.' ) );
+				} elseif ( $type = wpcf7_convert_mime_to_ext( $type ) ) {
+					return $type;
+				}
+			},
+			$types
+		);
+
+		$types = wpcf7_array_flatten( $types );
+		$types = array_filter( array_unique( $types ) );
+
+		return implode( '|', $types );
+	}
+
+	return '';
 }
 
 
