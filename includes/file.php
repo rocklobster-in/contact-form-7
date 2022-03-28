@@ -206,6 +206,12 @@ function wpcf7_acceptable_filetypes( $types = 'default', $format = 'regex' ) {
 			function ( $type ) {
 				if ( false === strpos( $type, '/' ) ) {
 					return sprintf( '.%s', trim( $type, '.' ) );
+				} elseif ( preg_match( '%^([a-z]+)/[*]$%i', $type, $matches ) ) {
+					if ( in_array( $matches[1], array( 'audio', 'video', 'image' ) ) ) {
+						return $type;
+					} else {
+						return '';
+					}
 				} elseif ( wpcf7_convert_mime_to_ext( $type ) ) {
 					return $type;
 				}
