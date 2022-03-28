@@ -165,7 +165,11 @@ function wpcf7_convert_mime_to_ext( $mime ) {
 		}
 	}
 
-	return array_filter( array_unique( $results ) );
+	$results = array_unique( $results );
+	$results = array_filter( $results );
+	$results = array_values( $results );
+
+	return $results;
 }
 
 

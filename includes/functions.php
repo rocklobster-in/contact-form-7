@@ -133,11 +133,13 @@ function wpcf7_array_flatten( $input ) {
  * @return array Array without blank text values.
  */
 function wpcf7_exclude_blank( $input ) {
-	return array_filter( $input,
+	$output = array_filter( $input,
 		function ( $i ) {
 			return isset( $i ) && '' !== $i;
 		}
 	);
+
+	return array_values( $output );
 }
 
 
