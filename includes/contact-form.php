@@ -967,7 +967,9 @@ class WPCF7_ContactForm {
 			$mailtags[] = $tag->name;
 		}
 
-		$mailtags = array_unique( array_filter( $mailtags ) );
+		$mailtags = array_unique( $mailtags );
+		$mailtags = array_filter( $mailtags );
+		$mailtags = array_values( $mailtags );
 
 		return apply_filters( 'wpcf7_collect_mail_tags', $mailtags, $args, $this );
 	}
