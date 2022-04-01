@@ -26,10 +26,13 @@ class WPCF7_SWV_FileRule extends WPCF7_SWV_Rule {
 
 		foreach ( (array) $this->get_property( 'accept' ) as $accept ) {
 			if ( false === strpos( $accept, '/' ) ) {
-				$acceptable_filetypes[] = $accept;
+				$acceptable_filetypes[] = strtolower( $accept );
 			} else {
 				foreach ( wpcf7_convert_mime_to_ext( $accept ) as $ext ) {
-					$acceptable_filetypes[] = sprintf( '.%s', trim( $ext, '.' ) );
+					$acceptable_filetypes[] = sprintf(
+						'.%s',
+						strtolower( trim( $ext, ' .' ) )
+					);
 				}
 			}
 		}
@@ -45,7 +48,7 @@ class WPCF7_SWV_FileRule extends WPCF7_SWV_Rule {
 				);
 			}
 
-			$suffix = substr( $i, $last_period_pos );
+			$suffix = strtolower( substr( $i, $last_period_pos ) );
 
 			if ( ! in_array( $suffix, $acceptable_filetypes, true ) ) {
 				return new WP_Error( 'wpcf7_invalid_file',
