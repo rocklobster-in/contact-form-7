@@ -277,7 +277,6 @@ function wpcf7_link( $url, $anchor_text, $args = '' ) {
 	);
 
 	$args = wp_parse_args( $args, $defaults );
-	$args = array_intersect_key( $args, $defaults );
 	$atts = wpcf7_format_atts( $args );
 
 	$link = sprintf( '<a href="%1$s"%3$s>%2$s</a>',
