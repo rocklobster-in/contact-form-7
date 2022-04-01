@@ -12,6 +12,7 @@ class WPCF7_CLEANTALK extends WPCF7_Service
 	private $salt;
 
 	public static $hidden_field_id = '_wpcf7_ct_checkjs';
+	public static $version = '1.0';
 
 	public static function get_instance() {
 		if ( empty(self::$instance) ) {
@@ -90,6 +91,18 @@ class WPCF7_CLEANTALK extends WPCF7_Service
 
 	public function get_checkjs_value() {
 		return hash('sha256', $this->get_apikey() . get_option('admin_email') . $this->get_salt());
+	}
+
+	public function js_test($field_name = 'ct_checkjs', $data = null) {
+		$out = null;
+
+		if ( $data && isset($data[$field_name]) ) {
+			$js_key = trim($data[$field_name]);
+			// Check static key
+			$out = $this->get_checkjs_value() === $js_key ? 1 : 0;
+		}
+
+		return $out;
 	}
 
 	public function load( $action = '' ) {
