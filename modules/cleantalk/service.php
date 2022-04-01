@@ -9,6 +9,9 @@ class WPCF7_CLEANTALK extends WPCF7_Service
 
 	private static $instance;
 	private $apikey;
+	private $salt;
+
+	public static $hidden_field_id = '_wpcf7_ct_checkjs';
 
 	public static function get_instance() {
 		if ( empty(self::$instance) ) {
@@ -20,6 +23,7 @@ class WPCF7_CLEANTALK extends WPCF7_Service
 
 	private function __construct() {
 		$this->apikey = WPCF7::get_option( 'cleantalk_api_key' );
+		$this->salt = WPCF7::get_option( 'cleantalk_salt', 0 );
 	}
 
 	public function get_title() {
@@ -52,6 +56,10 @@ class WPCF7_CLEANTALK extends WPCF7_Service
 		return $this->apikey;
 	}
 
+	public function get_salt() {
+		return $this->salt;
+	}
+
 	protected function log( $url, $request, $response ) {
 		wpcf7_log_remote_request( $url, $request, $response );
 	}
@@ -71,11 +79,17 @@ class WPCF7_CLEANTALK extends WPCF7_Service
 
 	protected function save_data() {
 		WPCF7::update_option( 'cleantalk_api_key', $this->apikey );
+		WPCF7::update_option( 'cleantalk_salt', $this->salt );
 	}
 
 	protected function reset_data() {
 		$this->apikey = null;
+		$this->salt = null;
 		$this->save_data();
+	}
+
+	public function get_checkjs_value() {
+		return hash('sha256', $this->get_apikey() . get_option('admin_email') . $this->get_salt());
 	}
 
 	public function load( $action = '' ) {
@@ -92,6 +106,7 @@ class WPCF7_CLEANTALK extends WPCF7_Service
 
 				if ( $apikey ) {
 					$this->apikey = $apikey;
+					$this->salt = str_pad((string)rand(0, getrandmax()), 6, '0') . str_pad((string)rand(0, getrandmax()), 6, '0');
 					$this->save_data();
 
 					$redirect_to = $this->menu_page_url( array(
