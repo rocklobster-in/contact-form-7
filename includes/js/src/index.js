@@ -1,7 +1,7 @@
 import init from './init';
 import submit from './submit';
 import reset from './reset';
-import validate from './swv';
+import validate from './validate';
 
 document.addEventListener( 'DOMContentLoaded', event => {
 
