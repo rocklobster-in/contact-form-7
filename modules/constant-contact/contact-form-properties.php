@@ -56,16 +56,8 @@ function wpcf7_constant_contact_setup_property( $property, $contact_form ) {
 
 	$service_option = (array) WPCF7::get_option( 'constant_contact' );
 
-	$additional_settings = $contact_form->additional_setting(
-		'constant_contact',
-		false
-	);
-
-	$property['enable_contact_list'] = ! array_filter(
-		$additional_settings,
-		function ( $setting ) {
-			return in_array( $setting, array( 'off', 'false', '0' ), true );
-		}
+	$property['enable_contact_list'] = ! $contact_form->is_false(
+		'constant_contact'
 	);
 
 	if ( isset( $service_option['contact_lists'] ) ) {

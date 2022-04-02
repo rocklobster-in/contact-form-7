@@ -1181,6 +1181,21 @@ class WPCF7_ContactForm {
 
 
 	/**
+	 * Returns true if the specified setting has a falsey string value.
+	 *
+	 * @param string $name Name of setting.
+	 * @return bool True if the setting value is 'off', 'false', or '0'.
+	 */
+	public function is_false( $name ) {
+		return in_array(
+			$this->pref( $name ),
+			array( 'off', 'false', '0' ),
+			true
+		);
+	}
+
+
+	/**
 	 * Upgrades this contact form properties.
 	 */
 	private function upgrade() {
