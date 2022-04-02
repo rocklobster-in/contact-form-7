@@ -1,6 +1,7 @@
 import { setStatus } from './status';
 import { triggerEvent } from './event';
 import { apiFetch } from './api-fetch';
+import { setValidationError } from './validate';
 
 export default function submit( form, options = {} ) {
 
@@ -31,56 +32,6 @@ export default function submit( form, options = {} ) {
 			}
 		).filter( val => false !== val ),
 		formData,
-	};
-
-	const setScreenReaderValidationError = error => {
-		const li = document.createElement( 'li' );
-
-		li.setAttribute( 'id', error.error_id );
-
-		if ( error.idref ) {
-			li.insertAdjacentHTML(
-				'beforeend',
-				`<a href="#${ error.idref }">${ error.message }</a>`
-			);
-		} else {
-			li.insertAdjacentText(
-				'beforeend',
-				error.message
-			);
-		}
-
-		form.wpcf7.parent.querySelector(
-			'.screen-reader-response ul'
-		).appendChild( li );
-	};
-
-	const setVisualValidationError = error => {
-		const wrap = form.querySelector( error.into );
-
-		const control = wrap.querySelector( '.wpcf7-form-control' );
-		control.classList.add( 'wpcf7-not-valid' );
-		control.setAttribute( 'aria-describedby', error.error_id );
-
-		const tip = document.createElement( 'span' );
-		tip.setAttribute( 'class', 'wpcf7-not-valid-tip' );
-		tip.setAttribute( 'aria-hidden', 'true' );
-		tip.insertAdjacentText( 'beforeend', error.message );
-		wrap.appendChild( tip );
-
-		wrap.querySelectorAll( '[aria-invalid]' ).forEach( elm => {
-			elm.setAttribute( 'aria-invalid', 'true' );
-		} );
-
-		if ( control.closest( '.use-floating-validation-tip' ) ) {
-			control.addEventListener( 'focus', event => {
-				tip.setAttribute( 'style', 'display: none' );
-			} );
-
-			tip.addEventListener( 'mouseover', event => {
-				tip.setAttribute( 'style', 'display: none' );
-			} );
-		}
 	};
 
 	apiFetch( {
@@ -123,8 +74,9 @@ export default function submit( form, options = {} ) {
 		}
 
 		if ( response.invalid_fields ) {
-			response.invalid_fields.forEach( setScreenReaderValidationError );
-			response.invalid_fields.forEach( setVisualValidationError );
+			response.invalid_fields.forEach( error => {
+				setValidationError( form, error );
+			} );
 		}
 
 		form.wpcf7.parent.querySelector(
