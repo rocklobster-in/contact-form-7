@@ -1,6 +1,7 @@
 import { absInt } from './utils';
 import { resetCaptcha, resetQuiz } from './reset';
 import { apiFetch } from './api-fetch';
+import { setValidationError } from './validate';
 
 import {
 	exclusiveCheckboxHelper,
@@ -83,14 +84,19 @@ export default function init( form ) {
 	} );
 
 	form.addEventListener( 'change', event => {
-		const context = {
-			field: event.target.name,
-		};
+		const target = event.target;
 
 		try {
-			wpcf7.validate( form, context );
+			wpcf7.validate( form, {
+				field: target.name,
+			} );
 		} catch ( error ) {
-			console.error( error );
+			setValidationError( form, {
+				error_id: `${ form.wpcf7.unitTag }-ve-${ target.name }`,
+				into: `span.wpcf7-form-control-wrap.${ target.name }`,
+				message: error.error,
+				idref: target.id,
+			} );
 		}
 	} );
 }

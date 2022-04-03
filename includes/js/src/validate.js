@@ -19,58 +19,63 @@ validate.validators = validators;
 
 
 export const setValidationError = ( form, error ) => {
-	setScreenReaderValidationError( form, error );
-	setVisualValidationError( form, error );
-};
+	const {
+		error_id,
+		into,
+		message,
+		idref,
+	} = error;
 
+	const setScreenReaderValidationError = () => {
+		const li = document.createElement( 'li' );
 
-const setScreenReaderValidationError = ( form, error ) => {
-	const li = document.createElement( 'li' );
+		li.setAttribute( 'id', error_id );
 
-	li.setAttribute( 'id', error.error_id );
+		if ( idref ) {
+			li.insertAdjacentHTML(
+				'beforeend',
+				`<a href="#${ idref }">${ message }</a>`
+			);
+		} else {
+			li.insertAdjacentText(
+				'beforeend',
+				message
+			);
+		}
 
-	if ( error.idref ) {
-		li.insertAdjacentHTML(
-			'beforeend',
-			`<a href="#${ error.idref }">${ error.message }</a>`
-		);
-	} else {
-		li.insertAdjacentText(
-			'beforeend',
-			error.message
-		);
-	}
+		form.wpcf7.parent.querySelector(
+			'.screen-reader-response ul'
+		).appendChild( li );
+	};
 
-	form.wpcf7.parent.querySelector(
-		'.screen-reader-response ul'
-	).appendChild( li );
-};
+	const setVisualValidationError = () => {
+		const wrap = form.querySelector( into );
 
+		const control = wrap.querySelector( '.wpcf7-form-control' );
+		control.classList.add( 'wpcf7-not-valid' );
+		control.setAttribute( 'aria-describedby', error_id );
 
-const setVisualValidationError = ( form, error ) => {
-	const wrap = form.querySelector( error.into );
+		const tip = document.createElement( 'span' );
+		tip.classList.add( 'wpcf7-not-valid-tip' );
+		tip.setAttribute( 'aria-hidden', 'true' );
+		tip.insertAdjacentText( 'beforeend', message );
+		wrap.appendChild( tip );
 
-	const control = wrap.querySelector( '.wpcf7-form-control' );
-	control.classList.add( 'wpcf7-not-valid' );
-	control.setAttribute( 'aria-describedby', error.error_id );
-
-	const tip = document.createElement( 'span' );
-	tip.setAttribute( 'class', 'wpcf7-not-valid-tip' );
-	tip.setAttribute( 'aria-hidden', 'true' );
-	tip.insertAdjacentText( 'beforeend', error.message );
-	wrap.appendChild( tip );
-
-	wrap.querySelectorAll( '[aria-invalid]' ).forEach( elm => {
-		elm.setAttribute( 'aria-invalid', 'true' );
-	} );
-
-	if ( control.closest( '.use-floating-validation-tip' ) ) {
-		control.addEventListener( 'focus', event => {
-			tip.setAttribute( 'style', 'display: none' );
+		wrap.querySelectorAll( '[aria-invalid]' ).forEach( elm => {
+			elm.setAttribute( 'aria-invalid', 'true' );
 		} );
 
-		tip.addEventListener( 'mouseover', event => {
-			tip.setAttribute( 'style', 'display: none' );
-		} );
-	}
+		if ( control.closest( '.use-floating-validation-tip' ) ) {
+			control.addEventListener( 'focus', event => {
+				tip.setAttribute( 'style', 'display: none' );
+			} );
+
+			tip.addEventListener( 'mouseover', event => {
+				tip.setAttribute( 'style', 'display: none' );
+			} );
+		}
+	};
+
+	setScreenReaderValidationError();
+	setVisualValidationError();
 };
