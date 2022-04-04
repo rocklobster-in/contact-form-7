@@ -47,10 +47,7 @@ class WPCF7_CLEANTALK extends WPCF7_Service
 	}
 
 	public function link() {
-		echo wpcf7_link(
-				'https://cleantalk.org',
-				'cleantalk.org'
-		);
+		echo '<a href="https://cleantalk.org" target="_blank">cleantalk.org</a>';
 	}
 
 	public function get_apikey() {
@@ -158,12 +155,9 @@ class WPCF7_CLEANTALK extends WPCF7_Service
 
 	public function display( $action = '' ) {
 		echo '<p>' . sprintf(
-						esc_html( __( 'No CAPTCHA, no questions, no animal counting, no puzzles, no math and no spam bots. Universal AntiSpam plugin. For details, see %s.',
+						esc_html( __( 'No CAPTCHA, no questions, no animal counting, no puzzles, no math and no spam bots. Universal AntiSpam plugin. For details, see %s',
 								'contact-form-7' ) ),
-						wpcf7_link(
-								'https://cleantalk.org/',
-								__( 'CleanTalk Anti-Spam', 'contact-form-7' )
-						)
+						'<a href="https://cleantalk.org" target="_blank">' . esc_html__( 'CleanTalk Anti-Spam', 'contact-form-7' ) . '</a>'
 				) . '</p>';
 
 		if ( $this->is_active() ) {
