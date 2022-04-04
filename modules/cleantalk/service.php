@@ -11,7 +11,8 @@ class WPCF7_CLEANTALK extends WPCF7_Service
 	private $apikey;
 	private $salt;
 
-	public static $hidden_field_id = '_wpcf7_ct_checkjs';
+	public static $checkjs_field_id = '_wpcf7_ct_checkjs';
+	public static $timestamp_field_id = '_wpcf7_ct_timestamp';
 	public static $version = '1.0';
 
 	public static function get_instance() {

@@ -36,7 +36,8 @@ function wpcf7_cleantalk_add_hidden_fields($fields) {
 	}
 
 	return array_merge( $fields, array(
-		WPCF7_CLEANTALK::$hidden_field_id => '0',
+		WPCF7_CLEANTALK::$checkjs_field_id => '0',
+		WPCF7_CLEANTALK::$timestamp_field_id => '0',
 	) );
 }
 
@@ -50,14 +51,21 @@ function wpcf7_cleantalk_add_hidden_fields_filler($html) {
 
 	$script = '
 	<script type="text/javascript">
+	window.addEventListener("DOMContentLoaded", function() {
 		setTimeout(function(){
-            const ct_hidden_input_name = "' . WPCF7_CLEANTALK::$hidden_field_id . '";
-            const ct_hidden_input_element = document.getElementsByName(ct_hidden_input_name)[0];
-            if ( ct_hidden_input_element !== null ) {
-                const ct_input_value = ct_hidden_input_element.value;
-                ct_hidden_input_element.value = ct_hidden_input_element.value.replace(ct_input_value, "' . $service->get_checkjs_value() . '");
+            const ct_checkjs_input_name = "' . WPCF7_CLEANTALK::$checkjs_field_id . '";
+            const ct_checkjs_input_element = document.getElementsByName(ct_checkjs_input_name)[0];
+            if ( ct_checkjs_input_element !== null ) {
+                const ct_checkjs_input_value = ct_checkjs_input_element.value;
+                ct_checkjs_input_element.value = ct_checkjs_input_element.value.replace(ct_checkjs_input_value, "' . $service->get_checkjs_value() . '");
             }
 		});
+		const ct_timestamp_input_name = "' . WPCF7_CLEANTALK::$timestamp_field_id . '";
+        const ct_timestamp_input_element = document.getElementsByName(ct_timestamp_input_name)[0];
+        if ( ct_timestamp_input_element !== null ) {
+            ct_timestamp_input_element.value = new Date().getTime()/1000;
+        }
+	});
 	</script>';
 
 	$html .= $script;
@@ -72,7 +80,8 @@ function wpcf7_cleantalk_test_spam($spam, $submission) {
 	if ( ! $service->is_active() ) {
 		return $spam;
 	}
-	$checkjs = $service->js_test(WPCF7_CLEANTALK::$hidden_field_id, $_POST);
+	$checkjs = $service->js_test(WPCF7_CLEANTALK::$checkjs_field_id, $_POST);
+	$apbct_timestamp = isset($_POST[WPCF7_CLEANTALK::$timestamp_field_id]) ? (int) $_POST[WPCF7_CLEANTALK::$timestamp_field_id] : 0;
 
 	$gfa = new \Cleantalk\CF7_Integration\GetFieldsAny($_POST);
 	$ct_temp_msg_data = $gfa->getFields();
@@ -100,6 +109,7 @@ function wpcf7_cleantalk_test_spam($spam, $submission) {
 	$ct_request->sender_nickname = $sender_nickname;
 	$ct_request->js_on = $checkjs;
 	$ct_request->message = $message;
+	$ct_request->submit_time = $apbct_timestamp !== 0 ? time() - $apbct_timestamp : null;
 	$ct_request->post_info = json_encode(array('comment_type' => 'contact_form_wordpress_cf7__included_integration'));
 
 	$ct = new \Cleantalk\CF7_Integration\Cleantalk();
