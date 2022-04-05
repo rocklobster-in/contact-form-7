@@ -21,35 +21,25 @@ export default function validate( form, options = {} ) {
 			}
 		} );
 	} catch ( error ) {
-		setValidationError( form, {
-			error_id: `${ form.wpcf7?.unitTag }-ve-${ options.target?.name }`,
-			into: `span.wpcf7-form-control-wrap.${ options.target?.name }`,
-			message: error.error,
-			idref: options.target?.id,
-		} );
+		setValidationError( form, options.target, error.error );
 	}
 }
 
 validate.validators = validators;
 
 
-export const setValidationError = ( form, error ) => {
-	const {
-		error_id,
-		into,
-		message,
-		idref,
-	} = error;
+export const setValidationError = ( form, target, message ) => {
+	const errorId = `${ form.wpcf7?.unitTag }-ve-${ target.name }`;
 
 	const setScreenReaderValidationError = () => {
 		const li = document.createElement( 'li' );
 
-		li.setAttribute( 'id', error_id );
+		li.setAttribute( 'id', errorId );
 
-		if ( idref ) {
+		if ( target.id ) {
 			li.insertAdjacentHTML(
 				'beforeend',
-				`<a href="#${ idref }">${ message }</a>`
+				`<a href="#${ target.id }">${ message }</a>`
 			);
 		} else {
 			li.insertAdjacentText(
@@ -64,11 +54,13 @@ export const setValidationError = ( form, error ) => {
 	};
 
 	const setVisualValidationError = () => {
-		const wrap = form.querySelector( into );
+		const wrap = form.querySelector(
+			`span.wpcf7-form-control-wrap.${ target.name }`
+		);
 
 		const control = wrap.querySelector( '.wpcf7-form-control' );
 		control.classList.add( 'wpcf7-not-valid' );
-		control.setAttribute( 'aria-describedby', error_id );
+		control.setAttribute( 'aria-describedby', errorId );
 
 		const tip = document.createElement( 'span' );
 		tip.classList.add( 'wpcf7-not-valid-tip' );

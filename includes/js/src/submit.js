@@ -75,7 +75,9 @@ export default function submit( form, options = {} ) {
 
 		if ( response.invalid_fields ) {
 			response.invalid_fields.forEach( error => {
-				setValidationError( form, error );
+				const wrap = form.querySelector( error.into );
+				const control = wrap.querySelector( '.wpcf7-form-control' );
+				setValidationError( form, control, error.message );
 			} );
 		}
 
