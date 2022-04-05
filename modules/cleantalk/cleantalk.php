@@ -27,6 +27,29 @@ function wpcf7_cleantalk_register_service() {
 	$integration->add_service('cleantalk', WPCF7_CLEANTALK::get_instance());
 }
 
+add_action(
+	'wp_enqueue_scripts',
+	'wpcf7_cleantalk_enqueue_scripts',
+	20, 0
+);
+function wpcf7_cleantalk_enqueue_scripts() {
+	$service = WPCF7_CLEANTALK::get_instance();
+
+	if ( ! $service->is_active() ) {
+		return;
+	}
+
+	wp_register_script(
+		'wpcf7-cleantalk-public',
+		wpcf7_plugin_url( 'modules/cleantalk/src/index.js' ),
+		array(),
+		WPCF7_VERSION,
+		true
+	);
+
+	wp_enqueue_script( 'wpcf7-cleantalk-public' );
+}
+
 add_filter('wpcf7_form_hidden_fields', 'wpcf7_cleantalk_add_hidden_fields', 100, 1);
 function wpcf7_cleantalk_add_hidden_fields($fields) {
 	$service = WPCF7_CLEANTALK::get_instance();
@@ -111,6 +134,10 @@ function wpcf7_cleantalk_test_spam($spam, $submission) {
 	$ct_request->message = $message;
 	$ct_request->submit_time = $apbct_timestamp !== 0 ? time() - $apbct_timestamp : null;
 	$ct_request->post_info = json_encode(array('comment_type' => 'contact_form_wordpress_cf7__included_integration'));
+	$ct_request->sender_info = json_encode(array(
+		'has_scrolled' => isset($_COOKIE['ct_has_scrolled']) ? json_encode(htmlspecialchars($_COOKIE['ct_has_scrolled'])) : null,
+		'mouse_moved' => isset($_COOKIE['ct_mouse_moved']) ? json_encode(htmlspecialchars($_COOKIE['ct_mouse_moved'])) : null,
+	));
 
 	$ct = new \Cleantalk\CF7_Integration\Cleantalk();
 	$ct->server_url = 'https://moderate.cleantalk.org/api2.0/';
