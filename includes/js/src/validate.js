@@ -14,6 +14,8 @@ export default function validate( form, options = {} ) {
 	const validators = validate.validators ?? {};
 	const formDataTree = new FormDataTree( form );
 
+	removeValidationError( form, options.target );
+
 	try {
 		rules.forEach( ( { rule, ...properties } ) => {
 			if ( 'function' === typeof validators[rule] ) {
@@ -85,4 +87,28 @@ export const setValidationError = ( form, target, message ) => {
 
 	setScreenReaderValidationError();
 	setVisualValidationError();
+};
+
+
+export const removeValidationError = ( form, target ) => {
+	const errorId = `${ form.wpcf7?.unitTag }-ve-${ target.name }`;
+
+	form.wpcf7.parent.querySelector(
+		`.screen-reader-response ul li#${ errorId }`
+	)?.remove();
+
+	const wrap = form.querySelector(
+		`span.wpcf7-form-control-wrap.${ target.name }`
+	);
+
+	wrap.querySelector( '.wpcf7-not-valid-tip' )?.remove();
+
+	wrap.querySelectorAll( '[aria-invalid]' ).forEach( elm => {
+		elm.setAttribute( 'aria-invalid', 'false' );
+	} );
+
+	wrap.querySelectorAll( '.wpcf7-form-control' ).forEach( control => {
+		control.removeAttribute( 'aria-describedby' );
+		control.classList.remove( 'wpcf7-not-valid' );
+	} );
 };
