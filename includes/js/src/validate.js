@@ -1,40 +1,45 @@
 import * as validators from './swv/rules';
 import FormDataTree from './swv/form-data-tree';
 
-export default function validate( form, context ) {
-	const rules = form.wpcf7.schema.rules ?? [];
+
+export default function validate( form, options = {} ) {
+	const rules = ( form.wpcf7.schema.rules ?? [] ).filter(
+		rule => rule.field === options.target?.name
+	);
+
+	if ( ! rules.length ) {
+		return;
+	}
+
 	const validators = validate.validators ?? {};
 	const formDataTree = new FormDataTree( form );
 
-	rules.filter( ( { field, ...properties } ) => {
-		return field === context.field;
-	} ).forEach( ( { rule, ...properties } ) => {
-		if ( 'function' === typeof validators[rule] ) {
-			validators[rule].call( { rule, ...properties }, formDataTree );
-		}
-	} );
+	try {
+		rules.forEach( ( { rule, ...properties } ) => {
+			if ( 'function' === typeof validators[rule] ) {
+				validators[rule].call( { rule, ...properties }, formDataTree );
+			}
+		} );
+	} catch ( error ) {
+		setValidationError( form, options.target, error.error );
+	}
 }
 
 validate.validators = validators;
 
 
-export const setValidationError = ( form, error ) => {
-	const {
-		error_id,
-		into,
-		message,
-		idref,
-	} = error;
+export const setValidationError = ( form, target, message ) => {
+	const errorId = `${ form.wpcf7?.unitTag }-ve-${ target.name }`;
 
 	const setScreenReaderValidationError = () => {
 		const li = document.createElement( 'li' );
 
-		li.setAttribute( 'id', error_id );
+		li.setAttribute( 'id', errorId );
 
-		if ( idref ) {
+		if ( target.id ) {
 			li.insertAdjacentHTML(
 				'beforeend',
-				`<a href="#${ idref }">${ message }</a>`
+				`<a href="#${ target.id }">${ message }</a>`
 			);
 		} else {
 			li.insertAdjacentText(
@@ -49,11 +54,13 @@ export const setValidationError = ( form, error ) => {
 	};
 
 	const setVisualValidationError = () => {
-		const wrap = form.querySelector( into );
+		const wrap = form.querySelector(
+			`span.wpcf7-form-control-wrap.${ target.name }`
+		);
 
 		const control = wrap.querySelector( '.wpcf7-form-control' );
 		control.classList.add( 'wpcf7-not-valid' );
-		control.setAttribute( 'aria-describedby', error_id );
+		control.setAttribute( 'aria-describedby', errorId );
 
 		const tip = document.createElement( 'span' );
 		tip.classList.add( 'wpcf7-not-valid-tip' );
