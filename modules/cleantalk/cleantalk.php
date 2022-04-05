@@ -25,6 +25,10 @@ add_action( 'wpcf7_init', 'wpcf7_cleantalk_register_service', 15, 0 );
 function wpcf7_cleantalk_register_service() {
 	$integration = WPCF7_Integration::get_instance();
 	$integration->add_service('cleantalk', WPCF7_CLEANTALK::get_instance());
+
+	if ( WPCF7_CLEANTALK::get_instance()->is_active() ) {
+		wpcf7_apbct_cookie();
+	}
 }
 
 add_action(
@@ -137,6 +141,7 @@ function wpcf7_cleantalk_test_spam($spam, $submission) {
 	$ct_request->sender_info = json_encode(array(
 		'has_scrolled' => isset($_COOKIE['ct_has_scrolled']) ? json_encode(htmlspecialchars($_COOKIE['ct_has_scrolled'])) : null,
 		'mouse_moved' => isset($_COOKIE['ct_mouse_moved']) ? json_encode(htmlspecialchars($_COOKIE['ct_mouse_moved'])) : null,
+		'cookies_enabled' => wpcf7_apbct_cookies_test(),
 	));
 
 	$ct = new \Cleantalk\CF7_Integration\Cleantalk();
@@ -159,4 +164,110 @@ function wpcf7_cleantalk_test_spam($spam, $submission) {
 	}
 
 	return $spam;
+}
+
+/**
+ * Set Cookies test for cookie test
+ * Sets cookies with params timestamp && landing_timestamp && previous_referer
+ * Sets test cookie with all other cookies
+ * @return bool
+ */
+function wpcf7_apbct_cookie()
+{
+	// Prevent headers sent error
+	if ( headers_sent() ) {
+		return false;
+	}
+
+	// Cookie names to validate
+	$cookie_test_value = array(
+		'cookies_names' => array(),
+		'check_value'   => WPCF7_CLEANTALK::get_instance()->get_apikey(),
+	);
+
+	// We need to skip the domain attribute for prevent including the dot to the cookie's domain on the client.
+	$domain = '';
+
+	// Submit time
+	$apbct_timestamp = time();
+	$cookie_test_value['cookies_names'][] = 'apbct_timestamp';
+	$cookie_test_value['check_value']    .= $apbct_timestamp;
+
+	// Previous referer
+	$apbct_referrer = isset($_SERVER['HTTP_REFERER']) ? htmlspecialchars($_SERVER['HTTP_REFERER']) :'';
+	$cookie_test_value['cookies_names'][] = 'apbct_prev_referer';
+	$cookie_test_value['check_value']    .= $apbct_referrer;
+
+	// Cookies test
+	$cookie_test_value['check_value'] = md5($cookie_test_value['check_value']);
+
+	wpcf7_apbct_cookie_set('apbct_timestamp', (string)$apbct_timestamp, 0, '/', $domain, null, true);
+	wpcf7_apbct_cookie_set('apbct_prev_referer', $apbct_referrer, 0, '/', $domain, null, true);
+	wpcf7_apbct_cookie_set('apbct_cookies_test', urlencode(json_encode($cookie_test_value)), 0, '/', $domain, null, true);
+}
+
+/**
+ * Cookies test for sender
+ * Also checks for valid timestamp in $_COOKIE['apbct_timestamp'] and other apbct_ COOKIES
+ * @return null|int null|0|1
+ * @throws JsonException
+ */
+function wpcf7_apbct_cookies_test() {
+	if ( isset($_COOKIE['apbct_cookies_test']) ) {
+		$cookie_test = json_decode(urldecode($_COOKIE['apbct_cookies_test']), true);
+
+		if ( ! is_array($cookie_test) ) {
+			return 0;
+		}
+
+		$check_string = WPCF7_CLEANTALK::get_instance()->get_apikey();
+		foreach ( $cookie_test['cookies_names'] as $cookie_name ) {
+			$check_string .= isset($_COOKIE[$cookie_name]) ? $_COOKIE[$cookie_name] : '';
+		}
+
+		if ( $cookie_test['check_value'] == md5($check_string) ) {
+			return 1;
+		}
+
+		return 0;
+	}
+
+	return null;
+}
+
+function wpcf7_apbct_cookie_set(
+	$name,
+	$value = '',
+	$expires = 0,
+	$path = '',
+	$domain = '',
+	$secure = null,
+	$httponly = false,
+	$samesite = 'Lax'
+) {
+	// For PHP 7.3+ and above
+    if (version_compare(phpversion(), '7.3.0', '>=')) {
+
+        $secure = ( ! empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' ) || $_SERVER['SERVER_PORT'] == 443;
+
+        $params = array(
+	        'expires' => $expires,
+	        'path' => $path,
+	        'domain' => $domain,
+	        'secure' => $secure,
+	        'httponly' => $httponly,
+        );
+
+        if ($samesite) {
+	        $params['samesite'] = $samesite;
+        }
+
+        /**
+         * @psalm-suppress InvalidArgument
+         */
+        setcookie($name, $value, $params);
+        // For PHP 5.6 - 7.2
+    } else {
+        setcookie($name, $value, $expires, $path, $domain, $secure, $httponly);
+    }
 }
