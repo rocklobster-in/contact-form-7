@@ -31,6 +31,10 @@ validate.validators = validators;
 
 
 export const setValidationError = ( form, target, message ) => {
+	if ( undefined === target.name || '' === target.name ) {
+		return;
+	}
+
 	const errorId = `${ form.wpcf7?.unitTag }-ve-${ target.name }`;
 
 	const setScreenReaderValidationError = () => {
@@ -91,6 +95,10 @@ export const setValidationError = ( form, target, message ) => {
 
 
 export const removeValidationError = ( form, target ) => {
+	if ( undefined === target.name || '' === target.name ) {
+		return;
+	}
+
 	const errorId = `${ form.wpcf7?.unitTag }-ve-${ target.name }`;
 
 	form.wpcf7.parent.querySelector(
