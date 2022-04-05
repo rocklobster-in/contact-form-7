@@ -1,7 +1,7 @@
 import { setStatus } from './status';
 import { triggerEvent } from './event';
 import { apiFetch } from './api-fetch';
-import { setValidationError } from './validate';
+import { setValidationError, removeValidationError } from './validate';
 
 export default function submit( form, options = {} ) {
 
@@ -105,26 +105,13 @@ apiFetch.use( ( options, next ) => {
 } );
 
 export const clearResponse = form => {
+	form.querySelectorAll( '.wpcf7-form-control' ).forEach( control => {
+		removeValidationError( form, control );
+	} );
+
 	form.wpcf7.parent.querySelector(
 		'.screen-reader-response [role="status"]'
 	).innerText = '';
-
-	form.wpcf7.parent.querySelector(
-		'.screen-reader-response ul'
-	).innerText = '';
-
-	form.querySelectorAll( '.wpcf7-not-valid-tip' ).forEach( span => {
-		span.remove();
-	} );
-
-	form.querySelectorAll( '[aria-invalid]' ).forEach( elm => {
-		elm.setAttribute( 'aria-invalid', 'false' );
-	} );
-
-	form.querySelectorAll( '.wpcf7-form-control' ).forEach( control => {
-		control.removeAttribute( 'aria-describedby' );
-		control.classList.remove( 'wpcf7-not-valid' );
-	} );
 
 	form.querySelectorAll( '.wpcf7-response-output' ).forEach( div => {
 		div.innerText = '';
