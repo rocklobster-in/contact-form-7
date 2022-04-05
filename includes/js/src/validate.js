@@ -3,14 +3,19 @@ import FormDataTree from './swv/form-data-tree';
 
 
 export default function validate( form, options = {} ) {
-	const rules = form.wpcf7.schema.rules ?? [];
+	const rules = ( form.wpcf7.schema.rules ?? [] ).filter(
+		rule => rule.field === options.target?.name
+	);
+
+	if ( ! rules.length ) {
+		return;
+	}
+
 	const validators = validate.validators ?? {};
 	const formDataTree = new FormDataTree( form );
 
 	try {
-		rules.filter( ( { field, ...properties } ) => {
-			return field === options.target?.name;
-		} ).forEach( ( { rule, ...properties } ) => {
+		rules.forEach( ( { rule, ...properties } ) => {
 			if ( 'function' === typeof validators[rule] ) {
 				validators[rule].call( { rule, ...properties }, formDataTree );
 			}
