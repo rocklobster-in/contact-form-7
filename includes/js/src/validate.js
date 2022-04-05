@@ -1,18 +1,28 @@
 import * as validators from './swv/rules';
 import FormDataTree from './swv/form-data-tree';
 
-export default function validate( form, context ) {
+
+export default function validate( form, options = {} ) {
 	const rules = form.wpcf7.schema.rules ?? [];
 	const validators = validate.validators ?? {};
 	const formDataTree = new FormDataTree( form );
 
-	rules.filter( ( { field, ...properties } ) => {
-		return field === context.field;
-	} ).forEach( ( { rule, ...properties } ) => {
-		if ( 'function' === typeof validators[rule] ) {
-			validators[rule].call( { rule, ...properties }, formDataTree );
-		}
-	} );
+	try {
+		rules.filter( ( { field, ...properties } ) => {
+			return field === options.target?.name;
+		} ).forEach( ( { rule, ...properties } ) => {
+			if ( 'function' === typeof validators[rule] ) {
+				validators[rule].call( { rule, ...properties }, formDataTree );
+			}
+		} );
+	} catch ( error ) {
+		setValidationError( form, {
+			error_id: `${ form.wpcf7?.unitTag }-ve-${ options.target?.name }`,
+			into: `span.wpcf7-form-control-wrap.${ options.target?.name }`,
+			message: error.error,
+			idref: options.target?.id,
+		} );
+	}
 }
 
 validate.validators = validators;
