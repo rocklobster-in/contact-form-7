@@ -60,33 +60,34 @@ export const setValidationError = ( form, target, message ) => {
 	};
 
 	const setVisualValidationError = () => {
-		const wrap = form.querySelector(
-			`span.wpcf7-form-control-wrap.${ target.name }`
-		);
+		form.querySelectorAll(
+			`.wpcf7-form-control-wrap.${ target.name }`
+		).forEach( wrap => {
+			const tip = document.createElement( 'span' );
+			tip.classList.add( 'wpcf7-not-valid-tip' );
+			tip.setAttribute( 'aria-hidden', 'true' );
+			tip.insertAdjacentText( 'beforeend', message );
+			wrap.appendChild( tip );
 
-		const control = wrap.querySelector( '.wpcf7-form-control' );
-		control.classList.add( 'wpcf7-not-valid' );
-		control.setAttribute( 'aria-describedby', errorId );
+			wrap.querySelectorAll( '[aria-invalid]' ).forEach( elm => {
+				elm.setAttribute( 'aria-invalid', 'true' );
+			} );
 
-		const tip = document.createElement( 'span' );
-		tip.classList.add( 'wpcf7-not-valid-tip' );
-		tip.setAttribute( 'aria-hidden', 'true' );
-		tip.insertAdjacentText( 'beforeend', message );
-		wrap.appendChild( tip );
+			wrap.querySelectorAll( '.wpcf7-form-control' ).forEach( control => {
+				control.classList.add( 'wpcf7-not-valid' );
+				control.setAttribute( 'aria-describedby', errorId );
 
-		wrap.querySelectorAll( '[aria-invalid]' ).forEach( elm => {
-			elm.setAttribute( 'aria-invalid', 'true' );
+				if ( control.closest( '.use-floating-validation-tip' ) ) {
+					control.addEventListener( 'focus', event => {
+						tip.setAttribute( 'style', 'display: none' );
+					} );
+
+					tip.addEventListener( 'click', event => {
+						tip.setAttribute( 'style', 'display: none' );
+					} );
+				}
+			} );
 		} );
-
-		if ( control.closest( '.use-floating-validation-tip' ) ) {
-			control.addEventListener( 'focus', event => {
-				tip.setAttribute( 'style', 'display: none' );
-			} );
-
-			tip.addEventListener( 'mouseover', event => {
-				tip.setAttribute( 'style', 'display: none' );
-			} );
-		}
 	};
 
 	setScreenReaderValidationError();
