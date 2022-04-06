@@ -130,7 +130,7 @@ function wpcf7_cleantalk_test_spam($spam, $submission) {
 	$ct_request = new \Cleantalk\CF7_Integration\CleantalkRequest();
 
 	$ct_request->auth_key = $service->get_apikey();
-	$ct_request->agent = 'contact_form_wordpress_cf7__included_integration__ver_' . WPCF7_CLEANTALK::$version;
+	$ct_request->agent = 'wordpress-cf7-' . WPCF7_CLEANTALK::$version;
 	$ct_request->sender_email = $sender_email;
 	$ct_request->sender_ip = $sender_ip;
 	$ct_request->sender_nickname = $sender_nickname;
