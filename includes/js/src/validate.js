@@ -77,6 +77,11 @@ export const setValidationError = ( form, target, message ) => {
 				control.classList.add( 'wpcf7-not-valid' );
 				control.setAttribute( 'aria-describedby', errorId );
 
+				if ( typeof control.setCustomValidity === 'function' ) {
+					control.setCustomValidity( message );
+					control.reportValidity();
+				}
+
 				if ( control.closest( '.use-floating-validation-tip' ) ) {
 					control.addEventListener( 'focus', event => {
 						tip.setAttribute( 'style', 'display: none' );
@@ -118,6 +123,11 @@ export const removeValidationError = ( form, target ) => {
 		wrap.querySelectorAll( '.wpcf7-form-control' ).forEach( control => {
 			control.removeAttribute( 'aria-describedby' );
 			control.classList.remove( 'wpcf7-not-valid' );
+
+			if ( typeof control.setCustomValidity === 'function' ) {
+				control.setCustomValidity( '' );
+				control.reportValidity();
+			}
 		} );
 	} );
 };
