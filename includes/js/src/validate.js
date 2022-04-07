@@ -106,18 +106,18 @@ export const removeValidationError = ( form, target ) => {
 		`.screen-reader-response ul li#${ errorId }`
 	)?.remove();
 
-	const wrap = form.querySelector(
+	form.querySelectorAll(
 		`span.wpcf7-form-control-wrap.${ target.name }`
-	);
+	).forEach( wrap => {
+		wrap.querySelector( '.wpcf7-not-valid-tip' )?.remove();
 
-	wrap.querySelector( '.wpcf7-not-valid-tip' )?.remove();
+		wrap.querySelectorAll( '[aria-invalid]' ).forEach( elm => {
+			elm.setAttribute( 'aria-invalid', 'false' );
+		} );
 
-	wrap.querySelectorAll( '[aria-invalid]' ).forEach( elm => {
-		elm.setAttribute( 'aria-invalid', 'false' );
-	} );
-
-	wrap.querySelectorAll( '.wpcf7-form-control' ).forEach( control => {
-		control.removeAttribute( 'aria-describedby' );
-		control.classList.remove( 'wpcf7-not-valid' );
+		wrap.querySelectorAll( '.wpcf7-form-control' ).forEach( control => {
+			control.removeAttribute( 'aria-describedby' );
+			control.classList.remove( 'wpcf7-not-valid' );
+		} );
 	} );
 };
