@@ -547,7 +547,7 @@ function wpcf7_remove_captcha( $prefix ) {
 	$captcha->remove( $prefix );
 }
 
-add_action( 'template_redirect', 'wpcf7_cleanup_captcha_files', 20, 0 );
+add_action( 'shutdown', 'wpcf7_cleanup_captcha_files', 20, 0 );
 
 function wpcf7_cleanup_captcha_files() {
 	if ( ! $captcha = wpcf7_init_captcha() ) {
