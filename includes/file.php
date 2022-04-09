@@ -312,7 +312,7 @@ function wpcf7_upload_tmp_dir() {
 
 
 add_action(
-	'template_redirect',
+	'shutdown',
 	'wpcf7_cleanup_upload_files',
 	20, 0
 );
@@ -325,14 +325,6 @@ add_action(
  *                 Default 100.
  */
 function wpcf7_cleanup_upload_files( $seconds = 60, $max = 100 ) {
-	if ( is_admin()
-	or 'GET' != $_SERVER['REQUEST_METHOD']
-	or is_robots()
-	or is_feed()
-	or is_trackback() ) {
-		return;
-	}
-
 	$dir = trailingslashit( wpcf7_upload_tmp_dir() );
 
 	if ( ! is_dir( $dir )
