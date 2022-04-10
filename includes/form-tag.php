@@ -38,7 +38,9 @@ class WPCF7_FormTag implements ArrayAccess {
 		$preset_patterns = array(
 			'date' => '[0-9]{4}-[0-9]{2}-[0-9]{2}',
 			'int' => '[0-9]+',
-			'signed_int' => '-?[0-9]+',
+			'signed_int' => '[-]?[0-9]+',
+			'num' => '(?:[0-9]+|(?:[0-9]+)?[.][0-9]+)',
+			'signed_num' => '[-]?(?:[0-9]+|(?:[0-9]+)?[.][0-9]+)',
 			'class' => '[-0-9a-zA-Z_]+',
 			'id' => '[-0-9a-zA-Z_]+',
 		);

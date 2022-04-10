@@ -38,9 +38,9 @@ function wpcf7_number_form_tag_handler( $tag ) {
 	$atts['class'] = $tag->get_class_option( $class );
 	$atts['id'] = $tag->get_id_option();
 	$atts['tabindex'] = $tag->get_option( 'tabindex', 'signed_int', true );
-	$atts['min'] = $tag->get_option( 'min', 'signed_int', true );
-	$atts['max'] = $tag->get_option( 'max', 'signed_int', true );
-	$atts['step'] = $tag->get_option( 'step', 'int', true );
+	$atts['min'] = $tag->get_option( 'min', 'signed_num', true );
+	$atts['max'] = $tag->get_option( 'max', 'signed_num', true );
+	$atts['step'] = $tag->get_option( 'step', 'num', true );
 
 	if ( $tag->has_option( 'readonly' ) ) {
 		$atts['readonly'] = 'readonly';
@@ -120,8 +120,8 @@ function wpcf7_swv_add_number_rules( $schema, $contact_form ) {
 			) )
 		);
 
-		$min = $tag->get_option( 'min', 'signed_int', true );
-		$max = $tag->get_option( 'max', 'signed_int', true );
+		$min = $tag->get_option( 'min', 'signed_num', true );
+		$max = $tag->get_option( 'max', 'signed_num', true );
 
 		if ( false !== $min ) {
 			$schema->add_rule(
