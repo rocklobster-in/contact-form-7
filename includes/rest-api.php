@@ -326,6 +326,15 @@ class WPCF7_REST_Controller {
 	}
 
 	public function create_feedback( WP_REST_Request $request ) {
+		$content_type = $request->get_header( 'Content-Type' );
+
+		if ( ! str_starts_with( $content_type, 'multipart/form-data' ) ) {
+			return new WP_Error( 'wpcf7_unsupported_media_type',
+				__( "The request payload format is not supported.", 'contact-form-7' ),
+				array( 'status' => 415 )
+			);
+		}
+
 		$url_params = $request->get_url_params();
 
 		$item = null;
