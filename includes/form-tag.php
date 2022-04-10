@@ -26,7 +26,7 @@ class WPCF7_FormTag implements ArrayAccess {
 	}
 
 	public function is_required() {
-		return ( '*' == substr( $this->type, -1 ) );
+		return ( '*' === substr( $this->type, -1 ) );
 	}
 
 	public function has_option( $opt ) {
@@ -89,7 +89,8 @@ class WPCF7_FormTag implements ArrayAccess {
 
 		$options = array_merge(
 			(array) $default,
-			(array) $this->get_option( 'class', 'class' ) );
+			(array) $this->get_option( 'class', 'class' )
+		);
 
 		$options = array_filter( array_unique( $options ) );
 
@@ -106,8 +107,7 @@ class WPCF7_FormTag implements ArrayAccess {
 		$matches_a = $this->get_all_match_options( '%^([0-9]*)/[0-9]*$%' );
 
 		foreach ( (array) $matches_a as $matches ) {
-			if ( isset( $matches[1] )
-			and '' !== $matches[1] ) {
+			if ( isset( $matches[1] ) and '' !== $matches[1] ) {
 				return $matches[1];
 			}
 		}
@@ -123,10 +123,11 @@ class WPCF7_FormTag implements ArrayAccess {
 		}
 
 		$matches_a = $this->get_all_match_options(
-			'%^(?:[0-9]*x?[0-9]*)?/([0-9]+)$%' );
+			'%^(?:[0-9]*x?[0-9]*)?/([0-9]+)$%'
+		);
 
 		foreach ( (array) $matches_a as $matches ) {
-			if ( isset( $matches[1] ) && '' !== $matches[1] ) {
+			if ( isset( $matches[1] ) and '' !== $matches[1] ) {
 				return $matches[1];
 			}
 		}
@@ -152,10 +153,11 @@ class WPCF7_FormTag implements ArrayAccess {
 		}
 
 		$matches_a = $this->get_all_match_options(
-			'%^([0-9]*)x([0-9]*)(?:/[0-9]+)?$%' );
+			'%^([0-9]*)x([0-9]*)(?:/[0-9]+)?$%'
+		);
 
 		foreach ( (array) $matches_a as $matches ) {
-			if ( isset( $matches[1] ) && '' !== $matches[1] ) {
+			if ( isset( $matches[1] ) and '' !== $matches[1] ) {
 				return $matches[1];
 			}
 		}
@@ -171,11 +173,11 @@ class WPCF7_FormTag implements ArrayAccess {
 		}
 
 		$matches_a = $this->get_all_match_options(
-			'%^([0-9]*)x([0-9]*)(?:/[0-9]+)?$%' );
+			'%^([0-9]*)x([0-9]*)(?:/[0-9]+)?$%'
+		);
 
 		foreach ( (array) $matches_a as $matches ) {
-			if ( isset( $matches[2] )
-			and '' !== $matches[2] ) {
+			if ( isset( $matches[2] ) and '' !== $matches[2] ) {
 				return $matches[2];
 			}
 		}
@@ -232,8 +234,7 @@ class WPCF7_FormTag implements ArrayAccess {
 		foreach ( $options as $opt ) {
 			$opt = sanitize_key( $opt );
 
-			if ( 'user_' == substr( $opt, 0, 5 )
-			and is_user_logged_in() ) {
+			if ( 'user_' == substr( $opt, 0, 5 ) and is_user_logged_in() ) {
 				$primary_props = array( 'user_login', 'user_email', 'user_url' );
 				$opt = in_array( $opt, $primary_props ) ? $opt : substr( $opt, 5 );
 
@@ -248,10 +249,11 @@ class WPCF7_FormTag implements ArrayAccess {
 					}
 				}
 
-			} elseif ( 'post_meta' == $opt and in_the_loop() ) {
+			} elseif ( 'post_meta' === $opt and in_the_loop() ) {
 				if ( $args['multiple'] ) {
 					$values = array_merge( $values,
-						get_post_meta( get_the_ID(), $this->name ) );
+						get_post_meta( get_the_ID(), $this->name )
+					);
 				} else {
 					$val = (string) get_post_meta( get_the_ID(), $this->name, true );
 
@@ -260,7 +262,7 @@ class WPCF7_FormTag implements ArrayAccess {
 					}
 				}
 
-			} elseif ( 'get' == $opt and isset( $_GET[$this->name] ) ) {
+			} elseif ( 'get' === $opt and isset( $_GET[$this->name] ) ) {
 				$vals = (array) $_GET[$this->name];
 				$vals = array_map( 'wpcf7_sanitize_query_var', $vals );
 
@@ -274,7 +276,7 @@ class WPCF7_FormTag implements ArrayAccess {
 					}
 				}
 
-			} elseif ( 'post' == $opt and isset( $_POST[$this->name] ) ) {
+			} elseif ( 'post' === $opt and isset( $_POST[$this->name] ) ) {
 				$vals = (array) $_POST[$this->name];
 				$vals = array_map( 'wpcf7_sanitize_query_var', $vals );
 
@@ -288,7 +290,7 @@ class WPCF7_FormTag implements ArrayAccess {
 					}
 				}
 
-			} elseif ( 'shortcode_attr' == $opt ) {
+			} elseif ( 'shortcode_attr' === $opt ) {
 				if ( $contact_form = WPCF7_ContactForm::get_current() ) {
 					$val = $contact_form->shortcode_attr( $this->name );
 
@@ -344,9 +346,9 @@ class WPCF7_FormTag implements ArrayAccess {
 			if ( ! empty( $matches[2] ) ) {
 				$kbmb = strtolower( $matches[2] );
 
-				if ( 'kb' == $kbmb ) {
+				if ( 'kb' === $kbmb ) {
 					$size *= KB_IN_BYTES;
-				} elseif ( 'mb' == $kbmb ) {
+				} elseif ( 'mb' === $kbmb ) {
 					$size *= MB_IN_BYTES;
 				}
 			}
