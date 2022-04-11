@@ -187,21 +187,21 @@ function wpcf7_text_messages( $messages ) {
 			'description' =>
 				__( "Email address that the sender entered is invalid", 'contact-form-7' ),
 			'default' =>
-				__( "The e-mail address entered is invalid.", 'contact-form-7' ),
+				__( "Please enter an email address.", 'contact-form-7' ),
 		),
 
 		'invalid_url' => array(
 			'description' =>
 				__( "URL that the sender entered is invalid", 'contact-form-7' ),
 			'default' =>
-				__( "The URL is invalid.", 'contact-form-7' ),
+				__( "Please enter a URL.", 'contact-form-7' ),
 		),
 
 		'invalid_tel' => array(
 			'description' =>
 				__( "Telephone number that the sender entered is invalid", 'contact-form-7' ),
 			'default' =>
-				__( "The telephone number is invalid.", 'contact-form-7' ),
+				__( "Please enter a telephone number.", 'contact-form-7' ),
 		),
 	) );
 
