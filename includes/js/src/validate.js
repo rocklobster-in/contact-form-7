@@ -79,7 +79,6 @@ export const setValidationError = ( form, target, message ) => {
 
 				if ( typeof control.setCustomValidity === 'function' ) {
 					control.setCustomValidity( message );
-					control.reportValidity();
 				}
 
 				if ( control.closest( '.use-floating-validation-tip' ) ) {
@@ -126,7 +125,6 @@ export const removeValidationError = ( form, target ) => {
 
 			if ( typeof control.setCustomValidity === 'function' ) {
 				control.setCustomValidity( '' );
-				control.reportValidity();
 			}
 		} );
 	} );
