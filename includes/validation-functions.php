@@ -177,7 +177,7 @@ function wpcf7_is_email_in_site_domain( $email ) {
  * Verifies that a given file path is under the directories that WordPress
  * manages for user contents.
  *
- * Returns false if the file at the given path doesn't exist yet.
+ * Returns false if the file at the given path does not exist yet.
  *
  * @param string $path A file path.
  * @return bool True if the path is under the content directories,
