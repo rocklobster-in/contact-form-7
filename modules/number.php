@@ -73,6 +73,24 @@ function wpcf7_number_form_tag_handler( $tag ) {
 
 	$atts['value'] = $value;
 
+	if ( 'range' === $tag->basetype ) {
+		if ( ! wpcf7_is_number( $atts['min'] ) ) {
+			$atts['min'] = '0';
+		}
+
+		if ( ! wpcf7_is_number( $atts['max'] ) ) {
+			$atts['max'] = '100';
+		}
+
+		if ( '' === $atts['value'] ) {
+			if ( $atts['min'] < $atts['max'] ) {
+				$atts['value'] = ( $atts['min'] + $atts['max'] ) / 2;
+			} else {
+				$atts['value'] = $atts['min'];
+			}
+		}
+	}
+
 	if ( wpcf7_support_html5() ) {
 		$atts['type'] = $tag->basetype;
 	} else {
@@ -123,7 +141,17 @@ function wpcf7_swv_add_number_rules( $schema, $contact_form ) {
 		$min = $tag->get_option( 'min', 'signed_num', true );
 		$max = $tag->get_option( 'max', 'signed_num', true );
 
-		if ( false !== $min ) {
+		if ( 'range' === $tag->basetype ) {
+			if ( ! wpcf7_is_number( $min ) ) {
+				$min = '0';
+			}
+
+			if ( ! wpcf7_is_number( $max ) ) {
+				$max = '100';
+			}
+		}
+
+		if ( wpcf7_is_number( $min ) ) {
 			$schema->add_rule(
 				wpcf7_swv_create_rule( 'minnumber', array(
 					'field' => $tag->name,
@@ -133,7 +161,7 @@ function wpcf7_swv_add_number_rules( $schema, $contact_form ) {
 			);
 		}
 
-		if ( false !== $max ) {
+		if ( wpcf7_is_number( $max ) ) {
 			$schema->add_rule(
 				wpcf7_swv_create_rule( 'maxnumber', array(
 					'field' => $tag->name,
