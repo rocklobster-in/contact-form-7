@@ -1,7 +1,7 @@
 <?php
 /**
  * All the functions and classes in this file are deprecated.
- * You shouldn't use them. The functions and classes will be
+ * You should not use them. The functions and classes will be
  * removed in a later version.
  */
 

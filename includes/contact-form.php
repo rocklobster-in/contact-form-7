@@ -321,7 +321,7 @@ class WPCF7_ContactForm {
 	 * Retrieves contact form property of the specified name from the database.
 	 *
 	 * @param string $name Property name.
-	 * @return array|string|null Property value. Null if property doesn't exist.
+	 * @return array|string|null Property value. Null if property does not exist.
 	 */
 	private function retrieve_property( $name ) {
 		$property = null;
@@ -344,7 +344,7 @@ class WPCF7_ContactForm {
 	 * Returns the value for the given property name.
 	 *
 	 * @param string $name Property name.
-	 * @return array|string|null Property value. Null if property doesn't exist.
+	 * @return array|string|null Property value. Null if property does not exist.
 	 */
 	public function prop( $name ) {
 		$props = $this->get_properties();
@@ -468,7 +468,7 @@ class WPCF7_ContactForm {
 	 * Returns the specified shortcode attribute value.
 	 *
 	 * @param string $name Shortcode attribute name.
-	 * @return string|null Attribute value. Null if the attribute doesn't exist.
+	 * @return string|null Attribute value. Null if the attribute does not exist.
 	 */
 	public function shortcode_attr( $name ) {
 		if ( isset( $this->shortcode_atts[$name] ) ) {
