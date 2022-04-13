@@ -383,13 +383,13 @@ class WPCF7_FormTag implements ArrayAccess {
 		return $result;
 	}
 
-	public function offsetSet( $offset, $value ) {
+	public function offsetSet( $offset, $value ): void {
 		if ( property_exists( __CLASS__, $offset ) ) {
 			$this->{$offset} = $value;
 		}
 	}
 
-	public function offsetGet( $offset ) {
+	public function offsetGet( $offset ): mixed {
 		if ( property_exists( __CLASS__, $offset ) ) {
 			return $this->{$offset};
 		}
@@ -397,10 +397,10 @@ class WPCF7_FormTag implements ArrayAccess {
 		return null;
 	}
 
-	public function offsetExists( $offset ) {
+	public function offsetExists( $offset ): bool {
 		return property_exists( __CLASS__, $offset );
 	}
 
-	public function offsetUnset( $offset ) {
+	public function offsetUnset( $offset ): void {
 	}
 }

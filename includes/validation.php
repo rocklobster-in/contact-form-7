@@ -62,7 +62,7 @@ class WPCF7_Validation implements ArrayAccess {
 		return $this->invalid_fields;
 	}
 
-	public function offsetSet( $offset, $value ) {
+	public function offsetSet( $offset, $value ): void {
 		if ( isset( $this->container[$offset] ) ) {
 			$this->container[$offset] = $value;
 		}
@@ -75,16 +75,16 @@ class WPCF7_Validation implements ArrayAccess {
 		}
 	}
 
-	public function offsetGet( $offset ) {
+	public function offsetGet( $offset ): mixed  {
 		if ( isset( $this->container[$offset] ) ) {
 			return $this->container[$offset];
 		}
 	}
 
-	public function offsetExists( $offset ) {
+	public function offsetExists( $offset ): bool {
 		return isset( $this->container[$offset] );
 	}
 
-	public function offsetUnset( $offset ) {
+	public function offsetUnset( $offset ): void {
 	}
 }
