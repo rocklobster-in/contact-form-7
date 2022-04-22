@@ -1,3 +1,4 @@
+import { setStatus } from './status';
 import * as validators from './swv/rules';
 import FormDataTree from './swv/form-data-tree';
 
@@ -10,6 +11,10 @@ export default function validate( form, options = {} ) {
 	if ( ! rules.length ) {
 		return;
 	}
+
+	const prevStatus = form.getAttribute( 'data-status' );
+
+	setStatus( form, 'validating' );
 
 	const validators = validate.validators ?? {};
 	const formDataTree = new FormDataTree( form );
@@ -24,6 +29,10 @@ export default function validate( form, options = {} ) {
 		} );
 	} catch ( error ) {
 		setValidationError( form, options.target, error.error );
+	}
+
+	if ( prevStatus ) {
+		setStatus( form, prevStatus );
 	}
 }
 
