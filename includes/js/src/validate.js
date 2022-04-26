@@ -14,26 +14,26 @@ export default function validate( form, options = {} ) {
 
 	const prevStatus = form.getAttribute( 'data-status' );
 
-	setStatus( form, 'validating' );
+	Promise.resolve( setStatus( form, 'validating' ) )
+		.then( status => {
+			const validators = validate.validators ?? {};
+			const formDataTree = new FormDataTree( form );
 
-	const validators = validate.validators ?? {};
-	const formDataTree = new FormDataTree( form );
+			removeValidationError( form, options.target );
 
-	removeValidationError( form, options.target );
-
-	try {
-		rules.forEach( ( { rule, ...properties } ) => {
-			if ( 'function' === typeof validators[rule] ) {
-				validators[rule].call( { rule, ...properties }, formDataTree );
+			try {
+				rules.forEach( ( { rule, ...properties } ) => {
+					if ( 'function' === typeof validators[rule] ) {
+						validators[rule].call( { rule, ...properties }, formDataTree );
+					}
+				} );
+			} catch ( error ) {
+				setValidationError( form, options.target, error.error );
 			}
+		} )
+		.finally( () => {
+			setStatus( form, prevStatus );
 		} );
-	} catch ( error ) {
-		setValidationError( form, options.target, error.error );
-	}
-
-	if ( prevStatus ) {
-		setStatus( form, prevStatus );
-	}
 }
 
 validate.validators = validators;
