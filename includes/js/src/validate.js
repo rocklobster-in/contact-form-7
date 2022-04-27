@@ -4,8 +4,17 @@ import FormDataTree from './swv/form-data-tree';
 
 
 export default function validate( form, options = {} ) {
+	const validators = validate.validators ?? {};
+
 	const rules = ( form.wpcf7.schema.rules ?? [] ).filter(
-		rule => rule.field === options.target?.name
+		( { rule, ...properties } ) => {
+
+			if ( 'function' === typeof validators[rule]?.matches ) {
+				return validators[rule].matches( properties, options );
+			}
+
+			return options.target && properties.field === options.target.name;
+		}
 	);
 
 	if ( ! rules.length ) {
@@ -16,7 +25,6 @@ export default function validate( form, options = {} ) {
 
 	Promise.resolve( setStatus( form, 'validating' ) )
 		.then( status => {
-			const validators = validate.validators ?? {};
 			const formDataTree = new FormDataTree( form );
 
 			removeValidationError( form, options.target );
