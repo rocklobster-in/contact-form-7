@@ -81,6 +81,8 @@ export default function init( form ) {
 	} );
 
 	form.addEventListener( 'change', event => {
-		wpcf7.validate( form, { target: event.target } );
+		if ( event.target.closest( '.wpcf7-form-control' ) ) {
+			wpcf7.validate( form, { target: event.target } );
+		}
 	} );
 }
