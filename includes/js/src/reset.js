@@ -90,7 +90,7 @@ export const resetQuiz = ( form, refill ) => {
 		const hashedAnswer = refill[ name ][ 1 ];
 
 		form.querySelectorAll(
-			`.wpcf7-form-control-wrap.${ name }`
+			`.wpcf7-form-control-wrap[data-name="${ name }"]`
 		).forEach( wrap => {
 			wrap.querySelector( `input[name="${ name }"]` ).value = '';
 			wrap.querySelector( '.wpcf7-quiz-label' ).textContent = question;

@@ -78,7 +78,7 @@ export const setValidationError = ( form, target, message ) => {
 
 	const setVisualValidationError = () => {
 		form.querySelectorAll(
-			`.wpcf7-form-control-wrap.${ target.name }`
+			`.wpcf7-form-control-wrap[data-name="${ target.name }"]`
 		).forEach( wrap => {
 			const tip = document.createElement( 'span' );
 			tip.classList.add( 'wpcf7-not-valid-tip' );
@@ -128,7 +128,7 @@ export const removeValidationError = ( form, target ) => {
 	)?.remove();
 
 	form.querySelectorAll(
-		`span.wpcf7-form-control-wrap.${ target.name }`
+		`.wpcf7-form-control-wrap[data-name="${ target.name }"]`
 	).forEach( wrap => {
 		wrap.querySelector( '.wpcf7-not-valid-tip' )?.remove();
 
