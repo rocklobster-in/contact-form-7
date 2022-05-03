@@ -75,9 +75,12 @@ export default function submit( form, options = {} ) {
 
 		if ( response.invalid_fields ) {
 			response.invalid_fields.forEach( error => {
-				const wrap = form.querySelector( error.into );
-				const control = wrap.querySelector( '.wpcf7-form-control' );
-				setValidationError( form, control, error.message );
+				form.querySelectorAll(
+					`.wpcf7-form-control-wrap[data-name="${ error.field }"]`
+				).forEach( wrap => {
+					const control = wrap.querySelector( '.wpcf7-form-control' );
+					setValidationError( form, control, error.message );
+				} );
 			} );
 		}
 

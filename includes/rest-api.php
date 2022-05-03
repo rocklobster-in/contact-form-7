@@ -365,13 +365,14 @@ class WPCF7_REST_Controller {
 			$invalid_fields = array();
 
 			foreach ( (array) $result['invalid_fields'] as $name => $field ) {
-				$name = sanitize_html_class( $name );
+				if ( ! wpcf7_is_name( $name ) ) {
+					continue;
+				}
+
+				$name = strtr( $name, '.', '_' );
 
 				$invalid_fields[] = array(
-					'into' => sprintf(
-						'span.wpcf7-form-control-wrap.%s',
-						$name
-					),
+					'field' => $name,
 					'message' => $field['reason'],
 					'idref' => $field['idref'],
 					'error_id' => sprintf(
