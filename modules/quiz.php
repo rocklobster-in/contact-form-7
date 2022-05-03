@@ -77,13 +77,14 @@ function wpcf7_quiz_form_tag_handler( $tag ) {
 	$atts['type'] = 'text';
 	$atts['name'] = $tag->name;
 
-	$atts = wpcf7_format_atts( $atts );
-
 	$html = sprintf(
-		'<span class="wpcf7-form-control-wrap %1$s" data-name="%1$s"><label><span class="wpcf7-quiz-label">%2$s</span> <input %3$s /></label><input type="hidden" name="_wpcf7_quiz_answer_%4$s" value="%5$s" />%6$s</span>',
-		sanitize_html_class( $tag->name ),
-		esc_html( $question ), $atts, $tag->name,
-		wp_hash( $answer, 'wpcf7_quiz' ), $validation_error
+		'<span class="wpcf7-form-control-wrap" data-name="%1$s"><label><span class="wpcf7-quiz-label">%2$s</span> <input %3$s /></label><input type="hidden" name="_wpcf7_quiz_answer_%4$s" value="%5$s" />%6$s</span>',
+		esc_attr( $tag->name ),
+		esc_html( $question ),
+		wpcf7_format_atts( $atts ),
+		$tag->name,
+		wp_hash( $answer, 'wpcf7_quiz' ),
+		$validation_error
 	);
 
 	return $html;
