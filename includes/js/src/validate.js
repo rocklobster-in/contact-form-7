@@ -4,6 +4,22 @@ import FormDataTree from './swv/form-data-tree';
 
 
 export default function validate( form, options = {} ) {
+	const scope = form;
+	const targetFields = [];
+
+	for ( const wrap of scope.querySelectorAll( '.wpcf7-form-control-wrap' ) ) {
+		if ( wrap.dataset.name ) {
+			targetFields.push( wrap.dataset.name );
+
+			if (
+				options.target &&
+				wrap.dataset.name === options.target.name.replace( /\[.*\]$/, '' )
+			) {
+				break;
+			}
+		}
+	}
+
 	const validators = validate.validators ?? {};
 
 	const rules = ( form.wpcf7.schema.rules ?? [] ).filter(
@@ -13,7 +29,7 @@ export default function validate( form, options = {} ) {
 				return validators[rule].matches( properties, options );
 			}
 
-			return options.target && properties.field === options.target.name;
+			return targetFields.includes( properties.field );
 		}
 	);
 
@@ -25,18 +41,23 @@ export default function validate( form, options = {} ) {
 
 	Promise.resolve( setStatus( form, 'validating' ) )
 		.then( status => {
+			const invalidFields = [];
 			const formDataTree = new FormDataTree( form );
 
-			removeValidationError( form, options.target );
+			for ( const { rule, ...properties } of rules ) {
+				if ( invalidFields.includes( properties.field ) ) {
+					continue;
+				}
 
-			try {
-				rules.forEach( ( { rule, ...properties } ) => {
-					if ( 'function' === typeof validators[rule] ) {
+				if ( 'function' === typeof validators[rule] ) {
+					try {
+						removeValidationError( form, properties.field );
 						validators[rule].call( { rule, ...properties }, formDataTree );
+					} catch ( error ) {
+						setValidationError( form, properties.field, error.error );
+						invalidFields.push( properties.field );
 					}
-				} );
-			} catch ( error ) {
-				setValidationError( form, options.target, error.error );
+				}
 			}
 		} )
 		.finally( () => {
@@ -47,22 +68,22 @@ export default function validate( form, options = {} ) {
 validate.validators = validators;
 
 
-export const setValidationError = ( form, target, message ) => {
-	if ( undefined === target.name || '' === target.name ) {
-		return;
-	}
+export const setValidationError = ( form, fieldName, message ) => {
+	const errorId = `${ form.wpcf7?.unitTag }-ve-${ fieldName }`;
 
-	const errorId = `${ form.wpcf7?.unitTag }-ve-${ target.name }`;
+	const firstFoundControl = form.querySelector(
+		`.wpcf7-form-control-wrap[data-name="${ fieldName }"] .wpcf7-form-control`
+	);
 
 	const setScreenReaderValidationError = () => {
 		const li = document.createElement( 'li' );
 
 		li.setAttribute( 'id', errorId );
 
-		if ( target.id ) {
+		if ( firstFoundControl && firstFoundControl.id ) {
 			li.insertAdjacentHTML(
 				'beforeend',
-				`<a href="#${ target.id }">${ message }</a>`
+				`<a href="#${ firstFoundControl.id }">${ message }</a>`
 			);
 		} else {
 			li.insertAdjacentText(
@@ -78,7 +99,7 @@ export const setValidationError = ( form, target, message ) => {
 
 	const setVisualValidationError = () => {
 		form.querySelectorAll(
-			`.wpcf7-form-control-wrap[data-name="${ target.name }"]`
+			`.wpcf7-form-control-wrap[data-name="${ fieldName }"]`
 		).forEach( wrap => {
 			const tip = document.createElement( 'span' );
 			tip.classList.add( 'wpcf7-not-valid-tip' );
@@ -116,19 +137,15 @@ export const setValidationError = ( form, target, message ) => {
 };
 
 
-export const removeValidationError = ( form, target ) => {
-	if ( undefined === target.name || '' === target.name ) {
-		return;
-	}
-
-	const errorId = `${ form.wpcf7?.unitTag }-ve-${ target.name }`;
+export const removeValidationError = ( form, fieldName ) => {
+	const errorId = `${ form.wpcf7?.unitTag }-ve-${ fieldName }`;
 
 	form.wpcf7.parent.querySelector(
 		`.screen-reader-response ul li#${ errorId }`
 	)?.remove();
 
 	form.querySelectorAll(
-		`.wpcf7-form-control-wrap[data-name="${ target.name }"]`
+		`.wpcf7-form-control-wrap[data-name="${ fieldName }"]`
 	).forEach( wrap => {
 		wrap.querySelector( '.wpcf7-not-valid-tip' )?.remove();
 
