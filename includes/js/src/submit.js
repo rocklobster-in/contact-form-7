@@ -75,12 +75,7 @@ export default function submit( form, options = {} ) {
 
 		if ( response.invalid_fields ) {
 			response.invalid_fields.forEach( error => {
-				form.querySelectorAll(
-					`.wpcf7-form-control-wrap[data-name="${ error.field }"]`
-				).forEach( wrap => {
-					const control = wrap.querySelector( '.wpcf7-form-control' );
-					setValidationError( form, control, error.message );
-				} );
+				setValidationError( form, error.field, error.message );
 			} );
 		}
 
@@ -108,8 +103,10 @@ apiFetch.use( ( options, next ) => {
 } );
 
 export const clearResponse = form => {
-	form.querySelectorAll( '.wpcf7-form-control' ).forEach( control => {
-		removeValidationError( form, control );
+	form.querySelectorAll( '.wpcf7-form-control-wrap' ).forEach( wrap => {
+		if ( wrap.dataset.name ) {
+			removeValidationError( form, wrap.dataset.name );
+		}
 	} );
 
 	form.wpcf7.parent.querySelector(
