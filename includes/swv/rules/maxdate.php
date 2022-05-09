@@ -4,8 +4,8 @@ class WPCF7_SWV_MaxDateRule extends WPCF7_SWV_Rule {
 
 	const rule_name = 'maxdate';
 
-	public function match( $context ) {
-		if ( false === parent::match( $context ) ) {
+	public function matches( $context ) {
+		if ( false === parent::matches( $context ) ) {
 			return false;
 		}
 

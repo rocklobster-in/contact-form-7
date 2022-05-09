@@ -30,7 +30,7 @@ trait WPCF7_SWV_SchemaHolder {
 	 */
 	public function validate_schema( $context, WPCF7_Validation $validity ) {
 		$callback = function ( $rule ) use ( &$callback, $context, $validity ) {
-			if ( ! $rule->match( $context ) ) {
+			if ( ! $rule->matches( $context ) ) {
 				return;
 			}
 

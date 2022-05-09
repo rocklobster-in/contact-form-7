@@ -109,7 +109,7 @@ abstract class WPCF7_SWV_Rule {
 		$this->properties = wp_parse_args( $properties, array() );
 	}
 
-	public function match( $context ) {
+	public function matches( $context ) {
 		$field = $this->get_property( 'field' );
 
 		if ( ! empty( $context['field'] ) ) {
@@ -154,13 +154,13 @@ abstract class WPCF7_SWV_CompositeRule extends WPCF7_SWV_Rule {
 		}
 	}
 
-	public function match( $context ) {
+	public function matches( $context ) {
 		return true;
 	}
 
 	public function validate( $context ) {
 		foreach ( $this->rules() as $rule ) {
-			if ( $rule->match( $context ) ) {
+			if ( $rule->matches( $context ) ) {
 				$result = $rule->validate( $context );
 
 				if ( is_wp_error( $result ) ) {
