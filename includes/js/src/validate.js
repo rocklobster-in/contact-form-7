@@ -5,6 +5,12 @@ import FormDataTree from './swv/form-data-tree';
 
 export default function validate( form, options = {} ) {
 	const scope = form;
+
+	// Event target is not a wpcf7 form control.
+	if ( ! options.target?.closest( '.wpcf7-form-control-wrap[data-name]' ) ) {
+		return;
+	}
+
 	const targetFields = [];
 
 	for ( const wrap of scope.querySelectorAll( '.wpcf7-form-control-wrap' ) ) {
@@ -12,7 +18,6 @@ export default function validate( form, options = {} ) {
 			targetFields.push( wrap.dataset.name );
 
 			if (
-				options.target &&
 				wrap.dataset.name === options.target.name.replace( /\[.*\]$/, '' )
 			) {
 				break;
@@ -33,6 +38,7 @@ export default function validate( form, options = {} ) {
 		}
 	);
 
+	// There is no rule to validate.
 	if ( ! rules.length ) {
 		return;
 	}
