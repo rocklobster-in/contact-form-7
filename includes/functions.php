@@ -167,7 +167,12 @@ function wpcf7_flat_join( $input ) {
  * Returns true if HTML5 is supported.
  */
 function wpcf7_support_html5() {
-	return (bool) apply_filters( 'wpcf7_support_html5', true );
+	return (bool) wpcf7_apply_filters_deprecated(
+		'wpcf7_support_html5',
+		array( true ),
+		'5.6',
+		''
+	);
 }
 
 
