@@ -529,15 +529,17 @@ class WPCF7_ConfigValidator {
 				$header_name = $matches[1];
 				$header_value = trim( $matches[2] );
 
-				if ( in_array( strtolower( $header_name ), $mailbox_header_types ) ) {
+				if ( in_array( strtolower( $header_name ), $mailbox_header_types )
+				and '' !== $header_value ) {
 					$this->detect_invalid_mailbox_syntax(
 						sprintf( '%s.additional_headers', $template ),
-						$header_value, array(
+						$header_value,
+						array(
 							'message' =>
 								__( "Invalid mailbox syntax is used in the %name% field.", 'contact-form-7' ),
-							'params' => array( 'name' => $header_name ) ) );
-				} elseif ( empty( $header_value ) ) {
-					$invalid_mail_header_exists = true;
+							'params' => array( 'name' => $header_name )
+						)
+					);
 				}
 			}
 		}
