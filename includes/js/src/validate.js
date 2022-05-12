@@ -1,6 +1,7 @@
 import { setStatus } from './status';
 import * as validators from './swv/rules';
 import FormDataTree from './swv/form-data-tree';
+import { ValidationError } from './swv/error';
 
 
 export default function validate( form, options = {} ) {
@@ -63,8 +64,10 @@ export default function validate( form, options = {} ) {
 					removeValidationError( form, properties.field );
 					validators[rule].call( { rule, ...properties }, formDataTree );
 				} catch ( error ) {
-					setValidationError( form, properties.field, error.error );
-					invalidFields.push( properties.field );
+					if ( error instanceof ValidationError ) {
+						setValidationError( form, properties.field, error.error );
+						invalidFields.push( properties.field );
+					}
 				}
 			}
 		} )
