@@ -30,7 +30,11 @@ export default function validate( form, options = {} ) {
 	const rules = ( form.wpcf7.schema.rules ?? [] ).filter(
 		( { rule, ...properties } ) => {
 
-			if ( 'function' === typeof validators[rule]?.matches ) {
+			if ( 'function' !== typeof validators[rule] ) {
+				return false;
+			}
+
+			if ( 'function' === typeof validators[rule].matches ) {
 				return validators[rule].matches( properties, options );
 			}
 
@@ -55,14 +59,12 @@ export default function validate( form, options = {} ) {
 					continue;
 				}
 
-				if ( 'function' === typeof validators[rule] ) {
-					try {
-						removeValidationError( form, properties.field );
-						validators[rule].call( { rule, ...properties }, formDataTree );
-					} catch ( error ) {
-						setValidationError( form, properties.field, error.error );
-						invalidFields.push( properties.field );
-					}
+				try {
+					removeValidationError( form, properties.field );
+					validators[rule].call( { rule, ...properties }, formDataTree );
+				} catch ( error ) {
+					setValidationError( form, properties.field, error.error );
+					invalidFields.push( properties.field );
 				}
 			}
 		} )
