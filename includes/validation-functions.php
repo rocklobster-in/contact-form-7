@@ -110,6 +110,11 @@ function wpcf7_is_mailbox_list( $mailbox_list ) {
 
 function wpcf7_is_email_in_domain( $email, $domain ) {
 	$email_list = wpcf7_is_mailbox_list( $email );
+
+	if ( false === $email_list ) {
+		return false;
+	}
+
 	$domain = strtolower( $domain );
 
 	foreach ( $email_list as $email ) {
@@ -138,38 +143,13 @@ function wpcf7_is_email_in_site_domain( $email ) {
 		return true;
 	}
 
-	$site_domain = strtolower( $_SERVER['SERVER_NAME'] );
+	$sitename = wp_parse_url( network_home_url(), PHP_URL_HOST );
 
-	if ( preg_match( '/^[0-9.]+$/', $site_domain ) ) { // 123.456.789.012
+	if ( preg_match( '/^[0-9.]+$/', $sitename ) ) { // 123.456.789.012
 		return true;
 	}
 
-	if ( wpcf7_is_email_in_domain( $email, $site_domain ) ) {
-		return true;
-	}
-
-	$home_url = home_url();
-
-	// for interoperability with WordPress MU Domain Mapping plugin
-	if ( is_multisite()
-	and function_exists( 'domain_mapping_siteurl' ) ) {
-		$domain_mapping_siteurl = domain_mapping_siteurl( false );
-
-		if ( $domain_mapping_siteurl ) {
-			$home_url = $domain_mapping_siteurl;
-		}
-	}
-
-	if ( preg_match( '%^https?://([^/]+)%', $home_url, $matches ) ) {
-		$site_domain = strtolower( $matches[1] );
-
-		if ( $site_domain != strtolower( $_SERVER['SERVER_NAME'] )
-		and wpcf7_is_email_in_domain( $email, $site_domain ) ) {
-			return true;
-		}
-	}
-
-	return false;
+	return wpcf7_is_email_in_domain( $email, $sitename );
 }
 
 
