@@ -127,17 +127,19 @@ class WPCF7_ContactFormTemplate {
 
 	public static function from_email() {
 		$admin_email = get_option( 'admin_email' );
-		$sitename = strtolower( $_SERVER['SERVER_NAME'] );
 
 		if ( wpcf7_is_localhost() ) {
 			return $admin_email;
 		}
 
-		if ( substr( $sitename, 0, 4 ) == 'www.' ) {
+		$sitename = wp_parse_url( network_home_url(), PHP_URL_HOST );
+		$sitename = strtolower( $sitename );
+
+		if ( 'www.' === substr( $sitename, 0, 4 ) ) {
 			$sitename = substr( $sitename, 4 );
 		}
 
-		if ( strpbrk( $admin_email, '@' ) == '@' . $sitename ) {
+		if ( strpbrk( $admin_email, '@' ) === '@' . $sitename ) {
 			return $admin_email;
 		}
 
