@@ -537,8 +537,8 @@ function wpcf7_count_code_units( $string ) {
  * Returns true if WordPress is running on the localhost.
  */
 function wpcf7_is_localhost() {
-	$server_name = strtolower( $_SERVER['SERVER_NAME'] );
-	return in_array( $server_name, array( 'localhost', '127.0.0.1' ) );
+	$sitename = wp_parse_url( network_home_url(), PHP_URL_HOST );
+	return in_array( strtolower( $sitename ), array( 'localhost', '127.0.0.1' ) );
 }
 
 
