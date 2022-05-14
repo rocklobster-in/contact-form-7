@@ -22,68 +22,61 @@ class WPCF7_ConstantContact_ContactPostRequest {
 	public function build( WPCF7_Submission $submission ) {
 		$this->set_create_source( 'Contact' );
 
-		$posted_data = (array) $submission->get_posted_data();
+		$this->set_first_name(
+			$submission->get_posted_string( 'your-first-name' )
+		);
 
-		if ( isset( $posted_data['your-first-name'] ) ) {
-			$this->set_first_name( $posted_data['your-first-name'] );
-		}
-
-		if ( isset( $posted_data['your-last-name'] ) ) {
-			$this->set_last_name( $posted_data['your-last-name'] );
-		}
+		$this->set_last_name(
+			$submission->get_posted_string( 'your-last-name' )
+		);
 
 		if ( ! ( $this->first_name || $this->last_name )
-		and isset( $posted_data['your-name'] ) ) {
-			$your_name = preg_split( '/[\s]+/', $posted_data['your-name'], 2 );
+		and $your_name = $submission->get_posted_string( 'your-name' ) ) {
+			$your_name = preg_split( '/[\s]+/', $your_name, 2 );
 			$this->set_first_name( array_shift( $your_name ) );
 			$this->set_last_name( array_shift( $your_name ) );
 		}
 
-		if ( isset( $posted_data['your-email'] ) ) {
-			$this->set_email_address( $posted_data['your-email'], 'implicit' );
-		}
+		$this->set_email_address(
+			$submission->get_posted_string( 'your-email' ),
+			'implicit'
+		);
 
-		if ( isset( $posted_data['your-job-title'] ) ) {
-			$this->set_job_title( $posted_data['your-job-title'] );
-		}
+		$this->set_job_title(
+			$submission->get_posted_string( 'your-job-title' )
+		);
 
-		if ( isset( $posted_data['your-company-name'] ) ) {
-			$this->set_company_name( $posted_data['your-company-name'] );
-		}
+		$this->set_company_name(
+			$submission->get_posted_string( 'your-company-name' )
+		);
 
-		if ( isset( $posted_data['your-birthday-month'] )
-		and isset( $posted_data['your-birthday-day'] ) ) {
-			$this->set_birthday(
-				$posted_data['your-birthday-month'],
-				$posted_data['your-birthday-day']
-			);
-		} elseif ( isset( $posted_data['your-birthday'] ) ) {
-			$date = trim( $posted_data['your-birthday'] );
+		$this->set_birthday(
+			$submission->get_posted_string( 'your-birthday-month' ),
+			$submission->get_posted_string( 'your-birthday-day' )
+		);
+
+		if ( ! ( $this->birthday_month && $this->birthday_day ) ) {
+			$date = $submission->get_posted_string( 'your-birthday' );
 
 			if ( preg_match( '/^(\d{4})-(\d{2})-(\d{2})$/', $date, $matches ) ) {
 				$this->set_birthday( $matches[2], $matches[3] );
 			}
 		}
 
-		if ( isset( $posted_data['your-anniversary'] ) ) {
-			$this->set_anniversary( $posted_data['your-anniversary'] );
-		}
+		$this->set_anniversary(
+			$submission->get_posted_string( 'your-anniversary' )
+		);
 
-		if ( isset( $posted_data['your-phone-number'] ) ) {
-			$this->add_phone_number( $posted_data['your-phone-number'] );
-		}
+		$this->add_phone_number(
+			$submission->get_posted_string( 'your-phone-number' )
+		);
 
 		$this->add_street_address(
-			isset( $posted_data['your-address-street'] )
-				? $posted_data['your-address-street'] : '',
-			isset( $posted_data['your-address-city'] )
-				? $posted_data['your-address-city'] : '',
-			isset( $posted_data['your-address-state'] )
-				? $posted_data['your-address-state'] : '',
-			isset( $posted_data['your-address-postal-code'] )
-				? $posted_data['your-address-postal-code'] : '',
-			isset( $posted_data['your-address-country'] )
-				? $posted_data['your-address-country'] : ''
+			$submission->get_posted_string( 'your-address-street' ),
+			$submission->get_posted_string( 'your-address-city' ),
+			$submission->get_posted_string( 'your-address-state' ),
+			$submission->get_posted_string( 'your-address-postal-code' ),
+			$submission->get_posted_string( 'your-address-country' )
 		);
 
 		$service_option = (array) WPCF7::get_option( 'constant_contact' );

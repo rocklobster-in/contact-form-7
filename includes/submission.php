@@ -271,6 +271,19 @@ class WPCF7_Submission {
 	}
 
 
+	public function get_posted_string( $name ) {
+		$data = $this->get_posted_data( $name );
+		$data = wpcf7_array_flatten( $data );
+
+		if ( empty( $data ) ) {
+			return '';
+		}
+
+		// Returns the first array item.
+		return trim( reset( $data ) );
+	}
+
+
 	private function setup_posted_data() {
 		$posted_data = array_filter( (array) $_POST, function( $key ) {
 			return '_' !== substr( $key, 0, 1 );
