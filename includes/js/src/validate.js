@@ -15,6 +15,10 @@ export default function validate( form, options = {} ) {
 	const targetFields = [];
 
 	for ( const wrap of scope.querySelectorAll( '.wpcf7-form-control-wrap' ) ) {
+		if ( wrap.closest( '.novalidate' ) ) {
+			continue;
+		}
+
 		if ( wrap.dataset.name ) {
 			targetFields.push( wrap.dataset.name );
 
