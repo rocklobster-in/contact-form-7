@@ -84,13 +84,13 @@ class WPCF7_FormTag implements ArrayAccess {
 		return $this->get_option( 'id', 'id', true );
 	}
 
-	public function get_class_option( $default = '' ) {
-		if ( is_string( $default ) ) {
-			$default = explode( ' ', $default );
+	public function get_class_option( $default_classes = '' ) {
+		if ( is_string( $default_classes ) ) {
+			$default_classes = explode( ' ', $default_classes );
 		}
 
 		$options = array_merge(
-			(array) $default,
+			(array) $default_classes,
 			(array) $this->get_option( 'class', 'class' )
 		);
 
@@ -99,7 +99,7 @@ class WPCF7_FormTag implements ArrayAccess {
 		return implode( ' ', $options );
 	}
 
-	public function get_size_option( $default = '' ) {
+	public function get_size_option( $default_value = '' ) {
 		$option = $this->get_option( 'size', 'int', true );
 
 		if ( $option ) {
@@ -114,10 +114,10 @@ class WPCF7_FormTag implements ArrayAccess {
 			}
 		}
 
-		return $default;
+		return $default_value;
 	}
 
-	public function get_maxlength_option( $default = '' ) {
+	public function get_maxlength_option( $default_value = '' ) {
 		$option = $this->get_option( 'maxlength', 'int', true );
 
 		if ( $option ) {
@@ -134,20 +134,20 @@ class WPCF7_FormTag implements ArrayAccess {
 			}
 		}
 
-		return $default;
+		return $default_value;
 	}
 
-	public function get_minlength_option( $default = '' ) {
+	public function get_minlength_option( $default_value = '' ) {
 		$option = $this->get_option( 'minlength', 'int', true );
 
 		if ( $option ) {
 			return $option;
 		} else {
-			return $default;
+			return $default_value;
 		}
 	}
 
-	public function get_cols_option( $default = '' ) {
+	public function get_cols_option( $default_value = '' ) {
 		$option = $this->get_option( 'cols', 'int', true );
 
 		if ( $option ) {
@@ -164,10 +164,10 @@ class WPCF7_FormTag implements ArrayAccess {
 			}
 		}
 
-		return $default;
+		return $default_value;
 	}
 
-	public function get_rows_option( $default = '' ) {
+	public function get_rows_option( $default_value = '' ) {
 		$option = $this->get_option( 'rows', 'int', true );
 
 		if ( $option ) {
@@ -184,7 +184,7 @@ class WPCF7_FormTag implements ArrayAccess {
 			}
 		}
 
-		return $default;
+		return $default_value;
 	}
 
 	public function get_date_option( $opt ) {
@@ -220,7 +220,7 @@ class WPCF7_FormTag implements ArrayAccess {
 		return false;
 	}
 
-	public function get_default_option( $default = '', $args = '' ) {
+	public function get_default_option( $default_value = '', $args = '' ) {
 		$args = wp_parse_args( $args, array(
 			'multiple' => false,
 			'shifted' => false,
@@ -230,7 +230,7 @@ class WPCF7_FormTag implements ArrayAccess {
 		$values = array();
 
 		if ( empty( $options ) ) {
-			return $args['multiple'] ? $values : $default;
+			return $args['multiple'] ? $values : $default_value;
 		}
 
 		foreach ( $options as $opt ) {
@@ -327,7 +327,7 @@ class WPCF7_FormTag implements ArrayAccess {
 			$values = array_unique( $values );
 			return $values;
 		} else {
-			return $default;
+			return $default_value;
 		}
 	}
 
@@ -337,7 +337,7 @@ class WPCF7_FormTag implements ArrayAccess {
 		return apply_filters( 'wpcf7_form_tag_data_option', null, $options, $args );
 	}
 
-	public function get_limit_option( $default = MB_IN_BYTES ) {
+	public function get_limit_option( $default_value = MB_IN_BYTES ) {
 		$pattern = '/^limit:([1-9][0-9]*)([kKmM]?[bB])?$/';
 
 		$matches = $this->get_first_match_option( $pattern );
@@ -358,7 +358,7 @@ class WPCF7_FormTag implements ArrayAccess {
 			return $size;
 		}
 
-		return (int) $default;
+		return (int) $default_value;
 	}
 
 	public function get_first_match_option( $pattern ) {
