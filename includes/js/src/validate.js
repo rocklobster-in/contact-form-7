@@ -57,7 +57,7 @@ export default function validate( form, options = {} ) {
 	Promise.resolve( setStatus( form, 'validating' ) )
 		.then( status => {
 			const invalidFields = [];
-			const formDataTree = new FormDataTree( form );
+			const formDataTree = new FormDataTree( new FormData( form ) );
 
 			for ( const { rule, ...properties } of rules ) {
 				if ( invalidFields.includes( properties.field ) ) {
