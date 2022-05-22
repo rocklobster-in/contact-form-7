@@ -1,9 +1,9 @@
 <?php
 
-function wpcf7_add_form_tag( $tag, $func, $features = '' ) {
+function wpcf7_add_form_tag( $tag, $callback, $features = '' ) {
 	$manager = WPCF7_FormTagsManager::get_instance();
 
-	return $manager->add( $tag, $func, $features );
+	return $manager->add( $tag, $callback, $features );
 }
 
 function wpcf7_remove_form_tag( $tag ) {
@@ -55,8 +55,8 @@ class WPCF7_FormTagsManager {
 		return $this->scanned_tags;
 	}
 
-	public function add( $tag, $func, $features = '' ) {
-		if ( ! is_callable( $func ) ) {
+	public function add( $tag, $callback, $features = '' ) {
+		if ( ! is_callable( $callback ) ) {
 			return;
 		}
 
@@ -73,7 +73,7 @@ class WPCF7_FormTagsManager {
 
 			if ( ! $this->tag_type_exists( $tag ) ) {
 				$this->tag_types[$tag] = array(
-					'function' => $func,
+					'function' => $callback,
 					'features' => $features,
 				);
 			}
@@ -350,8 +350,8 @@ class WPCF7_FormTagsManager {
 		$this->scanned_tags[] = $scanned_tag;
 
 		if ( $replace ) {
-			$func = $this->tag_types[$tag]['function'];
-			return $m[1] . call_user_func( $func, $scanned_tag ) . $m[6];
+			$callback = $this->tag_types[$tag]['function'];
+			return $m[1] . call_user_func( $callback, $scanned_tag ) . $m[6];
 		} else {
 			return $m[0];
 		}
