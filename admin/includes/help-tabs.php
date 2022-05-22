@@ -8,18 +8,20 @@ class WPCF7_Help_Tabs {
 		$this->screen = $screen;
 	}
 
-	public function set_help_tabs( $type ) {
-		switch ( $type ) {
+	public function set_help_tabs( $screen_type ) {
+		switch ( $screen_type ) {
 			case 'list':
 				$this->screen->add_help_tab( array(
 					'id' => 'list_overview',
 					'title' => __( 'Overview', 'contact-form-7' ),
-					'content' => $this->content( 'list_overview' ) ) );
+					'content' => $this->content( 'list_overview' ),
+				) );
 
 				$this->screen->add_help_tab( array(
 					'id' => 'list_available_actions',
 					'title' => __( 'Available Actions', 'contact-form-7' ),
-					'content' => $this->content( 'list_available_actions' ) ) );
+					'content' => $this->content( 'list_available_actions' ),
+				) );
 
 				$this->sidebar();
 
@@ -28,17 +30,20 @@ class WPCF7_Help_Tabs {
 				$this->screen->add_help_tab( array(
 					'id' => 'edit_overview',
 					'title' => __( 'Overview', 'contact-form-7' ),
-					'content' => $this->content( 'edit_overview' ) ) );
+					'content' => $this->content( 'edit_overview' ),
+				) );
 
 				$this->screen->add_help_tab( array(
 					'id' => 'edit_form_tags',
 					'title' => __( 'Form-tags', 'contact-form-7' ),
-					'content' => $this->content( 'edit_form_tags' ) ) );
+					'content' => $this->content( 'edit_form_tags' ),
+				) );
 
 				$this->screen->add_help_tab( array(
 					'id' => 'edit_mail_tags',
 					'title' => __( 'Mail-tags', 'contact-form-7' ),
-					'content' => $this->content( 'edit_mail_tags' ) ) );
+					'content' => $this->content( 'edit_mail_tags' ),
+				) );
 
 				$this->sidebar();
 
@@ -47,7 +52,8 @@ class WPCF7_Help_Tabs {
 				$this->screen->add_help_tab( array(
 					'id' => 'integration_overview',
 					'title' => __( 'Overview', 'contact-form-7' ),
-					'content' => $this->content( 'integration_overview' ) ) );
+					'content' => $this->content( 'integration_overview' ),
+				) );
 
 				$this->sidebar();
 
