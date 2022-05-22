@@ -152,18 +152,18 @@ function wpcf7_strip_quote( $text ) {
  * Navigates through an array, object, or scalar, and
  * strips quote characters surrounding the each value.
  *
- * @param mixed $arr The array or string to be processed.
+ * @param mixed $input The array or string to be processed.
  * @return mixed Processed value.
  */
-function wpcf7_strip_quote_deep( $arr ) {
-	if ( is_string( $arr ) ) {
-		return wpcf7_strip_quote( $arr );
+function wpcf7_strip_quote_deep( $input ) {
+	if ( is_string( $input ) ) {
+		return wpcf7_strip_quote( $input );
 	}
 
-	if ( is_array( $arr ) ) {
+	if ( is_array( $input ) ) {
 		$result = array();
 
-		foreach ( $arr as $key => $text ) {
+		foreach ( $input as $key => $text ) {
 			$result[$key] = wpcf7_strip_quote_deep( $text );
 		}
 
@@ -198,35 +198,35 @@ function wpcf7_normalize_newline( $text, $to = "\n" ) {
  * Navigates through an array, object, or scalar, and
  * normalizes newline characters in the each value.
  *
- * @param mixed $arr The array or string to be processed.
+ * @param mixed $input The array or string to be processed.
  * @param string $to Optional. The newline character that is used in the output.
  * @return mixed Processed value.
  */
-function wpcf7_normalize_newline_deep( $arr, $to = "\n" ) {
-	if ( is_array( $arr ) ) {
+function wpcf7_normalize_newline_deep( $input, $to = "\n" ) {
+	if ( is_array( $input ) ) {
 		$result = array();
 
-		foreach ( $arr as $key => $text ) {
+		foreach ( $input as $key => $text ) {
 			$result[$key] = wpcf7_normalize_newline_deep( $text, $to );
 		}
 
 		return $result;
 	}
 
-	return wpcf7_normalize_newline( $arr, $to );
+	return wpcf7_normalize_newline( $input, $to );
 }
 
 
 /**
  * Strips newline characters.
  *
- * @param string $str Input text.
+ * @param string $text Input text.
  * @return string Processed one-line text.
  */
-function wpcf7_strip_newline( $str ) {
-	$str = (string) $str;
-	$str = str_replace( array( "\r", "\n" ), '', $str );
-	return trim( $str );
+function wpcf7_strip_newline( $text ) {
+	$text = (string) $text;
+	$text = str_replace( array( "\r", "\n" ), '', $text );
+	return trim( $text );
 }
 
 
