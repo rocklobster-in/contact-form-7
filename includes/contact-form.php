@@ -978,10 +978,10 @@ class WPCF7_ContactForm {
 	/**
 	 * Prints a mail-tag suggestion list.
 	 *
-	 * @param string $for Optional. Mail template name. Default 'mail'.
+	 * @param string $template_name Optional. Mail template name. Default 'mail'.
 	 */
-	public function suggest_mail_tags( $for = 'mail' ) {
-		$mail = wp_parse_args( $this->prop( $for ),
+	public function suggest_mail_tags( $template_name = 'mail' ) {
+		$mail = wp_parse_args( $this->prop( $template_name ),
 			array(
 				'active' => false,
 				'recipient' => '',
