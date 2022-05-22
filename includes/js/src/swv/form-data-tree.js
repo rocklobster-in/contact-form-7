@@ -1,6 +1,12 @@
-export default function FormDataTree( form ) {
-	this.formData = new FormData( form );
+export default function FormDataTree( formData ) {
+	this.formData = {};
 	this.tree = {};
+
+	if ( formData instanceof FormData ) {
+		this.formData = formData;
+	} else {
+		return this;
+	}
 
 	const createBranch = () => {
 		const branch = new Map();
