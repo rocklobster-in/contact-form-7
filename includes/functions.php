@@ -577,15 +577,15 @@ function wpcf7_deprecated_function( $function_name, $version, $replacement ) {
 /**
  * Fires functions attached to a deprecated filter hook.
  *
- * @param string $tag The name of the filter hook.
+ * @param string $hook_name The name of the filter hook.
  * @param array $args Array of additional function arguments to be
  *                    passed to apply_filters().
  * @param string $version The version of Contact Form 7 that deprecated
  *                        the hook.
  * @param string $replacement The hook that should have been used.
  */
-function wpcf7_apply_filters_deprecated( $tag, $args, $version, $replacement = '' ) {
-	if ( ! has_filter( $tag ) ) {
+function wpcf7_apply_filters_deprecated( $hook_name, $args, $version, $replacement = '' ) {
+	if ( ! has_filter( $hook_name ) ) {
 		return $args[0];
 	}
 
@@ -595,7 +595,7 @@ function wpcf7_apply_filters_deprecated( $tag, $args, $version, $replacement = '
 				sprintf(
 					/* translators: 1: WordPress hook name, 2: version number, 3: alternative hook name */
 					__( 'Hook %1$s is <strong>deprecated</strong> since Contact Form 7 version %2$s! Use %3$s instead.', 'contact-form-7' ),
-					$tag,
+					$hook_name,
 					$version,
 					$replacement
 				),
@@ -606,7 +606,7 @@ function wpcf7_apply_filters_deprecated( $tag, $args, $version, $replacement = '
 				sprintf(
 					/* translators: 1: WordPress hook name, 2: version number */
 					__( 'Hook %1$s is <strong>deprecated</strong> since Contact Form 7 version %2$s with no alternative available.', 'contact-form-7' ),
-					$tag,
+					$hook_name,
 					$version
 				),
 				E_USER_DEPRECATED
@@ -614,7 +614,7 @@ function wpcf7_apply_filters_deprecated( $tag, $args, $version, $replacement = '
 		}
 	}
 
-	return apply_filters_ref_array( $tag, $args );
+	return apply_filters_ref_array( $hook_name, $args );
 }
 
 
