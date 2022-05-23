@@ -545,19 +545,19 @@ function wpcf7_is_localhost() {
 /**
  * Marks a function as deprecated and informs when it has been used.
  *
- * @param string $function The function that was called.
+ * @param string $function_name The function that was called.
  * @param string $version The version of Contact Form 7 that deprecated
  *                        the function.
  * @param string $replacement The function that should have been called.
  */
-function wpcf7_deprecated_function( $function, $version, $replacement ) {
+function wpcf7_deprecated_function( $function_name, $version, $replacement ) {
 	if ( WP_DEBUG ) {
 		if ( function_exists( '__' ) ) {
 			trigger_error(
 				sprintf(
 					/* translators: 1: PHP function name, 2: version number, 3: alternative function name */
 					__( 'Function %1$s is <strong>deprecated</strong> since Contact Form 7 version %2$s! Use %3$s instead.', 'contact-form-7' ),
-					$function, $version, $replacement
+					$function_name, $version, $replacement
 				),
 				E_USER_DEPRECATED
 			);
@@ -565,7 +565,7 @@ function wpcf7_deprecated_function( $function, $version, $replacement ) {
 			trigger_error(
 				sprintf(
 					'Function %1$s is <strong>deprecated</strong> since Contact Form 7 version %2$s! Use %3$s instead.',
-					$function, $version, $replacement
+					$function_name, $version, $replacement
 				),
 				E_USER_DEPRECATED
 			);
@@ -621,12 +621,12 @@ function wpcf7_apply_filters_deprecated( $tag, $args, $version, $replacement = '
 /**
  * Marks something as being incorrectly called.
  *
- * @param string $function The function that was called.
+ * @param string $function_name The function that was called.
  * @param string $message A message explaining what has been done incorrectly.
  * @param string $version The version of Contact Form 7 where the message
  *                        was added.
  */
-function wpcf7_doing_it_wrong( $function, $message, $version ) {
+function wpcf7_doing_it_wrong( $function_name, $message, $version ) {
 	if ( WP_DEBUG ) {
 		if ( function_exists( '__' ) ) {
 			if ( $version ) {
@@ -641,7 +641,7 @@ function wpcf7_doing_it_wrong( $function, $message, $version ) {
 				sprintf(
 					/* translators: Developer debugging message. 1: PHP function name, 2: Explanatory message, 3: Contact Form 7 version number. */
 					__( 'Function %1$s was called incorrectly. %2$s %3$s', 'contact-form-7' ),
-					$function,
+					$function_name,
 					$message,
 					$version
 				),
@@ -658,7 +658,7 @@ function wpcf7_doing_it_wrong( $function, $message, $version ) {
 			trigger_error(
 				sprintf(
 					'Function %1$s was called incorrectly. %2$s %3$s',
-					$function,
+					$function_name,
 					$message,
 					$version
 				),
