@@ -11,28 +11,28 @@
  *
  * @return bool True if it is a valid name, false if not.
  */
-function wpcf7_is_name( $string ) {
-	return preg_match( '/^[A-Za-z][-A-Za-z0-9_:.]*$/', $string );
+function wpcf7_is_name( $text ) {
+	return preg_match( '/^[A-Za-z][-A-Za-z0-9_:.]*$/', $text );
 }
 
-function wpcf7_is_email( $email ) {
-	$result = is_email( $email );
-	return apply_filters( 'wpcf7_is_email', $result, $email );
+function wpcf7_is_email( $text ) {
+	$result = is_email( $text );
+	return apply_filters( 'wpcf7_is_email', $result, $text );
 }
 
-function wpcf7_is_url( $url ) {
-	$scheme = wp_parse_url( $url, PHP_URL_SCHEME );
+function wpcf7_is_url( $text ) {
+	$scheme = wp_parse_url( $text, PHP_URL_SCHEME );
 	$result = $scheme && in_array( $scheme, wp_allowed_protocols(), true );
-	return apply_filters( 'wpcf7_is_url', $result, $url );
+	return apply_filters( 'wpcf7_is_url', $result, $text );
 }
 
-function wpcf7_is_tel( $tel ) {
-	$tel = preg_replace( '%[()/.*#\s-]+%', '', $tel );
-	$result = preg_match( '/^[+]?[0-9]+$/', $tel );
-	return apply_filters( 'wpcf7_is_tel', $result, $tel );
+function wpcf7_is_tel( $text ) {
+	$text = preg_replace( '%[()/.*#\s-]+%', '', $text );
+	$result = preg_match( '/^[+]?[0-9]+$/', $text );
+	return apply_filters( 'wpcf7_is_tel', $result, $text );
 }
 
-function wpcf7_is_number( $number ) {
+function wpcf7_is_number( $text ) {
 	$result = false;
 
 	$patterns = array(
@@ -41,23 +41,23 @@ function wpcf7_is_number( $number ) {
 	);
 
 	foreach ( $patterns as $pattern ) {
-		if ( preg_match( $pattern, $number ) ) {
+		if ( preg_match( $pattern, $text ) ) {
 			$result = true;
 			break;
 		}
 	}
 
-	return apply_filters( 'wpcf7_is_number', $result, $number );
+	return apply_filters( 'wpcf7_is_number', $result, $text );
 }
 
-function wpcf7_is_date( $date ) {
-	$result = preg_match( '/^([0-9]{4,})-([0-9]{2})-([0-9]{2})$/', $date, $matches );
+function wpcf7_is_date( $text ) {
+	$result = preg_match( '/^([0-9]{4,})-([0-9]{2})-([0-9]{2})$/', $text, $matches );
 
 	if ( $result ) {
 		$result = checkdate( $matches[2], $matches[3], $matches[1] );
 	}
 
-	return apply_filters( 'wpcf7_is_date', $result, $date );
+	return apply_filters( 'wpcf7_is_date', $result, $text );
 }
 
 function wpcf7_is_mailbox_list( $mailbox_list ) {
