@@ -5,10 +5,10 @@
  * removed in a later version.
  */
 
-function wpcf7_add_shortcode( $tag, $func, $has_name = false ) {
+function wpcf7_add_shortcode( $tag, $callback, $has_name = false ) {
 	wpcf7_deprecated_function( __FUNCTION__, '4.6', 'wpcf7_add_form_tag' );
 
-	return wpcf7_add_form_tag( $tag, $func, $has_name );
+	return wpcf7_add_form_tag( $tag, $callback, $has_name );
 }
 
 function wpcf7_remove_shortcode( $tag ) {
@@ -51,11 +51,11 @@ class WPCF7_ShortcodeManager {
 		return self::$form_tags_manager->get_scanned_tags();
 	}
 
-	public function add_shortcode( $tag, $func, $has_name = false ) {
+	public function add_shortcode( $tag, $callback, $has_name = false ) {
 		wpcf7_deprecated_function( __METHOD__, '4.6',
 			'WPCF7_FormTagsManager::add' );
 
-		return self::$form_tags_manager->add( $tag, $func, $has_name );
+		return self::$form_tags_manager->add( $tag, $callback, $has_name );
 	}
 
 	public function remove_shortcode( $tag ) {
