@@ -308,8 +308,8 @@ class WPCF7_ConstantContact_ContactPostRequest {
 		return $this->list_memberships[] = $list_id;
 	}
 
-	protected function strlen( $string ) {
-		return wpcf7_count_code_units( $string );
+	protected function strlen( $text ) {
+		return wpcf7_count_code_units( $text );
 	}
 
 }
