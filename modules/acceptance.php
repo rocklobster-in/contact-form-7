@@ -178,12 +178,12 @@ function wpcf7_acceptance_filter( $accepted, $submission ) {
 add_filter( 'wpcf7_form_class_attr',
 	'wpcf7_acceptance_form_class_attr', 10, 1 );
 
-function wpcf7_acceptance_form_class_attr( $class ) {
+function wpcf7_acceptance_form_class_attr( $class_attr ) {
 	if ( wpcf7_acceptance_as_validation() ) {
-		return $class . ' wpcf7-acceptance-as-validation';
+		return $class_attr . ' wpcf7-acceptance-as-validation';
 	}
 
-	return $class;
+	return $class_attr;
 }
 
 function wpcf7_acceptance_as_validation() {
