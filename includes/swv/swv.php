@@ -6,6 +6,9 @@
 require_once WPCF7_PLUGIN_DIR . '/includes/swv/schema-holder.php';
 
 
+/**
+ * Returns an associative array of SWV rules.
+ */
 function wpcf7_swv_available_rules() {
 	$rules = array(
 		'required' => 'WPCF7_SWV_RequiredRule',
@@ -31,6 +34,9 @@ function wpcf7_swv_available_rules() {
 
 add_action( 'wpcf7_init', 'wpcf7_swv_load_rules', 10, 0 );
 
+/**
+ * Loads SWV fules.
+ */
 function wpcf7_swv_load_rules() {
 	$rules = wpcf7_swv_available_rules();
 
@@ -45,6 +51,13 @@ function wpcf7_swv_load_rules() {
 }
 
 
+/**
+ * Creates an SWV rule object.
+ *
+ * @param string $rule_name Rule name.
+ * @param string|array $properties Optional. Rule properties.
+ * @return WPCF7_SWV_Rule|null The rule object, or null if it failed.
+ */
 function wpcf7_swv_create_rule( $rule_name, $properties = '' ) {
 	$rules = wpcf7_swv_available_rules();
 
@@ -54,6 +67,9 @@ function wpcf7_swv_create_rule( $rule_name, $properties = '' ) {
 }
 
 
+/**
+ * Returns an associative array of JSON Schema for Contact Form 7 SWV.
+ */
 function wpcf7_swv_get_meta_schema() {
 	return array(
 		'$schema' => 'https://json-schema.org/draft/2020-12/schema',
