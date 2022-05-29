@@ -12,6 +12,10 @@ export default function validate( form, options = {} ) {
 		return;
 	}
 
+	if ( options.target?.closest( '.novalidate' ) ) {
+		return;
+	}
+
 	const formData = new FormData();
 
 	const targetFields = [];
@@ -153,6 +157,10 @@ export const setValidationError = ( form, fieldName, message ) => {
 		form.querySelectorAll(
 			`.wpcf7-form-control-wrap[data-name="${ fieldName }"]`
 		).forEach( wrap => {
+			if ( wrap.closest( '.novalidate' ) ) {
+				return;
+			}
+
 			const tip = document.createElement( 'span' );
 			tip.classList.add( 'wpcf7-not-valid-tip' );
 			tip.setAttribute( 'aria-hidden', 'true' );
