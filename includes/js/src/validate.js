@@ -22,7 +22,7 @@ export default function validate( form, options = {} ) {
 		}
 
 		wrap.querySelectorAll(
-			':where( input, textarea, select ):enabled:read-write'
+			':where( input, textarea, select ):enabled'
 		).forEach( control => {
 			if ( ! control.name ) {
 				return;
