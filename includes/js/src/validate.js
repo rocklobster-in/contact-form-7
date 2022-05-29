@@ -63,6 +63,8 @@ export default function validate( form, options = {} ) {
 		if ( wrap.dataset.name ) {
 			targetFields.push( wrap.dataset.name );
 
+			wrap.setAttribute( 'data-under-validation', '1' );
+
 			if (
 				wrap.dataset.name === options.target.name.replace( /\[.*\]$/, '' )
 			) {
@@ -118,6 +120,12 @@ export default function validate( form, options = {} ) {
 		} )
 		.finally( () => {
 			setStatus( form, prevStatus );
+
+			form.querySelectorAll(
+				'.wpcf7-form-control-wrap[data-under-validation]'
+			).forEach( wrap => {
+				wrap.removeAttribute( 'data-under-validation' );
+			} );
 		} );
 }
 
@@ -157,7 +165,7 @@ export const setValidationError = ( form, fieldName, message ) => {
 		form.querySelectorAll(
 			`.wpcf7-form-control-wrap[data-name="${ fieldName }"]`
 		).forEach( wrap => {
-			if ( wrap.closest( '.novalidate' ) ) {
+			if ( ! wrap.dataset.underValidation ) {
 				return;
 			}
 
