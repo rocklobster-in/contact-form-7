@@ -125,6 +125,12 @@ abstract class WPCF7_SWV_Rule {
 		$this->properties = wp_parse_args( $properties, array() );
 	}
 
+
+	/**
+	 * Returns true if this rule matches the given context.
+	 *
+	 * @param array $context Context.
+	 */
 	public function matches( $context ) {
 		$field = $this->get_property( 'field' );
 
@@ -137,14 +143,33 @@ abstract class WPCF7_SWV_Rule {
 		return true;
 	}
 
+
+	/**
+	 * Validates with this rule's logic.
+	 *
+	 * @param array $context Context.
+	 */
 	public function validate( $context ) {
 		return true;
 	}
 
+
+	/**
+	 * Converts the properties to an array.
+	 *
+	 * @return array Array of properties.
+	 */
 	public function to_array() {
 		return (array) $this->properties;
 	}
 
+
+	/**
+	 * Returns the property value specified by the given property name.
+	 *
+	 * @param string $name Property name.
+	 * @return mixed Property value.
+	 */
 	public function get_property( $name ) {
 		if ( isset( $this->properties[$name] ) ) {
 			return $this->properties[$name];
