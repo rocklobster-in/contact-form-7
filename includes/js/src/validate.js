@@ -34,7 +34,6 @@ export default function validate( form, options = {} ) {
 
 			switch ( control.type ) {
 				case 'button':
-				case 'hidden':
 				case 'image':
 				case 'reset':
 				case 'submit':
