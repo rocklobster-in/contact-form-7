@@ -15,23 +15,41 @@ function wpcf7_is_name( $text ) {
 	return preg_match( '/^[A-Za-z][-A-Za-z0-9_:.]*$/', $text );
 }
 
+
+/**
+ * Checks whether the given text is a well-formed email address.
+ */
 function wpcf7_is_email( $text ) {
 	$result = is_email( $text );
 	return apply_filters( 'wpcf7_is_email', $result, $text );
 }
 
+
+/**
+ * Checks whether the given text is a well-formed URL.
+ */
 function wpcf7_is_url( $text ) {
 	$scheme = wp_parse_url( $text, PHP_URL_SCHEME );
 	$result = $scheme && in_array( $scheme, wp_allowed_protocols(), true );
 	return apply_filters( 'wpcf7_is_url', $result, $text );
 }
 
+
+/**
+ * Checks whether the given text is a well-formed telephone number.
+ */
 function wpcf7_is_tel( $text ) {
 	$text = preg_replace( '%[()/.*#\s-]+%', '', $text );
 	$result = preg_match( '/^[+]?[0-9]+$/', $text );
 	return apply_filters( 'wpcf7_is_tel', $result, $text );
 }
 
+
+/**
+ * Checks whether the given text is a well-formed number.
+ *
+ * @see https://html.spec.whatwg.org/multipage/input.html#number-state-(type=number)
+ */
 function wpcf7_is_number( $text ) {
 	$result = false;
 
@@ -50,6 +68,12 @@ function wpcf7_is_number( $text ) {
 	return apply_filters( 'wpcf7_is_number', $result, $text );
 }
 
+
+/**
+ * Checks whether the given text is a valid date.
+ *
+ * @see https://html.spec.whatwg.org/multipage/input.html#date-state-(type=date)
+ */
 function wpcf7_is_date( $text ) {
 	$result = preg_match( '/^([0-9]{4,})-([0-9]{2})-([0-9]{2})$/', $text, $matches );
 
