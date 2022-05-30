@@ -84,6 +84,15 @@ function wpcf7_is_date( $text ) {
 	return apply_filters( 'wpcf7_is_date', $result, $text );
 }
 
+
+/**
+ * Checks whether the given text is a well-formed mailbox list.
+ *
+ * @param string|array $mailbox_list The subject to be checked.
+ *                     Comma-separated string or an array of mailboxes.
+ * @return array|bool Array of email addresses if all items are well-formed
+ *                    mailbox, false if not.
+ */
 function wpcf7_is_mailbox_list( $mailbox_list ) {
 	if ( ! is_array( $mailbox_list ) ) {
 		$mailbox_text = (string) $mailbox_list;
@@ -132,6 +141,15 @@ function wpcf7_is_mailbox_list( $mailbox_list ) {
 	return $addresses;
 }
 
+
+/**
+ * Checks whether an email address belongs to a domain.
+ *
+ * @param string $email A mailbox or a comma-separated list of mailboxes.
+ * @param string $domain Internet domain name.
+ * @return bool True if all of the email addresses belong to the domain,
+ *              false if not.
+ */
 function wpcf7_is_email_in_domain( $email, $domain ) {
 	$email_list = wpcf7_is_mailbox_list( $email );
 
@@ -162,6 +180,10 @@ function wpcf7_is_email_in_domain( $email, $domain ) {
 	return true;
 }
 
+
+/**
+ * Checks whether an email address belongs to the site domain.
+ */
 function wpcf7_is_email_in_site_domain( $email ) {
 	if ( wpcf7_is_localhost() ) {
 		return true;
