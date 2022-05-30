@@ -117,6 +117,9 @@ function wpcf7_swv_get_meta_schema() {
 }
 
 
+/**
+ * The base class of SWV rules.
+ */
 abstract class WPCF7_SWV_Rule {
 
 	protected $properties = array();
@@ -179,26 +182,51 @@ abstract class WPCF7_SWV_Rule {
 }
 
 
+/**
+ * The base class of SWV composite rules.
+ */
 abstract class WPCF7_SWV_CompositeRule extends WPCF7_SWV_Rule {
 
 	protected $rules = array();
 
+
+	/**
+	 * Adds a sub-rule to this composite rule.
+	 *
+	 * @param WPCF7_SWV_Rule $rule Sub-rule to be added.
+	 */
 	public function add_rule( $rule ) {
 		if ( $rule instanceof WPCF7_SWV_Rule ) {
 			$this->rules[] = $rule;
 		}
 	}
 
+
+	/**
+	 * Returns an iterator of sub-rules.
+	 */
 	public function rules() {
 		foreach ( $this->rules as $rule ) {
 			yield $rule;
 		}
 	}
 
+
+	/**
+	 * Returns true if this rule matches the given context.
+	 *
+	 * @param array $context Context.
+	 */
 	public function matches( $context ) {
 		return true;
 	}
 
+
+	/**
+	 * Validates with this rule's logic.
+	 *
+	 * @param array $context Context.
+	 */
 	public function validate( $context ) {
 		foreach ( $this->rules() as $rule ) {
 			if ( $rule->matches( $context ) ) {
@@ -213,6 +241,12 @@ abstract class WPCF7_SWV_CompositeRule extends WPCF7_SWV_Rule {
 		return true;
 	}
 
+
+	/**
+	 * Converts the properties to an array.
+	 *
+	 * @return array Array of properties.
+	 */
 	public function to_array() {
 		$rules_arrays = array_map(
 			function ( $rule ) {
@@ -232,6 +266,9 @@ abstract class WPCF7_SWV_CompositeRule extends WPCF7_SWV_Rule {
 }
 
 
+/**
+ * The schema class as a composite rule.
+ */
 class WPCF7_SWV_Schema extends WPCF7_SWV_CompositeRule {
 
 	const version = 'Contact Form 7 SWV Schema 2022-03';
