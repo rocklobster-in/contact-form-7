@@ -94,14 +94,14 @@ class WPCF7_FormTagsManager {
 	/**
 	 * Registers form-tag types to the manager.
 	 *
-	 * @param string|array $tag The name of the form-tag type or
+	 * @param string|array $tag_types The name of the form-tag type or
 	 *                     an array of the names.
 	 * @param callable $callback The callback to generates a form control HTML
 	 *                 for a form-tag in this type.
 	 * @param string|array $features Optional. Features a form-tag
 	 *                     in this type supports.
 	 */
-	public function add( $tag, $callback, $features = '' ) {
+	public function add( $tag_types, $callback, $features = '' ) {
 		if ( ! is_callable( $callback ) ) {
 			return;
 		}
@@ -112,13 +112,13 @@ class WPCF7_FormTagsManager {
 
 		$features = wp_parse_args( $features, array() );
 
-		$tags = array_filter( array_unique( (array) $tag ) );
+		$tag_types = array_filter( array_unique( (array) $tag_types ) );
 
-		foreach ( $tags as $tag ) {
-			$tag = $this->sanitize_tag_type( $tag );
+		foreach ( $tag_types as $tag_type ) {
+			$tag_type = $this->sanitize_tag_type( $tag_type );
 
-			if ( ! $this->tag_type_exists( $tag ) ) {
-				$this->tag_types[$tag] = array(
+			if ( ! $this->tag_type_exists( $tag_type ) ) {
+				$this->tag_types[$tag_type] = array(
 					'function' => $callback,
 					'features' => $features,
 				);
