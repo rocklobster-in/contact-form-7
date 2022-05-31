@@ -164,7 +164,10 @@ export const setValidationError = ( form, fieldName, message ) => {
 		form.querySelectorAll(
 			`.wpcf7-form-control-wrap[data-name="${ fieldName }"]`
 		).forEach( wrap => {
-			if ( ! wrap.dataset.underValidation ) {
+			if (
+				'validating' === form.getAttribute( 'data-status' ) &&
+				! wrap.dataset.underValidation
+			) {
 				return;
 			}
 
