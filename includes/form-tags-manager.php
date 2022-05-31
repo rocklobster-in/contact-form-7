@@ -53,6 +53,10 @@ function wpcf7_form_tag_supports( $tag, $feature ) {
 	return $manager->tag_type_supports( $tag, $feature );
 }
 
+
+/**
+ * The singleton instance of this class manages the collection of form-tags.
+ */
 class WPCF7_FormTagsManager {
 
 	private static $instance;
@@ -62,6 +66,12 @@ class WPCF7_FormTagsManager {
 
 	private function __construct() {}
 
+
+	/**
+	 * Returns the singleton instance.
+	 *
+	 * @return WPCF7_FormTagsManager The singleton manager.
+	 */
 	public static function get_instance() {
 		if ( empty( self::$instance ) ) {
 			self::$instance = new self;
@@ -70,10 +80,27 @@ class WPCF7_FormTagsManager {
 		return self::$instance;
 	}
 
+
+	/**
+	 * Returns scanned form-tags.
+	 *
+	 * @return array Array of WPCF7_FormTag objects.
+	 */
 	public function get_scanned_tags() {
 		return $this->scanned_tags;
 	}
 
+
+	/**
+	 * Registers form-tag types to the manager.
+	 *
+	 * @param string|array $tag The name of the form-tag type or
+	 *                     an array of the names.
+	 * @param callable $callback The callback to generates a form control HTML
+	 *                 for a form-tag in this type.
+	 * @param string|array $features Optional. Features a form-tag
+	 *                     in this type supports.
+	 */
 	public function add( $tag, $callback, $features = '' ) {
 		if ( ! is_callable( $callback ) ) {
 			return;
