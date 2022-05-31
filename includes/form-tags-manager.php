@@ -1,23 +1,38 @@
 <?php
 
+/**
+ * Wrapper function of WPCF7_FormTagsManager::add().
+ */
 function wpcf7_add_form_tag( $tag, $callback, $features = '' ) {
 	$manager = WPCF7_FormTagsManager::get_instance();
 
 	return $manager->add( $tag, $callback, $features );
 }
 
+
+/**
+ * Wrapper function of WPCF7_FormTagsManager::remove().
+ */
 function wpcf7_remove_form_tag( $tag ) {
 	$manager = WPCF7_FormTagsManager::get_instance();
 
 	return $manager->remove( $tag );
 }
 
+
+/**
+ * Wrapper function of WPCF7_FormTagsManager::replace_all().
+ */
 function wpcf7_replace_all_form_tags( $content ) {
 	$manager = WPCF7_FormTagsManager::get_instance();
 
 	return $manager->replace_all( $content );
 }
 
+
+/**
+ * Wrapper function of WPCF7_ContactForm::scan_form_tags().
+ */
 function wpcf7_scan_form_tags( $cond = null ) {
 	$contact_form = WPCF7_ContactForm::get_current();
 
@@ -28,6 +43,10 @@ function wpcf7_scan_form_tags( $cond = null ) {
 	return array();
 }
 
+
+/**
+ * Wrapper function of WPCF7_FormTagsManager::tag_type_supports().
+ */
 function wpcf7_form_tag_supports( $tag, $feature ) {
 	$manager = WPCF7_FormTagsManager::get_instance();
 
