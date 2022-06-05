@@ -156,18 +156,29 @@ class WPCF7_FormTagsManager {
 		return false;
 	}
 
-	public function collect_tag_types( $feature = null, $invert = false ) {
+
+	/**
+	 * Returns form-tag types that support the given features.
+	 *
+	 * @param array|string $features Optional. The feature to check or
+	 *                     an array of features. Default empty array.
+	 * @param bool $invert Optional. If this value is true, returns form-tag
+	 *             types that do not support the given features. Default false.
+	 * @return array An array of form-tag types. If the $features param is empty,
+	 *               returns all form-tag types that have been registered.
+	 */
+	public function collect_tag_types( $features = array(), $invert = false ) {
 		$tag_types = array_keys( $this->tag_types );
 
-		if ( empty( $feature ) ) {
+		if ( empty( $features ) ) {
 			return $tag_types;
 		}
 
 		$output = array();
 
 		foreach ( $tag_types as $tag_type ) {
-			if ( ! $invert && $this->tag_type_supports( $tag_type, $feature )
-			|| $invert && ! $this->tag_type_supports( $tag_type, $feature ) ) {
+			if ( ! $invert && $this->tag_type_supports( $tag_type, $features )
+			|| $invert && ! $this->tag_type_supports( $tag_type, $features ) ) {
 				$output[] = $tag_type;
 			}
 		}
