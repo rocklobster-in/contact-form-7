@@ -3,20 +3,20 @@
 /**
  * Wrapper function of WPCF7_FormTagsManager::add().
  */
-function wpcf7_add_form_tag( $tag, $callback, $features = '' ) {
+function wpcf7_add_form_tag( $tag_types, $callback, $features = '' ) {
 	$manager = WPCF7_FormTagsManager::get_instance();
 
-	return $manager->add( $tag, $callback, $features );
+	return $manager->add( $tag_types, $callback, $features );
 }
 
 
 /**
  * Wrapper function of WPCF7_FormTagsManager::remove().
  */
-function wpcf7_remove_form_tag( $tag ) {
+function wpcf7_remove_form_tag( $tag_type ) {
 	$manager = WPCF7_FormTagsManager::get_instance();
 
-	return $manager->remove( $tag );
+	return $manager->remove( $tag_type );
 }
 
 
@@ -47,10 +47,10 @@ function wpcf7_scan_form_tags( $cond = null ) {
 /**
  * Wrapper function of WPCF7_FormTagsManager::tag_type_supports().
  */
-function wpcf7_form_tag_supports( $tag, $feature ) {
+function wpcf7_form_tag_supports( $tag_type, $feature ) {
 	$manager = WPCF7_FormTagsManager::get_instance();
 
-	return $manager->tag_type_supports( $tag, $feature );
+	return $manager->tag_type_supports( $tag_type, $feature );
 }
 
 
