@@ -263,6 +263,16 @@ class WPCF7_FormTagsManager {
 		return $this->scan( $content, true );
 	}
 
+
+	/**
+	 * Scans form-tags in the text content.
+	 *
+	 * @param string $content The text content including form-tags.
+	 * @param bool $replace Optional. Whether scanned form-tags will be
+	 *             replaced. Default false.
+	 * @return array|string An array of scanned form-tags if $replace is false.
+	 *                      Otherwise text that scanned form-tags are replaced.
+	 */
 	public function scan( $content, $replace = false ) {
 		$this->scanned_tags = array();
 
