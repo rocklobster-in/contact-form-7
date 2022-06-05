@@ -187,27 +187,27 @@ class WPCF7_FormTagsManager {
 		return $content;
 	}
 
-	private function normalize_callback( $m ) {
+	private function normalize_callback( $matches ) {
 		// allow [[foo]] syntax for escaping a tag
-		if ( $m[1] == '['
-		and $m[6] == ']' ) {
-			return $m[0];
+		if ( $matches[1] == '['
+		and $matches[6] == ']' ) {
+			return $matches[0];
 		}
 
-		$tag = $m[2];
+		$tag = $matches[2];
 
-		$attr = trim( preg_replace( '/[\r\n\t ]+/', ' ', $m[3] ) );
+		$attr = trim( preg_replace( '/[\r\n\t ]+/', ' ', $matches[3] ) );
 		$attr = strtr( $attr, array( '<' => '&lt;', '>' => '&gt;' ) );
 
-		$content = trim( $m[5] );
+		$content = trim( $matches[5] );
 		$content = str_replace( "\n", '<WPPreserveNewline />', $content );
 
-		$result = $m[1] . '[' . $tag
+		$result = $matches[1] . '[' . $tag
 			. ( $attr ? ' ' . $attr : '' )
-			. ( $m[4] ? ' ' . $m[4] : '' )
+			. ( $matches[4] ? ' ' . $matches[4] : '' )
 			. ']'
 			. ( $content ? $content . '[/' . $tag . ']' : '' )
-			. $m[6];
+			. $matches[6];
 
 		return $result;
 	}
@@ -317,19 +317,19 @@ class WPCF7_FormTagsManager {
 			. '(\]?)';
 	}
 
-	private function replace_callback( $m ) {
-		return $this->scan_callback( $m, true );
+	private function replace_callback( $matches ) {
+		return $this->scan_callback( $matches, true );
 	}
 
-	private function scan_callback( $m, $replace = false ) {
+	private function scan_callback( $matches, $replace = false ) {
 		// allow [[foo]] syntax for escaping a tag
-		if ( $m[1] == '['
-		and $m[6] == ']' ) {
-			return substr( $m[0], 1, -1 );
+		if ( $matches[1] == '['
+		and $matches[6] == ']' ) {
+			return substr( $matches[0], 1, -1 );
 		}
 
-		$tag_type = $m[2];
-		$attr = $this->parse_atts( $m[3] );
+		$tag_type = $matches[2];
+		$attr = $this->parse_atts( $matches[3] );
 
 		$scanned_tag = array(
 			'type' => $tag_type,
@@ -348,7 +348,7 @@ class WPCF7_FormTagsManager {
 		if ( $this->tag_type_supports( $tag_type, 'singular' )
 		and $this->filter( $this->scanned_tags, array( 'type' => $tag_type ) ) ) {
 			// Another tag in the same type already exists. Ignore this one.
-			return $m[0];
+			return $matches[0];
 		}
 
 		if ( is_array( $attr ) ) {
@@ -358,7 +358,7 @@ class WPCF7_FormTagsManager {
 					$scanned_tag['raw_name'] = array_shift( $attr['options'] );
 
 					if ( ! wpcf7_is_name( $scanned_tag['raw_name'] ) ) {
-						return $m[0]; // Invalid name is used. Ignore this tag.
+						return $matches[0]; // Invalid name is used. Ignore this tag.
 					}
 
 					$scanned_tag['name'] = strtr( $scanned_tag['raw_name'], '.', '_' );
@@ -386,7 +386,7 @@ class WPCF7_FormTagsManager {
 		$scanned_tag['values'] = array_map( 'trim', $scanned_tag['values'] );
 		$scanned_tag['labels'] = array_map( 'trim', $scanned_tag['labels'] );
 
-		$content = trim( $m[5] );
+		$content = trim( $matches[5] );
 		$content = preg_replace( "/<br[\r\n\t ]*\/?>$/m", '', $content );
 		$scanned_tag['content'] = $content;
 
@@ -398,9 +398,9 @@ class WPCF7_FormTagsManager {
 
 		if ( $replace ) {
 			$callback = $this->tag_types[$tag_type]['function'];
-			return $m[1] . call_user_func( $callback, $scanned_tag ) . $m[6];
+			return $matches[1] . call_user_func( $callback, $scanned_tag ) . $matches[6];
 		} else {
-			return $m[0];
+			return $matches[0];
 		}
 	}
 
@@ -411,13 +411,13 @@ class WPCF7_FormTagsManager {
 
 		$pattern = '%^([-+*=0-9a-zA-Z:.!?#$&@_/|\%\r\n\t ]*?)((?:[\r\n\t ]*"[^"]*"|[\r\n\t ]*\'[^\']*\')*)$%';
 
-		if ( preg_match( $pattern, $text, $match ) ) {
-			if ( ! empty( $match[1] ) ) {
-				$atts['options'] = preg_split( '/[\r\n\t ]+/', trim( $match[1] ) );
+		if ( preg_match( $pattern, $text, $matches ) ) {
+			if ( ! empty( $matches[1] ) ) {
+				$atts['options'] = preg_split( '/[\r\n\t ]+/', trim( $matches[1] ) );
 			}
 
-			if ( ! empty( $match[2] ) ) {
-				preg_match_all( '/"[^"]*"|\'[^\']*\'/', $match[2], $matched_values );
+			if ( ! empty( $matches[2] ) ) {
+				preg_match_all( '/"[^"]*"|\'[^\']*\'/', $matches[2], $matched_values );
 				$atts['values'] = wpcf7_strip_quote_deep( $matched_values[0] );
 			}
 		} else {
