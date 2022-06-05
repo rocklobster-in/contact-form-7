@@ -186,6 +186,10 @@ class WPCF7_FormTagsManager {
 		return $output;
 	}
 
+
+	/**
+	 * Sanitizes the form-tag type name.
+	 */
 	private function sanitize_tag_type( $tag_type ) {
 		$tag_type = preg_replace( '/[^a-zA-Z0-9_*]+/', '_', $tag_type );
 		$tag_type = rtrim( $tag_type, '_' );
@@ -193,6 +197,10 @@ class WPCF7_FormTagsManager {
 		return $tag_type;
 	}
 
+
+	/**
+	 * Deregisters the form-tag type.
+	 */
 	public function remove( $tag_type ) {
 		unset( $this->tag_types[$tag_type] );
 	}
