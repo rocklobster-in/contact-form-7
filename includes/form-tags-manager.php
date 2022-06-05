@@ -205,6 +205,10 @@ class WPCF7_FormTagsManager {
 		unset( $this->tag_types[$tag_type] );
 	}
 
+
+	/**
+	 * Normalizes the text content that includes form-tags.
+	 */
 	public function normalize( $content ) {
 		if ( empty( $this->tag_types ) ) {
 			return $content;
@@ -219,6 +223,10 @@ class WPCF7_FormTagsManager {
 		return $content;
 	}
 
+
+	/**
+	 * The callback function used within normalize().
+	 */
 	private function normalize_callback( $matches ) {
 		// allow [[foo]] syntax for escaping a tag
 		if ( $matches[1] == '['
@@ -244,6 +252,13 @@ class WPCF7_FormTagsManager {
 		return $result;
 	}
 
+
+	/**
+	 * Replaces all form-tags in the text content.
+	 *
+	 * @param string $content The text content including form-tags.
+	 * @return string The result of replacements.
+	 */
 	public function replace_all( $content ) {
 		return $this->scan( $content, true );
 	}
