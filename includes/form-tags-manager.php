@@ -137,14 +137,19 @@ class WPCF7_FormTagsManager {
 
 	/**
 	 * Returns true if the tag type supports the features.
+	 *
+	 * @param string $tag_type The name of the form-tag type.
+	 * @param array|string $features The feature to check or an array of features.
+	 * @return bool True if the form-tag type supports at least one of
+	 *              the given features, false otherwise.
 	 */
-	public function tag_type_supports( $tag_type, $feature ) {
-		$feature = array_filter( (array) $feature );
+	public function tag_type_supports( $tag_type, $features ) {
+		$features = array_filter( (array) $features );
 
 		if ( isset( $this->tag_types[$tag_type]['features'] ) ) {
 			return (bool) array_intersect(
 				array_keys( array_filter( $this->tag_types[$tag_type]['features'] ) ),
-				$feature
+				$features
 			);
 		}
 
