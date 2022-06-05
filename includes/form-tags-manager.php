@@ -126,16 +126,16 @@ class WPCF7_FormTagsManager {
 		}
 	}
 
-	public function tag_type_exists( $tag ) {
-		return isset( $this->tag_types[$tag] );
+	public function tag_type_exists( $tag_type ) {
+		return isset( $this->tag_types[$tag_type] );
 	}
 
-	public function tag_type_supports( $tag, $feature ) {
+	public function tag_type_supports( $tag_type, $feature ) {
 		$feature = array_filter( (array) $feature );
 
-		if ( isset( $this->tag_types[$tag]['features'] ) ) {
+		if ( isset( $this->tag_types[$tag_type]['features'] ) ) {
 			return (bool) array_intersect(
-				array_keys( array_filter( $this->tag_types[$tag]['features'] ) ),
+				array_keys( array_filter( $this->tag_types[$tag_type]['features'] ) ),
 				$feature
 			);
 		}
@@ -152,25 +152,25 @@ class WPCF7_FormTagsManager {
 
 		$output = array();
 
-		foreach ( $tag_types as $tag ) {
-			if ( ! $invert && $this->tag_type_supports( $tag, $feature )
-			|| $invert && ! $this->tag_type_supports( $tag, $feature ) ) {
-				$output[] = $tag;
+		foreach ( $tag_types as $tag_type ) {
+			if ( ! $invert && $this->tag_type_supports( $tag_type, $feature )
+			|| $invert && ! $this->tag_type_supports( $tag_type, $feature ) ) {
+				$output[] = $tag_type;
 			}
 		}
 
 		return $output;
 	}
 
-	private function sanitize_tag_type( $tag ) {
-		$tag = preg_replace( '/[^a-zA-Z0-9_*]+/', '_', $tag );
-		$tag = rtrim( $tag, '_' );
-		$tag = strtolower( $tag );
-		return $tag;
+	private function sanitize_tag_type( $tag_type ) {
+		$tag_type = preg_replace( '/[^a-zA-Z0-9_*]+/', '_', $tag_type );
+		$tag_type = rtrim( $tag_type, '_' );
+		$tag_type = strtolower( $tag_type );
+		return $tag_type;
 	}
 
-	public function remove( $tag ) {
-		unset( $this->tag_types[$tag] );
+	public function remove( $tag_type ) {
+		unset( $this->tag_types[$tag_type] );
 	}
 
 	public function normalize( $content ) {
@@ -181,7 +181,8 @@ class WPCF7_FormTagsManager {
 		$content = preg_replace_callback(
 			'/' . $this->tag_regex() . '/s',
 			array( $this, 'normalize_callback' ),
-			$content );
+			$content
+		);
 
 		return $content;
 	}
@@ -327,12 +328,12 @@ class WPCF7_FormTagsManager {
 			return substr( $m[0], 1, -1 );
 		}
 
-		$tag = $m[2];
+		$tag_type = $m[2];
 		$attr = $this->parse_atts( $m[3] );
 
 		$scanned_tag = array(
-			'type' => $tag,
-			'basetype' => trim( $tag, '*' ),
+			'type' => $tag_type,
+			'basetype' => trim( $tag_type, '*' ),
 			'raw_name' => '',
 			'name' => '',
 			'options' => array(),
@@ -344,15 +345,15 @@ class WPCF7_FormTagsManager {
 			'content' => '',
 		);
 
-		if ( $this->tag_type_supports( $tag, 'singular' )
-		and $this->filter( $this->scanned_tags, array( 'type' => $tag ) ) ) {
+		if ( $this->tag_type_supports( $tag_type, 'singular' )
+		and $this->filter( $this->scanned_tags, array( 'type' => $tag_type ) ) ) {
 			// Another tag in the same type already exists. Ignore this one.
 			return $m[0];
 		}
 
 		if ( is_array( $attr ) ) {
 			if ( is_array( $attr['options'] ) ) {
-				if ( $this->tag_type_supports( $tag, 'name-attr' )
+				if ( $this->tag_type_supports( $tag_type, 'name-attr' )
 				and ! empty( $attr['options'] ) ) {
 					$scanned_tag['raw_name'] = array_shift( $attr['options'] );
 
@@ -396,7 +397,7 @@ class WPCF7_FormTagsManager {
 		$this->scanned_tags[] = $scanned_tag;
 
 		if ( $replace ) {
-			$callback = $this->tag_types[$tag]['function'];
+			$callback = $this->tag_types[$tag_type]['function'];
 			return $m[1] . call_user_func( $callback, $scanned_tag ) . $m[6];
 		} else {
 			return $m[0];
