@@ -126,10 +126,18 @@ class WPCF7_FormTagsManager {
 		}
 	}
 
+
+	/**
+	 * Returns true if the given tag type exists.
+	 */
 	public function tag_type_exists( $tag_type ) {
 		return isset( $this->tag_types[$tag_type] );
 	}
 
+
+	/**
+	 * Returns true if the tag type supports the features.
+	 */
 	public function tag_type_supports( $tag_type, $feature ) {
 		$feature = array_filter( (array) $feature );
 
