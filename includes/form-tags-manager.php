@@ -482,6 +482,16 @@ class WPCF7_FormTagsManager {
 		}
 	}
 
+
+	/**
+	 * Parses the attributes of a form-tag to extract the name,
+	 * options, and values.
+	 *
+	 * @param string $text Attributes of a form-tag.
+	 * @return array|string An associative array of the options and values
+	 *                      if the input is in the correct syntax,
+	 *                      otherwise the input text itself.
+	 */
 	private function parse_atts( $text ) {
 		$atts = array( 'options' => array(), 'values' => array() );
 		$text = preg_replace( "/[\x{00a0}\x{200b}]+/u", " ", $text );
@@ -504,4 +514,5 @@ class WPCF7_FormTagsManager {
 
 		return $atts;
 	}
+	
 }
