@@ -303,6 +303,15 @@ class WPCF7_FormTagsManager {
 		}
 	}
 
+
+	/**
+	 * Filters form-tags based on a condition array argument.
+	 *
+	 * @param array|string $input The original form-tags collection.
+	 *                     If it is a string, scans form-tags from it.
+	 * @param array $cond The conditions that filtering will be based on.
+	 * @return array The filtered form-tags collection.
+	 */
 	public function filter( $input, $cond ) {
 		if ( is_array( $input ) ) {
 			$tags = $input;
@@ -364,6 +373,10 @@ class WPCF7_FormTagsManager {
 		return array_values( $tags );
 	}
 
+
+	/**
+	 * Returns the regular expression for a form-tag.
+	 */
 	private function tag_regex() {
 		$tagnames = array_keys( $this->tag_types );
 		$tagregexp = implode( '|', array_map( 'preg_quote', $tagnames ) );
@@ -374,10 +387,18 @@ class WPCF7_FormTagsManager {
 			. '(\]?)';
 	}
 
+
+	/**
+	 * The callback function for the form-tag replacement.
+	 */
 	private function replace_callback( $matches ) {
 		return $this->scan_callback( $matches, true );
 	}
 
+
+	/**
+	 * The callback function for the form-tag scanning.
+	 */
 	private function scan_callback( $matches, $replace = false ) {
 		// allow [[foo]] syntax for escaping a tag
 		if ( $matches[1] == '['
