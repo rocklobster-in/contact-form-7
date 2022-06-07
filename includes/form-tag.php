@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * A form-tag.
+ *
+ * @see https://contactform7.com/tag-syntax/#form_tag
+ */
 class WPCF7_FormTag implements ArrayAccess {
 
 	public $type;
@@ -25,10 +30,18 @@ class WPCF7_FormTag implements ArrayAccess {
 		}
 	}
 
+
+	/**
+	 * Returns true if the type has a trailing asterisk.
+	 */
 	public function is_required() {
 		return ( '*' === substr( $this->type, -1 ) );
 	}
 
+
+	/**
+	 * Returns true if the form-tag has a specified option.
+	 */
 	public function has_option( $opt ) {
 		$pattern = sprintf( '/^%s(:.+)?$/i', preg_quote( $opt, '/' ) );
 		return (bool) preg_grep( $pattern, $this->options );
