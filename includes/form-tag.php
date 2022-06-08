@@ -42,12 +42,12 @@ class WPCF7_FormTag implements ArrayAccess {
 	/**
 	 * Returns true if the form-tag has a specified option.
 	 */
-	public function has_option( $opt ) {
-		$pattern = sprintf( '/^%s(:.+)?$/i', preg_quote( $opt, '/' ) );
+	public function has_option( $option_name ) {
+		$pattern = sprintf( '/^%s(:.+)?$/i', preg_quote( $option_name, '/' ) );
 		return (bool) preg_grep( $pattern, $this->options );
 	}
 
-	public function get_option( $opt, $pattern = '', $single = false ) {
+	public function get_option( $option_name, $pattern = '', $single = false ) {
 		$preset_patterns = array(
 			'date' => '[0-9]{4}-[0-9]{2}-[0-9]{2}',
 			'int' => '[0-9]+',
@@ -66,7 +66,11 @@ class WPCF7_FormTag implements ArrayAccess {
 			$pattern = '.+';
 		}
 
-		$pattern = sprintf( '/^%s:%s$/i', preg_quote( $opt, '/' ), $pattern );
+		$pattern = sprintf(
+			'/^%s:%s$/i',
+			preg_quote( $option_name, '/' ),
+			$pattern
+		);
 
 		if ( $single ) {
 			$matches = $this->get_first_match_option( $pattern );
@@ -75,7 +79,7 @@ class WPCF7_FormTag implements ArrayAccess {
 				return false;
 			}
 
-			return substr( $matches[0], strlen( $opt ) + 1 );
+			return substr( $matches[0], strlen( $option_name ) + 1 );
 		} else {
 			$matches_a = $this->get_all_match_options( $pattern );
 
@@ -86,7 +90,7 @@ class WPCF7_FormTag implements ArrayAccess {
 			$results = array();
 
 			foreach ( $matches_a as $matches ) {
-				$results[] = substr( $matches[0], strlen( $opt ) + 1 );
+				$results[] = substr( $matches[0], strlen( $option_name ) + 1 );
 			}
 
 			return $results;
