@@ -47,6 +47,18 @@ class WPCF7_FormTag implements ArrayAccess {
 		return (bool) preg_grep( $pattern, $this->options );
 	}
 
+
+	/**
+	 * Retrieves option values with the specified option name.
+	 *
+	 * @param string $option_name Option name.
+	 * @param string $pattern Optional. A regular expression pattern or one of
+	 *               the keys of preset patterns. If specified, only options
+	 *               whose value part matches this pattern will be returned.
+	 * @param bool $single Optional. If true, only the first matching option
+	 *             will be returned. Default false.
+	 * @return string|array The option value or an array of option values.
+	 */
 	public function get_option( $option_name, $pattern = '', $single = false ) {
 		$preset_patterns = array(
 			'date' => '[0-9]{4}-[0-9]{2}-[0-9]{2}',
