@@ -109,10 +109,22 @@ class WPCF7_FormTag implements ArrayAccess {
 		}
 	}
 
+
+	/**
+	 * Retrieves the id option value from the form-tag.
+	 */
 	public function get_id_option() {
 		return $this->get_option( 'id', 'id', true );
 	}
 
+
+	/**
+	 * Retrieves the class option value from the form-tag.
+	 *
+	 * @param string|array $default_classes Optional. Preset classes as an array
+	 *                     or a whitespace-separated list. Default empty string.
+	 * @return string A whitespace-separated list of classes.
+	 */
 	public function get_class_option( $default_classes = '' ) {
 		if ( is_string( $default_classes ) ) {
 			$default_classes = explode( ' ', $default_classes );
