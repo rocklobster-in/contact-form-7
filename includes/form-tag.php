@@ -263,6 +263,14 @@ class WPCF7_FormTag implements ArrayAccess {
 		return $default_value;
 	}
 
+
+	/**
+	 * Retrieves a date-type option value from the form-tag.
+	 *
+	 * @param string $option_name A date-type option name, such as 'min' or 'max'.
+	 * @return string|bool The option value. False if the option does not exist
+	 *                     or the date value is invalid.
+	 */
 	public function get_date_option( $option_name ) {
 		$option_value = $this->get_option( $option_name, '', true );
 
