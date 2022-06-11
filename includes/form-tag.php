@@ -263,8 +263,8 @@ class WPCF7_FormTag implements ArrayAccess {
 		return $default_value;
 	}
 
-	public function get_date_option( $opt ) {
-		$option_value = $this->get_option( $opt, '', true );
+	public function get_date_option( $option_name ) {
+		$option_value = $this->get_option( $option_name, '', true );
 
 		if ( empty( $option_value ) ) {
 			return false;
@@ -272,7 +272,7 @@ class WPCF7_FormTag implements ArrayAccess {
 
 		$date = apply_filters( 'wpcf7_form_tag_date_option',
 			null,
-			array( $opt => $option_value )
+			array( $option_name => $option_value )
 		);
 
 		if ( $date ) {
