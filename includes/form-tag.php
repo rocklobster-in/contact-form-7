@@ -140,6 +140,13 @@ class WPCF7_FormTag implements ArrayAccess {
 		return implode( ' ', $options );
 	}
 
+
+	/**
+	 * Retrieves the size option value from the form-tag.
+	 *
+	 * @param string $default_value Optional default value.
+	 * @return string The option value.
+	 */
 	public function get_size_option( $default_value = '' ) {
 		$option = $this->get_option( 'size', 'int', true );
 
@@ -158,6 +165,13 @@ class WPCF7_FormTag implements ArrayAccess {
 		return $default_value;
 	}
 
+
+	/**
+	 * Retrieves the maxlength option value from the form-tag.
+	 *
+	 * @param string $default_value Optional default value.
+	 * @return string The option value.
+	 */
 	public function get_maxlength_option( $default_value = '' ) {
 		$option = $this->get_option( 'maxlength', 'int', true );
 
@@ -178,6 +192,13 @@ class WPCF7_FormTag implements ArrayAccess {
 		return $default_value;
 	}
 
+
+	/**
+	 * Retrieves the minlength option value from the form-tag.
+	 *
+	 * @param string $default_value Optional default value.
+	 * @return string The option value.
+	 */
 	public function get_minlength_option( $default_value = '' ) {
 		$option = $this->get_option( 'minlength', 'int', true );
 
@@ -188,6 +209,13 @@ class WPCF7_FormTag implements ArrayAccess {
 		}
 	}
 
+
+	/**
+	 * Retrieves the cols option value from the form-tag.
+	 *
+	 * @param string $default_value Optional default value.
+	 * @return string The option value.
+	 */
 	public function get_cols_option( $default_value = '' ) {
 		$option = $this->get_option( 'cols', 'int', true );
 
@@ -208,6 +236,13 @@ class WPCF7_FormTag implements ArrayAccess {
 		return $default_value;
 	}
 
+
+	/**
+	 * Retrieves the rows option value from the form-tag.
+	 *
+	 * @param string $default_value Optional default value.
+	 * @return string The option value.
+	 */
 	public function get_rows_option( $default_value = '' ) {
 		$option = $this->get_option( 'rows', 'int', true );
 
