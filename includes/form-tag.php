@@ -268,8 +268,8 @@ class WPCF7_FormTag implements ArrayAccess {
 	 * Retrieves a date-type option value from the form-tag.
 	 *
 	 * @param string $option_name A date-type option name, such as 'min' or 'max'.
-	 * @return string|bool The option value. False if the option does not exist
-	 *                     or the date value is invalid.
+	 * @return string|bool The option value in YYYY-MM-DD format. False if the
+	 *                     option does not exist or the date value is invalid.
 	 */
 	public function get_date_option( $option_name ) {
 		$option_value = $this->get_option( $option_name, '', true );
@@ -304,6 +304,15 @@ class WPCF7_FormTag implements ArrayAccess {
 		return false;
 	}
 
+
+	/**
+	 * Retrieves the default option value from the form-tag.
+	 *
+	 * @param string|array $default_value Optional default value.
+	 * @param string|array $args Optional options for the option value retrieval.
+	 * @return string|array The option value. If the multiple option is enabled,
+	 *                      an array of option values.
+	 */
 	public function get_default_option( $default_value = '', $args = '' ) {
 		$args = wp_parse_args( $args, array(
 			'multiple' => false,
@@ -415,12 +424,26 @@ class WPCF7_FormTag implements ArrayAccess {
 		}
 	}
 
+
+	/**
+	 * Retrieves the data option value from the form-tag.
+	 *
+	 * @param string|array $args Optional options for the option value retrieval.
+	 * @return mixed The option value.
+	 */
 	public function get_data_option( $args = '' ) {
 		$options = (array) $this->get_option( 'data' );
 
 		return apply_filters( 'wpcf7_form_tag_data_option', null, $options, $args );
 	}
 
+
+	/**
+	 * Retrieves the limit option value from the form-tag.
+	 *
+	 * @param int $default_value Optional default value. Default 1048576.
+	 * @return int The option value.
+	 */
 	public function get_limit_option( $default_value = MB_IN_BYTES ) {
 		$pattern = '/^limit:([1-9][0-9]*)([kKmM]?[bB])?$/';
 
