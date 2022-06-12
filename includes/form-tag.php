@@ -507,12 +507,24 @@ class WPCF7_FormTag implements ArrayAccess {
 		return $result;
 	}
 
+
+	/**
+	 * Assigns a value to the specified offset.
+	 *
+	 * @see https://www.php.net/manual/en/arrayaccess.offsetset.php
+	 */
 	public function offsetSet( $offset, $value ) {
 		if ( property_exists( __CLASS__, $offset ) ) {
 			$this->{$offset} = $value;
 		}
 	}
 
+
+	/**
+	 * Returns the value at specified offset.
+	 *
+	 * @see https://www.php.net/manual/en/arrayaccess.offsetget.php
+	 */
 	public function offsetGet( $offset ) {
 		if ( property_exists( __CLASS__, $offset ) ) {
 			return $this->{$offset};
@@ -521,10 +533,23 @@ class WPCF7_FormTag implements ArrayAccess {
 		return null;
 	}
 
+
+	/**
+	 * Returns true if the specified offset exists.
+	 *
+	 * @see https://www.php.net/manual/en/arrayaccess.offsetexists.php
+	 */
 	public function offsetExists( $offset ) {
 		return property_exists( __CLASS__, $offset );
 	}
 
+
+	/**
+	 * Unsets an offset.
+	 *
+	 * @see https://www.php.net/manual/en/arrayaccess.offsetunset.php
+	 */
 	public function offsetUnset( $offset ) {
 	}
+
 }
