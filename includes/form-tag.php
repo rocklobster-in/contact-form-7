@@ -468,6 +468,15 @@ class WPCF7_FormTag implements ArrayAccess {
 		return (int) $default_value;
 	}
 
+
+	/**
+	 * Retrieves the value of the first option matches the given
+	 * regular expression pattern.
+	 *
+	 * @param string $pattern Regular expression pattern.
+	 * @return array|bool Option value as an array of matched strings.
+	 *                    False if there is no option matches the pattern.
+	 */
 	public function get_first_match_option( $pattern ) {
 		foreach( (array) $this->options as $option ) {
 			if ( preg_match( $pattern, $option, $matches ) ) {
@@ -478,6 +487,14 @@ class WPCF7_FormTag implements ArrayAccess {
 		return false;
 	}
 
+
+	/**
+	 * Retrieves values of options that match the given
+	 * regular expression pattern.
+	 *
+	 * @param string $pattern Regular expression pattern.
+	 * @return array Array of arrays of strings that match the pattern.
+	 */
 	public function get_all_match_options( $pattern ) {
 		$result = array();
 
@@ -490,12 +507,24 @@ class WPCF7_FormTag implements ArrayAccess {
 		return $result;
 	}
 
+
+	/**
+	 * Assigns a value to the specified offset.
+	 *
+	 * @see https://www.php.net/manual/en/arrayaccess.offsetset.php
+	 */
 	public function offsetSet( $offset, $value ) {
 		if ( property_exists( __CLASS__, $offset ) ) {
 			$this->{$offset} = $value;
 		}
 	}
 
+
+	/**
+	 * Returns the value at specified offset.
+	 *
+	 * @see https://www.php.net/manual/en/arrayaccess.offsetget.php
+	 */
 	public function offsetGet( $offset ) {
 		if ( property_exists( __CLASS__, $offset ) ) {
 			return $this->{$offset};
@@ -504,10 +533,23 @@ class WPCF7_FormTag implements ArrayAccess {
 		return null;
 	}
 
+
+	/**
+	 * Returns true if the specified offset exists.
+	 *
+	 * @see https://www.php.net/manual/en/arrayaccess.offsetexists.php
+	 */
 	public function offsetExists( $offset ) {
 		return property_exists( __CLASS__, $offset );
 	}
 
+
+	/**
+	 * Unsets an offset.
+	 *
+	 * @see https://www.php.net/manual/en/arrayaccess.offsetunset.php
+	 */
 	public function offsetUnset( $offset ) {
 	}
+
 }
