@@ -2,6 +2,7 @@ import { setStatus } from './status';
 import { triggerEvent } from './event';
 import { apiFetch } from './api-fetch';
 import { setValidationError, removeValidationError } from './validate';
+import { dataLayerSendEvent } from './utils';
 
 export default function submit( form, options = {} ) {
 
@@ -57,6 +58,11 @@ export default function submit( form, options = {} ) {
 		}
 
 		triggerEvent( form, 'submit', detail );
+		// Check if Google Tag Manager has install on customer WP
+		if(window['google_tag_manager']) {
+			// Getting custom event on dataLayer when form has sended
+			dataLayerSendEvent('wpcf7_submit', detail);
+		}
 
 		return response;
 
