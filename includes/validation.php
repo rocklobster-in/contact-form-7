@@ -95,6 +95,7 @@ class WPCF7_Validation implements ArrayAccess {
 	 *
 	 * @see https://www.php.net/manual/en/arrayaccess.offsetset.php
 	 */
+	#[ReturnTypeWillChange]
 	public function offsetSet( $offset, $value ) {
 		if ( isset( $this->container[$offset] ) ) {
 			$this->container[$offset] = $value;
@@ -114,6 +115,7 @@ class WPCF7_Validation implements ArrayAccess {
 	 *
 	 * @see https://www.php.net/manual/en/arrayaccess.offsetget.php
 	 */
+	#[ReturnTypeWillChange]
 	public function offsetGet( $offset ) {
 		if ( isset( $this->container[$offset] ) ) {
 			return $this->container[$offset];
@@ -126,6 +128,7 @@ class WPCF7_Validation implements ArrayAccess {
 	 *
 	 * @see https://www.php.net/manual/en/arrayaccess.offsetexists.php
 	 */
+	#[ReturnTypeWillChange]
 	public function offsetExists( $offset ) {
 		return isset( $this->container[$offset] );
 	}
@@ -136,6 +139,7 @@ class WPCF7_Validation implements ArrayAccess {
 	 *
 	 * @see https://www.php.net/manual/en/arrayaccess.offsetunset.php
 	 */
+	#[ReturnTypeWillChange]
 	public function offsetUnset( $offset ) {
 	}
 
