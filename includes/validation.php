@@ -93,7 +93,7 @@ class WPCF7_Validation implements ArrayAccess {
 	/**
 	 * Assigns a value to the specified offset.
 	 *
-	 * @see https://www.php.net/manual/en/arrayaccess.offsetset.php
+	 * @link https://www.php.net/manual/en/arrayaccess.offsetset.php
 	 */
 	#[ReturnTypeWillChange]
 	public function offsetSet( $offset, $value ) {
@@ -113,7 +113,7 @@ class WPCF7_Validation implements ArrayAccess {
 	/**
 	 * Returns the value at specified offset.
 	 *
-	 * @see https://www.php.net/manual/en/arrayaccess.offsetget.php
+	 * @link https://www.php.net/manual/en/arrayaccess.offsetget.php
 	 */
 	#[ReturnTypeWillChange]
 	public function offsetGet( $offset ) {
@@ -126,7 +126,7 @@ class WPCF7_Validation implements ArrayAccess {
 	/**
 	 * Returns true if the specified offset exists.
 	 *
-	 * @see https://www.php.net/manual/en/arrayaccess.offsetexists.php
+	 * @link https://www.php.net/manual/en/arrayaccess.offsetexists.php
 	 */
 	#[ReturnTypeWillChange]
 	public function offsetExists( $offset ) {
@@ -137,7 +137,7 @@ class WPCF7_Validation implements ArrayAccess {
 	/**
 	 * Unsets an offset.
 	 *
-	 * @see https://www.php.net/manual/en/arrayaccess.offsetunset.php
+	 * @link https://www.php.net/manual/en/arrayaccess.offsetunset.php
 	 */
 	#[ReturnTypeWillChange]
 	public function offsetUnset( $offset ) {
