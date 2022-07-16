@@ -1,9 +1,26 @@
 <?php
+/**
+ * Contact form helper functions
+ */
 
-function wpcf7_contact_form( $id ) {
-	return WPCF7_ContactForm::get_instance( $id );
+
+/**
+ * Wrapper function of WPCF7_ContactForm::get_instance().
+ *
+ * @param int|WP_Post $post Post ID or post object.
+ * @return WPCF7_ContactForm Contact form object.
+ */
+function wpcf7_contact_form( $post ) {
+	return WPCF7_ContactForm::get_instance( $post );
 }
 
+
+/**
+ * Searches for a contact form by an old unit ID.
+ *
+ * @param int $old_id Old unit ID.
+ * @return WPCF7_ContactForm Contact form object.
+ */
 function wpcf7_get_contact_form_by_old_id( $old_id ) {
 	global $wpdb;
 
@@ -15,6 +32,13 @@ function wpcf7_get_contact_form_by_old_id( $old_id ) {
 	}
 }
 
+
+/**
+ * Searches for a contact form by title.
+ *
+ * @param string $title Title of contact form.
+ * @return WPCF7_ContactForm|null Contact form object if found, null otherwise.
+ */
 function wpcf7_get_contact_form_by_title( $title ) {
 	$page = get_page_by_title( $title, OBJECT, WPCF7_ContactForm::post_type );
 
@@ -25,12 +49,22 @@ function wpcf7_get_contact_form_by_title( $title ) {
 	return null;
 }
 
+
+/**
+ * Wrapper function of WPCF7_ContactForm::get_current().
+ *
+ * @return WPCF7_ContactForm Contact form object.
+ */
 function wpcf7_get_current_contact_form() {
 	if ( $current = WPCF7_ContactForm::get_current() ) {
 		return $current;
 	}
 }
 
+
+/**
+ * Returns true if it is in the state that a non-Ajax submission is accepted.
+ */
 function wpcf7_is_posted() {
 	if ( ! $contact_form = wpcf7_get_current_contact_form() ) {
 		return false;
