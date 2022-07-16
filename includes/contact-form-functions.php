@@ -151,6 +151,14 @@ function wpcf7_get_message( $status ) {
 	return $contact_form->message( $status );
 }
 
+
+/**
+ * Returns a class names list for a form-tag of the specified type.
+ *
+ * @param string $type Form-tag type.
+ * @param string $default_classes Optional default classes.
+ * @return string Whitespace-separated list of class names.
+ */
 function wpcf7_form_controls_class( $type, $default_classes = '' ) {
 	$type = trim( $type );
 	$default_classes = array_filter( explode( ' ', $default_classes ) );
@@ -171,6 +179,10 @@ function wpcf7_form_controls_class( $type, $default_classes = '' ) {
 	return implode( ' ', $classes );
 }
 
+
+/**
+ * Callback function for the contact-form-7 shortcode.
+ */
 function wpcf7_contact_form_tag_func( $atts, $content = null, $code = '' ) {
 	if ( is_feed() ) {
 		return '[contact-form-7]';
@@ -215,6 +227,10 @@ function wpcf7_contact_form_tag_func( $atts, $content = null, $code = '' ) {
 	return $contact_form->form_html( $atts );
 }
 
+
+/**
+ * Saves the contact form data.
+ */
 function wpcf7_save_contact_form( $args = '', $context = 'save' ) {
 	$args = wp_parse_args( $args, array(
 		'id' => -1,
@@ -285,6 +301,10 @@ function wpcf7_save_contact_form( $args = '', $context = 'save' ) {
 	return $contact_form;
 }
 
+
+/**
+ * Sanitizes the form property data.
+ */
 function wpcf7_sanitize_form( $input, $default_template = '' ) {
 	if ( null === $input ) {
 		return $default_template;
@@ -299,6 +319,10 @@ function wpcf7_sanitize_form( $input, $default_template = '' ) {
 	return $output;
 }
 
+
+/**
+ * Sanitizes the mail property data.
+ */
 function wpcf7_sanitize_mail( $input, $defaults = array() ) {
 	$input = wp_parse_args( $input, array(
 		'active' => false,
@@ -346,6 +370,10 @@ function wpcf7_sanitize_mail( $input, $defaults = array() ) {
 	return $output;
 }
 
+
+/**
+ * Sanitizes the messages property data.
+ */
 function wpcf7_sanitize_messages( $input, $defaults = array() ) {
 	$output = array();
 
@@ -360,6 +388,10 @@ function wpcf7_sanitize_messages( $input, $defaults = array() ) {
 	return $output;
 }
 
+
+/**
+ * Sanitizes the additional settings property data.
+ */
 function wpcf7_sanitize_additional_settings( $input, $default_template = '' ) {
 	if ( null === $input ) {
 		return $default_template;
