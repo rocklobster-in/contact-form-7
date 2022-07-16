@@ -775,7 +775,10 @@ class WPCF7_ContactForm {
 						);
 					}
 
-					$validation_error_id = wpcf7_get_validation_error_reference( $name );
+					$validation_error_id = wpcf7_get_validation_error_reference(
+						$name,
+						$this->unit_tag()
+					);
 
 					if ( $validation_error_id ) {
 						$list_item = sprintf(
@@ -783,14 +786,9 @@ class WPCF7_ContactForm {
 							esc_attr( $validation_error_id ),
 							$list_item
 						);
-					} else {
-						$list_item = sprintf(
-							'<li>%s</li>',
-							$list_item
-						);
-					}
 
-					$validation_errors[] = $list_item;
+						$validation_errors[] = $list_item;
+					}
 				}
 			}
 		}

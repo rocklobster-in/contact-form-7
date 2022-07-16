@@ -62,18 +62,24 @@ function wpcf7_get_validation_error( $name ) {
 	return $contact_form->validation_error( $name );
 }
 
-function wpcf7_get_validation_error_reference( $name ) {
-	$contact_form = wpcf7_get_current_contact_form();
+function wpcf7_get_validation_error_reference( $name, $unit_tag = '' ) {
+	if ( '' === $unit_tag ) {
+		$contact_form = wpcf7_get_current_contact_form();
 
-	if ( $contact_form and $contact_form->validation_error( $name ) ) {
-		return preg_replace( '/[^0-9a-z_-]+/i', '',
-			sprintf(
-				'%1$s-ve-%2$s',
-				$contact_form->unit_tag(),
-				$name
-			)
-		);
+		if ( $contact_form and $contact_form->validation_error( $name ) ) {
+			$unit_tag = $contact_form->unit_tag();
+		} else {
+			return null;
+		}
 	}
+
+	return preg_replace( '/[^0-9a-z_-]+/i', '',
+		sprintf(
+			'%1$s-ve-%2$s',
+			$unit_tag,
+			$name
+		)
+	);
 }
 
 function wpcf7_get_message( $status ) {
