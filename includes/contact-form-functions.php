@@ -73,6 +73,14 @@ function wpcf7_is_posted() {
 	return $contact_form->is_posted();
 }
 
+
+/**
+ * Retrieves the user input value through a non-Ajax submission.
+ *
+ * @param string $name Name of form control.
+ * @param string $default_value Optional default value.
+ * @return string The user input value through the form-control.
+ */
 function wpcf7_get_hangover( $name, $default_value = null ) {
 	if ( ! wpcf7_is_posted() ) {
 		return $default_value;
@@ -88,6 +96,13 @@ function wpcf7_get_hangover( $name, $default_value = null ) {
 	return isset( $_POST[$name] ) ? wp_unslash( $_POST[$name] ) : $default_value;
 }
 
+
+/**
+ * Retrieves an HTML snippet of validation error on the given form control.
+ *
+ * @param string $name Name of form control.
+ * @return string Validation error message in a form of HTML snippet.
+ */
 function wpcf7_get_validation_error( $name ) {
 	if ( ! $contact_form = wpcf7_get_current_contact_form() ) {
 		return '';
@@ -96,6 +111,14 @@ function wpcf7_get_validation_error( $name ) {
 	return $contact_form->validation_error( $name );
 }
 
+
+/**
+ * Returns a reference key to a validation error message.
+ *
+ * @param string $name Name of form control.
+ * @param string $unit_tag Optional. Unit tag of the contact form.
+ * @return string Reference key code.
+ */
 function wpcf7_get_validation_error_reference( $name, $unit_tag = '' ) {
 	if ( '' === $unit_tag ) {
 		$contact_form = wpcf7_get_current_contact_form();
@@ -116,6 +139,10 @@ function wpcf7_get_validation_error_reference( $name, $unit_tag = '' ) {
 	);
 }
 
+
+/**
+ * Retrieves a message for the given status.
+ */
 function wpcf7_get_message( $status ) {
 	if ( ! $contact_form = wpcf7_get_current_contact_form() ) {
 		return '';
