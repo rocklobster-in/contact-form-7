@@ -18,6 +18,7 @@ class WPCF7_ConfigValidator {
 	const error_unavailable_html_elements = 111;
 	const error_attachments_overweight = 112;
 	const error_dots_in_names = 113;
+	const error_colons_in_names = 114;
 
 	public static function get_doc_link( $error_code = '' ) {
 		$url = __( 'https://contactform7.com/configuration-errors/',
@@ -331,6 +332,7 @@ class WPCF7_ConfigValidator {
 		$this->detect_unavailable_names( $section, $form );
 		$this->detect_unavailable_html_elements( $section, $form );
 		$this->detect_dots_in_names( $section, $form );
+		$this->detect_colons_in_names( $section, $form );
 	}
 
 	public function detect_multiple_controls_in_label( $section, $content ) {
@@ -453,6 +455,30 @@ class WPCF7_ConfigValidator {
 
 		return false;
 	}
+
+
+	public function detect_colons_in_names( $section, $content ) {
+		$form_tags_manager = WPCF7_FormTagsManager::get_instance();
+
+		$tags = $form_tags_manager->filter( $content, array(
+			'feature' => 'name-attr',
+		) );
+
+		foreach ( $tags as $tag ) {
+			if ( false !== strpos( $tag->raw_name, ':' ) ) {
+				return $this->add_error( $section,
+					self::error_colons_in_names,
+					array(
+						'message' => __( "Colons are used in form-tag names.", 'contact-form-7' ),
+						'link' => self::get_doc_link( 'colons_in_names' ),
+					)
+				);
+			}
+		}
+
+		return false;
+	}
+
 
 	public function validate_mail( $template = 'mail' ) {
 		$components = (array) $this->contact_form->prop( $template );
