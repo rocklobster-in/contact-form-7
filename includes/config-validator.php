@@ -2,7 +2,7 @@
 
 class WPCF7_ConfigValidator {
 
-	const last_important_update = '5.5';
+	const last_important_update = '5.6.1';
 
 	const error = 100;
 	const error_maybe_empty = 101;
