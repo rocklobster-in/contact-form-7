@@ -777,6 +777,12 @@ class WPCF7_ConfigValidator {
 		}
 	}
 
+
+	/**
+	 * Detects errors of invalid mailbox syntax.
+	 *
+	 * @link https://contactform7.com/configuration-errors/invalid-mailbox-syntax/
+	 */
 	public function detect_invalid_mailbox_syntax( $section, $content, $args = '' ) {
 		$args = wp_parse_args( $args, array(
 			'link' => self::get_doc_link( 'invalid_mailbox_syntax' ),
@@ -793,6 +799,12 @@ class WPCF7_ConfigValidator {
 		return false;
 	}
 
+
+	/**
+	 * Detects errors of empty message fields.
+	 *
+	 * @link https://contactform7.com/configuration-errors/maybe-empty/
+	 */
 	public function detect_maybe_empty( $section, $content ) {
 		if ( '' === $content ) {
 			return $this->add_error( $section,
@@ -805,6 +817,12 @@ class WPCF7_ConfigValidator {
 		return false;
 	}
 
+
+	/**
+	 * Detects errors of nonexistent attachment files.
+	 *
+	 * @link https://contactform7.com/configuration-errors/file-not-found/
+	 */
 	public function detect_file_not_found( $section, $content ) {
 		$path = path_join( WP_CONTENT_DIR, $content );
 
@@ -823,6 +841,12 @@ class WPCF7_ConfigValidator {
 		return false;
 	}
 
+
+	/**
+	 * Detects errors of attachment files out of the content directory.
+	 *
+	 * @link https://contactform7.com/configuration-errors/file-not-in-content-dir/
+	 */
 	public function detect_file_not_in_content_dir( $section, $content ) {
 		$path = path_join( WP_CONTENT_DIR, $content );
 
@@ -840,6 +864,10 @@ class WPCF7_ConfigValidator {
 		return false;
 	}
 
+
+	/**
+	 * Runs error detection for the messages section.
+	 */
 	public function validate_messages() {
 		$messages = (array) $this->contact_form->prop( 'messages' );
 
@@ -858,6 +886,12 @@ class WPCF7_ConfigValidator {
 		}
 	}
 
+
+	/**
+	 * Detects errors of HTML uses in a message.
+	 *
+	 * @link https://contactform7.com/configuration-errors/html-in-message/
+	 */
 	public function detect_html_in_message( $section, $content ) {
 		$stripped = wp_strip_all_tags( $content );
 
@@ -873,6 +907,10 @@ class WPCF7_ConfigValidator {
 		return false;
 	}
 
+
+	/**
+	 * Runs error detection for the additional settings section.
+	 */
 	public function validate_additional_settings() {
 		$deprecated_settings_used =
 			$this->contact_form->additional_setting( 'on_sent_ok' ) ||
