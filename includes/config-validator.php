@@ -259,6 +259,10 @@ class WPCF7_ConfigValidator {
 		return $this->is_valid();
 	}
 
+
+	/**
+	 * Saves detected errors as a post meta data.
+	 */
 	public function save() {
 		if ( $this->contact_form->initial() ) {
 			return;
@@ -273,6 +277,10 @@ class WPCF7_ConfigValidator {
 		}
 	}
 
+
+	/**
+	 * Restore errors from the database.
+	 */
 	public function restore() {
 		$config_errors = get_post_meta(
 			$this->contact_form->id(), '_config_errors', true
@@ -298,6 +306,11 @@ class WPCF7_ConfigValidator {
 		}
 	}
 
+
+	/**
+	 * Callback function for WPCF7_MailTaggedText. Replaces mail-tags with
+	 * the most conservative inputs.
+	 */
 	public function replace_mail_tags_with_minimum_input( $matches ) {
 		// allow [[foo]] syntax for escaping a tag
 		if ( $matches[1] == '[' && $matches[4] == ']' ) {
@@ -385,6 +398,10 @@ class WPCF7_ConfigValidator {
 		return $tag;
 	}
 
+
+	/**
+	 * Runs error detection for the form section.
+	 */
 	public function validate_form() {
 		$section = 'form.body';
 		$form = $this->contact_form->prop( 'form' );
@@ -395,6 +412,12 @@ class WPCF7_ConfigValidator {
 		$this->detect_colons_in_names( $section, $form );
 	}
 
+
+	/**
+	 * Detects errors of multiple form controls in a single label.
+	 *
+	 * @link https://contactform7.com/configuration-errors/multiple-controls-in-label/
+	 */
 	public function detect_multiple_controls_in_label( $section, $content ) {
 		$pattern = '%<label(?:[ \t\n]+.*?)?>(.+?)</label>%s';
 
@@ -440,6 +463,12 @@ class WPCF7_ConfigValidator {
 		return false;
 	}
 
+
+	/**
+	 * Detects errors of unavailable form-tag names.
+	 *
+	 * @link https://contactform7.com/configuration-errors/unavailable-names/
+	 */
 	public function detect_unavailable_names( $section, $content ) {
 		$public_query_vars = array( 'm', 'p', 'posts', 'w', 'cat',
 			'withcomments', 'withoutcomments', 's', 'search', 'exact', 'sentence',
@@ -481,6 +510,12 @@ class WPCF7_ConfigValidator {
 		return false;
 	}
 
+
+	/**
+	 * Detects errors of unavailable HTML elements.
+	 *
+	 * @link https://contactform7.com/configuration-errors/unavailable-html-elements/
+	 */
 	public function detect_unavailable_html_elements( $section, $content ) {
 		$pattern = '%(?:<form[\s\t>]|</form>)%i';
 
@@ -497,6 +532,12 @@ class WPCF7_ConfigValidator {
 		return false;
 	}
 
+
+	/**
+	 * Detects errors of dots in form-tag names.
+	 *
+	 * @link https://contactform7.com/configuration-errors/dots-in-names/
+	 */
 	public function detect_dots_in_names( $section, $content ) {
 		$form_tags_manager = WPCF7_FormTagsManager::get_instance();
 
@@ -520,6 +561,11 @@ class WPCF7_ConfigValidator {
 	}
 
 
+	/**
+	 * Detects errors of colons in form-tag names.
+	 *
+	 * @link https://contactform7.com/configuration-errors/colons-in-names/
+	 */
 	public function detect_colons_in_names( $section, $content ) {
 		$form_tags_manager = WPCF7_FormTagsManager::get_instance();
 
@@ -543,6 +589,9 @@ class WPCF7_ConfigValidator {
 	}
 
 
+	/**
+	 * Runs error detection for the mail sections.
+	 */
 	public function validate_mail( $template = 'mail' ) {
 		$components = (array) $this->contact_form->prop( $template );
 
