@@ -267,14 +267,16 @@ class WPCF7_ConfigValidator {
 		delete_post_meta( $this->contact_form->id(), '_config_errors' );
 
 		if ( $this->errors ) {
-			update_post_meta( $this->contact_form->id(), '_config_errors',
-				$this->errors );
+			update_post_meta(
+				$this->contact_form->id(), '_config_errors', $this->errors
+			);
 		}
 	}
 
 	public function restore() {
 		$config_errors = get_post_meta(
-			$this->contact_form->id(), '_config_errors', true );
+			$this->contact_form->id(), '_config_errors', true
+		);
 
 		foreach ( (array) $config_errors as $section => $errors ) {
 			if ( empty( $errors ) ) {
@@ -314,7 +316,8 @@ class WPCF7_ConfigValidator {
 		$example_blank = '';
 
 		$form_tags = $this->contact_form->scan_form_tags(
-			array( 'name' => $field_name ) );
+			array( 'name' => $field_name )
+		);
 
 		if ( $form_tags ) {
 			$form_tag = new WPCF7_FormTag( $form_tags[0] );
@@ -404,9 +407,12 @@ class WPCF7_ConfigValidator {
 
 				foreach ( $tags as $tag ) {
 					$is_multiple_controls_container = wpcf7_form_tag_supports(
-						$tag->type, 'multiple-controls-container' );
+						$tag->type, 'multiple-controls-container'
+					);
+
 					$is_zero_controls_container = wpcf7_form_tag_supports(
-						$tag->type, 'zero-controls-container' );
+						$tag->type, 'zero-controls-container'
+					);
 
 					if ( $is_multiple_controls_container ) {
 						$fields_count += count( $tag->values );
@@ -544,8 +550,7 @@ class WPCF7_ConfigValidator {
 			return;
 		}
 
-		if ( 'mail' != $template
-		and empty( $components['active'] ) ) {
+		if ( 'mail' !== $template and empty( $components['active'] ) ) {
 			return;
 		}
 
@@ -560,21 +565,30 @@ class WPCF7_ConfigValidator {
 
 		$callback = array( $this, 'replace_mail_tags_with_minimum_input' );
 
-		$subject = $components['subject'];
-		$subject = new WPCF7_MailTaggedText( $subject,
-			array( 'callback' => $callback ) );
+		$subject = new WPCF7_MailTaggedText(
+			$components['subject'],
+			array( 'callback' => $callback )
+		);
+
 		$subject = $subject->replace_tags();
 		$subject = wpcf7_strip_newline( $subject );
+
 		$this->detect_maybe_empty( sprintf( '%s.subject', $template ), $subject );
 
-		$sender = $components['sender'];
-		$sender = new WPCF7_MailTaggedText( $sender,
-			array( 'callback' => $callback ) );
+		$sender = new WPCF7_MailTaggedText(
+			$components['sender'],
+			array( 'callback' => $callback )
+		);
+
 		$sender = $sender->replace_tags();
 		$sender = wpcf7_strip_newline( $sender );
 
-		if ( ! $this->detect_invalid_mailbox_syntax( sprintf( '%s.sender', $template ), $sender )
-		and ! wpcf7_is_email_in_site_domain( $sender ) ) {
+		$invalid_mailbox = $this->detect_invalid_mailbox_syntax(
+			sprintf( '%s.sender', $template ),
+			$sender
+		);
+
+		if ( ! $invalid_mailbox and ! wpcf7_is_email_in_site_domain( $sender ) ) {
 			$this->add_error( sprintf( '%s.sender', $template ),
 				self::error_email_not_in_site_domain, array(
 					'link' => self::get_doc_link( 'email_not_in_site_domain' ),
@@ -582,18 +596,24 @@ class WPCF7_ConfigValidator {
 			);
 		}
 
-		$recipient = $components['recipient'];
-		$recipient = new WPCF7_MailTaggedText( $recipient,
-			array( 'callback' => $callback ) );
+		$recipient = new WPCF7_MailTaggedText(
+			$components['recipient'],
+			array( 'callback' => $callback )
+		);
+
 		$recipient = $recipient->replace_tags();
 		$recipient = wpcf7_strip_newline( $recipient );
 
 		$this->detect_invalid_mailbox_syntax(
-			sprintf( '%s.recipient', $template ), $recipient );
+			sprintf( '%s.recipient', $template ),
+			$recipient
+		);
 
-		$additional_headers = $components['additional_headers'];
-		$additional_headers = new WPCF7_MailTaggedText( $additional_headers,
-			array( 'callback' => $callback ) );
+		$additional_headers = new WPCF7_MailTaggedText(
+			$components['additional_headers'],
+			array( 'callback' => $callback )
+		);
+
 		$additional_headers = $additional_headers->replace_tags();
 		$additional_headers = explode( "\n", $additional_headers );
 		$mailbox_header_types = array( 'reply-to', 'cc', 'bcc' );
@@ -635,10 +655,13 @@ class WPCF7_ConfigValidator {
 			);
 		}
 
-		$body = $components['body'];
-		$body = new WPCF7_MailTaggedText( $body,
-			array( 'callback' => $callback ) );
+		$body = new WPCF7_MailTaggedText(
+			$components['body'],
+			array( 'callback' => $callback )
+		);
+
 		$body = $body->replace_tags();
+
 		$this->detect_maybe_empty( sprintf( '%s.body', $template ), $body );
 
 		if ( '' !== $components['attachments'] ) {
@@ -671,8 +694,7 @@ class WPCF7_ConfigValidator {
 			foreach ( explode( "\n", $components['attachments'] ) as $line ) {
 				$line = trim( $line );
 
-				if ( '' === $line
-				or '[' == substr( $line, 0, 1 ) ) {
+				if ( '' === $line or '[' == substr( $line, 0, 1 ) ) {
 					continue;
 				}
 
@@ -680,8 +702,7 @@ class WPCF7_ConfigValidator {
 					sprintf( '%s.attachments', $template ), $line
 				);
 
-				if ( ! $has_file_not_found
-				and ! $has_file_not_in_content_dir ) {
+				if ( ! $has_file_not_found and ! $has_file_not_in_content_dir ) {
 					$has_file_not_in_content_dir = $this->detect_file_not_in_content_dir(
 						sprintf( '%s.attachments', $template ), $line
 					);
@@ -716,7 +737,8 @@ class WPCF7_ConfigValidator {
 
 		if ( ! wpcf7_is_mailbox_list( $content ) ) {
 			return $this->add_error( $section,
-				self::error_invalid_mailbox_syntax, $args );
+				self::error_invalid_mailbox_syntax, $args
+			);
 		}
 
 		return false;
@@ -737,8 +759,7 @@ class WPCF7_ConfigValidator {
 	public function detect_file_not_found( $section, $content ) {
 		$path = path_join( WP_CONTENT_DIR, $content );
 
-		if ( ! is_readable( $path )
-		or ! is_file( $path ) ) {
+		if ( ! is_readable( $path ) or ! is_file( $path ) ) {
 			return $this->add_error( $section,
 				self::error_file_not_found,
 				array(
