@@ -1,7 +1,15 @@
 <?php
 
+/**
+ * Configuration validator.
+ *
+ * @link https://contactform7.com/configuration-errors/
+ */
 class WPCF7_ConfigValidator {
 
+	/**
+	 * The plugin version in which important updates happened last time.
+	 */
 	const last_important_update = '5.6.1';
 
 	const error = 100;
@@ -20,6 +28,10 @@ class WPCF7_ConfigValidator {
 	const error_dots_in_names = 113;
 	const error_colons_in_names = 114;
 
+
+	/**
+	 * Returns a URL linking to the documentation page for the error type.
+	 */
 	public static function get_doc_link( $error_code = '' ) {
 		$url = __( 'https://contactform7.com/configuration-errors/',
 			'contact-form-7'
@@ -34,6 +46,7 @@ class WPCF7_ConfigValidator {
 		return esc_url( $url );
 	}
 
+
 	private $contact_form;
 	private $errors = array();
 
@@ -41,14 +54,26 @@ class WPCF7_ConfigValidator {
 		$this->contact_form = $contact_form;
 	}
 
+
+	/**
+	 * Returns the contact form object that is tied to this validator.
+	 */
 	public function contact_form() {
 		return $this->contact_form;
 	}
 
+
+	/**
+	 * Returns true if no error has been detected.
+	 */
 	public function is_valid() {
 		return ! $this->count_errors();
 	}
 
+
+	/**
+	 * Counts detected errors.
+	 */
 	public function count_errors( $args = '' ) {
 		$args = wp_parse_args( $args, array(
 			'section' => '',
@@ -84,6 +109,10 @@ class WPCF7_ConfigValidator {
 		return $count;
 	}
 
+
+	/**
+	 * Collects messages for detected errors.
+	 */
 	public function collect_error_messages() {
 		$error_messages = array();
 
@@ -117,6 +146,10 @@ class WPCF7_ConfigValidator {
 		return $error_messages;
 	}
 
+
+	/**
+	 * Builds an error message by replacing placeholders.
+	 */
 	public function build_message( $message, $params = '' ) {
 		$params = wp_parse_args( $params, array() );
 
@@ -135,6 +168,11 @@ class WPCF7_ConfigValidator {
 		return $message;
 	}
 
+
+	/**
+	 * Returns a default message that is used when the message for the error
+	 * is not specified.
+	 */
 	public function get_default_message( $code ) {
 		switch ( $code ) {
 			case self::error_maybe_empty:
@@ -156,6 +194,15 @@ class WPCF7_ConfigValidator {
 		}
 	}
 
+
+	/**
+	 * Adds a validation error.
+	 *
+	 * @param string $section The section where the error detected.
+	 * @param int $code The unique code of the error.
+	 *            This must be one of the class constants.
+	 * @param string|array $args Optional options for the error.
+	 */
 	public function add_error( $section, $code, $args = '' ) {
 		$args = wp_parse_args( $args, array(
 			'message' => '',
@@ -171,6 +218,10 @@ class WPCF7_ConfigValidator {
 		return true;
 	}
 
+
+	/**
+	 * Removes an error.
+	 */
 	public function remove_error( $section, $code ) {
 		if ( empty( $this->errors[$section] ) ) {
 			return;
@@ -188,6 +239,12 @@ class WPCF7_ConfigValidator {
 		}
 	}
 
+
+	/**
+	 * The main validation runner.
+	 *
+	 * @return bool True if there is no error detected.
+	 */
 	public function validate() {
 		$this->errors = array();
 
