@@ -163,7 +163,8 @@ function wpcf7_stripe_before_send_mail( $contact_form, &$abort, $submission ) {
 			'amount' => $amount ? absint( $amount ) : null,
 			'currency' => $currency ? strtolower( $currency ) : null,
 			'receipt_email' => $submission->get_posted_data( 'your-email' ),
-		)
+		),
+    $submission
 	);
 
 	$payment_intent = $service->api()->create_payment_intent(
