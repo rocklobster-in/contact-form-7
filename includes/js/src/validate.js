@@ -1,6 +1,6 @@
 import { setStatus } from './status';
 import * as validators from './swv/rules';
-import FormDataTree from './swv/form-data-tree';
+import FormDataTree from '@takayukister/form-data-tree';
 import { ValidationError } from './swv/error';
 
 
