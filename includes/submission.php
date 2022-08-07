@@ -653,17 +653,33 @@ class WPCF7_Submission {
 	}
 
 
+	/**
+	 * Adds user consent data to this submission.
+	 *
+	 * @param string $name Field name.
+	 * @param string $conditions Conditions of consent.
+	 */
 	public function add_consent( $name, $conditions ) {
 		$this->consent[$name] = $conditions;
 		return true;
 	}
 
 
+	/**
+	 * Collects user consent data.
+	 *
+	 * @return array User consent data.
+	 */
 	public function collect_consent() {
 		return (array) $this->consent;
 	}
 
 
+	/**
+	 * Executes spam protections.
+	 *
+	 * @return bool True if spam captured.
+	 */
 	private function spam() {
 		$spam = false;
 
@@ -705,6 +721,11 @@ class WPCF7_Submission {
 	}
 
 
+	/**
+	 * Adds a spam log.
+	 *
+	 * @link https://contactform7.com/2019/05/31/why-is-this-message-marked-spam/
+	 */
 	public function add_spam_log( $args = '' ) {
 		$args = wp_parse_args( $args, array(
 			'agent' => '',
@@ -715,11 +736,19 @@ class WPCF7_Submission {
 	}
 
 
+	/**
+	 * Retrieves the spam logging data.
+	 *
+	 * @return array Spam logging data.
+	 */
 	public function get_spam_log() {
 		return $this->spam_log;
 	}
 
 
+	/**
+	 * Verifies that a correct security nonce was used.
+	 */
 	private function verify_nonce() {
 		if ( ! $this->contact_form->nonce_is_active() or ! is_user_logged_in() ) {
 			return true;
@@ -731,8 +760,9 @@ class WPCF7_Submission {
 	}
 
 
-	/* Mail */
-
+	/**
+	 * Function called just before sending email.
+	 */
 	private function before_send_mail() {
 		$abort = false;
 
@@ -746,6 +776,9 @@ class WPCF7_Submission {
 	}
 
 
+	/**
+	 * Sends emails based on user input values and contact form email templates.
+	 */
 	private function mail() {
 		$contact_form = $this->contact_form;
 
@@ -782,11 +815,20 @@ class WPCF7_Submission {
 	}
 
 
+	/**
+	 * Retrieves files uploaded through this submission.
+	 */
 	public function uploaded_files() {
 		return $this->uploaded_files;
 	}
 
 
+	/**
+	 * Adds a file to the uploaded files array.
+	 *
+	 * @param string $name Field name.
+	 * @param string|array $file_path File path or array of file paths.
+	 */
 	private function add_uploaded_file( $name, $file_path ) {
 		if ( ! wpcf7_is_name( $name ) ) {
 			return false;
@@ -811,6 +853,9 @@ class WPCF7_Submission {
 	}
 
 
+	/**
+	 * Removes uploaded files.
+	 */
 	private function remove_uploaded_files() {
 		foreach ( (array) $this->uploaded_files as $file_path ) {
 			$paths = (array) $file_path;
@@ -829,6 +874,11 @@ class WPCF7_Submission {
 	}
 
 
+	/**
+	 * Moves uploaded files to the tmp directory and validates them.
+	 *
+	 * @return bool True if no invalid file is found.
+	 */
 	private function unship_uploaded_files() {
 		$result = new WPCF7_Validation();
 
