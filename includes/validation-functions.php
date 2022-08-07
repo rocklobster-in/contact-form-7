@@ -199,7 +199,7 @@ function wpcf7_is_email_in_site_domain( $email ) {
 	foreach ( $homes as $home ) {
 		$sitename = wp_parse_url( $home, PHP_URL_HOST );
 
-		if ( preg_match( '/^[0-9.]+$/', $sitename ) ) { // 123.456.789.012
+		if ( WP_Http::is_ip_address( $sitename ) ) {
 			return true;
 		}
 
