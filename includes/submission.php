@@ -211,22 +211,44 @@ class WPCF7_Submission {
 	}
 
 
+	/**
+	 * Retrieves the response property.
+	 *
+	 * @return string The current response property value.
+	 */
 	public function get_response() {
 		return $this->response;
 	}
 
 
+	/**
+	 * Sets the response property.
+	 *
+	 * @param string $response New response property value.
+	 */
 	public function set_response( $response ) {
 		$this->response = $response;
 		return true;
 	}
 
 
+	/**
+	 * Retrieves the contact form property.
+	 *
+	 * @return WPCF7_ContactForm A contact form object.
+	 */
 	public function get_contact_form() {
 		return $this->contact_form;
 	}
 
 
+	/**
+	 * Search an invalid field by field name.
+	 *
+	 * @param string $name The field name.
+	 * @return array|bool An associative array of validation error
+	 *                    or false when no invalid field.
+	 */
 	public function get_invalid_field( $name ) {
 		if ( isset( $this->invalid_fields[$name] ) ) {
 			return $this->invalid_fields[$name];
@@ -236,11 +258,23 @@ class WPCF7_Submission {
 	}
 
 
+	/**
+	 * Retrieves all invalid fields.
+	 *
+	 * @return array Invalid fields.
+	 */
 	public function get_invalid_fields() {
 		return $this->invalid_fields;
 	}
 
 
+	/**
+	 * Retrieves meta information.
+	 *
+	 * @param string $name Name of the meta information.
+	 * @return string|null The meta information of the given name if it exists,
+	 *                     null otherwise.
+	 */
 	public function get_meta( $name ) {
 		if ( isset( $this->meta[$name] ) ) {
 			return $this->meta[$name];
