@@ -282,6 +282,9 @@ class WPCF7_Submission {
 	}
 
 
+	/**
+	 * Collects meta information about this submission.
+	 */
 	private function setup_meta_data() {
 		$timestamp = time();
 
@@ -321,6 +324,13 @@ class WPCF7_Submission {
 	}
 
 
+	/**
+	 * Retrieves user input data through this submission.
+	 *
+	 * @param string $name Optional field name.
+	 * @return string|array|null The user input of the field, or array of all
+	 *                           fields values if no field name specified.
+	 */
 	public function get_posted_data( $name = '' ) {
 		if ( ! empty( $name ) ) {
 			if ( isset( $this->posted_data[$name] ) ) {
@@ -334,6 +344,13 @@ class WPCF7_Submission {
 	}
 
 
+	/**
+	 * Retrieves a user input string value through the specified field.
+	 *
+	 * @param string $name Field name.
+	 * @return string The user input. If the input is an array,
+	 *                the first item in the array.
+	 */
 	public function get_posted_string( $name ) {
 		$data = $this->get_posted_data( $name );
 		$data = wpcf7_array_flatten( $data );
@@ -347,6 +364,9 @@ class WPCF7_Submission {
 	}
 
 
+	/**
+	 * Constructs posted data property based on user input values.
+	 */
 	private function setup_posted_data() {
 		$posted_data = array_filter( (array) $_POST, function( $key ) {
 			return '_' !== substr( $key, 0, 1 );
@@ -426,7 +446,8 @@ class WPCF7_Submission {
 			}
 
 			$value = apply_filters( "wpcf7_posted_data_{$type}", $value,
-				$value_orig, $tag );
+				$value_orig, $tag
+			);
 
 			$posted_data[$name] = $value;
 
@@ -444,6 +465,9 @@ class WPCF7_Submission {
 	}
 
 
+	/**
+	 * Sanitizes user input data.
+	 */
 	private function sanitize_posted_data( $value ) {
 		if ( is_array( $value ) ) {
 			$value = array_map( array( $this, 'sanitize_posted_data' ), $value );
@@ -545,6 +569,9 @@ class WPCF7_Submission {
 	}
 
 
+	/**
+	 * Retrieves the remote IP address of this submission.
+	 */
 	private function get_remote_ip_addr() {
 		$ip_addr = '';
 
@@ -557,6 +584,9 @@ class WPCF7_Submission {
 	}
 
 
+	/**
+	 * Retrieves the request URL of this submission.
+	 */
 	private function get_request_url() {
 		$home_url = untrailingslashit( home_url() );
 
@@ -577,6 +607,11 @@ class WPCF7_Submission {
 	}
 
 
+	/**
+	 * Runs user input validation.
+	 *
+	 * @return bool True if no invalid field is found.
+	 */
 	private function validate() {
 		if ( $this->invalid_fields ) {
 			return false;
@@ -610,6 +645,9 @@ class WPCF7_Submission {
 	}
 
 
+	/**
+	 * Returns true if user consent is obtained.
+	 */
 	private function accepted() {
 		return apply_filters( 'wpcf7_acceptance', true, $this );
 	}
