@@ -229,7 +229,7 @@ export const minlength = function ( formDataTree ) {
 		}
 	} );
 
-	if ( totalLength < parseInt( this.threshold ) ) {
+	if ( 0 !== totalLength && totalLength < parseInt( this.threshold ) ) {
 		throw new ValidationError( this );
 	}
 };
