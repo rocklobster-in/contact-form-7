@@ -189,13 +189,26 @@ function wpcf7_is_email_in_site_domain( $email ) {
 		return true;
 	}
 
-	$sitename = wp_parse_url( network_home_url(), PHP_URL_HOST );
+	$homes = array(
+		home_url(),
+		network_home_url(),
+	);
 
-	if ( preg_match( '/^[0-9.]+$/', $sitename ) ) { // 123.456.789.012
-		return true;
+	$homes = array_unique( $homes );
+
+	foreach ( $homes as $home ) {
+		$sitename = wp_parse_url( $home, PHP_URL_HOST );
+
+		if ( preg_match( '/^[0-9.]+$/', $sitename ) ) { // 123.456.789.012
+			return true;
+		}
+
+		if ( wpcf7_is_email_in_domain( $email, $sitename ) ) {
+			return true;
+		}
 	}
 
-	return wpcf7_is_email_in_domain( $email, $sitename );
+	return false;
 }
 
 
