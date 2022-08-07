@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Class representing contact form submission.
+ */
 class WPCF7_Submission {
 
 	private static $instance;
@@ -20,6 +23,9 @@ class WPCF7_Submission {
 	private $result_props = array();
 
 
+	/**
+	 * Returns the singleton instance of this class.
+	 */
 	public static function get_instance( $contact_form = null, $args = '' ) {
 		if ( $contact_form instanceof WPCF7_ContactForm ) {
 			if ( empty( self::$instance ) ) {
@@ -39,11 +45,17 @@ class WPCF7_Submission {
 	}
 
 
+	/**
+	 * Returns true if this submission is created via WP REST API.
+	 */
 	public static function is_restful() {
 		return defined( 'REST_REQUEST' ) && REST_REQUEST;
 	}
 
 
+	/**
+	 * Constructor.
+	 */
 	private function __construct( WPCF7_ContactForm $contact_form, $args = '' ) {
 		$args = wp_parse_args( $args, array(
 			'skip_mail' => false,
@@ -54,6 +66,9 @@ class WPCF7_Submission {
 	}
 
 
+	/**
+	 * The main logic of submission.
+	 */
 	private function proceed() {
 		$contact_form = $this->contact_form;
 
@@ -114,11 +129,19 @@ class WPCF7_Submission {
 	}
 
 
+	/**
+	 * Returns the current status property.
+	 */
 	public function get_status() {
 		return $this->status;
 	}
 
 
+	/**
+	 * Sets the status property.
+	 *
+	 * @param string $status The status.
+	 */
 	public function set_status( $status ) {
 		if ( preg_match( '/^[a-z][0-9a-z_]+$/', $status ) ) {
 			$this->status = $status;
@@ -129,8 +152,14 @@ class WPCF7_Submission {
 	}
 
 
+	/**
+	 * Returns true if the specified status is identical to the current
+	 * status property.
+	 *
+	 * @param string $status The status to compare.
+	 */
 	public function is( $status ) {
-		return $this->status == $status;
+		return $this->status === $status;
 	}
 
 
