@@ -1,8 +1,10 @@
 <?php
 /**
-** Akismet Filter
-** Akismet API: http://akismet.com/development/api/
-**/
+ * The Akismet integration module
+ *
+ * @link https://akismet.com/development/api/
+ */
+
 
 add_filter( 'wpcf7_spam', 'wpcf7_akismet', 10, 2 );
 
@@ -207,4 +209,40 @@ function wpcf7_akismet_comment_check( $comment ) {
 	}
 
 	return apply_filters( 'wpcf7_akismet_comment_check', $spam, $comment );
+}
+
+
+add_filter( 'wpcf7_posted_data', 'wpcf7_akismet_posted_data', 10, 1 );
+
+/**
+ * Removes Akismet-related properties from the posted data.
+ *
+ * This does not affect the $_POST variable itself.
+ *
+ * @link https://plugins.trac.wordpress.org/browser/akismet/tags/5.0/_inc/akismet-frontend.js
+ */
+function wpcf7_akismet_posted_data( $posted_data ) {
+	if ( wpcf7_akismet_is_available() ) {
+		$posted_data = array_diff_key(
+			$posted_data,
+			array(
+				'ak_bib' => '',
+				'ak_bfs' => '',
+				'ak_bkpc' => '',
+				'ak_bkp' => '',
+				'ak_bmc' => '',
+				'ak_bmcc' => '',
+				'ak_bmk' => '',
+				'ak_bck' => '',
+				'ak_bmmc' => '',
+				'ak_btmc' => '',
+				'ak_bsc' => '',
+				'ak_bte' => '',
+				'ak_btec' => '',
+				'ak_bmm' => '',
+			)
+		);
+	}
+
+	return $posted_data;
 }
