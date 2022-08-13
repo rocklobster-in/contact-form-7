@@ -1,7 +1,4 @@
 import { setStatus } from './status';
-import * as validators from './swv/rules';
-import FormDataTree from '@takayukister/form-data-tree';
-import { ValidationError } from './swv/error';
 
 
 export default function validate( form, options = {} ) {
@@ -72,17 +69,15 @@ export default function validate( form, options = {} ) {
 		}
 	}
 
-	const validators = validate.validators ?? {};
-
 	const rules = ( form.wpcf7.schema.rules ?? [] ).filter(
 		( { rule, ...properties } ) => {
 
-			if ( 'function' !== typeof validators[rule] ) {
+			if ( 'function' !== typeof swv.validators[rule] ) {
 				return false;
 			}
 
-			if ( 'function' === typeof validators[rule].matches ) {
-				return validators[rule].matches( properties, options );
+			if ( 'function' === typeof swv.validators[rule].matches ) {
+				return swv.validators[rule].matches( properties, options );
 			}
 
 			return targetFields.includes( properties.field );
@@ -98,22 +93,13 @@ export default function validate( form, options = {} ) {
 
 	Promise.resolve( setStatus( form, 'validating' ) )
 		.then( status => {
-			const invalidFields = [];
-			const formDataTree = new FormDataTree( formData );
+			const result = swv.validate( rules, formData );
 
-			for ( const { rule, ...properties } of rules ) {
-				if ( invalidFields.includes( properties.field ) ) {
-					continue;
-				}
+			for ( const [ field, { error } ] of result ) {
+				removeValidationError( form, field );
 
-				try {
-					removeValidationError( form, properties.field );
-					validators[rule].call( { rule, ...properties }, formDataTree );
-				} catch ( error ) {
-					if ( error instanceof ValidationError ) {
-						setValidationError( form, properties.field, error.error );
-						invalidFields.push( properties.field );
-					}
+				if ( undefined !== error ) {
+					setValidationError( form, field, error );
 				}
 			}
 		} )
@@ -127,8 +113,6 @@ export default function validate( form, options = {} ) {
 			} );
 		} );
 }
-
-validate.validators = validators;
 
 
 export const setValidationError = ( form, fieldName, message ) => {
