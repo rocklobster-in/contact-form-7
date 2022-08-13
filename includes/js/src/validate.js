@@ -69,31 +69,15 @@ export default function validate( form, options = {} ) {
 		}
 	}
 
-	const rules = ( form.wpcf7.schema.rules ?? [] ).filter(
-		( { rule, ...properties } ) => {
-
-			if ( 'function' !== typeof swv.validators[rule] ) {
-				return false;
-			}
-
-			if ( 'function' === typeof swv.validators[rule].matches ) {
-				return swv.validators[rule].matches( properties, options );
-			}
-
-			return targetFields.includes( properties.field );
-		}
-	);
-
-	// There is no rule to validate.
-	if ( ! rules.length ) {
-		return;
-	}
-
 	const prevStatus = form.getAttribute( 'data-status' );
 
 	Promise.resolve( setStatus( form, 'validating' ) )
 		.then( status => {
-			const result = swv.validate( rules, formData );
+			const result = swv.validate(
+				form.wpcf7.schema,
+				formData,
+				{ targetFields, ...options }
+			);
 
 			for ( const [ field, { error } ] of result ) {
 				removeValidationError( form, field );
