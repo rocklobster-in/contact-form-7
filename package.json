@@ -27,7 +27,7 @@
 	},
 	"homepage": "https://github.com/takayukister/contact-form-7#readme",
 	"devDependencies": {
-		"@takayukister/form-data-tree": "^1.0.0",
+		"@takayukister/swv": "^1.0.0",
 		"@wordpress/scripts": "^23.7.0"
 	}
 }
