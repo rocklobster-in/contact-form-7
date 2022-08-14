@@ -24,22 +24,22 @@ const validate = ( schema, formData, options = {} ) => {
 
 	const formDataTree = new FormDataTree( formData );
 
-	const result = rules.reduce( ( prev, current ) => {
+	const result = rules.reduce( ( result, current ) => {
 		const { rule, ...properties } = current;
 
-		if ( prev.get( properties.field )?.error ) {
-			return prev;
+		if ( result.get( properties.field )?.error ) {
+			return result;
 		}
 
 		try {
 			validators[ rule ].call( { rule, ...properties }, formDataTree );
 		} catch ( error ) {
 			if ( error instanceof ValidationError ) {
-				return prev.set( properties.field, error );
+				return result.set( properties.field, error );
 			}
 		}
 
-		return prev.set( properties.field, {} );
+		return result.set( properties.field, {} );
 	}, new Map() );
 
 	return result;
