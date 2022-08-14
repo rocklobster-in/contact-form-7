@@ -4,6 +4,12 @@ import { setStatus } from './status';
 export default function validate( form, options = {} ) {
 	const scope = form;
 
+	const schema = form.wpcf7?.schema;
+
+	if ( undefined === schema ) {
+		return;
+	}
+
 	// Event target is not a wpcf7 form control.
 	if ( ! options.target?.closest( '.wpcf7-form-control-wrap[data-name]' ) ) {
 		return;
@@ -69,15 +75,15 @@ export default function validate( form, options = {} ) {
 		}
 	}
 
+	schema.rules = ( schema.rules ?? [] ).filter(
+		( { field } ) => targetFields.includes( field )
+	);
+
 	const prevStatus = form.getAttribute( 'data-status' );
 
 	Promise.resolve( setStatus( form, 'validating' ) )
 		.then( status => {
-			const result = swv.validate(
-				form.wpcf7.schema,
-				formData,
-				{ targetFields, ...options }
-			);
+			const result = swv.validate( schema, formData, options );
 
 			for ( const [ field, { error } ] of result ) {
 				removeValidationError( form, field );

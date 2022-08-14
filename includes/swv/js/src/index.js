@@ -4,8 +4,6 @@ import * as validators from './rules';
 import { ValidationError } from './error';
 
 const validate = ( schema, formData, options = {} ) => {
-	const { targetFields } = options;
-
 	const rules = ( schema.rules ?? [] ).filter(
 		( { rule, ...properties } ) => {
 			if ( 'function' !== typeof validators[ rule ] ) {
@@ -14,10 +12,6 @@ const validate = ( schema, formData, options = {} ) => {
 
 			if ( 'function' === typeof validators[ rule ].matches ) {
 				return validators[ rule ].matches( properties, options );
-			}
-
-			if ( Array.isArray( targetFields ) && targetFields.length ) {
-				return targetFields.includes( properties.field );
 			}
 
 			return true;
