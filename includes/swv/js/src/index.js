@@ -1,4 +1,4 @@
-import { validators, validate } from '@takayukister/swv';
+import { validators, validate } from '@contactable/swv';
 
 window.swv = {
 	validators,
