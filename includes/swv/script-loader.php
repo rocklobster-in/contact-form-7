@@ -17,7 +17,7 @@ function wpcf7_swv_enqueue_scripts() {
 		'in_footer' => true,
 	) );
 
-	wp_enqueue_script( 'swv',
+	wp_register_script( 'swv',
 		$assets['src'],
 		$assets['dependencies'],
 		$assets['version'],
