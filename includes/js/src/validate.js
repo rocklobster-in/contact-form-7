@@ -83,13 +83,15 @@ export default function validate( form, options = {} ) {
 
 	Promise.resolve( setStatus( form, 'validating' ) )
 		.then( status => {
-			const result = swv.validate( schema, formData, options );
+			if ( undefined !== swv ) {
+				const result = swv.validate( schema, formData, options );
 
-			for ( const [ field, { error } ] of result ) {
-				removeValidationError( form, field );
+				for ( const [ field, { error } ] of result ) {
+					removeValidationError( form, field );
 
-				if ( undefined !== error ) {
-					setValidationError( form, field, error );
+					if ( undefined !== error ) {
+						setValidationError( form, field, error );
+					}
 				}
 			}
 		} )
