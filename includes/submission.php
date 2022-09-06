@@ -5,6 +5,8 @@
  */
 class WPCF7_Submission {
 
+	use WPCF7_PocketHolder;
+
 	private static $instance;
 
 	private $contact_form;
