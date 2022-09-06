@@ -205,7 +205,10 @@ function wpcf7_akismet_comment_check( $comment ) {
 	}
 
 	if ( $submission = WPCF7_Submission::get_instance() ) {
-		$submission->akismet = array( 'comment' => $comment, 'spam' => $spam );
+		$submission->push( 'akismet', array(
+			'comment' => $comment,
+			'spam' => $spam,
+		) );
 	}
 
 	return apply_filters( 'wpcf7_akismet_comment_check', $spam, $comment );

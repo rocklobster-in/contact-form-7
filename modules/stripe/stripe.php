@@ -114,11 +114,11 @@ function wpcf7_stripe_skip_spam_check( $skip_spam_check, $submission ) {
 
 		if ( isset( $payment_intent['status'] )
 		and ( 'succeeded' === $payment_intent['status'] ) ) {
-			$submission->payment_intent = $pi_id;
+			$submission->push( 'payment_intent', $pi_id );
 		}
 	}
 
-	if ( ! empty( $submission->payment_intent )
+	if ( ! empty( $submission->pull( 'payment_intent' ) )
 	and $submission->verify_posted_data_hash() ) {
 		$skip_spam_check = true;
 	}
@@ -149,7 +149,7 @@ function wpcf7_stripe_before_send_mail( $contact_form, &$abort, $submission ) {
 		return;
 	}
 
-	if ( ! empty( $submission->payment_intent ) ) {
+	if ( ! empty( $submission->pull( 'payment_intent' ) ) ) {
 		return;
 	}
 
@@ -218,8 +218,10 @@ function wpcf7_stripe_smt( $output, $tag_name, $html, $mail_tag = null ) {
 	if ( '_stripe_payment_link' === $tag_name ) {
 		$submission = WPCF7_Submission::get_instance();
 
-		if ( ! empty( $submission->payment_intent ) ) {
-			$output = wpcf7_stripe_get_payment_link( $submission->payment_intent );
+		$pi_id = $submission->pull( 'payment_intent' );
+
+		if ( ! empty( $pi_id ) ) {
+			$output = wpcf7_stripe_get_payment_link( $pi_id );
 		}
 	}
 
@@ -239,11 +241,13 @@ add_filter(
 function wpcf7_stripe_add_flamingo_inbound_message_params( $args ) {
 	$submission = WPCF7_Submission::get_instance();
 
-	if ( empty( $submission->payment_intent ) ) {
+	$pi_id = $submission->pull( 'payment_intent' );
+
+	if ( empty( $pi_id ) ) {
 		return $args;
 	}
 
-	$pi_link = wpcf7_stripe_get_payment_link( $submission->payment_intent );
+	$pi_link = wpcf7_stripe_get_payment_link( $pi_id );
 
 	$meta = (array) $args['meta'];
 

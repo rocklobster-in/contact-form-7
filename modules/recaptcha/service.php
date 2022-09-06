@@ -167,11 +167,11 @@ class WPCF7_RECAPTCHA extends WPCF7_Service {
 			$is_human, $response_body );
 
 		if ( $submission = WPCF7_Submission::get_instance() ) {
-			$submission->recaptcha = array(
+			$submission->push( 'recaptcha', array(
 				'version' => '3.0',
 				'threshold' => $threshold,
 				'response' => $response_body,
-			);
+			) );
 		}
 
 		return $is_human;
