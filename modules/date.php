@@ -82,13 +82,7 @@ function wpcf7_date_form_tag_handler( $tag ) {
 	$value = wpcf7_get_hangover( $tag->name, $value );
 
 	$atts['value'] = $value;
-
-	if ( wpcf7_support_html5() ) {
-		$atts['type'] = $tag->basetype;
-	} else {
-		$atts['type'] = 'text';
-	}
-
+	$atts['type'] = $tag->basetype;
 	$atts['name'] = $tag->name;
 
 	$html = sprintf(

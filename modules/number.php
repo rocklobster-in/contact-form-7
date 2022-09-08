@@ -91,12 +91,7 @@ function wpcf7_number_form_tag_handler( $tag ) {
 		}
 	}
 
-	if ( wpcf7_support_html5() ) {
-		$atts['type'] = $tag->basetype;
-	} else {
-		$atts['type'] = 'text';
-	}
-
+	$atts['type'] = $tag->basetype;
 	$atts['name'] = $tag->name;
 
 	$html = sprintf(
