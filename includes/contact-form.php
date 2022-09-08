@@ -603,17 +603,13 @@ class WPCF7_ContactForm {
 		$enctype = apply_filters( 'wpcf7_form_enctype', '' );
 		$autocomplete = apply_filters( 'wpcf7_form_autocomplete', '' );
 
-		$novalidate = apply_filters( 'wpcf7_form_novalidate',
-			wpcf7_support_html5()
-		);
-
 		$atts = array(
 			'action' => esc_url( $url ),
 			'method' => 'post',
 			'class' => $class,
 			'enctype' => wpcf7_enctype_value( $enctype ),
 			'autocomplete' => $autocomplete,
-			'novalidate' => $novalidate ? 'novalidate' : '',
+			'novalidate' => 'novalidate',
 			'data-status' => $data_status_attr,
 		);
 
