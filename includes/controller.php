@@ -113,7 +113,7 @@ function wpcf7_enqueue_scripts() {
 
 	$wpcf7 = array(
 		'api' => array(
-			'root' => esc_url_raw( get_rest_url() ),
+			'root' => sanitize_url( get_rest_url() ),
 			'namespace' => 'contact-form-7/v1',
 		),
 	);

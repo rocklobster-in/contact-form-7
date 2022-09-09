@@ -305,7 +305,7 @@ function wpcf7_get_request_uri() {
 		$request_uri = add_query_arg( array() );
 	}
 
-	return esc_url_raw( $request_uri );
+	return sanitize_url( $request_uri );
 }
 
 

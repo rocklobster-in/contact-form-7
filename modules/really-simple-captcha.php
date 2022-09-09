@@ -472,7 +472,7 @@ function wpcf7_captcha_url( $filename ) {
 		$url = 'https:' . substr( $url, 5 );
 	}
 
-	return apply_filters( 'wpcf7_captcha_url', esc_url_raw( $url ) );
+	return apply_filters( 'wpcf7_captcha_url', sanitize_url( $url ) );
 }
 
 function wpcf7_generate_captcha( $options = null ) {

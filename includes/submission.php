@@ -598,7 +598,7 @@ class WPCF7_Submission {
 
 			if ( $referer
 			and 0 === strpos( $referer, $home_url ) ) {
-				return esc_url_raw( $referer );
+				return sanitize_url( $referer );
 			}
 		}
 
