@@ -45,7 +45,7 @@ add_action(
 			'src' => wpcf7_plugin_url( 'includes/js/index.js' ),
 			'dependencies' => array(),
 			'version' => WPCF7_VERSION,
-			'in_footer' => ( 'header' !== wpcf7_load_js() ),
+			'in_footer' => true,
 		) );
 
 		wp_register_script(
