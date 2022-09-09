@@ -195,7 +195,7 @@ class WPCF7_ConstantContact extends WPCF7_Service_OAuth2 {
 			$this->authorization_endpoint
 		);
 
-		if ( wp_redirect( esc_url_raw( $endpoint ) ) ) {
+		if ( wp_redirect( sanitize_url( $endpoint ) ) ) {
 			exit();
 		}
 	}
