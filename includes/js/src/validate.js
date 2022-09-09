@@ -4,7 +4,7 @@ import { setStatus } from './status';
 export default function validate( form, options = {} ) {
 	const scope = form;
 
-	const schema = form.wpcf7?.schema;
+	const schema = { ...form.wpcf7?.schema };
 
 	if ( undefined === schema ) {
 		return;
