@@ -39,7 +39,7 @@ function wpcf7_init_block_editor_assets() {
 	);
 
 	register_block_type(
-		'contact-form-7/contact-form-selector',
+		wpcf7_plugin_path( 'includes/block-editor' ),
 		array(
 			'editor_script' => 'contact-form-7-block-editor',
 		)

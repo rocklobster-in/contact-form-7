@@ -1,0 +1,19 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 2,
+	"name": "contact-form-7/contact-form-selector",
+	"title": "Contact Form 7",
+	"category": "widgets",
+	"description": "Insert a contact form you have created with Contact Form 7.",
+	"keywords": [ "form" ],
+	"textdomain": "contact-form-7",
+	"attributes": {
+		"id": {
+			"type": "integer"
+		},
+		"title": {
+			"type": "string"
+		}
+	},
+	"editorScript": "file:./index.js"
+}
