@@ -40,5 +40,9 @@ document.addEventListener( 'DOMContentLoaded', event => {
 		...( wpcf7 ?? {} ),
 	};
 
-	forms.forEach( form => wpcf7.init( form ) );
+	forms.forEach( form => {
+		wpcf7.init( form );
+		form.closest( '.wpcf7' ).classList.replace( 'no-js', 'js' );
+	} );
+
 } );
