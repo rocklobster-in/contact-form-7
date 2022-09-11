@@ -541,7 +541,6 @@ class WPCF7_ContactForm {
 
 		$html = sprintf( '<div %s>',
 			wpcf7_format_atts( array(
-				'role' => 'form',
 				'class' => 'wpcf7 no-js',
 				'id' => $this->unit_tag(),
 				( get_option( 'html_type' ) == 'text/html' ) ? 'lang' : 'xml:lang'
