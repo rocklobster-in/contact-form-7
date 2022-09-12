@@ -235,35 +235,34 @@ function wpcf7_load_css() {
  * @return string Formatted HTML attributes.
  */
 function wpcf7_format_atts( $atts ) {
-	$html = '';
+	$atts_filtered = array();
 
-	$prioritized_atts = array( 'type', 'name', 'value' );
+	foreach ( $atts as $name => $value ) {
+		$name = strtolower( trim( $name ) );
 
-	foreach ( $prioritized_atts as $att ) {
-		if ( isset( $atts[$att] ) ) {
-			$value = trim( $atts[$att] );
-			$html .= sprintf( ' %s="%s"', $att, esc_attr( $value ) );
-			unset( $atts[$att] );
-		}
-	}
-
-	foreach ( $atts as $key => $value ) {
-		$key = strtolower( trim( $key ) );
-
-		if ( ! preg_match( '/^[a-z_:][a-z_:.0-9-]*$/', $key ) ) {
+		if ( ! preg_match( '/^[a-z_:][a-z_:.0-9-]*$/', $name ) ) {
 			continue;
 		}
 
-		$value = trim( $value );
-
-		if ( '' !== $value ) {
-			$html .= sprintf( ' %s="%s"', $key, esc_attr( $value ) );
+		if ( null === $value or false === $value ) {
+			unset( $atts_filtered[$name] );
+		} elseif ( true === $value ) {
+			$atts_filtered[$name] = $name; // boolean attribute
+		} elseif ( is_numeric( $value ) ) {
+			$value = (string) $value;
+			$atts_filtered[$name] = trim( $value );
+		} elseif ( is_string( $value ) ) {
+			$atts_filtered[$name] = trim( $value );
 		}
 	}
 
-	$html = trim( $html );
+	$output = '';
 
-	return $html;
+	foreach ( $atts_filtered as $name => $value ) {
+		$output .= sprintf( ' %1$s="%2$s"', $name, esc_attr( $value ) );
+	}
+
+	return trim( $output );
 }
 
 
