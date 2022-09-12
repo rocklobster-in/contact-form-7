@@ -244,13 +244,22 @@ function wpcf7_format_atts( $atts ) {
 			continue;
 		}
 
+		static $boolean_attributes = array(
+			'checked', 'disabled', 'multiple', 'readonly', 'required', 'selected',
+		);
+
+		if ( in_array( $name, $boolean_attributes ) and '' === $value ) {
+			$value = false;
+		}
+
+		if ( is_numeric( $value ) ) {
+			$value = (string) $value;
+		}
+
 		if ( null === $value or false === $value ) {
 			unset( $atts_filtered[$name] );
 		} elseif ( true === $value ) {
 			$atts_filtered[$name] = $name; // boolean attribute
-		} elseif ( is_numeric( $value ) ) {
-			$value = (string) $value;
-			$atts_filtered[$name] = trim( $value );
 		} elseif ( is_string( $value ) ) {
 			$atts_filtered[$name] = trim( $value );
 		}
