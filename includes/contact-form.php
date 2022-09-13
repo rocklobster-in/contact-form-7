@@ -599,26 +599,20 @@ class WPCF7_ContactForm {
 		$class = implode( ' ', $class );
 		$class = apply_filters( 'wpcf7_form_class_attr', $class );
 
-		$enctype = apply_filters( 'wpcf7_form_enctype', '' );
+		$enctype = wpcf7_enctype_value( apply_filters( 'wpcf7_form_enctype', '' ) );
 		$autocomplete = apply_filters( 'wpcf7_form_autocomplete', '' );
 
 		$atts = array(
 			'action' => esc_url( $url ),
 			'method' => 'post',
-			'class' => $class,
-			'enctype' => wpcf7_enctype_value( $enctype ),
-			'autocomplete' => $autocomplete,
-			'novalidate' => 'novalidate',
+			'class' => ( '' !== $class ) ? $class : null,
+			'id' => ( '' !== $id_attr ) ? $id_attr : null,
+			'name' => ( '' !== $name_attr ) ? $name_attr : null,
+			'enctype' => ( '' !== $enctype ) ? $enctype : null,
+			'autocomplete' => ( '' !== $autocomplete ) ? $autocomplete : null,
+			'novalidate' => true,
 			'data-status' => $data_status_attr,
 		);
-
-		if ( '' !== $id_attr ) {
-			$atts['id'] = $id_attr;
-		}
-
-		if ( '' !== $name_attr ) {
-			$atts['name'] = $name_attr;
-		}
 
 		$atts = wpcf7_format_atts( $atts );
 
