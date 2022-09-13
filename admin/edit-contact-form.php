@@ -102,8 +102,7 @@ if ( $post ) :
 		'id' => 'title',
 		'spellcheck' => 'true',
 		'autocomplete' => 'off',
-		'disabled' =>
-			current_user_can( 'wpcf7_edit_contact_form', $post_id ) ? '' : 'disabled',
+		'disabled' => ! current_user_can( 'wpcf7_edit_contact_form', $post_id ),
 	);
 
 	echo sprintf( '<input %s />', wpcf7_format_atts( $posttitle_atts ) );

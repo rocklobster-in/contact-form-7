@@ -285,8 +285,8 @@ function wpcf7_format_atts( $atts ) {
  */
 function wpcf7_link( $url, $anchor_text, $args = '' ) {
 	$defaults = array(
-		'id' => '',
-		'class' => '',
+		'id' => null,
+		'class' => null,
 	);
 
 	$args = wp_parse_args( $args, $defaults );
