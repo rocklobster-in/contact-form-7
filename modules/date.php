@@ -40,10 +40,7 @@ function wpcf7_date_form_tag_handler( $tag ) {
 	$atts['min'] = $tag->get_date_option( 'min' );
 	$atts['max'] = $tag->get_date_option( 'max' );
 	$atts['step'] = $tag->get_option( 'step', 'int', true );
-
-	if ( $tag->has_option( 'readonly' ) ) {
-		$atts['readonly'] = 'readonly';
-	}
+	$atts['readonly'] = $tag->has_option( 'readonly' );
 
 	if ( $tag->is_required() ) {
 		$atts['aria-required'] = 'true';
