@@ -41,10 +41,7 @@ function wpcf7_number_form_tag_handler( $tag ) {
 	$atts['min'] = $tag->get_option( 'min', 'signed_num', true );
 	$atts['max'] = $tag->get_option( 'max', 'signed_num', true );
 	$atts['step'] = $tag->get_option( 'step', 'num', true );
-
-	if ( $tag->has_option( 'readonly' ) ) {
-		$atts['readonly'] = 'readonly';
-	}
+	$atts['readonly'] = $tag->has_option( 'readonly' );
 
 	if ( $tag->is_required() ) {
 		$atts['aria-required'] = 'true';

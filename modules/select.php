@@ -97,24 +97,19 @@ function wpcf7_select_form_tag_handler( $tag ) {
 
 		$item_atts = array(
 			'value' => $value,
-			'selected' => $selected ? 'selected' : '',
+			'selected' => $selected,
 		);
-
-		$item_atts = wpcf7_format_atts( $item_atts );
 
 		$label = isset( $labels[$key] ) ? $labels[$key] : $value;
 
 		$html .= sprintf(
 			'<option %1$s>%2$s</option>',
-			$item_atts,
+			wpcf7_format_atts( $item_atts ),
 			esc_html( $label )
 		);
 	}
 
-	if ( $multiple ) {
-		$atts['multiple'] = 'multiple';
-	}
-
+	$atts['multiple'] = (bool) $multiple;
 	$atts['name'] = $tag->name . ( $multiple ? '[]' : '' );
 
 	$html = sprintf(
