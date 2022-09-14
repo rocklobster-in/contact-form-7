@@ -284,22 +284,20 @@ function wpcf7_format_atts( $atts ) {
  * @return string Formatted anchor element.
  */
 function wpcf7_link( $url, $anchor_text, $args = '' ) {
-	$defaults = array(
+	$args = wp_parse_args( $args, array(
 		'id' => null,
 		'class' => null,
+	) );
+
+	$atts = array_merge( $args, array(
+		'href' => esc_url( $url ),
+	) );
+
+	return sprintf(
+		'<a %1$s>%2$s</a>',
+		wpcf7_format_atts( $atts ),
+		esc_html( $anchor_text )
 	);
-
-	$args = wp_parse_args( $args, $defaults );
-	$args = array_intersect_key( $args, $defaults );
-	$atts = wpcf7_format_atts( $args );
-
-	$link = sprintf( '<a href="%1$s"%3$s>%2$s</a>',
-		esc_url( $url ),
-		esc_html( $anchor_text ),
-		$atts ? ( ' ' . $atts ) : ''
-	);
-
-	return $link;
 }
 
 
