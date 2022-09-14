@@ -218,7 +218,7 @@ class WPCF7_Mail {
 			$uploaded_files = $submission->uploaded_files();
 
 			foreach ( (array) $uploaded_files as $name => $paths ) {
-				if ( false !== strpos( $template, "[${name}]" ) ) {
+				if ( false !== strpos( $template, "[{$name}]" ) ) {
 					$attachments = array_merge( $attachments, (array) $paths );
 				}
 			}
