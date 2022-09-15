@@ -503,6 +503,7 @@ class WPCF7_ContactForm {
 		$args = wp_parse_args( $args, array(
 			'html_id' => '',
 			'html_name' => '',
+			'html_title' => '',
 			'html_class' => '',
 			'output' => 'form',
 		) );
@@ -569,6 +570,8 @@ class WPCF7_ContactForm {
 			preg_replace( '/[^A-Za-z0-9:._-]/', '', $args['html_name'] )
 		);
 
+		$title_attr = apply_filters( 'wpcf7_form_title_attr', $args['html_title'] );
+
 		$class = 'wpcf7-form';
 
 		if ( $this->is_posted() ) {
@@ -608,6 +611,8 @@ class WPCF7_ContactForm {
 			'class' => ( '' !== $class ) ? $class : null,
 			'id' => ( '' !== $id_attr ) ? $id_attr : null,
 			'name' => ( '' !== $name_attr ) ? $name_attr : null,
+			'aria-label' => ( '' !== $title_attr )
+				? $title_attr : __( 'Contact form', 'contact-form-7' ),
 			'enctype' => ( '' !== $enctype ) ? $enctype : null,
 			'autocomplete' => ( '' !== $autocomplete ) ? $autocomplete : null,
 			'novalidate' => true,
