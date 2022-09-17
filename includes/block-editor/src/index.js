@@ -1,5 +1,6 @@
 import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
+import { useBlockProps } from '@wordpress/block-editor';
 
 window.wpcf7 = window.wpcf7 ?? {
 	contactForms: [],
@@ -24,7 +25,7 @@ registerBlockType( 'contact-form-7/contact-form-selector', {
 		};
 
 		return(
-			<div>
+			<div { ...useBlockProps.save() }>
 				[contact-form-7 id="{ attributes.id }" title="{ attributes.title }"]
 			</div>
 		);
