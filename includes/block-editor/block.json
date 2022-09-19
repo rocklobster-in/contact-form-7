@@ -13,6 +13,22 @@
 		},
 		"title": {
 			"type": "string"
+		},
+		"htmlId": {
+			"type": "string"
+		},
+		"htmlName": {
+			"type": "string"
+		},
+		"htmlTitle": {
+			"type": "string"
+		},
+		"htmlClass": {
+			"type": "string"
+		},
+		"output": {
+			"enum": [ "form", "raw_form" ],
+			"default": "form"
 		}
 	},
 	"editorScript": "file:./index.js"
