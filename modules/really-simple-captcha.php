@@ -414,17 +414,30 @@ function wpcf7_init_captcha() {
 
 	if ( wp_mkdir_p( $dir ) ) {
 		$htaccess_file = path_join( $dir, '.htaccess' );
+		$htaccess_file_modtime = filemtime( $htaccess_file ) ?? 0;
+		$date_renew_v24 = date( 'U', strtotime( '2022-09-21 11:00:00' ) ); // <- TODO: change to release date or more alternatives in pull request comment
 
-		if ( file_exists( $htaccess_file ) ) {
+		if ( file_exists( $htaccess_file ) && $htaccess_file_modtime > $date_renew_v24 ) {
 			return $captcha;
 		}
 
 		if ( $handle = fopen( $htaccess_file, 'w' ) ) {
-			fwrite( $handle, 'Order deny,allow' . "\n" );
-			fwrite( $handle, 'Deny from all' . "\n" );
-			fwrite( $handle, '<Files ~ "^[0-9A-Za-z]+\\.(jpeg|gif|png)$">' . "\n" );
-			fwrite( $handle, '    Allow from all' . "\n" );
-			fwrite( $handle, '</Files>' . "\n" );
+			fwrite( $handle, '# Apache 2.2' . "\n" );
+			fwrite( $handle, '<IfModule !authz_core_module>' . "\n" );
+			fwrite( $handle, '    Order deny,allow' . "\n" );
+			fwrite( $handle, '    Deny from all' . "\n" );
+			fwrite( $handle, '    <Files ~ "^[0-9A-Za-z]+\\.(jpeg|gif|png)$">' . "\n" );
+			fwrite( $handle, '        Allow from all' . "\n" );
+			fwrite( $handle, '    </Files>' . "\n" );
+			fwrite( $handle, '</IfModule>' . "\n" );
+			fwrite( $handle, "\n" );
+			fwrite( $handle, '# Apache 2.4+' . "\n" );
+			fwrite( $handle, '<IfModule authz_core_module>' . "\n" );
+			fwrite( $handle, '    Require all denied' . "\n" );
+			fwrite( $handle, '    <Files ~ "^[0-9A-Za-z]+\\.(jpeg|gif|png)$">' . "\n" );
+			fwrite( $handle, '        Require all granted' . "\n" );
+			fwrite( $handle, '    </Files>' . "\n" );
+			fwrite( $handle, '</IfModule>' . "\n" );
 			fclose( $handle );
 		}
 	} else {
