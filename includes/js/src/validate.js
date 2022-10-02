@@ -2,6 +2,8 @@ import { setStatus } from './status';
 
 
 export default function validate( form, options = {} ) {
+	const { target, ...remainingOptions } = options;
+
 	const scope = form;
 
 	const schema = { ...form.wpcf7?.schema };
@@ -10,13 +12,19 @@ export default function validate( form, options = {} ) {
 		return;
 	}
 
-	// Event target is not a wpcf7 form control.
-	if ( ! options.target?.closest( '.wpcf7-form-control-wrap[data-name]' ) ) {
-		return;
-	}
+	if ( undefined !== target ) {
+		if ( ! form.contains( target ) ) {
+			return;
+		}
 
-	if ( options.target?.closest( '.novalidate' ) ) {
-		return;
+		// Event target is not a wpcf7 form control.
+		if ( ! target.closest( '.wpcf7-form-control-wrap[data-name]' ) ) {
+			return;
+		}
+
+		if ( target.closest( '.novalidate' ) ) {
+			return;
+		}
 	}
 
 	const formData = new FormData();
@@ -68,7 +76,7 @@ export default function validate( form, options = {} ) {
 			wrap.setAttribute( 'data-under-validation', '1' );
 
 			if (
-				wrap.dataset.name === options.target.name.replace( /\[.*\]$/, '' )
+				wrap.dataset.name === target.name?.replace( /\[.*\]$/, '' )
 			) {
 				break;
 			}
