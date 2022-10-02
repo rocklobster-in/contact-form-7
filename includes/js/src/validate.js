@@ -100,7 +100,7 @@ export default function validate( form, options = {} ) {
 					removeValidationError( form, field );
 
 					if ( undefined !== error ) {
-						setValidationError( form, field, error );
+						setValidationError( form, field, error, { scope } );
 					}
 				}
 			}
