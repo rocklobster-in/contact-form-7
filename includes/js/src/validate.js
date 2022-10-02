@@ -96,11 +96,28 @@ export default function validate( form, options = {} ) {
 			if ( undefined !== swv ) {
 				const result = swv.validate( schema, formData, options );
 
-				for ( const [ field, { error } ] of result ) {
+				for ( const [ field, { error, validInputs } ] of result ) {
 					removeValidationError( form, field );
 
 					if ( undefined !== error ) {
 						setValidationError( form, field, error, { scope } );
+					}
+
+					if ( Array.isArray( validInputs ) ) {
+						form.querySelectorAll(
+							`[data-reflection-of="${ field }"]`
+						).forEach( reflection => {
+							reflection.innerHTML = '';
+
+							validInputs.forEach( input => {
+								const output = document.createElement( 'output' );
+
+								output.setAttribute( 'name', field );
+								output.insertAdjacentText( 'beforeend', input );
+
+								reflection.appendChild( output );
+							} );
+						} );
 					}
 				}
 			}
