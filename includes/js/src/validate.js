@@ -2,9 +2,11 @@ import { setStatus } from './status';
 
 
 export default function validate( form, options = {} ) {
-	const { target, ...remainingOptions } = options;
-
-	const scope = form;
+	const {
+		target,
+		scope = form,
+		...remainingOptions
+	} = options;
 
 	const schema = { ...form.wpcf7?.schema };
 
