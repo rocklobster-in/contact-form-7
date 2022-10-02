@@ -100,7 +100,7 @@ export default function validate( form, options = {} ) {
 					removeValidationError( form, field );
 
 					if ( undefined !== error ) {
-						setValidationError( form, field, error );
+						setValidationError( form, field, error, { scope } );
 					}
 				}
 			}
@@ -117,7 +117,12 @@ export default function validate( form, options = {} ) {
 }
 
 
-export const setValidationError = ( form, fieldName, message ) => {
+export const setValidationError = ( form, fieldName, message, options ) => {
+	const {
+		scope = form,
+		...remainingOptions
+	} = options ?? {};
+
 	const errorId = `${ form.wpcf7?.unitTag }-ve-${ fieldName }`
 		.replaceAll( /[^0-9a-z_-]+/ig, '' );
 
@@ -148,7 +153,7 @@ export const setValidationError = ( form, fieldName, message ) => {
 	};
 
 	const setVisualValidationError = () => {
-		form.querySelectorAll(
+		scope.querySelectorAll(
 			`.wpcf7-form-control-wrap[data-name="${ fieldName }"]`
 		).forEach( wrap => {
 			if (
