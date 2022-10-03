@@ -104,20 +104,7 @@ export default function validate( form, options = {} ) {
 					}
 
 					if ( Array.isArray( validInputs ) ) {
-						form.querySelectorAll(
-							`[data-reflection-of="${ field }"]`
-						).forEach( reflection => {
-							reflection.innerHTML = '';
-
-							validInputs.forEach( input => {
-								const output = document.createElement( 'output' );
-
-								output.setAttribute( 'name', field );
-								output.insertAdjacentText( 'beforeend', input );
-
-								reflection.appendChild( output );
-							} );
-						} );
+						updateReflection( form, field, validInputs );
 					}
 				}
 			}
@@ -240,6 +227,24 @@ export const removeValidationError = ( form, fieldName ) => {
 			if ( typeof control.setCustomValidity === 'function' ) {
 				control.setCustomValidity( '' );
 			}
+		} );
+	} );
+};
+
+
+export const updateReflection = ( form, field, validInputs ) => {
+	form.querySelectorAll(
+		`[data-reflection-of="${ field }"]`
+	).forEach( reflection => {
+		reflection.innerHTML = '';
+
+		validInputs.forEach( input => {
+			const output = document.createElement( 'output' );
+
+			output.setAttribute( 'name', field );
+			output.insertAdjacentText( 'beforeend', input );
+
+			reflection.appendChild( output );
 		} );
 	} );
 };
