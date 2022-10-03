@@ -1,10 +1,10 @@
 import { __ } from '@wordpress/i18n';
-import { useInstanceId } from '@wordpress/compose';
+import { useState } from '@wordpress/element';
 import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
 
 import {
 	PanelBody,
-	SelectControl,
+	ComboboxControl,
 	TextControl,
 	ToggleControl
 } from '@wordpress/components';
@@ -44,8 +44,7 @@ export default function ContactFormSelectorEdit( { attributes, setAttributes } )
 		} );
 	}
 
-	const instanceId = useInstanceId( ContactFormSelectorEdit );
-	const id = `contact-form-7-contact-form-selector-${ instanceId }`;
+	const [ filteredOptions, setFilteredOptions ] = useState( options );
 
 	return(
 		<>
@@ -99,21 +98,23 @@ export default function ContactFormSelectorEdit( { attributes, setAttributes } )
 				</PanelBody>
 			</InspectorControls>
 			<div { ...useBlockProps( { className: 'components-placeholder' } ) }>
-				<label
-					htmlFor={ id }
-					className="components-placeholder__label"
-				>
-					{ __( "Select a contact form:", 'contact-form-7' ) }
-				</label>
-				<SelectControl
-					id={ id }
-					options={ options }
+				<ComboboxControl
+					label={ __( "Select a contact form:", 'contact-form-7' ) }
+					options={ filteredOptions }
 					value={ attributes.id }
 					onChange={
 						( value ) => setAttributes( {
 							id: parseInt( value ),
 							title: contactForms.get( parseInt( value ) ).title
 						} )
+					}
+					onFilterValueChange={
+						( inputValue ) => setFilteredOptions(
+							options.filter( ( option ) =>
+								option.label.toLowerCase()
+									.startsWith( inputValue.toLowerCase() )
+							)
+						)
 					}
 				/>
 			</div>
