@@ -103,9 +103,7 @@ export default function validate( form, options = {} ) {
 						setValidationError( form, field, error, { scope } );
 					}
 
-					if ( Array.isArray( validInputs ) ) {
-						updateReflection( form, field, validInputs );
-					}
+					updateReflection( form, field, validInputs ?? [] );
 				}
 			}
 		} )
