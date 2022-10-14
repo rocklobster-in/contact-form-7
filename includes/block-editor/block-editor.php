@@ -16,11 +16,13 @@ function wpcf7_init_block_editor_assets() {
 	$assets = wp_parse_args( $assets, array(
 		'src' => wpcf7_plugin_url( 'includes/block-editor/index.js' ),
 		'dependencies' => array(
+			'wp-api-fetch',
 			'wp-block-editor',
 			'wp-blocks',
 			'wp-components',
 			'wp-element',
 			'wp-i18n',
+			'wp-url',
 		),
 		'version' => WPCF7_VERSION,
 	) );
@@ -55,6 +57,8 @@ function wpcf7_init_block_editor_assets() {
 		},
 		WPCF7_ContactForm::find( array(
 			'posts_per_page' => 20,
+			'orderby' => 'modified',
+			'order' => 'DESC',
 		) )
 	);
 

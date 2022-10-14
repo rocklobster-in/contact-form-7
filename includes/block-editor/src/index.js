@@ -18,15 +18,19 @@ registerBlockType( 'contact-form-7/contact-form-selector', {
 	edit,
 
 	save: ( { attributes } ) => {
+		let shortcode = `[contact-form-7]`;
 
-		attributes = {
-			id: attributes.id ?? window.wpcf7.contactForms[ 0 ]?.id,
-			title: attributes.title ?? window.wpcf7.contactForms[ 0 ]?.title,
-			...attributes
-		};
+		if ( attributes.id ) {
+			shortcode = shortcode.replace( /\]$/,
+				` id="${ attributes.id }"]`
+			);
+		}
 
-		let shortcode =
-			`[contact-form-7 id="${ attributes.id }" title="${ attributes.title }"]`;
+		if ( attributes.title ) {
+			shortcode = shortcode.replace( /\]$/,
+				` title="${ attributes.title }"]`
+			);
+		}
 
 		if ( attributes.htmlId ) {
 			shortcode = shortcode.replace( /\]$/,
