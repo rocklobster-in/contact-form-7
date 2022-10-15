@@ -43,6 +43,14 @@ export default function ContactFormSelectorEdit( { attributes, setAttributes } )
 		);
 	}
 
+	const blockProps = {
+		className: 'components-placeholder',
+		style: {
+			marginTop: '28px',
+			marginBottom: '28px',
+		},
+	};
+
 	return(
 		<>
 			<InspectorControls>
@@ -96,7 +104,7 @@ export default function ContactFormSelectorEdit( { attributes, setAttributes } )
 					</PanelBody>
 				) }
 			</InspectorControls>
-			<div { ...useBlockProps( { className: 'components-placeholder' } ) }>
+			<div { ...useBlockProps( blockProps ) }>
 				<ComboboxControl
 					label={ __( "Select a contact form:", 'contact-form-7' ) }
 					options={ convertToOptions( contactForms ) }
