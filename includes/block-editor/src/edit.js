@@ -33,16 +33,6 @@ export default function ContactFormSelectorEdit( { attributes, setAttributes } )
 		() => createMap( window.wpcf7.contactForms ?? [] )
 	);
 
-	if ( ! contactForms.size ) {
-		return(
-			<div className="components-placeholder">
-				<p>
-					{ __( "No contact forms were found. Create a contact form first.", 'contact-form-7' ) }
-				</p>
-			</div>
-		);
-	}
-
 	const blockProps = {
 		className: 'components-placeholder',
 		style: {
