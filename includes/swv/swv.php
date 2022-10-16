@@ -26,6 +26,7 @@ function wpcf7_swv_available_rules() {
 		'maxnumber' => 'WPCF7_SWV_MaxNumberRule',
 		'mindate' => 'WPCF7_SWV_MinDateRule',
 		'maxdate' => 'WPCF7_SWV_MaxDateRule',
+		'minfilesize' => 'WPCF7_SWV_MinFileSizeRule',
 		'maxfilesize' => 'WPCF7_SWV_MaxFileSizeRule',
 	);
 
