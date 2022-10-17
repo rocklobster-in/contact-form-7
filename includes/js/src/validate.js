@@ -8,11 +8,11 @@ export default function validate( form, options = {} ) {
 		...remainingOptions
 	} = options;
 
-	const schema = { ...form.wpcf7?.schema };
-
-	if ( undefined === schema ) {
+	if ( undefined === form.wpcf7?.schema ) {
 		return;
 	}
+
+	const schema = { ...form.wpcf7.schema };
 
 	if ( undefined !== target ) {
 		if ( ! form.contains( target ) ) {
