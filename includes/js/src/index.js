@@ -25,10 +25,13 @@ document.addEventListener( 'DOMContentLoaded', event => {
 		return;
 	}
 
-	const forms = document.querySelectorAll( '.wpcf7 > form' );
-
-	if ( typeof forms.forEach !== 'function' ) {
+	if ( typeof NodeList.prototype.forEach !== 'function' ) {
 		console.error( "Your browser does not support NodeList.forEach()." );
+		return;
+	}
+
+	if ( typeof String.prototype.replaceAll !== 'function' ) {
+		console.error( "Your browser does not support String.replaceAll()." );
 		return;
 	}
 
@@ -40,5 +43,10 @@ document.addEventListener( 'DOMContentLoaded', event => {
 		...( wpcf7 ?? {} ),
 	};
 
-	forms.forEach( form => wpcf7.init( form ) );
+	document.querySelectorAll(
+		'.wpcf7 > form'
+	).forEach( form => {
+		wpcf7.init( form );
+	} );
+
 } );
