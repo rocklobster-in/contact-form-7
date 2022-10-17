@@ -21,7 +21,7 @@ export default function init( form ) {
 		unitTag: formData.get( '_wpcf7_unit_tag' ),
 		containerPost: absInt( formData.get( '_wpcf7_container_post' ) ),
 		parent: form.closest( '.wpcf7' ),
-		schema: {},
+		schema: undefined,
 	};
 
 	form.querySelectorAll( '.has-spinner' ).forEach( element => {
