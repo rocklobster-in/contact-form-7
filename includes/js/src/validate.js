@@ -4,11 +4,11 @@ import { setStatus } from './status';
 export default function validate( form, options = {} ) {
 	const scope = form;
 
-	const schema = { ...form.wpcf7?.schema };
-
-	if ( undefined === schema ) {
+	if ( undefined === form.wpcf7?.schema ) {
 		return;
 	}
+
+	const schema = { ...form.wpcf7.schema };
 
 	// Event target is not a wpcf7 form control.
 	if ( ! options.target?.closest( '.wpcf7-form-control-wrap[data-name]' ) ) {
