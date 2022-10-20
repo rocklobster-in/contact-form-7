@@ -407,11 +407,12 @@ class WPCF7_FormTagsManager {
 		}
 
 		$tag_type = $matches[2];
+		$tag_basetype = trim( $tag_type, '*' );
 		$attr = $this->parse_atts( $matches[3] );
 
 		$scanned_tag = array(
 			'type' => $tag_type,
-			'basetype' => trim( $tag_type, '*' ),
+			'basetype' => $tag_basetype,
 			'raw_name' => '',
 			'name' => '',
 			'options' => array(),
@@ -423,10 +424,16 @@ class WPCF7_FormTagsManager {
 			'content' => '',
 		);
 
-		if ( $this->tag_type_supports( $tag_type, 'singular' )
-		and $this->filter( $this->scanned_tags, array( 'type' => $tag_type ) ) ) {
-			// Another tag in the same type already exists. Ignore this one.
-			return $matches[0];
+		if ( $this->tag_type_supports( $tag_type, 'singular' ) ) {
+			$tags_in_same_basetype = $this->filter(
+				$this->scanned_tags,
+				array( 'basetype' => $tag_basetype )
+			);
+
+			if ( $tags_in_same_basetype ) {
+				// Another tag in the same base type already exists. Ignore this one.
+				return $matches[0];
+			}
 		}
 
 		if ( is_array( $attr ) ) {
@@ -514,5 +521,5 @@ class WPCF7_FormTagsManager {
 
 		return $atts;
 	}
-	
+
 }
