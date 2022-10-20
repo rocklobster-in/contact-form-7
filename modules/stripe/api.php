@@ -7,7 +7,7 @@
  */
 class WPCF7_Stripe_API {
 
-	const api_version = '2020-08-27';
+	const api_version = '2022-08-01';
 	const partner_id = 'pp_partner_HHbvqLh1AaO7Am';
 	const app_name = 'WordPress Contact Form 7';
 	const app_url = 'https://contactform7.com/stripe-integration/';
