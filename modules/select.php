@@ -79,7 +79,10 @@ function wpcf7_select_form_tag_handler( $tag ) {
 
 	if ( $include_blank
 	or empty( $values ) ) {
-		array_unshift( $labels, '---' );
+		array_unshift(
+			$labels,
+			__( '&#8212;Please choose an option&#8212;', 'contact-form-7' )
+		);
 		array_unshift( $values, '' );
 	} elseif ( $first_as_label ) {
 		$values[0] = '';
