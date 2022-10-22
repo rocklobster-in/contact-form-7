@@ -35,6 +35,7 @@ function wpcf7_file_form_tag_handler( $tag ) {
 	$atts['size'] = $tag->get_size_option( '40' );
 	$atts['class'] = $tag->get_class_option( $class );
 	$atts['id'] = $tag->get_id_option();
+	$atts['capture'] = $tag->get_option( 'capture', '(user|environment)', true );
 	$atts['tabindex'] = $tag->get_option( 'tabindex', 'signed_int', true );
 
 	$atts['accept'] = wpcf7_acceptable_filetypes(
