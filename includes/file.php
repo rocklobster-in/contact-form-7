@@ -260,9 +260,28 @@ function wpcf7_init_uploads() {
 	if ( is_dir( $dir ) and is_writable( $dir ) ) {
 		$htaccess_file = path_join( $dir, '.htaccess' );
 
-		if ( ! file_exists( $htaccess_file )
-		and $handle = @fopen( $htaccess_file, 'w' ) ) {
-			fwrite( $handle, "Deny from all\n" );
+		if ( file_exists( $htaccess_file ) ) {
+			list( $first_line_comment ) = (array) file(
+				$htaccess_file,
+				FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES
+			);
+
+			if ( '# Apache 2.4+' === $first_line_comment ) {
+				return;
+			}
+		}
+
+		if ( $handle = @fopen( $htaccess_file, 'w' ) ) {
+			fwrite( $handle, "# Apache 2.4+\n" );
+			fwrite( $handle, "<IfModule authz_core_module>\n" );
+			fwrite( $handle, "    Require all denied\n" );
+			fwrite( $handle, "</IfModule>\n" );
+			fwrite( $handle, "\n" );
+			fwrite( $handle, "# Apache 2.2\n" );
+			fwrite( $handle, "<IfModule !authz_core_module>\n" );
+			fwrite( $handle, "    Deny from all\n" );
+			fwrite( $handle, "</IfModule>\n" );
+
 			fclose( $handle );
 		}
 	}
