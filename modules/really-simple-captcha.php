@@ -412,23 +412,25 @@ function wpcf7_init_captcha() {
 		return $captcha;
 	}
 
-	if ( wp_mkdir_p( $dir ) ) {
-		$htaccess_file = path_join( $dir, '.htaccess' );
+	$result = wp_mkdir_p( $dir );
 
-		if ( file_exists( $htaccess_file ) ) {
-			return $captcha;
-		}
-
-		if ( $handle = fopen( $htaccess_file, 'w' ) ) {
-			fwrite( $handle, 'Order deny,allow' . "\n" );
-			fwrite( $handle, 'Deny from all' . "\n" );
-			fwrite( $handle, '<Files ~ "^[0-9A-Za-z]+\\.(jpeg|gif|png)$">' . "\n" );
-			fwrite( $handle, '    Allow from all' . "\n" );
-			fwrite( $handle, '</Files>' . "\n" );
-			fclose( $handle );
-		}
-	} else {
+	if ( ! $result ) {
 		return false;
+	}
+
+	$htaccess_file = path_join( $dir, '.htaccess' );
+
+	if ( file_exists( $htaccess_file ) ) {
+		return $captcha;
+	}
+
+	if ( $handle = fopen( $htaccess_file, 'w' ) ) {
+		fwrite( $handle, 'Order deny,allow' . "\n" );
+		fwrite( $handle, 'Deny from all' . "\n" );
+		fwrite( $handle, '<Files ~ "^[0-9A-Za-z]+\\.(jpeg|gif|png)$">' . "\n" );
+		fwrite( $handle, '    Allow from all' . "\n" );
+		fwrite( $handle, '</Files>' . "\n" );
+		fclose( $handle );
 	}
 
 	return $captcha;
