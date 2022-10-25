@@ -237,6 +237,11 @@ export const updateReflection = ( form, field, validInputs ) => {
 		reflection.innerHTML = '';
 
 		validInputs.forEach( input => {
+
+			if ( input instanceof File ) {
+				input = input.name;
+			}
+
 			const output = document.createElement( 'output' );
 
 			output.setAttribute( 'name', field );
