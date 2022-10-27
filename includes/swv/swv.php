@@ -21,6 +21,8 @@ function wpcf7_swv_available_rules() {
 		'date' => 'WPCF7_SWV_DateRule',
 		'file' => 'WPCF7_SWV_FileRule',
 		'enum' => 'WPCF7_SWV_EnumRule',
+		'minitems' => 'WPCF7_SWV_MinItemsRule',
+		'maxitems' => 'WPCF7_SWV_MaxItemsRule',
 		'minlength' => 'WPCF7_SWV_MinLengthRule',
 		'maxlength' => 'WPCF7_SWV_MaxLengthRule',
 		'minnumber' => 'WPCF7_SWV_MinNumberRule',
