@@ -20,6 +20,7 @@ function wpcf7_swv_available_rules() {
 		'number' => 'WPCF7_SWV_NumberRule',
 		'date' => 'WPCF7_SWV_DateRule',
 		'file' => 'WPCF7_SWV_FileRule',
+		'enum' => 'WPCF7_SWV_EnumRule',
 		'minlength' => 'WPCF7_SWV_MinLengthRule',
 		'maxlength' => 'WPCF7_SWV_MaxLengthRule',
 		'minnumber' => 'WPCF7_SWV_MinNumberRule',
