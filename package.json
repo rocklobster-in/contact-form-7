@@ -1,6 +1,6 @@
 {
 	"name": "contact-form-7",
-	"version": "5.6.0",
+	"version": "5.7.0",
 	"description": "JavaScript packages for Contact Form 7.",
 	"private": true,
 	"scripts": {
@@ -28,7 +28,7 @@
 	},
 	"homepage": "https://github.com/takayukister/contact-form-7#readme",
 	"devDependencies": {
-		"@contactable/swv": "^1.0.1",
+		"@contactable/swv": "^1.1.0",
 		"@wordpress/scripts": "^24.4.0"
 	}
 }
