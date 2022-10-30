@@ -5,6 +5,26 @@
  * @link https://akismet.com/development/api/
  */
 
+wpcf7_include_module_file( 'akismet/service.php' );
+
+
+add_action(
+	'wpcf7_init',
+	'wpcf7_akismet_register_service',
+	3, 0
+);
+
+/**
+ * Registers the Akismet service.
+ */
+function wpcf7_akismet_register_service() {
+	$integration = WPCF7_Integration::get_instance();
+
+	$integration->add_service( 'akismet',
+		WPCF7_Akismet::get_instance()
+	);
+}
+
 
 add_filter( 'wpcf7_spam', 'wpcf7_akismet', 10, 2 );
 
