@@ -12,7 +12,7 @@ wpcf7_include_module_file( 'stripe/api.php' );
 add_action(
 	'wpcf7_init',
 	'wpcf7_stripe_register_service',
-	10, 0
+	50, 0
 );
 
 /**

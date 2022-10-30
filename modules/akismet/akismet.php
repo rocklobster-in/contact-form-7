@@ -11,7 +11,7 @@ wpcf7_include_module_file( 'akismet/service.php' );
 add_action(
 	'wpcf7_init',
 	'wpcf7_akismet_register_service',
-	3, 0
+	30, 0
 );
 
 /**
