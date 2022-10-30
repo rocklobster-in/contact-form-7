@@ -44,7 +44,7 @@ function wpcf7_recaptcha_enqueue_scripts() {
 		$url = 'https://www.recaptcha.net/recaptcha/api.js';
 	}
 
-	wp_enqueue_script( 'google-recaptcha',
+	wp_register_script( 'google-recaptcha',
 		add_query_arg(
 			array(
 				'render' => $service->get_sitekey(),
@@ -64,21 +64,22 @@ function wpcf7_recaptcha_enqueue_scripts() {
 	}
 
 	$assets = wp_parse_args( $assets, array(
-		'src' => wpcf7_plugin_url( 'modules/recaptcha/index.js' ),
-		'dependencies' => array(
-			'google-recaptcha',
-			'wp-polyfill',
-		),
+		'dependencies' => array(),
 		'version' => WPCF7_VERSION,
-		'in_footer' => true,
 	) );
 
 	wp_register_script(
 		'wpcf7-recaptcha',
-		$assets['src'],
-		$assets['dependencies'],
+		wpcf7_plugin_url( 'modules/recaptcha/index.js' ),
+		array_merge(
+			$assets['dependencies'],
+			array(
+				'google-recaptcha',
+				'wp-polyfill',
+			)
+		),
 		$assets['version'],
-		$assets['in_footer']
+		true
 	);
 
 	wp_enqueue_script( 'wpcf7-recaptcha' );
