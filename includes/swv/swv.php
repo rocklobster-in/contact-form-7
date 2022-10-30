@@ -276,7 +276,7 @@ abstract class WPCF7_SWV_CompositeRule extends WPCF7_SWV_Rule {
  */
 class WPCF7_SWV_Schema extends WPCF7_SWV_CompositeRule {
 
-	const version = 'Contact Form 7 SWV Schema 2022-03';
+	const version = 'Contact Form 7 SWV Schema 2022-10';
 
 	public function __construct( $properties = '' ) {
 		$this->properties = wp_parse_args( $properties, array(
