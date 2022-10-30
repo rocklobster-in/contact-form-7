@@ -8,7 +8,7 @@
 wpcf7_include_module_file( 'recaptcha/service.php' );
 
 
-add_action( 'wpcf7_init', 'wpcf7_recaptcha_register_service', 15, 0 );
+add_action( 'wpcf7_init', 'wpcf7_recaptcha_register_service', 40, 0 );
 
 /**
  * Registers the reCAPTCHA service.
