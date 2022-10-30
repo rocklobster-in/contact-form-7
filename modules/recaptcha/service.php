@@ -265,13 +265,18 @@ class WPCF7_RECAPTCHA extends WPCF7_Service {
 
 
 	public function display( $action = '' ) {
-		echo '<p>' . sprintf(
-			esc_html( __( 'reCAPTCHA protects you against spam and other types of automated abuse. With Contact Form 7&#8217;s reCAPTCHA integration module, you can block abusive form submissions by spam bots. For details, see %s.', 'contact-form-7' ) ),
+		echo sprintf(
+			'<p>%s</p>',
+			esc_html( __( "reCAPTCHA protects you against spam and other types of automated abuse. With Contact Form 7&#8217;s reCAPTCHA integration module, you can block abusive form submissions by spam bots.", 'contact-form-7' ) )
+		);
+
+		echo sprintf(
+			'<p><strong>%s</strong></p>',
 			wpcf7_link(
 				__( 'https://contactform7.com/recaptcha/', 'contact-form-7' ),
 				__( 'reCAPTCHA (v3)', 'contact-form-7' )
 			)
-		) . '</p>';
+		);
 
 		if ( $this->is_active() ) {
 			echo sprintf(
