@@ -48,9 +48,11 @@ function wpcf7_stripe_enqueue_scripts() {
 		array(), WPCF7_VERSION, 'all'
 	);
 
-	wp_enqueue_script( 'stripe',
+	wp_register_script(
+		'stripe',
 		'https://js.stripe.com/v3/',
-		array(), null
+		array(),
+		null
 	);
 
 	$assets = array();
@@ -62,20 +64,21 @@ function wpcf7_stripe_enqueue_scripts() {
 	}
 
 	$assets = wp_parse_args( $assets, array(
-		'src' => wpcf7_plugin_url( 'modules/stripe/index.js' ),
-		'dependencies' => array(
-			'wp-polyfill',
-		),
+		'dependencies' => array(),
 		'version' => WPCF7_VERSION,
 	) );
 
 	wp_enqueue_script(
 		'wpcf7-stripe',
-		$assets['src'],
-		array_merge( array(
-			'contact-form-7',
-			'stripe',
-		), $assets['dependencies'] ),
+		wpcf7_plugin_url( 'modules/stripe/index.js' ),
+		array_merge(
+			$assets['dependencies'],
+			array(
+				'wp-polyfill',
+				'contact-form-7',
+				'stripe',
+			)
+		),
 		$assets['version'],
 		true
 	);
