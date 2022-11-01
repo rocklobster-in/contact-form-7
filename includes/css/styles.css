@@ -157,3 +157,7 @@ form.submitting .wpcf7-spinner {
 .wpcf7 input[type="tel"] {
 	direction: ltr;
 }
+
+.wpcf7 fieldset > output {
+	display: list-item;
+}
