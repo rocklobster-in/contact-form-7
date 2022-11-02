@@ -41,59 +41,69 @@ export default function ContactFormSelectorEdit( { attributes, setAttributes } )
 		},
 	};
 
+	const ContactFormSelectorInspectorControls = () => {
+		if ( ! attributes.id ) {
+			return(
+				<></>
+			);
+		}
+
+		return(
+			<InspectorControls>
+				<PanelBody title={ __( 'Shortcode attributes', 'contact-form-7' ) }>
+					<TextControl
+						label={ __( 'ID', 'contact-form-7' ) }
+						value={ attributes.htmlId }
+						onChange={
+							( value ) => setAttributes( {
+								htmlId: value
+							} )
+						}
+					/>
+					<TextControl
+						label={ __( 'Name', 'contact-form-7' ) }
+						value={ attributes.htmlName }
+						onChange={
+							( value ) => setAttributes( {
+								htmlName: value
+							} )
+						}
+					/>
+					<TextControl
+						label={ __( 'Title', 'contact-form-7' ) }
+						value={ attributes.htmlTitle }
+						onChange={
+							( value ) => setAttributes( {
+								htmlTitle: value
+							} )
+						}
+					/>
+					<TextControl
+						label={ __( 'Class', 'contact-form-7' ) }
+						value={ attributes.htmlClass }
+						onChange={
+							( value ) => setAttributes( {
+								htmlClass: value
+							} )
+						}
+					/>
+					<ToggleControl
+						label={ __( 'Output the raw form template', 'contact-form-7' ) }
+						checked={ 'raw_form' === attributes.output }
+						onChange={
+							( state ) => setAttributes( {
+								output: state ? 'raw_form' : 'form'
+							} )
+						}
+					/>
+				</PanelBody>
+			</InspectorControls>
+		);
+	};
+
 	return(
 		<>
-			<InspectorControls>
-				{ attributes.id && (
-					<PanelBody title={ __( 'Shortcode attributes', 'contact-form-7' ) }>
-						<TextControl
-							label={ __( 'ID', 'contact-form-7' ) }
-							value={ attributes.htmlId }
-							onChange={
-								( value ) => setAttributes( {
-									htmlId: value
-								} )
-							}
-						/>
-						<TextControl
-							label={ __( 'Name', 'contact-form-7' ) }
-							value={ attributes.htmlName }
-							onChange={
-								( value ) => setAttributes( {
-									htmlName: value
-								} )
-							}
-						/>
-						<TextControl
-							label={ __( 'Title', 'contact-form-7' ) }
-							value={ attributes.htmlTitle }
-							onChange={
-								( value ) => setAttributes( {
-									htmlTitle: value
-								} )
-							}
-						/>
-						<TextControl
-							label={ __( 'Class', 'contact-form-7' ) }
-							value={ attributes.htmlClass }
-							onChange={
-								( value ) => setAttributes( {
-									htmlClass: value
-								} )
-							}
-						/>
-						<ToggleControl
-							label={ __( 'Output the raw form template', 'contact-form-7' ) }
-							checked={ 'raw_form' === attributes.output }
-							onChange={
-								( state ) => setAttributes( {
-									output: state ? 'raw_form' : 'form'
-								} )
-							}
-						/>
-					</PanelBody>
-				) }
-			</InspectorControls>
+			<ContactFormSelectorInspectorControls />
 			<div { ...useBlockProps( blockProps ) }>
 				<ComboboxControl
 					label={ __( "Select a contact form:", 'contact-form-7' ) }
