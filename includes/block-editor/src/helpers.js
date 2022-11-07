@@ -1,3 +1,6 @@
+import { addQueryArgs } from '@wordpress/url';
+
+
 export const createShortcode = attributes => {
 	let shortcode = `[contact-form-7]`;
 
@@ -44,4 +47,15 @@ export const createShortcode = attributes => {
 	}
 
 	return shortcode;
+};
+
+
+export const getContactFormEditorLink = attributes => {
+	const adminRoot = ajaxurl.replace( /\/admin-ajax\.php$/, '/admin.php' );
+
+	return addQueryArgs( adminRoot, {
+		page: 'wpcf7',
+		post: attributes.id,
+		action: 'edit',
+	} );
 };
