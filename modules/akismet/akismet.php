@@ -294,6 +294,20 @@ function wpcf7_akismet_default_template( $template, $prop ) {
 			),
 			$template
 		);
+
+		$privacy_notice = sprintf( '%s %s',
+			__( "This form uses Akismet to reduce spam.", 'contact-form-7' ),
+			wpcf7_link(
+				'https://akismet.com/privacy/',
+				__( "Learn how your data is processed.", 'contact-form-7' ),
+				array(
+					'target' => '_blank',
+					'rel' => 'nofollow noopener',
+				)
+			)
+		);
+
+		$template .= "\n\n" . $privacy_notice;
 	}
 
 	return $template;
