@@ -4,12 +4,14 @@ import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
 
 import {
 	PanelBody,
+	ExternalLink,
 	ComboboxControl,
 	TextControl,
 	ToggleControl
 } from '@wordpress/components';
 
 import fetchContactForms from './fetch';
+import { getContactFormEditorLink } from './helpers';
 
 export default function ContactFormSelectorEdit( { attributes, setAttributes } ) {
 	const createMap = array => {
@@ -44,6 +46,13 @@ export default function ContactFormSelectorEdit( { attributes, setAttributes } )
 	return(
 		<>
 			<InspectorControls>
+				{ attributes.id && (
+					<PanelBody title={ attributes.title }>
+						<ExternalLink href={ getContactFormEditorLink( attributes ) }>
+							{ __( 'Edit this contact form', 'contact-form-7' ) }
+						</ExternalLink>
+					</PanelBody>
+				) }
 				{ attributes.id && (
 					<PanelBody title={ __( 'Shortcode attributes', 'contact-form-7' ) }>
 						<TextControl
