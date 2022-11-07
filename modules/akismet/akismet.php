@@ -269,3 +269,32 @@ function wpcf7_akismet_posted_data( $posted_data ) {
 
 	return $posted_data;
 }
+
+
+add_filter(
+	'wpcf7_default_template',
+	'wpcf7_akismet_default_template',
+	10, 2
+);
+
+function wpcf7_akismet_default_template( $template, $prop ) {
+	if ( ! wpcf7_akismet_is_available() ) {
+		return $template;
+	}
+
+	if ( 'form' === $prop ) {
+		$template = str_replace(
+			array(
+				'[text* your-name ',
+				'[email* your-email ',
+			),
+			array(
+				'[text* your-name akismet:author ',
+				'[email* your-email akismet:author_email ',
+			),
+			$template
+		);
+	}
+
+	return $template;
+}
