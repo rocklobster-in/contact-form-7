@@ -158,6 +158,7 @@ form.submitting .wpcf7-spinner {
 	direction: ltr;
 }
 
-.wpcf7 fieldset > output {
+.wpcf7-reflection > output {
 	display: list-item;
+	list-style: none;
 }
