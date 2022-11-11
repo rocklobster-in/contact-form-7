@@ -102,3 +102,21 @@ function wpcf7_load_textdomain( $locale = '' ) {
 
 	return true;
 }
+
+function wpcf7_switch_locale( $locale, callable $callback ) {
+	$previous_locale = determine_locale();
+
+	if ( $locale !== $previous_locale ) {
+		load_default_textdomain( $locale );
+		wpcf7_load_textdomain( $locale );
+	}
+
+	$result = call_user_func( $callback );
+
+	if ( $locale !== $previous_locale ) {
+		load_default_textdomain( $previous_locale );
+		wpcf7_load_textdomain( $previous_locale );
+	}
+
+	return $result;
+}
