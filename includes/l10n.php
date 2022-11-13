@@ -62,11 +62,7 @@ function wpcf7_is_rtl( $locale = '' ) {
 	return isset( $rtl_locales[$locale] );
 }
 
-function wpcf7_load_textdomain( $locale = '', $args = '' ) {
-	$args = wp_parse_args( $args, array(
-		'reloadable' => false,
-	) );
-
+function wpcf7_load_textdomain( $locale = '' ) {
 	static $available_locales = null;
 
 	if ( ! isset( $available_locales ) ) {
@@ -80,8 +76,6 @@ function wpcf7_load_textdomain( $locale = '', $args = '' ) {
 		$locale = determine_locale();
 	}
 
-	unload_textdomain( WPCF7_TEXT_DOMAIN, $args['reloadable'] );
-
 	$mofile = path_join(
 		WP_LANG_DIR . '/plugins/',
 		sprintf( '%s-%s.mo', WPCF7_TEXT_DOMAIN, $locale )
@@ -90,11 +84,16 @@ function wpcf7_load_textdomain( $locale = '', $args = '' ) {
 	return load_textdomain( WPCF7_TEXT_DOMAIN, $mofile, $locale );
 }
 
+function wpcf7_unload_textdomain( $reloadable = false ) {
+	unload_textdomain( WPCF7_TEXT_DOMAIN, $reloadable );
+}
+
 function wpcf7_switch_locale( $locale, callable $callback ) {
 	$previous_locale = determine_locale();
 
 	if ( $locale !== $previous_locale ) {
 		load_default_textdomain( $locale );
+		wpcf7_unload_textdomain();
 		wpcf7_load_textdomain( $locale );
 	}
 
@@ -102,7 +101,8 @@ function wpcf7_switch_locale( $locale, callable $callback ) {
 
 	if ( $locale !== $previous_locale ) {
 		load_default_textdomain( $previous_locale );
-		wpcf7_load_textdomain( $previous_locale, array( 'reloadable' => true ) );
+		wpcf7_unload_textdomain( true );
+		wpcf7_load_textdomain( $previous_locale );
 	}
 
 	return $result;
