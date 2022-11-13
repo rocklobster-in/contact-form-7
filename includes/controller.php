@@ -80,7 +80,7 @@ add_action(
 		wp_register_style(
 			'contact-form-7-rtl',
 			wpcf7_plugin_url( 'includes/css/styles-rtl.css' ),
-			array(),
+			array( 'contact-form-7' ),
 			WPCF7_VERSION,
 			'all'
 		);
