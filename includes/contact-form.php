@@ -112,27 +112,30 @@ class WPCF7_ContactForm {
 			'title' => __( 'Untitled', 'contact-form-7' ),
 		) );
 
+		$callback = function ( $args ) {
+			$contact_form = new self;
+			$contact_form->title = $args['title'];
+			$contact_form->locale = $args['locale'];
+
+			$properties = $contact_form->get_properties();
+
+			foreach ( $properties as $key => $value ) {
+				$default_template = WPCF7_ContactFormTemplate::get_default( $key );
+
+				if ( isset( $default_template ) ) {
+					$properties[$key] = $default_template;
+				}
+			}
+
+			$contact_form->properties = $properties;
+
+			return $contact_form;
+		};
+
 		$contact_form = wpcf7_switch_locale(
 			$args['locale'],
-			function () use ( $args ) {
-				$contact_form = new self;
-				$contact_form->title = $args['title'];
-				$contact_form->locale = $args['locale'];
-
-				$properties = $contact_form->get_properties();
-
-				foreach ( $properties as $key => $value ) {
-					$default_template = WPCF7_ContactFormTemplate::get_default( $key );
-
-					if ( isset( $default_template ) ) {
-						$properties[$key] = $default_template;
-					}
-				}
-
-				$contact_form->properties = $properties;
-
-				return $contact_form;
-			}
+			$callback,
+			$args
 		);
 
 		self::$current = apply_filters( 'wpcf7_contact_form_default_pack',
