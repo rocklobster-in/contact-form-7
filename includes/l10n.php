@@ -88,7 +88,7 @@ function wpcf7_unload_textdomain( $reloadable = false ) {
 	unload_textdomain( WPCF7_TEXT_DOMAIN, $reloadable );
 }
 
-function wpcf7_switch_locale( $locale, callable $callback ) {
+function wpcf7_switch_locale( $locale, callable $callback, ...$args ) {
 	$previous_locale = determine_locale();
 
 	if ( $locale !== $previous_locale ) {
@@ -97,7 +97,7 @@ function wpcf7_switch_locale( $locale, callable $callback ) {
 		wpcf7_load_textdomain( $locale );
 	}
 
-	$result = call_user_func( $callback );
+	$result = call_user_func( $callback, ...$args );
 
 	if ( $locale !== $previous_locale ) {
 		wpcf7_unload_textdomain( true );
