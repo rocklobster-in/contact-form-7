@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Retrieves an associative array of languages to which
+ * this plugin is translated.
+ *
+ * @return array Array of languages.
+ */
 function wpcf7_l10n() {
 	static $l10n = array();
 
@@ -33,11 +39,21 @@ function wpcf7_l10n() {
 	return $l10n;
 }
 
+
+/**
+ * Returns true if the given locale code looks valid.
+ *
+ * @param string $locale Locale code.
+ */
 function wpcf7_is_valid_locale( $locale ) {
 	$pattern = '/^[a-z]{2,3}(?:_[a-zA-Z_]{2,})?$/';
 	return (bool) preg_match( $pattern, $locale );
 }
 
+
+/**
+ * Returns true if the given locale is an RTL language.
+ */
 function wpcf7_is_rtl( $locale = '' ) {
 	static $rtl_locales = array(
 		'ar' => 'Arabic',
@@ -62,6 +78,13 @@ function wpcf7_is_rtl( $locale = '' ) {
 	return isset( $rtl_locales[$locale] );
 }
 
+
+/**
+ * Loads a translation file into the plugin's text domain.
+ *
+ * @param string $locale Locale code.
+ * @return bool True on success, false on failure.
+ */
 function wpcf7_load_textdomain( $locale = '' ) {
 	static $available_locales = null;
 
@@ -84,10 +107,28 @@ function wpcf7_load_textdomain( $locale = '' ) {
 	return load_textdomain( WPCF7_TEXT_DOMAIN, $mofile, $locale );
 }
 
+
+/**
+ * Unloads translations for the plugin's text domain.
+ *
+ * @param bool $reloadable Whether the text domain can be loaded
+ *             just-in-time again.
+ * @return bool True on success, false on failure.
+ */
 function wpcf7_unload_textdomain( $reloadable = false ) {
-	unload_textdomain( WPCF7_TEXT_DOMAIN, $reloadable );
+	return unload_textdomain( WPCF7_TEXT_DOMAIN, $reloadable );
 }
 
+
+/**
+ * Switches translation locale, calls the callback, then switches back
+ * to the original locale.
+ *
+ * @param string $locale Locale code.
+ * @param callable $callback The callable to be called.
+ * @param mixed $args Parameters to be passed to the callback.
+ * @return mixed The return value of the callback.
+ */
 function wpcf7_switch_locale( $locale, callable $callback, ...$args ) {
 	$previous_locale = determine_locale();
 
