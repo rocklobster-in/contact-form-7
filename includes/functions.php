@@ -147,9 +147,14 @@ function wpcf7_exclude_blank( $input ) {
  * Creates a comma-separated list from a multi-dimensional array.
  *
  * @param mixed $input Array or item of array.
+ * @param string|array $args Optional. Output options.
  * @return string Comma-separated list.
  */
-function wpcf7_flat_join( $input ) {
+function wpcf7_flat_join( $input, $args = '' ) {
+	$args = wp_parse_args( $args, array(
+		'separator' => ', ',
+	) );
+
 	$input = wpcf7_array_flatten( $input );
 	$output = array();
 
@@ -159,7 +164,7 @@ function wpcf7_flat_join( $input ) {
 		}
 	}
 
-	return implode( ', ', $output );
+	return implode( $args['separator'], $output );
 }
 
 
