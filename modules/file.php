@@ -123,7 +123,9 @@ function wpcf7_file_mail_tag( $replaced, $submitted, $html, $mail_tag ) {
 		$paths = (array) $uploaded_files[$name];
 		$paths = array_map( 'wp_basename', $paths );
 
-		$replaced = wpcf7_flat_join( $paths );
+		$replaced = wpcf7_flat_join( $paths, array(
+			'separator' => wp_get_list_item_separator(),
+		) );
 	}
 
 	return $replaced;
