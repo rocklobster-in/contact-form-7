@@ -385,7 +385,9 @@ class WPCF7_MailTaggedText {
 				$replaced = $this->format( $replaced, $format );
 			}
 
-			$replaced = wpcf7_flat_join( $replaced );
+			$replaced = wpcf7_flat_join( $replaced, array(
+				'separator' => wp_get_list_item_separator(),
+			) );
 
 			if ( $html ) {
 				$replaced = esc_html( $replaced );
