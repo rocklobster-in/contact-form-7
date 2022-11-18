@@ -24,6 +24,13 @@ class WPCF7_HTMLParser {
 		while ( $this->position < $input_bytelength ) {
 			$current_byte = $this->input[$this->position];
 
+			$this->stack .= $current_byte;
+
+			if ( 1 === $input_bytelength - $this->position ) { // End of string.
+				$this->trigger();
+				break;
+			}
+
 			if ( '<' === $current_byte ) {
 				$this->trigger();
 				$this->stack = '<';
@@ -31,8 +38,6 @@ class WPCF7_HTMLParser {
 				$this->position++;
 				continue;
 			}
-
-			$this->stack .= $current_byte;
 
 			if ( $this->mode === self::opening_tag ) {
 				if ( str_starts_with( $this->stack, '<!--' ) ) {
@@ -70,11 +75,6 @@ class WPCF7_HTMLParser {
 					$this->position++;
 					continue;
 				}
-			}
-
-			if ( 1 === $input_bytelength - $this->position ) { // End of string.
-				$this->trigger();
-				break;
 			}
 
 			$this->position++;
