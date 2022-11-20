@@ -10,13 +10,19 @@ function wpcf7_autop( $input ) {
 	require_once WPCF7_PLUGIN_DIR . '/includes/html-iterator.php';
 	$iterator = new WPCF7_HTMLIterator( $input );
 
-	$element_stack = array();
+	$elements = array();
 	$output = '';
 
 	foreach ( $iterator->iterate() as $chunk ) {
 		$position = $chunk['position'];
 		$type = $chunk['type'];
 		$content = $chunk['content'];
+
+		// Pre tags shouldn't be touched by autop.
+		if ( false !== array_search( 'pre', $elements ) ) {
+			$output .= $content;
+			continue;
+		}
 
 		if ( $type === WPCF7_HTMLIterator::text ) {
 			$output .= $content;
@@ -25,17 +31,17 @@ function wpcf7_autop( $input ) {
 		if ( $type === WPCF7_HTMLIterator::opening_tag ) {
 			preg_match( '/<(.+?)(?:\s|>)/', $content, $matches );
 			$tag_name = $matches[1];
-			array_unshift( $element_stack, $tag_name );
+			array_unshift( $elements, $tag_name );
 			$output .= $content;
 		}
 
 		if ( $type === WPCF7_HTMLIterator::closing_tag ) {
 			preg_match( '/<\/(.+?)(?:\s|>)/', $content, $matches );
 			$tag_name = $matches[1];
-			$opening_tag_offset = array_search( $tag_name, $element_stack );
+			$opening_tag_offset = array_search( $tag_name, $elements );
 
 			if ( false !== $opening_tag_offset ) {
-				$element_stack = array_slice( $element_stack, $opening_tag_offset + 1 );
+				$elements = array_slice( $elements, $opening_tag_offset + 1 );
 				$output .= $content;
 			}
 		}
