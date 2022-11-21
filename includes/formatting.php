@@ -52,11 +52,12 @@ function wpcf7_autop( $input ) {
 
 			preg_match( '/<(.+?)[\s\/>]/', $content, $matches );
 			$tag_name = strtolower( $matches[1] );
-			array_unshift( $elements, $tag_name );
 
 			// Normalize void element.
 			if ( in_array( $tag_name, WPCF7_HTMLFormatter::void_elements ) ) {
 				$content = preg_replace( '/\s*\/?>/', ' />', $content );
+			} else {
+				array_unshift( $elements, $tag_name );
 			}
 
 			$output .= $content;
