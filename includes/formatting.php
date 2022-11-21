@@ -8,6 +8,8 @@
  */
 function wpcf7_autop( $input ) {
 	require_once WPCF7_PLUGIN_DIR . '/includes/html-iterator.php';
+	require_once WPCF7_PLUGIN_DIR . '/includes/html-formatter.php';
+
 	$iterator = new WPCF7_HTMLIterator( $input );
 
 	$allblocks = '(?:table|thead|tfoot|caption|col|colgroup|tbody|tr|td|th|div|dl|dd|dt|ul|ol|li|pre|form|map|area|blockquote|address|math|style|p|h[1-6]|hr|fieldset|legend|section|article|aside|hgroup|header|footer|nav|figure|figcaption|details|menu|summary)';
@@ -45,13 +47,13 @@ function wpcf7_autop( $input ) {
 		}
 
 		if ( $type === WPCF7_HTMLIterator::opening_tag ) {
-			preg_match( '/<(.+?)(?:\s\/|>)/', $content, $matches );
+			preg_match( '/<(.+?)[\s\/>]/', $content, $matches );
 			$tag_name = strtolower( $matches[1] );
 			array_unshift( $elements, $tag_name );
 
-			if ( 'br' === $tag_name ) {
-				// Normalize <br>
-				$content = '<br />';
+			// Normalize void element.
+			if ( in_array( $tag_name, WPCF7_HTMLFormatter::void_elements ) ) {
+				$content = preg_replace( '/\s*\/?>/', ' />', $content );
 			}
 
 			$output .= $content;
