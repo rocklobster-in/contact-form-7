@@ -22,6 +22,9 @@ function wpcf7_autop( $input ) {
 		$type = $chunk['type'];
 		$content = $chunk['content'];
 
+		// Standardize newline characters to "\n".
+		$content = str_replace( array( "\r\n", "\r" ), "\n", $content );
+
 		// Pre tags shouldn't be touched by autop.
 		if ( false !== array_search( 'pre', $elements ) ) {
 			$output .= $content;
@@ -29,9 +32,6 @@ function wpcf7_autop( $input ) {
 		}
 
 		if ( $type === WPCF7_HTMLIterator::text ) {
-			// Standardize newline characters to "\n".
-			$content = str_replace( array( "\r\n", "\r" ), "\n", $content );
-
 			$inline_ancestors = preg_grep(
 				'/^' . $allblocks . '$/i',
 				$elements,
@@ -47,6 +47,9 @@ function wpcf7_autop( $input ) {
 		}
 
 		if ( $type === WPCF7_HTMLIterator::opening_tag ) {
+			// Replace newlines to whitespace.
+			$content = preg_replace( '/\n+/', ' ', $content );
+
 			preg_match( '/<(.+?)[\s\/>]/', $content, $matches );
 			$tag_name = strtolower( $matches[1] );
 			array_unshift( $elements, $tag_name );
@@ -60,6 +63,9 @@ function wpcf7_autop( $input ) {
 		}
 
 		if ( $type === WPCF7_HTMLIterator::closing_tag ) {
+			// Remove whitespaces.
+			$content = preg_replace( '/\s+/', '', $content );
+
 			preg_match( '/<\/(.+?)(?:\s|>)/', $content, $matches );
 			$tag_name = strtolower( $matches[1] );
 			$opening_tag_offset = array_search( $tag_name, $elements );

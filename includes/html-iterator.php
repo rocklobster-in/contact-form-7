@@ -20,7 +20,7 @@ class WPCF7_HTMLIterator {
 
 		while ( $position < $input_bytelength ) {
 			$next_tag = preg_match(
-				'/(?:<!--.*?-->|<(?:\/?)[a-z].*?>)/i',
+				'/(?:<!--.*?-->|<(?:\/?)[a-z].*?>)/is',
 				$input,
 				$matches,
 				PREG_OFFSET_CAPTURE,
