@@ -90,9 +90,6 @@ class WPCF7_HTMLFormatter {
 			}
 
 			if ( $type === WPCF7_HTMLIterator::opening_tag ) {
-				// Replace newlines to whitespace.
-				$content = preg_replace( '/\n+/', ' ', $content );
-
 				preg_match( '/<(.+?)[\s\/>]/', $content, $matches );
 				$tag_name = strtolower( $matches[1] );
 
