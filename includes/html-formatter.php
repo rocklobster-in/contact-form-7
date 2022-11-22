@@ -19,15 +19,15 @@ class WPCF7_HTMLFormatter {
 	 */
 	const p_parent_elements = array(
 		'address', 'article', 'aside', 'blockquote', 'caption', 'dd',
-		'details', 'div', 'dt', 'fieldset', 'figcaption', 'figure',
-		'footer', 'form', 'header', 'li', 'nav', 'section', 'td', 'th',
+		'details', 'dialog', 'div', 'dt', 'fieldset', 'figcaption', 'figure',
+		'footer', 'form', 'header', 'li', 'main', 'nav', 'section', 'td', 'th',
 	);
 
 	/**
 	 * HTML elements in the phrasing content category.
 	 */
 	const p_child_elements = array(
-		'a', 'abbr', 'area', 'audio', 'b', 'bdo', 'br', 'button',
+		'a', 'abbr', 'area', 'audio', 'b', 'bdi', 'bdo', 'br', 'button',
 		'canvas', 'cite', 'code', 'data', 'datalist', 'del', 'dfn',
 		'em', 'embed', 'i', 'iframe', 'img', 'input', 'ins', 'kbd',
 		'keygen', 'label', 'link', 'map', 'mark', 'math', 'meta',
