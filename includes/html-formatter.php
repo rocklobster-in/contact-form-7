@@ -4,13 +4,23 @@ require_once WPCF7_PLUGIN_DIR . '/includes/html-iterator.php';
 
 class WPCF7_HTMLFormatter {
 
+	/**
+	 * The void elements in HTML.
+	 *
+	 * @link https://developer.mozilla.org/en-US/docs/Glossary/Void_element
+	 */
 	const void_elements = array(
 		'area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input',
 		'keygen', 'link', 'meta', 'param', 'source', 'track', 'wbr',
 	);
 
+	/**
+	 * HTML elements that can be the parent of <p> elements.
+	 */
 	const p_parent_elements = array(
-		'caption', 'td', 'th', 'div', 'dd', 'dt', 'li', 'form', 'blockquote', 'address', 'fieldset', 'section', 'article', 'aside', 'header', 'footer', 'nav', 'figure', 'figcaption', 'details',
+		'address', 'article', 'aside', 'blockquote', 'caption', 'dd',
+		'details', 'div', 'dt', 'fieldset', 'figcaption', 'figure',
+		'footer', 'form', 'header', 'li', 'nav', 'section', 'td', 'th',
 	);
 
 	private $input = '';
