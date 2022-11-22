@@ -85,7 +85,7 @@ class WPCF7_HTMLFormatter {
 				$tag_name = strtolower( $matches[1] );
 
 				// Normalize void element.
-				if ( in_array( $tag_name, WPCF7_HTMLFormatter::void_elements ) ) {
+				if ( in_array( $tag_name, self::void_elements ) ) {
 					$content = preg_replace( '/\s*\/?>/', ' />', $content );
 				} else {
 					array_unshift( $elements, $tag_name );
