@@ -53,8 +53,6 @@ class WPCF7_HTMLFormatter {
 
 		$iterator = new WPCF7_HTMLIterator( $input );
 
-		$allblocks = '(?:table|thead|tfoot|caption|col|colgroup|tbody|tr|td|th|div|dl|dd|dt|ul|ol|li|pre|form|map|area|blockquote|address|math|style|p|h[1-6]|hr|fieldset|legend|section|article|aside|hgroup|header|footer|nav|figure|figcaption|details|menu|summary)';
-
 		$elements = array();
 		$output = '';
 
@@ -73,16 +71,9 @@ class WPCF7_HTMLFormatter {
 			}
 
 			if ( $type === WPCF7_HTMLIterator::text ) {
-				$inline_ancestors = preg_grep(
-					'/^' . $allblocks . '$/i',
-					$elements,
-					PREG_GREP_INVERT
-				);
-
-				if ( $this->options['auto_br'] ) {
-					if ( $inline_ancestors ) {
+				if ( in_array( reset( $elements ), self::p_child_elements, true ) ) {
+					if ( $this->options['auto_br'] ) {
 						$content = preg_replace( '/\n+/', '<br />', $content );
-					} else {
 					}
 				}
 
