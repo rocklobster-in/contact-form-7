@@ -9,6 +9,10 @@ class WPCF7_HTMLFormatter {
 		'keygen', 'link', 'meta', 'param', 'source', 'track', 'wbr',
 	);
 
+	const p_parent_elements = array(
+		'caption', 'td', 'th', 'div', 'dd', 'dt', 'li', 'form', 'blockquote', 'address', 'fieldset', 'section', 'article', 'aside', 'header', 'footer', 'nav', 'figure', 'figcaption', 'details',
+	);
+
 	private $input = '';
 	private $options = array();
 
