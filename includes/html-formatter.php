@@ -10,9 +10,14 @@ class WPCF7_HTMLFormatter {
 	);
 
 	private $input = '';
+	private $options = array();
 
-	public function __construct( string $input ) {
+	public function __construct( string $input, $args = '' ) {
 		$this->input = $input;
+
+		$this->options = wp_parse_args( $args, array(
+			'auto_br' => true,
+		) );
 	}
 
 	public function format() {
@@ -46,9 +51,11 @@ class WPCF7_HTMLFormatter {
 					PREG_GREP_INVERT
 				);
 
-				if ( $inline_ancestors ) {
-					$content = preg_replace( '/\n+/', '<br />', $content );
-				} else {
+				if ( $this->options['auto_br'] ) {
+					if ( $inline_ancestors ) {
+						$content = preg_replace( '/\n+/', '<br />', $content );
+					} else {
+					}
 				}
 
 				$output .= $content;
