@@ -109,6 +109,22 @@ class WPCF7_HTMLFormatter {
 			$tag = sprintf( '<%s>', $tag_name );
 		}
 
+		if ( ! in_array( $tag_name, self::p_child_elements ) ) {
+			// Close <p> if it exists.
+			$this->append_closing_tag( 'p' );
+		}
+
+		if ( 'dd' === $tag_name or 'dt' === $tag_name ) {
+			// Close <dd> and <dt> if closing tag is omitted.
+			$this->append_closing_tag( 'dd' );
+			$this->append_closing_tag( 'dt' );
+		}
+
+		if ( 'li' === $tag_name ) {
+			// Close <li> if closing tag is omitted.
+			$this->append_closing_tag( 'li' );
+		}
+
 		if ( in_array( $tag_name, self::void_elements ) ) {
 			// Normalize void element.
 			$tag = preg_replace( '/\s*\/?>/', ' />', $tag );
