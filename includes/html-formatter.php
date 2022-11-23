@@ -76,7 +76,6 @@ class WPCF7_HTMLFormatter {
 			if ( $type === WPCF7_HTMLIterator::comment ) {
 				$this->append_comment( $content );
 			}
-
 		}
 
 		return $this->output;
@@ -84,7 +83,7 @@ class WPCF7_HTMLFormatter {
 
 	public function append_text( $content ) {
 		// Inside <pre>
-		if ( false !== array_search( 'pre', $this->stacked_elements ) ) {
+		if ( $this->is_inside( 'pre' ) ) {
 			$this->output .= $content;
 			return;
 		}
@@ -148,4 +147,9 @@ class WPCF7_HTMLFormatter {
 	public function append_comment( $tag ) {
 		$this->output .= $tag;
 	}
+
+	public function is_inside( $tag_name ) {
+		return false !== array_search( $tag_name, $this->stacked_elements );
+	}
+
 }
