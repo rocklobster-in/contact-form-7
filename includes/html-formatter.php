@@ -66,12 +66,6 @@ class WPCF7_HTMLFormatter {
 			// Standardize newline characters to "\n".
 			$content = str_replace( array( "\r\n", "\r" ), "\n", $content );
 
-			// Pre tags shouldn't be touched by autop.
-			if ( false !== array_search( 'pre', $elements ) ) {
-				$output .= $content;
-				continue;
-			}
-
 			if ( $type === WPCF7_HTMLIterator::text ) {
 				$this->append_text( $content );
 			}
@@ -94,6 +88,12 @@ class WPCF7_HTMLFormatter {
 	}
 
 	public function append_text( $content ) {
+		// Inside <pre>
+		if ( false !== array_search( 'pre', $this->stacked_elements ) ) {
+			$this->output .= $content;
+			return;
+		}
+
 		$top_of_stack = reset( $this->stacked_elements );
 
 		if ( in_array( $top_of_stack, self::p_child_elements ) ) {
