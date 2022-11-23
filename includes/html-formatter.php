@@ -122,25 +122,20 @@ class WPCF7_HTMLFormatter {
 	public function append_closing_tag( $tag ) {
 		$tag = strtolower( $tag );
 
-		// Remove whitespaces.
-		$tag = preg_replace( '/\s+/', '', $tag );
-
 		if ( preg_match( '/<\/(.+?)(?:\s|>)/', $tag, $matches ) ) {
 			$tag_name = $matches[1];
 		} else {
 			$tag_name = $tag;
-			$tag = sprintf( '</%s>', $tag_name );
 		}
 
-		$opening_tag_offset = array_search( $tag_name, $this->stacked_elements );
+		if ( $this->is_inside( $tag_name ) ) {
+			while ( $element = array_shift( $this->stacked_elements ) ) {
+				$this->output .= sprintf( '</%s>', $element );
 
-		if ( false !== $opening_tag_offset ) {
-			$this->stacked_elements = array_slice(
-				$this->stacked_elements,
-				$opening_tag_offset + 1
-			);
-
-			$this->output .= $tag;
+				if ( $element === $tag_name ) {
+					break;
+				}
+			}
 		}
 	}
 
