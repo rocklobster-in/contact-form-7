@@ -38,6 +38,8 @@ class WPCF7_HTMLFormatter {
 	);
 
 	private $input = '';
+	private $output = '';
+	private $stacked_elements = array();
 	private $options = array();
 
 	public function __construct( string $input, $args = '' ) {
@@ -71,50 +73,84 @@ class WPCF7_HTMLFormatter {
 			}
 
 			if ( $type === WPCF7_HTMLIterator::text ) {
-				if ( in_array( reset( $elements ), self::p_child_elements, true ) ) {
-					if ( $this->options['auto_br'] ) {
-						$content = preg_replace( '/\n+/', '<br />', $content );
-					}
-				}
-
-				$output .= $content;
+				$this->append_text( $content );
 			}
 
 			if ( $type === WPCF7_HTMLIterator::opening_tag ) {
-				preg_match( '/<(.+?)[\s\/>]/', $content, $matches );
-				$tag_name = strtolower( $matches[1] );
-
-				// Normalize void element.
-				if ( in_array( $tag_name, self::void_elements ) ) {
-					$content = preg_replace( '/\s*\/?>/', ' />', $content );
-				} else {
-					array_unshift( $elements, $tag_name );
-				}
-
-				$output .= $content;
+				$this->append_opening_tag( $content );
 			}
 
 			if ( $type === WPCF7_HTMLIterator::closing_tag ) {
-				// Remove whitespaces.
-				$content = preg_replace( '/\s+/', '', $content );
-
-				preg_match( '/<\/(.+?)(?:\s|>)/', $content, $matches );
-				$tag_name = strtolower( $matches[1] );
-				$opening_tag_offset = array_search( $tag_name, $elements );
-
-				if ( false !== $opening_tag_offset ) {
-					$elements = array_slice( $elements, $opening_tag_offset + 1 );
-					$output .= $content;
-				}
+				$this->append_closing_tag( $content );
 			}
 
 			if ( $type === WPCF7_HTMLIterator::comment ) {
-				$output .= $content;
+				$this->append_comment( $content );
 			}
 
 		}
 
-		return $output;
+		return $this->output;
 	}
 
+	public function append_text( $content ) {
+		$top_of_stack = reset( $this->stacked_elements );
+
+		if ( in_array( $top_of_stack, self::p_child_elements ) ) {
+			if ( $this->options['auto_br'] ) {
+				$content = preg_replace( '/\n+/', '<br />', $content );
+			}
+		}
+
+		$this->output .= $content;
+	}
+
+	public function append_opening_tag( $tag ) {
+		$tag = strtolower( $tag );
+
+		if ( preg_match( '/<(.+?)[\s\/>]/', $tag, $matches ) ) {
+			$tag_name = $matches[1];
+		} else {
+			$tag_name = $tag;
+			$tag = sprintf( '<%s>', $tag_name );
+		}
+
+		if ( in_array( $tag_name, self::void_elements ) ) {
+			// Normalize void element.
+			$tag = preg_replace( '/\s*\/?>/', ' />', $tag );
+		} else {
+			array_unshift( $this->stacked_elements, $tag_name );
+		}
+
+		$this->output .= $tag;
+	}
+
+	public function append_closing_tag( $tag ) {
+		$tag = strtolower( $tag );
+
+		// Remove whitespaces.
+		$tag = preg_replace( '/\s+/', '', $tag );
+
+		if ( preg_match( '/<\/(.+?)(?:\s|>)/', $tag, $matches ) ) {
+			$tag_name = $matches[1];
+		} else {
+			$tag_name = $tag;
+			$tag = sprintf( '</%s>', $tag_name );
+		}
+
+		$opening_tag_offset = array_search( $tag_name, $this->stacked_elements );
+
+		if ( false !== $opening_tag_offset ) {
+			$this->stacked_elements = array_slice(
+				$this->stacked_elements,
+				$opening_tag_offset + 1
+			);
+
+			$this->output .= $tag;
+		}
+	}
+
+	public function append_comment( $tag ) {
+		$this->output .= $tag;
+	}
 }
