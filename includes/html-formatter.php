@@ -51,12 +51,7 @@ class WPCF7_HTMLFormatter {
 	}
 
 	public function format() {
-		$input = &$this->input;
-
-		$iterator = new WPCF7_HTMLIterator( $input );
-
-		$elements = array();
-		$output = '';
+		$iterator = new WPCF7_HTMLIterator( $this->input );
 
 		foreach ( $iterator->iterate() as $chunk ) {
 			$position = $chunk['position'];
