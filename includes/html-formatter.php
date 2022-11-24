@@ -78,6 +78,11 @@ class WPCF7_HTMLFormatter {
 			}
 		}
 
+		// Close all remaining tags.
+		while ( $element = array_shift( $this->stacked_elements ) ) {
+			$this->output .= "\n" . sprintf( '</%s>', $element );
+		}
+
 		return $this->output;
 	}
 
