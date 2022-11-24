@@ -96,12 +96,13 @@ class WPCF7_HTMLFormatter {
 		// Remove lines only with whitespaces.
 		$content = preg_replace( '/\n[\t ]+\n/', "\n\n", $content );
 
-		$top_of_stack = reset( $this->stacked_elements );
-
-		if ( in_array( $top_of_stack, self::p_child_elements ) ) {
+		if ( $this->is_inside( self::p_child_elements ) ) {
 			if ( $this->options['auto_br'] ) {
 				$content = preg_replace( '/\n+/', '<br />', $content );
 			}
+
+			$this->output .= $content;
+			return;
 		}
 
 		$this->output .= $content;
