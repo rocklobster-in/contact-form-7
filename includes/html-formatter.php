@@ -114,7 +114,12 @@ class WPCF7_HTMLFormatter {
 			$tag = sprintf( '<%s>', $tag_name );
 		}
 
-		if ( ! in_array( $tag_name, self::p_child_elements ) ) {
+		if ( in_array( $tag_name, self::p_child_elements ) ) {
+			if ( ! $this->is_inside( 'p' ) ) {
+				// Open <p> if it does not exist.
+				$this->append_opening_tag( 'p' );
+			}
+		} else {
 			// Close <p> if it exists.
 			$this->append_closing_tag( 'p' );
 		}
