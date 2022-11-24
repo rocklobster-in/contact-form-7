@@ -93,6 +93,9 @@ class WPCF7_HTMLFormatter {
 			return;
 		}
 
+		// Remove lines only with whitespaces.
+		$content = preg_replace( '/\n[\t ]+\n/', "\n\n", $content );
+
 		$top_of_stack = reset( $this->stacked_elements );
 
 		if ( in_array( $top_of_stack, self::p_child_elements ) ) {
