@@ -173,7 +173,15 @@ class WPCF7_HTMLFormatter {
 	}
 
 	public function is_inside( $tag_name ) {
-		return false !== array_search( $tag_name, $this->stacked_elements );
+		$tag_names = (array) $tag_name;
+
+		foreach ( $tag_names as $tag_name ) {
+			if ( false !== array_search( $tag_name, $this->stacked_elements ) ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 }
