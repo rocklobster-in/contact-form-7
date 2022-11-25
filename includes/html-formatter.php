@@ -168,7 +168,7 @@ class WPCF7_HTMLFormatter {
 					);
 
 					if ( $count ) {
-						continue;
+						break;
 					}
 				}
 
