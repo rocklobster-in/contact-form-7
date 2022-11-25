@@ -160,6 +160,18 @@ class WPCF7_HTMLFormatter {
 
 		if ( $this->is_inside( $tag_name ) ) {
 			while ( $element = array_shift( $this->stacked_elements ) ) {
+
+				// Remove trailing <p></p>.
+				if ( 'p' === $element ) {
+					$this->output = preg_replace(
+						'/<p>\s*$/', '', $this->output, 1, $count
+					);
+
+					if ( $count ) {
+						continue;
+					}
+				}
+
 				$this->output .= sprintf( '</%s>', $element );
 
 				if ( $element === $tag_name ) {
