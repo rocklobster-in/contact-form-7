@@ -95,28 +95,34 @@ class WPCF7_HTMLFormatter {
 
 		if ( $this->is_inside( self::p_child_elements ) ) {
 			if ( $this->options['auto_br'] ) {
-				$content = preg_replace( '/\n+/', '<br />', $content );
+				$content = preg_replace( '/\s*\n\s*/', '<br />', $content );
 			}
 
 			$this->output .= $content;
 
 		} else {
+			// Open <p> if it does not exist.
+			if ( ! $this->is_inside( 'p' ) ) {
+				$this->append_opening_tag( 'p' );
+			}
+
 			// Split up the contents into paragraphs, separated by double line breaks.
-			$paragraphs = preg_split(
-				'/(\n\s*\n)/',
-				$content,
-				-1,
-				PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE
-			);
+			$paragraphs = preg_split( '/\n\s*\n/', $content );
 
 			foreach ( $paragraphs as $paragraph ) {
+				$this->append_opening_tag( 'p' );
+
 				$paragraph = trim( $paragraph );
 
 				if ( $this->options['auto_br'] ) {
-					$paragraph = preg_replace( '/\n+/', '<br />', $paragraph );
+					$paragraph = preg_replace( '/\s*\n\s*/', '<br />', $paragraph );
 				}
 
 				$this->output .= $paragraph;
+			}
+
+			if ( preg_match( '/\n\s*\n$/', $content ) ) {
+				$this->append_closing_tag( 'p' );
 			}
 		}
 	}
@@ -132,8 +138,8 @@ class WPCF7_HTMLFormatter {
 		}
 
 		if ( in_array( $tag_name, self::p_child_elements ) ) {
+			// Open <p> if it does not exist.
 			if ( ! $this->is_inside( 'p' ) ) {
-				// Open <p> if it does not exist.
 				$this->append_opening_tag( 'p' );
 			}
 		} else {
