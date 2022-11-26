@@ -182,8 +182,8 @@ class WPCF7_HTMLFormatter {
 	public function is_inside( $tag_name ) {
 		$tag_names = (array) $tag_name;
 
-		foreach ( $tag_names as $tag_name ) {
-			if ( false !== array_search( $tag_name, $this->stacked_elements ) ) {
+		foreach ( $this->stacked_elements as $element ) {
+			if ( in_array( $element, $tag_names ) ) {
 				return true;
 			}
 		}
