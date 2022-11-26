@@ -93,19 +93,32 @@ class WPCF7_HTMLFormatter {
 			return;
 		}
 
-		// Remove lines only with whitespaces.
-		$content = preg_replace( '/\n\s*\n/', "\n\n", $content );
-
 		if ( $this->is_inside( self::p_child_elements ) ) {
 			if ( $this->options['auto_br'] ) {
 				$content = preg_replace( '/\n+/', '<br />', $content );
 			}
 
 			$this->output .= $content;
-			return;
-		}
 
-		$this->output .= $content;
+		} else {
+			// Split up the contents into paragraphs, separated by double line breaks.
+			$paragraphs = preg_split(
+				'/(\n\s*\n)/',
+				$content,
+				-1,
+				PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE
+			);
+
+			foreach ( $paragraphs as $paragraph ) {
+				$paragraph = trim( $paragraph );
+
+				if ( $this->options['auto_br'] ) {
+					$paragraph = preg_replace( '/\n+/', '<br />', $paragraph );
+				}
+
+				$this->output .= $paragraph;
+			}
+		}
 	}
 
 	public function append_opening_tag( $tag ) {
