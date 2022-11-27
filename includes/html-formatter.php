@@ -79,8 +79,8 @@ class WPCF7_HTMLFormatter {
 		}
 
 		// Close all remaining tags.
-		while ( $element = array_shift( $this->stacked_elements ) ) {
-			$this->output .= "\n" . sprintf( '</%s>', $element );
+		if ( $this->stacked_elements ) {
+			$this->append_closing_tag( end( $this->stacked_elements ) );
 		}
 
 		return $this->output;
