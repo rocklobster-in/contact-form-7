@@ -128,12 +128,10 @@ class WPCF7_HTMLFormatter {
 	}
 
 	public function append_opening_tag( $tag ) {
-		$tag = strtolower( $tag );
-
 		if ( preg_match( '/<(.+?)[\s\/>]/', $tag, $matches ) ) {
-			$tag_name = $matches[1];
+			$tag_name = strtolower( $matches[1] );
 		} else {
-			$tag_name = $tag;
+			$tag_name = strtolower( $tag );
 			$tag = sprintf( '<%s>', $tag_name );
 		}
 
@@ -169,12 +167,10 @@ class WPCF7_HTMLFormatter {
 	}
 
 	public function append_closing_tag( $tag ) {
-		$tag = strtolower( $tag );
-
 		if ( preg_match( '/<\/(.+?)(?:\s|>)/', $tag, $matches ) ) {
-			$tag_name = $matches[1];
+			$tag_name = strtolower( $matches[1] );
 		} else {
-			$tag_name = $tag;
+			$tag_name = strtolower( $tag );
 		}
 
 		if ( $this->is_inside( $tag_name ) ) {
