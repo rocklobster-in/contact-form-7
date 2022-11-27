@@ -163,6 +163,17 @@ class WPCF7_HTMLFormatter {
 			array_unshift( $this->stacked_elements, $tag_name );
 		}
 
+		// Auto indentation.
+		if ( ! in_array( $tag_name, self::p_child_elements ) ) {
+			$this->output = rtrim( $this->output ) . "\n";
+
+			$count = count( $this->stacked_elements );
+
+			if ( 1 < $count ) {
+				$this->output .= str_repeat( "\t", $count - 1 );
+			}
+		}
+
 		$this->output .= $tag;
 	}
 
