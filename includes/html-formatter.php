@@ -163,13 +163,13 @@ class WPCF7_HTMLFormatter {
 			array_unshift( $this->stacked_elements, $tag_name );
 		}
 
-		// Auto indentation.
 		if ( ! in_array( $tag_name, self::p_child_elements ) ) {
 			$this->output = rtrim( $this->output ) . "\n";
 
 			$count = count( $this->stacked_elements );
 
 			if ( 1 < $count ) {
+				// Auto indentation.
 				$this->output .= str_repeat( "\t", $count - 1 );
 			}
 		}
@@ -186,6 +186,17 @@ class WPCF7_HTMLFormatter {
 
 		if ( $this->is_inside( $tag_name ) ) {
 			while ( $element = array_shift( $this->stacked_elements ) ) {
+
+				if ( ! in_array( $element, self::p_child_elements ) ) {
+					$this->output = rtrim( $this->output ) . "\n";
+
+					$count = count( $this->stacked_elements );
+
+					if ( 0 < $count ) {
+						// Auto indentation.
+						$this->output .= str_repeat( "\t", $count );
+					}
+				}
 
 				$this->output .= sprintf( '</%s>', $element );
 
