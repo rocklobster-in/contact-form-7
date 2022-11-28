@@ -47,6 +47,7 @@ class WPCF7_HTMLFormatter {
 
 		$this->options = wp_parse_args( $args, array(
 			'auto_br' => true,
+			'auto_indent' => true,
 		) );
 	}
 
@@ -166,11 +167,10 @@ class WPCF7_HTMLFormatter {
 		if ( ! in_array( $tag_name, self::p_child_elements ) ) {
 			$this->output = rtrim( $this->output ) . "\n";
 
-			$count = count( $this->stacked_elements );
-
-			if ( 1 < $count ) {
-				// Auto indentation.
-				$this->output .= str_repeat( "\t", $count - 1 );
+			if ( $this->options['auto_indent'] ) {
+				$this->output .= self::auto_indent(
+					count( $this->stacked_elements ) - 1
+				);
 			}
 		}
 
@@ -190,11 +190,10 @@ class WPCF7_HTMLFormatter {
 				if ( ! in_array( $element, self::p_child_elements ) ) {
 					$this->output = rtrim( $this->output ) . "\n";
 
-					$count = count( $this->stacked_elements );
-
-					if ( 0 < $count ) {
-						// Auto indentation.
-						$this->output .= str_repeat( "\t", $count );
+					if ( $this->options['auto_indent'] ) {
+						$this->output .= self::auto_indent(
+							count( $this->stacked_elements )
+						);
 					}
 				}
 
@@ -230,6 +229,16 @@ class WPCF7_HTMLFormatter {
 
 	public static function auto_br( $text ) {
 		return preg_replace( '/\s*\n\s*/', '<br />', $text );
+	}
+
+	public static function auto_indent( $level ) {
+		$level = (int) $level;
+
+		if ( 0 < $level ) {
+			return str_repeat( "\t", $level );
+		}
+
+		return '';
 	}
 
 }
