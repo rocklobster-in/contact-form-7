@@ -95,7 +95,7 @@ class WPCF7_HTMLFormatter {
 
 		if ( $this->is_inside( self::p_child_elements ) ) {
 			if ( $this->options['auto_br'] ) {
-				$content = preg_replace( '/\s*\n\s*/', '<br />', $content );
+				$content = self::auto_br( $content );
 			}
 
 			$this->output .= $content;
@@ -115,7 +115,7 @@ class WPCF7_HTMLFormatter {
 				$paragraph = trim( $paragraph );
 
 				if ( $this->options['auto_br'] ) {
-					$paragraph = preg_replace( '/\s*\n\s*/', '<br />', $paragraph );
+					$paragraph = self::auto_br( $paragraph );
 				}
 
 				$this->output .= $paragraph;
@@ -226,6 +226,10 @@ class WPCF7_HTMLFormatter {
 		}
 
 		return false;
+	}
+
+	public static function auto_br( $text ) {
+		return preg_replace( '/\s*\n\s*/', '<br />', $text );
 	}
 
 }
