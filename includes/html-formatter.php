@@ -168,9 +168,7 @@ class WPCF7_HTMLFormatter {
 			$this->output = rtrim( $this->output ) . "\n";
 
 			if ( $this->options['auto_indent'] ) {
-				$this->output .= self::auto_indent(
-					count( $this->stacked_elements ) - 1
-				);
+				$this->output .= self::indent( count( $this->stacked_elements ) - 1 );
 			}
 		}
 
@@ -191,9 +189,7 @@ class WPCF7_HTMLFormatter {
 					$this->output = rtrim( $this->output ) . "\n";
 
 					if ( $this->options['auto_indent'] ) {
-						$this->output .= self::auto_indent(
-							count( $this->stacked_elements )
-						);
+						$this->output .= self::indent( count( $this->stacked_elements ) );
 					}
 				}
 
@@ -231,7 +227,7 @@ class WPCF7_HTMLFormatter {
 		return preg_replace( '/\s*\n\s*/', '<br />', $text );
 	}
 
-	public static function auto_indent( $level ) {
+	public static function indent( $level ) {
 		$level = (int) $level;
 
 		if ( 0 < $level ) {
