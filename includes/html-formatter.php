@@ -51,16 +51,34 @@ class WPCF7_HTMLFormatter {
 		) );
 	}
 
-	public function format() {
+	public function pre_format() {
 		$iterator = new WPCF7_HTMLIterator( $this->input );
 
 		foreach ( $iterator->iterate() as $chunk ) {
-			$position = $chunk['position'];
+			$position = isset( $chunk_prev )
+				? $chunk_prev['position'] + strlen( $chunk_prev['content'] )
+				: $chunk['position'];
 			$type = $chunk['type'];
 			$content = $chunk['content'];
 
 			// Standardize newline characters to "\n".
 			$content = str_replace( array( "\r\n", "\r" ), "\n", $content );
+
+			$chunk_prev = array(
+				'position' => $position,
+				'type' => $type,
+				'content' => $content,
+			);
+
+			yield $chunk_prev;
+		}
+	}
+
+	public function format() {
+		foreach ( $this->pre_format() as $chunk ) {
+			$position = $chunk['position'];
+			$type = $chunk['type'];
+			$content = $chunk['content'];
 
 			if ( $type === WPCF7_HTMLIterator::text ) {
 				$this->append_text( $content );
