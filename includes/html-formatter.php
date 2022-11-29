@@ -64,6 +64,10 @@ class WPCF7_HTMLFormatter {
 			// Standardize newline characters to "\n".
 			$content = str_replace( array( "\r\n", "\r" ), "\n", $content );
 
+			if ( $type === WPCF7_HTMLIterator::opening_tag ) {
+				$content = self::normalize_void_element( $content );
+			}
+
 			$chunk_prev = array(
 				'position' => $position,
 				'type' => $type,
@@ -175,10 +179,7 @@ class WPCF7_HTMLFormatter {
 			$this->append_closing_tag( 'li' );
 		}
 
-		if ( in_array( $tag_name, self::void_elements ) ) {
-			// Normalize void element.
-			$tag = preg_replace( '/\s*\/?>/', ' />', $tag );
-		} else {
+		if ( ! in_array( $tag_name, self::void_elements ) ) {
 			array_unshift( $this->stacked_elements, $tag_name );
 		}
 
@@ -253,6 +254,21 @@ class WPCF7_HTMLFormatter {
 		}
 
 		return '';
+	}
+
+	public static function normalize_void_element( $tag ) {
+		if ( preg_match( '/<(.+?)[\s\/>]/', $tag, $matches ) ) {
+			$tag_name = strtolower( $matches[1] );
+		} else {
+			$tag_name = strtolower( $tag );
+			$tag = sprintf( '<%s>', $tag_name );
+		}
+
+		if ( in_array( $tag_name, self::void_elements ) ) {
+			$tag = preg_replace( '/\s*\/?>/', ' />', $tag );
+		}
+
+		return $tag;
 	}
 
 }
