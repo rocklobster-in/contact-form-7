@@ -164,8 +164,11 @@ class WPCF7_HTMLFormatter {
 		}
 
 		if ( $this->is_inside( self::p_child_elements ) ) {
-			if ( $this->options['auto_br'] ) {
+			if ( $this->options['auto_br']
+			and $this->has_parent( self::br_parent_elements ) ) {
 				$content = self::auto_br( $content );
+			} else {
+				$content = preg_replace( '/\s*\n\s*/', "\n", $content );
 			}
 
 			$this->output .= $content;
@@ -181,6 +184,8 @@ class WPCF7_HTMLFormatter {
 
 				if ( $this->options['auto_br'] ) {
 					$paragraph = self::auto_br( $paragraph );
+				} else {
+					$paragraph = preg_replace( '/\s*\n\s*/', "\n", $paragraph );
 				}
 
 				$this->output .= $paragraph;
@@ -272,8 +277,8 @@ class WPCF7_HTMLFormatter {
 		$this->output .= $tag;
 	}
 
-	public function is_inside( $tag_name ) {
-		$tag_names = (array) $tag_name;
+	public function is_inside( $tag_names ) {
+		$tag_names = (array) $tag_names;
 
 		foreach ( $this->stacked_elements as $element ) {
 			if ( in_array( $element, $tag_names ) ) {
@@ -282,6 +287,18 @@ class WPCF7_HTMLFormatter {
 		}
 
 		return false;
+	}
+
+	public function has_parent( $tag_names ) {
+		$tag_names = (array) $tag_names;
+
+		$parent = reset( $this->stacked_elements );
+
+		if ( false === $parent ) {
+			return false;
+		}
+
+		return in_array( $parent, $tag_names );
 	}
 
 	public static function auto_br( $text ) {
