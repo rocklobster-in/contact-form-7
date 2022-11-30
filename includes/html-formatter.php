@@ -53,6 +53,11 @@ class WPCF7_HTMLFormatter {
 
 	public static function pre_format( WPCF7_HTMLIterator $iterator ) {
 		$position = 0;
+
+		$calc_position_cb = function ( $chunk ) {
+			return $chunk['position'] + strlen( $chunk['content'] );
+		};
+
 		$text_left = null;
 
 		foreach ( $iterator->iterate() as $chunk ) {
@@ -79,12 +84,12 @@ class WPCF7_HTMLFormatter {
 
 			if ( isset( $text_left ) ) {
 				yield $text_left;
-				$position = $text_left['position'] + strlen( $text_left['content'] );
+				$chunk['position'] = call_user_func( $calc_position_cb, $text_left );
 				$text_left = null;
 			}
 
 			yield $chunk;
-			$position = $chunk['position'] + strlen( $chunk['content'] );
+			$position = call_user_func( $calc_position_cb, $chunk );
 		}
 
 		if ( isset( $text_left ) ) {
