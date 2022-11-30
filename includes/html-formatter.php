@@ -155,11 +155,6 @@ class WPCF7_HTMLFormatter {
 			$this->output .= $content;
 
 		} else {
-			// Open <p> if it does not exist.
-			if ( ! $this->is_inside( 'p' ) ) {
-				$this->append_opening_tag( 'p' );
-			}
-
 			// Split up the contents into paragraphs, separated by double line breaks.
 			$paragraphs = preg_split( '/\n\s*\n/', $content );
 
