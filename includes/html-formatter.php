@@ -72,7 +72,14 @@ class WPCF7_HTMLFormatter {
 				$chunk['content'] = self::normalize_void_element( $chunk['content'] );
 			}
 
+			// Replace <br> by a line break.
+			if ( preg_match( '/^<br\s*\/?>$/i', $chunk['content'] ) ) {
+				$chunk['type'] = WPCF7_HTMLIterator::text;
+				$chunk['content'] = "\n";
+			}
+
 			if ( $chunk['type'] === WPCF7_HTMLIterator::text ) {
+				// Concatenate neighboring texts.
 				if ( isset( $text_left ) ) {
 					$text_left['content'] .= $chunk['content'];
 				} else {
