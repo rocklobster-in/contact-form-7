@@ -106,9 +106,8 @@ class WPCF7_HTMLFormatter {
 
 	public function format() {
 		$iterator = new WPCF7_HTMLIterator( $this->input );
-		$iterator = $this->pre_format( $iterator );
 
-		foreach ( $iterator as $chunk ) {
+		foreach ( $this->pre_format( $iterator ) as $chunk ) {
 			$position = $chunk['position'];
 			$type = $chunk['type'];
 			$content = $chunk['content'];
