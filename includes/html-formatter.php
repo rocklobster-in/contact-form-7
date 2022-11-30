@@ -105,6 +105,9 @@ class WPCF7_HTMLFormatter {
 	}
 
 	public function format() {
+		$this->output = '';
+		$this->stacked_elements = array();
+
 		$iterator = new WPCF7_HTMLIterator( $this->input );
 
 		foreach ( $this->pre_format( $iterator ) as $chunk ) {
