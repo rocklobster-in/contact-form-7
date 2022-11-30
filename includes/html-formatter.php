@@ -51,9 +51,7 @@ class WPCF7_HTMLFormatter {
 		) );
 	}
 
-	public function pre_format() {
-		$iterator = new WPCF7_HTMLIterator( $this->input );
-
+	public static function pre_format( WPCF7_HTMLIterator $iterator ) {
 		foreach ( $iterator->iterate() as $chunk ) {
 			$position = isset( $chunk_prev )
 				? $chunk_prev['position'] + strlen( $chunk_prev['content'] )
@@ -79,7 +77,10 @@ class WPCF7_HTMLFormatter {
 	}
 
 	public function format() {
-		foreach ( $this->pre_format() as $chunk ) {
+		$iterator = new WPCF7_HTMLIterator( $this->input );
+		$iterator = self::pre_format( $iterator );
+
+		foreach ( $iterator as $chunk ) {
 			$position = $chunk['position'];
 			$type = $chunk['type'];
 			$content = $chunk['content'];
