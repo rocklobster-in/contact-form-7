@@ -37,6 +37,22 @@ class WPCF7_HTMLFormatter {
 		'video', 'wbr',
 	);
 
+	/**
+	 * HTML elements that can contain phrasing content.
+	 */
+	const br_parent_elements = array(
+		'a', 'abbr', 'address', 'article', 'aside', 'audio', 'b', 'bdi',
+		'bdo', 'blockquote', 'button', 'canvas', 'caption', 'cite', 'code',
+		'data', 'datalist', 'dd', 'del', 'details', 'dfn', 'dialog', 'div',
+		'dt', 'em', 'fieldset', 'figcaption', 'figure', 'footer', 'form',
+		'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'header', 'i', 'ins', 'kbd',
+		'label', 'legend', 'li', 'main', 'map', 'mark', 'meter', 'nav',
+		'noscript', 'object', 'output', 'p', 'pre', 'progress', 'q', 'rt',
+		'ruby', 's', 'samp', 'section', 'slot', 'small', 'span', 'strong',
+		'sub', 'summary', 'sup', 'td', 'template', 'th', 'time', 'u', 'var',
+		'video',
+	);
+
 	private $input = '';
 	private $output = '';
 	private $stacked_elements = array();
