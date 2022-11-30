@@ -52,27 +52,43 @@ class WPCF7_HTMLFormatter {
 	}
 
 	public static function pre_format( WPCF7_HTMLIterator $iterator ) {
+		$position = 0;
+		$text_left = null;
+
 		foreach ( $iterator->iterate() as $chunk ) {
-			$position = isset( $chunk_prev )
-				? $chunk_prev['position'] + strlen( $chunk_prev['content'] )
-				: $chunk['position'];
-			$type = $chunk['type'];
-			$content = $chunk['content'];
+			$chunk['position'] = $position;
 
 			// Standardize newline characters to "\n".
-			$content = str_replace( array( "\r\n", "\r" ), "\n", $content );
-
-			if ( $type === WPCF7_HTMLIterator::opening_tag ) {
-				$content = self::normalize_void_element( $content );
-			}
-
-			$chunk_prev = array(
-				'position' => $position,
-				'type' => $type,
-				'content' => $content,
+			$chunk['content'] = str_replace(
+				array( "\r\n", "\r" ), "\n", $chunk['content']
 			);
 
-			yield $chunk_prev;
+			if ( $chunk['type'] === WPCF7_HTMLIterator::opening_tag ) {
+				$chunk['content'] = self::normalize_void_element( $chunk['content'] );
+			}
+
+			if ( $chunk['type'] === WPCF7_HTMLIterator::text ) {
+				if ( isset( $text_left ) ) {
+					$text_left['content'] .= $chunk['content'];
+				} else {
+					$text_left = $chunk;
+				}
+
+				continue;
+			}
+
+			if ( isset( $text_left ) ) {
+				yield $text_left;
+				$position = $text_left['position'] + strlen( $text_left['content'] );
+				$text_left = null;
+			}
+
+			yield $chunk;
+			$position = $chunk['position'] + strlen( $chunk['content'] );
+		}
+
+		if ( isset( $text_left ) ) {
+			yield $text_left;
 		}
 	}
 
