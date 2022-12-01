@@ -29,7 +29,7 @@ class WPCF7_HTMLFormatter {
 	 * a paragraph element.
 	 */
 	const p_nonparent_elements = array(
-		'body', 'colgroup', 'dl', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+		'colgroup', 'dl', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
 		'head', 'hgroup', 'html', 'legend', 'menu', 'ol', 'optgroup',
 		'option', 'pre', 'rp', 'rt', 'style', 'summary', 'table',
 		'tbody', 'tfoot', 'thead', 'title', 'tr', 'ul',
