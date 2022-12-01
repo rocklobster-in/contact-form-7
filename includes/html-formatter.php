@@ -86,12 +86,13 @@ class WPCF7_HTMLFormatter {
 
 			if ( $chunk['type'] === WPCF7_HTMLIterator::opening_tag ) {
 				$chunk['content'] = self::normalize_void_element( $chunk['content'] );
-			}
 
-			// Replace <br> by a line break.
-			if ( preg_match( '/^<br\s*\/?>$/i', $chunk['content'] ) ) {
-				$chunk['type'] = WPCF7_HTMLIterator::text;
-				$chunk['content'] = "\n";
+				// Replace <br /> by a line break.
+				if ( $this->options['auto_br']
+				and preg_match( '/^<br\s*\/?>$/i', $chunk['content'] ) ) {
+					$chunk['type'] = WPCF7_HTMLIterator::text;
+					$chunk['content'] = "\n";
+				}
 			}
 
 			if ( $chunk['type'] === WPCF7_HTMLIterator::text ) {
