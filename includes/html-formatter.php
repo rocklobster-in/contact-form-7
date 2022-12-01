@@ -128,24 +128,21 @@ class WPCF7_HTMLFormatter {
 		$iterator = new WPCF7_HTMLIterator( $this->input );
 
 		foreach ( $this->pre_format( $iterator ) as $chunk ) {
-			$position = $chunk['position'];
-			$type = $chunk['type'];
-			$content = $chunk['content'];
 
-			if ( $type === WPCF7_HTMLIterator::text ) {
-				$this->append_text( $content );
+			if ( $chunk['type'] === WPCF7_HTMLIterator::text ) {
+				$this->append_text( $chunk['content'] );
 			}
 
-			if ( $type === WPCF7_HTMLIterator::opening_tag ) {
-				$this->append_opening_tag( $content );
+			if ( $chunk['type'] === WPCF7_HTMLIterator::opening_tag ) {
+				$this->append_opening_tag( $chunk['content'] );
 			}
 
-			if ( $type === WPCF7_HTMLIterator::closing_tag ) {
-				$this->append_closing_tag( $content );
+			if ( $chunk['type'] === WPCF7_HTMLIterator::closing_tag ) {
+				$this->append_closing_tag( $chunk['content'] );
 			}
 
-			if ( $type === WPCF7_HTMLIterator::comment ) {
-				$this->append_comment( $content );
+			if ( $chunk['type'] === WPCF7_HTMLIterator::comment ) {
+				$this->append_comment( $chunk['content'] );
 			}
 		}
 
