@@ -215,7 +215,8 @@ class WPCF7_HTMLFormatter {
 
 		if ( in_array( $tag_name, self::p_child_elements ) ) {
 			// Open <p> if it does not exist.
-			if ( ! $this->is_inside( 'p' ) ) {
+			if ( ! $this->is_inside( 'p' )
+			and ! $this->has_parent( self::p_nonparent_elements ) ) {
 				$this->append_opening_tag( 'p' );
 			}
 		} else {
