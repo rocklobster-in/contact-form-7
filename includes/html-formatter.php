@@ -100,8 +100,10 @@ class WPCF7_HTMLFormatter {
 				$chunk['content'] = self::normalize_void_element( $chunk['content'] );
 
 				// Replace <br /> by a line break.
-				if ( $this->options['auto_br']
-				and preg_match( '/^<br\s*\/?>$/i', $chunk['content'] ) ) {
+				if (
+					$this->options['auto_br'] and
+					preg_match( '/^<br\s*\/?>$/i', $chunk['content'] )
+				) {
 					$chunk['type'] = WPCF7_HTMLIterator::text;
 					$chunk['content'] = "\n";
 				}
@@ -170,10 +172,14 @@ class WPCF7_HTMLFormatter {
 		if ( $this->is_inside( 'pre' ) ) {
 			$this->output .= $content;
 
-		} elseif ( $this->is_inside( self::p_child_elements )
-		or $this->has_parent( self::p_nonparent_elements ) ) {
-			if ( $this->options['auto_br']
-			and $this->has_parent( self::br_parent_elements ) ) {
+		} elseif (
+			$this->is_inside( self::p_child_elements ) or
+			$this->has_parent( self::p_nonparent_elements )
+		) {
+			if (
+				$this->options['auto_br'] and
+				$this->has_parent( self::br_parent_elements )
+			) {
 				$content = self::auto_br( $content );
 			} else {
 				$content = preg_replace( '/\s*\n\s*/', "\n", $content );
@@ -214,9 +220,12 @@ class WPCF7_HTMLFormatter {
 		}
 
 		if ( in_array( $tag_name, self::p_child_elements ) ) {
-			// Open <p> if it does not exist.
-			if ( ! $this->is_inside( 'p' )
-			and ! $this->has_parent( self::p_nonparent_elements ) ) {
+
+			if (
+				! $this->is_inside( 'p' ) and
+				! $this->has_parent( self::p_nonparent_elements )
+			) {
+				// Open <p> if it does not exist.
 				$this->append_opening_tag( 'p' );
 			}
 		} else {
