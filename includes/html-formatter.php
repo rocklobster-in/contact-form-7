@@ -19,8 +19,20 @@ class WPCF7_HTMLFormatter {
 	 */
 	const p_parent_elements = array(
 		'address', 'article', 'aside', 'blockquote', 'caption', 'dd',
-		'details', 'dialog', 'div', 'dt', 'fieldset', 'figcaption', 'figure',
-		'footer', 'form', 'header', 'li', 'main', 'nav', 'section', 'td', 'th',
+		'details', 'dialog', 'div', 'dt', 'fieldset', 'figcaption',
+		'figure', 'footer', 'form', 'header', 'li', 'main', 'nav',
+		'section', 'template', 'td', 'th',
+	);
+
+	/**
+	 * HTML elements that can be neither the parent nor a child of
+	 * another paragraph element.
+	 */
+	const p_nonparent_elements = array(
+		'body', 'colgroup', 'dl', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+		'head', 'hgroup', 'html', 'legend', 'menu', 'ol', 'optgroup',
+		'option', 'p', 'pre', 'rp', 'rt', 'style', 'summary', 'table',
+		'tbody', 'tfoot', 'thead', 'title', 'tr', 'ul',
 	);
 
 	/**
@@ -32,9 +44,9 @@ class WPCF7_HTMLFormatter {
 		'em', 'embed', 'i', 'iframe', 'img', 'input', 'ins', 'kbd',
 		'keygen', 'label', 'link', 'map', 'mark', 'math', 'meta',
 		'meter', 'noscript', 'object', 'output', 'picture', 'progress',
-		'q', 'ruby', 's', 'samp', 'script', 'select', 'small', 'span',
-		'strong', 'sub', 'sup', 'svg', 'textarea', 'time', 'u', 'var',
-		'video', 'wbr',
+		'q', 'ruby', 's', 'samp', 'script', 'select', 'slot', 'small',
+		'span', 'strong', 'sub', 'sup', 'svg', 'template', 'textarea',
+		'time', 'u', 'var', 'video', 'wbr',
 	);
 
 	/**
