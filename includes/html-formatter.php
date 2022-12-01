@@ -26,12 +26,12 @@ class WPCF7_HTMLFormatter {
 
 	/**
 	 * HTML elements that can be neither the parent nor a child of
-	 * another paragraph element.
+	 * a paragraph element.
 	 */
 	const p_nonparent_elements = array(
 		'body', 'colgroup', 'dl', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
 		'head', 'hgroup', 'html', 'legend', 'menu', 'ol', 'optgroup',
-		'option', 'p', 'pre', 'rp', 'rt', 'style', 'summary', 'table',
+		'option', 'pre', 'rp', 'rt', 'style', 'summary', 'table',
 		'tbody', 'tfoot', 'thead', 'title', 'tr', 'ul',
 	);
 
@@ -167,13 +167,11 @@ class WPCF7_HTMLFormatter {
 	}
 
 	public function append_text( $content ) {
-		// Inside <pre>
 		if ( $this->is_inside( 'pre' ) ) {
 			$this->output .= $content;
-			return;
-		}
 
-		if ( $this->is_inside( self::p_child_elements ) ) {
+		} elseif ( $this->is_inside( self::p_child_elements )
+		or $this->has_parent( self::p_nonparent_elements ) ) {
 			if ( $this->options['auto_br']
 			and $this->has_parent( self::br_parent_elements ) ) {
 				$content = self::auto_br( $content );
