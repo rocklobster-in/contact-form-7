@@ -18,8 +18,8 @@ class WPCF7_HTMLFormatter {
 	 * HTML elements that can contain flow content.
 	 */
 	const p_parent_elements = array(
-		'address', 'article', 'aside', 'blockquote', 'caption', 'dd',
-		'details', 'dialog', 'div', 'dt', 'fieldset', 'figcaption',
+		'address', 'article', 'aside', 'blockquote', 'body', 'caption',
+		'dd', 'details', 'dialog', 'div', 'dt', 'fieldset', 'figcaption',
 		'figure', 'footer', 'form', 'header', 'li', 'main', 'nav',
 		'section', 'template', 'td', 'th',
 	);
