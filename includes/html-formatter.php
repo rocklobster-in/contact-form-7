@@ -149,11 +149,11 @@ class WPCF7_HTMLFormatter {
 			}
 
 			if ( $chunk['type'] === WPCF7_HTMLIterator::start_tag ) {
-				$this->append_opening_tag( $chunk['content'] );
+				$this->start_tag( $chunk['content'] );
 			}
 
 			if ( $chunk['type'] === WPCF7_HTMLIterator::end_tag ) {
-				$this->append_closing_tag( $chunk['content'] );
+				$this->end_tag( $chunk['content'] );
 			}
 
 			if ( $chunk['type'] === WPCF7_HTMLIterator::comment ) {
@@ -163,7 +163,7 @@ class WPCF7_HTMLFormatter {
 
 		// Close all remaining tags.
 		if ( $this->stacked_elements ) {
-			$this->append_closing_tag( end( $this->stacked_elements ) );
+			$this->end_tag( end( $this->stacked_elements ) );
 		}
 
 		return $this->output;
@@ -193,7 +193,7 @@ class WPCF7_HTMLFormatter {
 			$paragraphs = preg_split( '/\n\s*\n/', $content );
 
 			foreach ( $paragraphs as $paragraph ) {
-				$this->append_opening_tag( 'p' );
+				$this->start_tag( 'p' );
 
 				$paragraph = trim( $paragraph );
 
@@ -207,12 +207,12 @@ class WPCF7_HTMLFormatter {
 			}
 
 			if ( preg_match( '/\n\s*\n$/', $content ) ) {
-				$this->append_closing_tag( 'p' );
+				$this->end_tag( 'p' );
 			}
 		}
 	}
 
-	public function append_opening_tag( $tag ) {
+	public function start_tag( $tag ) {
 		if ( preg_match( '/<(.+?)[\s\/>]/', $tag, $matches ) ) {
 			$tag_name = strtolower( $matches[1] );
 		} else {
@@ -226,22 +226,22 @@ class WPCF7_HTMLFormatter {
 				! $this->has_parent( self::p_nonparent_elements )
 			) {
 				// Open <p> if it does not exist.
-				$this->append_opening_tag( 'p' );
+				$this->start_tag( 'p' );
 			}
 		} else {
 			// Close <p> if it exists.
-			$this->append_closing_tag( 'p' );
+			$this->end_tag( 'p' );
 		}
 
 		if ( 'dd' === $tag_name or 'dt' === $tag_name ) {
 			// Close <dd> and <dt> if closing tag is omitted.
-			$this->append_closing_tag( 'dd' );
-			$this->append_closing_tag( 'dt' );
+			$this->end_tag( 'dd' );
+			$this->end_tag( 'dt' );
 		}
 
 		if ( 'li' === $tag_name ) {
 			// Close <li> if closing tag is omitted.
-			$this->append_closing_tag( 'li' );
+			$this->end_tag( 'li' );
 		}
 
 		if ( ! in_array( $tag_name, self::void_elements ) ) {
@@ -259,7 +259,7 @@ class WPCF7_HTMLFormatter {
 		$this->output .= $tag;
 	}
 
-	public function append_closing_tag( $tag ) {
+	public function end_tag( $tag ) {
 		if ( preg_match( '/<\/(.+?)(?:\s|>)/', $tag, $matches ) ) {
 			$tag_name = strtolower( $matches[1] );
 		} else {
