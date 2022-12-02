@@ -97,7 +97,7 @@ class WPCF7_HTMLFormatter {
 				array( "\r\n", "\r" ), "\n", $chunk['content']
 			);
 
-			if ( $chunk['type'] === WPCF7_HTMLIterator::opening_tag ) {
+			if ( $chunk['type'] === WPCF7_HTMLIterator::start_tag ) {
 				$chunk['content'] = self::normalize_void_element( $chunk['content'] );
 
 				// Replace <br /> by a line break.
@@ -148,11 +148,11 @@ class WPCF7_HTMLFormatter {
 				$this->append_text( $chunk['content'] );
 			}
 
-			if ( $chunk['type'] === WPCF7_HTMLIterator::opening_tag ) {
+			if ( $chunk['type'] === WPCF7_HTMLIterator::start_tag ) {
 				$this->append_opening_tag( $chunk['content'] );
 			}
 
-			if ( $chunk['type'] === WPCF7_HTMLIterator::closing_tag ) {
+			if ( $chunk['type'] === WPCF7_HTMLIterator::end_tag ) {
 				$this->append_closing_tag( $chunk['content'] );
 			}
 

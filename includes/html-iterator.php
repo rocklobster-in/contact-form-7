@@ -3,8 +3,8 @@
 class WPCF7_HTMLIterator {
 
 	const text = 0;
-	const opening_tag = 1;
-	const closing_tag = 2;
+	const start_tag = 1;
+	const end_tag = 2;
 	const comment = 3;
 
 	private $input = '';
@@ -55,9 +55,9 @@ class WPCF7_HTMLIterator {
 			if ( '<!' === substr( $next_tag, 0, 2 ) ) {
 				$next_tag_type = self::comment;
 			} elseif ( '</' === substr( $next_tag, 0, 2 ) ) {
-				$next_tag_type = self::closing_tag;
+				$next_tag_type = self::end_tag;
 			} else {
-				$next_tag_type = self::opening_tag;
+				$next_tag_type = self::start_tag;
 			}
 
 			yield array(
