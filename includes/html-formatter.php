@@ -18,7 +18,7 @@ class WPCF7_HTMLFormatter {
 	const void_elements = array(
 		'area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input',
 		'keygen', 'link', 'meta', 'param', 'source', 'track', 'wbr',
-		'wpcf7:block', 'wpcf7:inline',
+		'placeholder:block', 'placeholder:inline',
 	);
 
 	/**
@@ -53,7 +53,7 @@ class WPCF7_HTMLFormatter {
 		'meter', 'noscript', 'object', 'output', 'picture', 'progress',
 		'q', 'ruby', 's', 'samp', 'script', 'select', 'slot', 'small',
 		'span', 'strong', 'sub', 'sup', 'svg', 'template', 'textarea',
-		'time', 'u', 'var', 'video', 'wbr', 'wpcf7:inline',
+		'time', 'u', 'var', 'video', 'wbr', 'placeholder:inline',
 	);
 
 	/**
@@ -184,7 +184,6 @@ class WPCF7_HTMLFormatter {
 			$chunk['position'] = $position;
 
 			if ( $chunk['type'] === self::text ) {
-				// Concatenate neighboring texts.
 				if ( isset( $text_left ) ) {
 					$text_left['content'] .= $chunk['content'];
 				} else {
