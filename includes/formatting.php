@@ -9,9 +9,11 @@
 function wpcf7_autop( $input ) {
 	require_once WPCF7_PLUGIN_DIR . '/includes/html-formatter.php';
 
-	$formatter = new WPCF7_HTMLFormatter( $input );
+	$formatter = new WPCF7_HTMLFormatter();
 
-	return $formatter->format();
+	$chunks = $formatter->generate_chunks( $input );
+
+	return $formatter->format( $chunks );
 }
 
 

@@ -1,8 +1,14 @@
 <?php
 
-require_once WPCF7_PLUGIN_DIR . '/includes/html-iterator.php';
-
 class WPCF7_HTMLFormatter {
+
+	/**
+	 * HTML chunk types.
+	 */
+	const text = 0;
+	const start_tag = 1;
+	const end_tag = 2;
+	const comment = 3;
 
 	/**
 	 * The void elements in HTML.
@@ -66,21 +72,78 @@ class WPCF7_HTMLFormatter {
 		'video',
 	);
 
-	private $input = '';
 	private $output = '';
 	private $stacked_elements = array();
 	private $options = array();
 
-	public function __construct( string $input, $args = '' ) {
-		$this->input = $input;
-
+	public function __construct( $args = '' ) {
 		$this->options = wp_parse_args( $args, array(
 			'auto_br' => true,
 			'auto_indent' => true,
 		) );
 	}
 
-	public function pre_format( WPCF7_HTMLIterator $iterator ) {
+	public function generate_chunks( string $input ) {
+		$input_bytelength = strlen( $input );
+		$position = 0;
+
+		while ( $position < $input_bytelength ) {
+			$next_tag = preg_match(
+				'/(?:<!--.*?-->|<(?:\/?)[a-z].*?>)/is',
+				$input,
+				$matches,
+				PREG_OFFSET_CAPTURE,
+				$position
+			);
+
+			if ( ! $next_tag ) {
+				yield array(
+					'position' => $position,
+					'type' => self::text,
+					'content' => substr( $input, $position ),
+				);
+
+				break;
+			}
+
+			$next_tag = $matches[0][0];
+			$next_tag_position = $matches[0][1];
+
+			if ( $position < $next_tag_position ) {
+				yield array(
+					'position' => $position,
+					'type' => self::text,
+					'content' => substr(
+						$input,
+						$position,
+						$next_tag_position - $position
+					),
+				);
+			}
+
+			if ( '<!' === substr( $next_tag, 0, 2 ) ) {
+				$next_tag_type = self::comment;
+			} elseif ( '</' === substr( $next_tag, 0, 2 ) ) {
+				$next_tag_type = self::end_tag;
+			} else {
+				$next_tag_type = self::start_tag;
+			}
+
+			yield array(
+				'position' => $next_tag_position,
+				'type' => $next_tag_type,
+				'content' => substr(
+					$input,
+					$next_tag_position,
+					strlen( $next_tag )
+				),
+			);
+
+			$position = $next_tag_position + strlen( $next_tag );
+		}
+	}
+
+	public function pre_format( $chunks ) {
 		$position = 0;
 
 		$calc_position_cb = function ( $chunk ) {
@@ -89,7 +152,7 @@ class WPCF7_HTMLFormatter {
 
 		$text_left = null;
 
-		foreach ( $iterator->iterate() as $chunk ) {
+		foreach ( $chunks as $chunk ) {
 			$chunk['position'] = $position;
 
 			// Standardize newline characters to "\n".
@@ -97,7 +160,7 @@ class WPCF7_HTMLFormatter {
 				array( "\r\n", "\r" ), "\n", $chunk['content']
 			);
 
-			if ( $chunk['type'] === WPCF7_HTMLIterator::start_tag ) {
+			if ( $chunk['type'] === self::start_tag ) {
 				$chunk['content'] = self::normalize_void_element( $chunk['content'] );
 
 				// Replace <br /> by a line break.
@@ -105,12 +168,12 @@ class WPCF7_HTMLFormatter {
 					$this->options['auto_br'] and
 					preg_match( '/^<br\s*\/?>$/i', $chunk['content'] )
 				) {
-					$chunk['type'] = WPCF7_HTMLIterator::text;
+					$chunk['type'] = self::text;
 					$chunk['content'] = "\n";
 				}
 			}
 
-			if ( $chunk['type'] === WPCF7_HTMLIterator::text ) {
+			if ( $chunk['type'] === self::text ) {
 				// Concatenate neighboring texts.
 				if ( isset( $text_left ) ) {
 					$text_left['content'] .= $chunk['content'];
@@ -136,27 +199,27 @@ class WPCF7_HTMLFormatter {
 		}
 	}
 
-	public function format() {
+	public function format( $chunks ) {
+		$chunks = $this->pre_format( $chunks );
+
 		$this->output = '';
 		$this->stacked_elements = array();
 
-		$iterator = new WPCF7_HTMLIterator( $this->input );
+		foreach ( $chunks as $chunk ) {
 
-		foreach ( $this->pre_format( $iterator ) as $chunk ) {
-
-			if ( $chunk['type'] === WPCF7_HTMLIterator::text ) {
+			if ( $chunk['type'] === self::text ) {
 				$this->append_text( $chunk['content'] );
 			}
 
-			if ( $chunk['type'] === WPCF7_HTMLIterator::start_tag ) {
+			if ( $chunk['type'] === self::start_tag ) {
 				$this->start_tag( $chunk['content'] );
 			}
 
-			if ( $chunk['type'] === WPCF7_HTMLIterator::end_tag ) {
+			if ( $chunk['type'] === self::end_tag ) {
 				$this->end_tag( $chunk['content'] );
 			}
 
-			if ( $chunk['type'] === WPCF7_HTMLIterator::comment ) {
+			if ( $chunk['type'] === self::comment ) {
 				$this->append_comment( $chunk['content'] );
 			}
 		}
