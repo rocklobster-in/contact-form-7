@@ -143,14 +143,12 @@ class WPCF7_HTMLFormatter {
 		}
 	}
 
+	public static function calc_next_position( $chunk ) {
+		return $chunk['position'] + strlen( $chunk['content'] );
+	}
+
 	public function pre_format( $chunks ) {
 		$position = 0;
-
-		$calc_position_cb = function ( $chunk ) {
-			return $chunk['position'] + strlen( $chunk['content'] );
-		};
-
-		$text_left = null;
 
 		foreach ( $chunks as $chunk ) {
 			$chunk['position'] = $position;
@@ -173,6 +171,18 @@ class WPCF7_HTMLFormatter {
 				}
 			}
 
+			yield $chunk;
+			$position = self::calc_next_position( $chunk );
+		}
+	}
+
+	public function concatenate_texts( $chunks ) {
+		$position = 0;
+		$text_left = null;
+
+		foreach ( $chunks as $chunk ) {
+			$chunk['position'] = $position;
+
 			if ( $chunk['type'] === self::text ) {
 				// Concatenate neighboring texts.
 				if ( isset( $text_left ) ) {
@@ -186,12 +196,12 @@ class WPCF7_HTMLFormatter {
 
 			if ( isset( $text_left ) ) {
 				yield $text_left;
-				$chunk['position'] = call_user_func( $calc_position_cb, $text_left );
+				$chunk['position'] = self::calc_next_position( $text_left );
 				$text_left = null;
 			}
 
 			yield $chunk;
-			$position = call_user_func( $calc_position_cb, $chunk );
+			$position = self::calc_next_position( $chunk );
 		}
 
 		if ( isset( $text_left ) ) {
@@ -201,6 +211,7 @@ class WPCF7_HTMLFormatter {
 
 	public function format( $chunks ) {
 		$chunks = $this->pre_format( $chunks );
+		$chunks = $this->concatenate_texts( $chunks );
 
 		$this->output = '';
 		$this->stacked_elements = array();
