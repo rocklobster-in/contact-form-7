@@ -143,10 +143,6 @@ class WPCF7_HTMLFormatter {
 		}
 	}
 
-	public static function calc_next_position( $chunk ) {
-		return $chunk['position'] + strlen( $chunk['content'] );
-	}
-
 	public function pre_format( $chunks ) {
 		$position = 0;
 
@@ -390,6 +386,10 @@ class WPCF7_HTMLFormatter {
 		}
 
 		return in_array( $parent, $tag_names );
+	}
+
+	public static function calc_next_position( $chunk ) {
+		return $chunk['position'] + strlen( $chunk['content'] );
 	}
 
 	public static function indent( $level ) {
