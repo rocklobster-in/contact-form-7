@@ -254,7 +254,7 @@ class WPCF7_HTMLFormatter {
 				$this->options['auto_br'] and
 				$this->has_parent( self::br_parent_elements )
 			) {
-				$content = self::auto_br( $content );
+				$content = preg_replace( '/\s*\n\s*/', '<br />', $content );
 			} else {
 				$content = preg_replace( '/\s*\n\s*/', "\n", $content );
 			}
@@ -271,7 +271,7 @@ class WPCF7_HTMLFormatter {
 				$paragraph = trim( $paragraph );
 
 				if ( $this->options['auto_br'] ) {
-					$paragraph = self::auto_br( $paragraph );
+					$paragraph = preg_replace( '/\s*\n\s*/', '<br />', $paragraph );
 				} else {
 					$paragraph = preg_replace( '/\s*\n\s*/', "\n", $paragraph );
 				}
@@ -390,10 +390,6 @@ class WPCF7_HTMLFormatter {
 		}
 
 		return in_array( $parent, $tag_names );
-	}
-
-	public static function auto_br( $text ) {
-		return preg_replace( '/\s*\n\s*/', '<br />', $text );
 	}
 
 	public static function indent( $level ) {
