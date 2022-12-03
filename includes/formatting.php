@@ -11,7 +11,7 @@ function wpcf7_autop( $input ) {
 
 	$formatter = new WPCF7_HTMLFormatter();
 
-	$chunks = $formatter->generate_chunks( $input );
+	$chunks = $formatter->separate_into_chunks( $input );
 
 	return $formatter->format( $chunks );
 }

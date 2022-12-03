@@ -3,7 +3,7 @@
 class WPCF7_HTMLFormatter {
 
 	/**
-	 * HTML chunk types.
+	 * HTML component types.
 	 */
 	const text = 0;
 	const start_tag = 1;
@@ -83,7 +83,7 @@ class WPCF7_HTMLFormatter {
 		) );
 	}
 
-	public function generate_chunks( string $input ) {
+	public function separate_into_chunks( string $input ) {
 		$input_bytelength = strlen( $input );
 		$position = 0;
 
