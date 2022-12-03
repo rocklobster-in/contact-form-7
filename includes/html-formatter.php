@@ -155,7 +155,8 @@ class WPCF7_HTMLFormatter {
 			);
 
 			if ( $chunk['type'] === self::start_tag ) {
-				$chunk['content'] = self::normalize_void_element( $chunk['content'] );
+				list( $chunk['content'] ) =
+					self::normalize_start_tag( $chunk['content'] );
 
 				// Replace <br /> by a line break.
 				if (
@@ -282,12 +283,7 @@ class WPCF7_HTMLFormatter {
 	}
 
 	public function start_tag( $tag ) {
-		if ( preg_match( '/<(.+?)[\s\/>]/', $tag, $matches ) ) {
-			$tag_name = strtolower( $matches[1] );
-		} else {
-			$tag_name = strtolower( $tag );
-			$tag = sprintf( '<%s>', $tag_name );
-		}
+		list( $tag, $tag_name ) = self::normalize_start_tag( $tag );
 
 		if ( in_array( $tag_name, self::p_child_elements ) ) {
 			if (
@@ -402,7 +398,7 @@ class WPCF7_HTMLFormatter {
 		return '';
 	}
 
-	public static function normalize_void_element( $tag ) {
+	public static function normalize_start_tag( $tag ) {
 		if ( preg_match( '/<(.+?)[\s\/>]/', $tag, $matches ) ) {
 			$tag_name = strtolower( $matches[1] );
 		} else {
@@ -411,10 +407,11 @@ class WPCF7_HTMLFormatter {
 		}
 
 		if ( in_array( $tag_name, self::void_elements ) ) {
+			// Normalize void element.
 			$tag = preg_replace( '/\s*\/?>/', ' />', $tag );
 		}
 
-		return $tag;
+		return array( $tag, $tag_name );
 	}
 
 }
