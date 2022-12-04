@@ -303,10 +303,24 @@ class WPCF7_HTMLFormatter {
 			// Split up the contents into paragraphs, separated by double line breaks.
 			$paragraphs = preg_split( '/\n\s*\n/', $content );
 
+			if ( empty( $paragraphs ) ) {
+				return;
+			}
+
+			if ( $this->is_inside( 'p' ) ) {
+				$paragraph = array_shift( $paragraphs );
+
+				if ( $this->options['auto_br'] ) {
+					$paragraph = preg_replace( '/\s*\n\s*/', '<br />', $paragraph );
+				} else {
+					$paragraph = preg_replace( '/\s*\n\s*/', "\n", $paragraph );
+				}
+
+				$this->output .= $paragraph;
+			}
+
 			foreach ( $paragraphs as $paragraph ) {
 				$this->start_tag( 'p' );
-
-				$paragraph = trim( $paragraph );
 
 				if ( $this->options['auto_br'] ) {
 					$paragraph = preg_replace( '/\s*\n\s*/', '<br />', $paragraph );
