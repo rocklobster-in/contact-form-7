@@ -18,6 +18,8 @@ function wpcf7_autop( $input ) {
 /**
  * Newline preservation help function for wpcf7_autop().
  *
+ * @deprecated 5.7 Unnecessary to use any more.
+ *
  * @param array $matches preg_replace_callback() matches array.
  * @return string Text including newline placeholders.
  */
