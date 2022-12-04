@@ -288,14 +288,10 @@ class WPCF7_HTMLFormatter {
 			$this->is_inside( self::p_child_elements ) or
 			$this->has_parent( self::p_nonparent_elements )
 		) {
-			if (
-				$this->options['auto_br'] and
-				$this->has_parent( self::br_parent_elements )
-			) {
-				$content = preg_replace( '/\s*\n\s*/', '<br />', $content );
-			} else {
-				$content = preg_replace( '/\s*\n\s*/', "\n", $content );
-			}
+			$auto_br = $this->options['auto_br'] &&
+				$this->has_parent( self::br_parent_elements );
+
+			$content = self::normalize_paragraph( $content, $auto_br );
 
 			$this->output .= $content;
 
@@ -310,11 +306,10 @@ class WPCF7_HTMLFormatter {
 			if ( $this->is_inside( 'p' ) ) {
 				$paragraph = array_shift( $paragraphs );
 
-				if ( $this->options['auto_br'] ) {
-					$paragraph = preg_replace( '/\s*\n\s*/', '<br />', $paragraph );
-				} else {
-					$paragraph = preg_replace( '/\s*\n\s*/', "\n", $paragraph );
-				}
+				$paragraph = self::normalize_paragraph(
+					$paragraph,
+					$this->options['auto_br']
+				);
 
 				$this->output .= $paragraph;
 			}
@@ -322,11 +317,10 @@ class WPCF7_HTMLFormatter {
 			foreach ( $paragraphs as $paragraph ) {
 				$this->start_tag( 'p' );
 
-				if ( $this->options['auto_br'] ) {
-					$paragraph = preg_replace( '/\s*\n\s*/', '<br />', $paragraph );
-				} else {
-					$paragraph = preg_replace( '/\s*\n\s*/', "\n", $paragraph );
-				}
+				$paragraph = self::normalize_paragraph(
+					$paragraph,
+					$this->options['auto_br']
+				);
 
 				$this->output .= $paragraph;
 			}
@@ -521,6 +515,25 @@ class WPCF7_HTMLFormatter {
 		}
 
 		return array( $tag, $tag_name );
+	}
+
+
+	/**
+	 * Normalizes a paragraph of text.
+	 *
+	 * @param string $paragraph A paragraph of text.
+	 * @param bool $auto_br Optional. If true, line breaks will be replaced
+	 *             by a br element.
+	 * @return string The normalized paragraph.
+	 */
+	public static function normalize_paragraph( $paragraph, $auto_br = false ) {
+		if ( $auto_br ) {
+			$paragraph = preg_replace( '/\s*\n\s*/', '<br />', $paragraph );
+		} else {
+			$paragraph = preg_replace( '/\s*\n\s*/', "\n", $paragraph );
+		}
+
+		return $paragraph;
 	}
 
 }
