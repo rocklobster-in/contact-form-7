@@ -1,10 +1,11 @@
 <?php
 
+/**
+ * Contact Form 7's class used for formatting HTML fragments.
+ */
 class WPCF7_HTMLFormatter {
 
-	/**
-	 * HTML component types.
-	 */
+	// HTML component types.
 	const text = 0;
 	const start_tag = 1;
 	const end_tag = 2;
@@ -72,10 +73,14 @@ class WPCF7_HTMLFormatter {
 		'video',
 	);
 
-	private $output = '';
-	private $stacked_elements = array();
 	private $options = array();
+	private $stacked_elements = array();
+	private $output = '';
 
+
+	/**
+	 * Constructor.
+	 */
 	public function __construct( $args = '' ) {
 		$this->options = wp_parse_args( $args, array(
 			'auto_br' => true,
@@ -83,7 +88,15 @@ class WPCF7_HTMLFormatter {
 		) );
 	}
 
-	public function separate_into_chunks( string $input ) {
+
+	/**
+	 * Separates the given text into chunks of HTML. Each chunk must be an
+	 * associative array that includes 'position', 'type', and 'content' keys.
+	 *
+	 * @param string $input Text to be separated into chunks.
+	 * @return iterable Iterable of chunks.
+	 */
+	public function separate_into_chunks( $input ) {
 		$input_bytelength = strlen( $input );
 		$position = 0;
 
@@ -143,6 +156,14 @@ class WPCF7_HTMLFormatter {
 		}
 	}
 
+
+	/**
+	 * Normalizes content in each chunk. This may change the type and position
+	 * of the chunk.
+	 *
+	 * @param iterable $chunks The original chunks.
+	 * @return iterable Normalized chunks.
+	 */
 	public function pre_format( $chunks ) {
 		$position = 0;
 
@@ -173,6 +194,13 @@ class WPCF7_HTMLFormatter {
 		}
 	}
 
+
+	/**
+	 * Concatenates neighboring text chunks to create a single chunk.
+	 *
+	 * @param iterable $chunks The original chunks.
+	 * @return iterable Processed chunks.
+	 */
 	public function concatenate_texts( $chunks ) {
 		$position = 0;
 		$text_left = null;
