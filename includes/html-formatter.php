@@ -233,6 +233,13 @@ class WPCF7_HTMLFormatter {
 		}
 	}
 
+
+	/**
+	 * Outputs formatted HTML based on the given chunks.
+	 *
+	 * @param iterable $chunks The original chunks.
+	 * @return string Formatted HTML.
+	 */
 	public function format( $chunks ) {
 		$chunks = $this->pre_format( $chunks );
 		$chunks = $this->concatenate_texts( $chunks );
@@ -267,6 +274,12 @@ class WPCF7_HTMLFormatter {
 		return $this->output;
 	}
 
+
+	/**
+	 * Appends a text node content to the output property.
+	 *
+	 * @param string $content Text node content.
+	 */
 	public function append_text( $content ) {
 		if ( $this->is_inside( 'pre' ) ) {
 			$this->output .= $content;
@@ -310,6 +323,12 @@ class WPCF7_HTMLFormatter {
 		}
 	}
 
+
+	/**
+	 * Appends a start tag to the output property.
+	 *
+	 * @param string $tag A start tag.
+	 */
 	public function start_tag( $tag ) {
 		list( $tag, $tag_name ) = self::normalize_start_tag( $tag );
 
@@ -352,6 +371,12 @@ class WPCF7_HTMLFormatter {
 		$this->output .= $tag;
 	}
 
+
+	/**
+	 * Appends an end tag to the output property.
+	 *
+	 * @param string $tag An end tag.
+	 */
 	public function end_tag( $tag ) {
 		if ( preg_match( '/<\/(.+?)(?:\s|>)/', $tag, $matches ) ) {
 			$tag_name = strtolower( $matches[1] );
@@ -384,10 +409,23 @@ class WPCF7_HTMLFormatter {
 		}
 	}
 
+
+	/**
+	 * Appends an HTML comment to the output property.
+	 *
+	 * @param string $tag An HTML comment.
+	 */
 	public function append_comment( $tag ) {
 		$this->output .= $tag;
 	}
 
+
+	/**
+	 * Returns true if it is currently inside one of HTML elements specified
+	 * by tag names.
+	 *
+	 * @param string|array $tag_names A tag name or an array of tag names.
+	 */
 	public function is_inside( $tag_names ) {
 		$tag_names = (array) $tag_names;
 
@@ -400,6 +438,13 @@ class WPCF7_HTMLFormatter {
 		return false;
 	}
 
+
+	/**
+	 * Returns true if the parent node is one of HTML elements specified
+	 * by tag names.
+	 *
+	 * @param string|array $tag_names A tag name or an array of tag names.
+	 */
 	public function has_parent( $tag_names ) {
 		$tag_names = (array) $tag_names;
 
@@ -412,10 +457,25 @@ class WPCF7_HTMLFormatter {
 		return in_array( $parent, $tag_names );
 	}
 
+
+	/**
+	 * Calculates the position of the next chunk based on the position and
+	 * length of the current chunk.
+	 *
+	 * @param array $chunk An associative array of the current chunk.
+	 * @return int The position of the next chunk.
+	 */
 	public static function calc_next_position( $chunk ) {
 		return $chunk['position'] + strlen( $chunk['content'] );
 	}
 
+
+	/**
+	 * Outputs a set of tabs to indent.
+	 *
+	 * @param int $level Indentation level.
+	 * @return string A series of tabs.
+	 */
 	public static function indent( $level ) {
 		$level = (int) $level;
 
@@ -426,6 +486,13 @@ class WPCF7_HTMLFormatter {
 		return '';
 	}
 
+
+	/**
+	 * Normalizes a start tag.
+	 *
+	 * @param string $tag A start tag or a tag name.
+	 * @return array An array includes the normalized start tag and tag name.
+	 */
 	public static function normalize_start_tag( $tag ) {
 		if ( preg_match( '/<(.+?)[\s\/>]/', $tag, $matches ) ) {
 			$tag_name = strtolower( $matches[1] );
