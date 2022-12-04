@@ -7,8 +7,6 @@
  * @return string Text which has been converted into correct paragraph tags.
  */
 function wpcf7_autop( $input ) {
-	require_once WPCF7_PLUGIN_DIR . '/includes/html-formatter.php';
-
 	$formatter = new WPCF7_HTMLFormatter();
 
 	$chunks = $formatter->separate_into_chunks( $input );

@@ -290,6 +290,9 @@ class WPCF7_FormTagsManager {
 				);
 			}
 
+			list( $placeholder ) =
+				WPCF7_HTMLFormatter::normalize_start_tag( $placeholder );
+
 			$this->placeholders[$placeholder] = $tag;
 
 			return $placeholder;
