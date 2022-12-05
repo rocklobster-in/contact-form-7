@@ -530,9 +530,7 @@ class WPCF7_HTMLFormatter {
 	 */
 	public static function normalize_paragraph( $paragraph, $auto_br = false ) {
 		if ( $auto_br ) {
-			$paragraph = preg_replace( '/\s*\n\s*/', '<br />', $paragraph );
-		} else {
-			$paragraph = preg_replace( '/\s*\n\s*/', "\n", $paragraph );
+			$paragraph = preg_replace( '/\s*\n\s*/', "<br />\n", $paragraph );
 		}
 
 		$paragraph = preg_replace( '/[ ]+/', " ", $paragraph );
