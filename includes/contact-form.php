@@ -849,8 +849,9 @@ class WPCF7_ContactForm {
 		$form = $this->prop( 'form' );
 
 		if ( wpcf7_autop_or_not() ) {
-			$form = $manager->normalize( $form );
+			$form = $manager->replace_with_placeholders( $form );
 			$form = wpcf7_autop( $form );
+			$form = $manager->restore_from_placeholders( $form );
 		}
 
 		$form = $manager->replace_all( $form );

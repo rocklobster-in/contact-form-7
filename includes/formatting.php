@@ -3,100 +3,26 @@
 /**
  * Replaces double line breaks with paragraph elements.
  *
- * This is a variant of wpautop() that is specifically tuned for
- * form content uses.
- *
- * @param string $text The text which has to be formatted.
+ * @param string $input The text which has to be formatted.
  * @param bool $br Optional. If set, this will convert all remaining
- *                 line breaks after paragraphing. Default true.
+ *             line breaks after paragraphing. Default true.
  * @return string Text which has been converted into correct paragraph tags.
  */
-function wpcf7_autop( $text, $br = 1 ) {
-	if ( trim( $text ) === '' ) {
-		return '';
-	}
+function wpcf7_autop( $input, $br = true ) {
+	$formatter = new WPCF7_HTMLFormatter( array(
+		'auto_br' => $br,
+	) );
 
-	$text = $text . "\n"; // just to make things a little easier, pad the end
-	$text = preg_replace( '|<br />\s*<br />|', "\n\n", $text );
-	// Space things out a little
-	/* wpcf7: remove select and input */
-	$allblocks = '(?:table|thead|tfoot|caption|col|colgroup|tbody|tr|td|th|div|dl|dd|dt|ul|ol|li|pre|form|map|area|blockquote|address|math|style|p|h[1-6]|hr|fieldset|legend|section|article|aside|hgroup|header|footer|nav|figure|figcaption|details|menu|summary)';
-	$text = preg_replace( '!(<' . $allblocks . '[^>]*>)!', "\n$1", $text );
-	$text = preg_replace( '!(</' . $allblocks . '>)!', "$1\n\n", $text );
+	$chunks = $formatter->separate_into_chunks( $input );
 
-	/* wpcf7: take care of [response], [recaptcha], and [hidden] tags */
-	$form_tags_manager = WPCF7_FormTagsManager::get_instance();
-	$block_hidden_form_tags = $form_tags_manager->collect_tag_types(
-		array( 'display-block', 'display-hidden' ) );
-	$block_hidden_form_tags = sprintf( '(?:%s)',
-		implode( '|', $block_hidden_form_tags ) );
-
-	$text = preg_replace( '!(\[' . $block_hidden_form_tags . '[^]]*\])!',
-		"\n$1\n\n", $text );
-
-	$text = str_replace( array( "\r\n", "\r" ), "\n", $text ); // cross-platform newlines
-
-	if ( strpos( $text, '<object' ) !== false ) {
-		$text = preg_replace( '|\s*<param([^>]*)>\s*|', "<param$1>", $text ); // no pee inside object/embed
-		$text = preg_replace( '|\s*</embed>\s*|', '</embed>', $text );
-	}
-
-	$text = preg_replace( "/\n\n+/", "\n\n", $text ); // take care of duplicates
-	// make paragraphs, including one at the end
-	$paragraphs = preg_split( '/\n\s*\n/', $text, -1, PREG_SPLIT_NO_EMPTY );
-	$text = '';
-
-	foreach ( $paragraphs as $paragraph ) {
-		$text .= '<p>' . trim( $paragraph, "\n" ) . "</p>\n";
-	}
-
-	$text = preg_replace( '!<p>([^<]+)</(div|address|form|fieldset)>!', "<p>$1</p></$2>", $text );
-
-	$text = preg_replace( '|<p>\s*</p>|', '', $text ); // under certain strange conditions it could create a P of entirely whitespace
-
-	$text = preg_replace( '!<p>\s*(</?' . $allblocks . '[^>]*>)\s*</p>!', "$1", $text ); // don't pee all over a tag
-	$text = preg_replace( "|<p>(<li.+?)</p>|", "$1", $text ); // problem with nested lists
-	$text = preg_replace( '|<p><blockquote([^>]*)>|i', "<blockquote$1><p>", $text );
-	$text = str_replace( '</blockquote></p>', '</p></blockquote>', $text );
-	$text = preg_replace( '!<p>\s*(</?' . $allblocks . '[^>]*>)!', "$1", $text );
-	$text = preg_replace( '!(</?' . $allblocks . '[^>]*>)\s*</p>!', "$1", $text );
-
-	/* wpcf7: take care of [response], [recaptcha], and [hidden] tag */
-	$text = preg_replace( '!<p>\s*(\[' . $block_hidden_form_tags . '[^]]*\])!',
-		"$1", $text );
-	$text = preg_replace( '!(\[' . $block_hidden_form_tags . '[^]]*\])\s*</p>!',
-		"$1", $text );
-
-	if ( $br ) {
-		/* wpcf7: add textarea */
-		$text = preg_replace_callback(
-			'/<(script|style|textarea).*?<\/\\1>/s',
-			'wpcf7_autop_preserve_newline_callback', $text );
-		$text = preg_replace( '|(?<!<br />)\s*\n|', "<br />\n", $text ); // optionally make line breaks
-		$text = str_replace( '<WPPreserveNewline />', "\n", $text );
-
-		/* wpcf7: remove extra <br /> just added before [response], [recaptcha], and [hidden] tags */
-		$text = preg_replace( '!<br />\n(\[' . $block_hidden_form_tags . '[^]]*\])!',
-			"\n$1", $text );
-	}
-
-	$text = preg_replace( '!(</?' . $allblocks . '[^>]*>)\s*<br />!', "$1", $text );
-	$text = preg_replace( '!<br />(\s*</?(?:p|li|div|dl|dd|dt|th|pre|td|ul|ol)[^>]*>)!', '$1', $text );
-
-	if ( strpos( $text, '<pre' ) !== false ) {
-		$text = preg_replace_callback( '!(<pre[^>]*>)(.*?)</pre>!is',
-			'clean_pre', $text );
-	}
-
-	$text = preg_replace( "|<br />$|", '', $text );
-	$text = preg_replace( "|\n</p>$|", '</p>', $text );
-
-	return $text;
+	return $formatter->format( $chunks );
 }
 
 
 /**
  * Newline preservation help function for wpcf7_autop().
+ *
+ * @deprecated 5.7 Unnecessary to use any more.
  *
  * @param array $matches preg_replace_callback() matches array.
  * @return string Text including newline placeholders.
