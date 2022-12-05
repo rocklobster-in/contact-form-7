@@ -77,9 +77,7 @@ export default function validate( form, options = {} ) {
 
 			wrap.setAttribute( 'data-under-validation', '1' );
 
-			if (
-				wrap.dataset.name === target.name?.replace( /\[.*\]$/, '' )
-			) {
+			if ( wrap.contains( target ) ) {
 				break;
 			}
 		}
