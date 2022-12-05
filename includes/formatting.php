@@ -4,10 +4,14 @@
  * Replaces double line breaks with paragraph elements.
  *
  * @param string $input The text which has to be formatted.
+ * @param bool $br Optional. If set, this will convert all remaining
+ *             line breaks after paragraphing. Default true.
  * @return string Text which has been converted into correct paragraph tags.
  */
-function wpcf7_autop( $input ) {
-	$formatter = new WPCF7_HTMLFormatter();
+function wpcf7_autop( $input, $br = true ) {
+	$formatter = new WPCF7_HTMLFormatter( array(
+		'auto_br' => $br,
+	) );
 
 	$chunks = $formatter->separate_into_chunks( $input );
 
