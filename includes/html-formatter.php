@@ -369,7 +369,9 @@ class WPCF7_HTMLFormatter {
 		}
 
 		if ( ! in_array( $tag_name, self::p_child_elements ) ) {
-			$this->output = rtrim( $this->output ) . "\n";
+			if ( '' !== $this->output ) {
+				$this->output = rtrim( $this->output ) . "\n";
+			}
 
 			if ( $this->options['auto_indent'] ) {
 				$this->output .= self::indent( count( $this->stacked_elements ) - 1 );
@@ -532,6 +534,8 @@ class WPCF7_HTMLFormatter {
 		} else {
 			$paragraph = preg_replace( '/\s*\n\s*/', "\n", $paragraph );
 		}
+
+		$paragraph = preg_replace( '/[ ]+/', " ", $paragraph );
 
 		return $paragraph;
 	}
