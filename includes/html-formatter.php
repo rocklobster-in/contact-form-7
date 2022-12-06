@@ -12,6 +12,16 @@ class WPCF7_HTMLFormatter {
 	const comment = 3;
 
 	/**
+	 * Tag name reserved for a custom HTML element used as a block placeholder.
+	 */
+	const placeholder_block = 'placeholder:block';
+
+	/**
+	 * Tag name reserved for a custom HTML element used as an inline placeholder.
+	 */
+	const placeholder_inline = 'placeholder:inline';
+
+	/**
 	 * The void elements in HTML.
 	 *
 	 * @link https://developer.mozilla.org/en-US/docs/Glossary/Void_element
@@ -19,7 +29,7 @@ class WPCF7_HTMLFormatter {
 	const void_elements = array(
 		'area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input',
 		'keygen', 'link', 'meta', 'param', 'source', 'track', 'wbr',
-		'placeholder:block', 'placeholder:inline',
+		self::placeholder_block, self::placeholder_inline,
 	);
 
 	/**
@@ -54,7 +64,7 @@ class WPCF7_HTMLFormatter {
 		'meter', 'noscript', 'object', 'output', 'picture', 'progress',
 		'q', 'ruby', 's', 'samp', 'script', 'select', 'slot', 'small',
 		'span', 'strong', 'sub', 'sup', 'svg', 'template', 'textarea',
-		'time', 'u', 'var', 'video', 'wbr', 'placeholder:inline',
+		'time', 'u', 'var', 'video', 'wbr', self::placeholder_inline,
 	);
 
 	/**
@@ -73,6 +83,8 @@ class WPCF7_HTMLFormatter {
 		'video',
 	);
 
+
+	// Properties.
 	private $options = array();
 	private $stacked_elements = array();
 	private $output = '';

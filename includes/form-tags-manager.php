@@ -279,16 +279,16 @@ class WPCF7_FormTagsManager {
 			);
 
 			if ( $block_or_hidden ) {
-				$placeholder = sprintf(
-					'<placeholder:block %s />',
-					sha1( $tag )
-				);
+				$placeholder_tag_name = WPCF7_HTMLFormatter::placeholder_block;
 			} else {
-				$placeholder = sprintf(
-					'<placeholder:inline %s />',
-					sha1( $tag )
-				);
+				$placeholder_tag_name = WPCF7_HTMLFormatter::placeholder_inline;
 			}
+
+			$placeholder = sprintf(
+				'<%1$s id="%2$s" />',
+				$placeholder_tag_name,
+				sha1( $tag )
+			);
 
 			list( $placeholder ) =
 				WPCF7_HTMLFormatter::normalize_start_tag( $placeholder );
