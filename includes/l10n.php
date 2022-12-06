@@ -46,6 +46,10 @@ function wpcf7_l10n() {
  * @param string $locale Locale code.
  */
 function wpcf7_is_valid_locale( $locale ) {
+	if ( ! is_string( $locale ) ) {
+		return false;
+	}
+
 	$pattern = '/^[a-z]{2,3}(?:_[a-zA-Z_]{2,})?$/';
 	return (bool) preg_match( $pattern, $locale );
 }
