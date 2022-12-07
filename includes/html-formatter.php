@@ -309,7 +309,7 @@ class WPCF7_HTMLFormatter {
 
 		} else {
 			// Split up the contents into paragraphs, separated by double line breaks.
-			$paragraphs = preg_split( '/\n\s*\n/', "\n\n" . $content . "\n\n" );
+			$paragraphs = preg_split( '/\n\s*\n/', $content );
 
 			if ( empty( $paragraphs ) ) {
 				return;
