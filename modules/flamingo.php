@@ -285,7 +285,7 @@ add_filter( 'wpcf7_special_mail_tags', 'wpcf7_flamingo_serial_number', 10, 4 );
  * @param WPCF7_MailTag $mail_tag An object representation of the mail-tag.
  * @return string Output of the given special mail-tag.
  */
-function wpcf7_flamingo_serial_number( $output, $name, $html, $mail_tag = null ) {
+function wpcf7_flamingo_serial_number( $output, $name, $html="", $mail_tag = null ) {
 	if ( ! $mail_tag instanceof WPCF7_MailTag ) {
 		wpcf7_doing_it_wrong(
 			sprintf( '%s()', __FUNCTION__ ),
