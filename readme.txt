@@ -3,8 +3,8 @@ Contributors: takayukister
 Donate link: https://contactform7.com/donate/
 Tags: contact, form, contact form, feedback, email, ajax, captcha, akismet, multilingual
 Requires at least: 6.0
-Tested up to: 6.0
-Stable tag: 5.6.2
+Tested up to: 6.1
+Stable tag: 5.6.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -77,6 +77,14 @@ Do you have questions or issues with Contact Form 7? Use these support channels 
 
 For more information, see [Releases](https://contactform7.com/category/releases/).
 
+= 5.7 =
+
+[https://contactform7.com/contact-form-7-57/](https://contactform7.com/contact-form-7-57/)
+
+= 5.6.4 =
+
+[https://contactform7.com/contact-form-7-564/](https://contactform7.com/contact-form-7-564/)
+
 = 5.6.3 =
 
 [https://contactform7.com/contact-form-7-563/](https://contactform7.com/contact-form-7-563/)
@@ -92,35 +100,5 @@ For more information, see [Releases](https://contactform7.com/category/releases/
 = 5.6 =
 
 [https://contactform7.com/contact-form-7-56/](https://contactform7.com/contact-form-7-56/)
-
-= 5.5.6 =
-
-[https://contactform7.com/contact-form-7-556/](https://contactform7.com/contact-form-7-556/)
-
-= 5.5.5 =
-
-[https://contactform7.com/contact-form-7-555/](https://contactform7.com/contact-form-7-555/)
-
-= 5.5.4 =
-
-[https://contactform7.com/contact-form-7-554/](https://contactform7.com/contact-form-7-554/)
-
-= 5.5.3 =
-
-[https://contactform7.com/contact-form-7-553/](https://contactform7.com/contact-form-7-553/)
-
-= 5.5.2 =
-
-* REST API: Removes argument schema reference that causes error when the form has 'id' field.
-* Changes method names that are reserved in PHP 5.6.
-
-= 5.5.1 =
-
-* Fixed: Reserved keyword was used in PHP class constant name.
-* Fixed: Uncaught TypeError on `in_array()` call.
-
-= 5.5 =
-
-[https://contactform7.com/contact-form-7-55/](https://contactform7.com/contact-form-7-55/)
 
 == Upgrade Notice ==
