@@ -31,5 +31,5 @@
 			"default": "form"
 		}
 	},
-	"editorScript": "file:./index.js"
+	"editorScript": "./index.js"
 }
