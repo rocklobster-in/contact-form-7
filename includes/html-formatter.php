@@ -308,8 +308,14 @@ class WPCF7_HTMLFormatter {
 			$this->output .= $content;
 
 		} else {
+
+			// Close <p> if the content starts with multiple line breaks.
+			if ( preg_match( '/^\s*\n\s*\n\s*/', $content ) ) {
+				$this->end_tag( 'p' );
+			}
+
 			// Split up the contents into paragraphs, separated by double line breaks.
-			$paragraphs = preg_split( '/\n\s*\n/', $content );
+			$paragraphs = preg_split( '/\s*\n\s*\n\s*/', $content );
 
 			$paragraphs = array_filter( $paragraphs, function ( $paragraph ) {
 				return '' !== trim( $paragraph );
@@ -341,8 +347,18 @@ class WPCF7_HTMLFormatter {
 				}
 			}
 
-			if ( preg_match( '/\n\s*\n$/', $content ) ) {
+			// Close <p> if the content ends with multiple line breaks.
+			if ( preg_match( '/\s*\n\s*\n\s*$/', $content ) ) {
 				$this->end_tag( 'p' );
+			}
+
+			// Cases where the content is a single line break.
+			if ( ! $paragraphs ) {
+				$auto_br = $this->options['auto_br'] && $this->is_inside( 'p' );
+
+				$content = self::normalize_paragraph( $content, $auto_br );
+
+				$this->output .= $content;
 			}
 		}
 	}
