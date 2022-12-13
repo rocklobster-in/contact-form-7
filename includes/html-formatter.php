@@ -430,6 +430,9 @@ class WPCF7_HTMLFormatter {
 			while ( $element = array_shift( $this->stacked_elements ) ) {
 
 				if ( ! in_array( $element, self::p_child_elements ) ) {
+					// Remove unnecessary <br />.
+					$this->output = preg_replace( '/\s*<br \/>\s*$/', '', $this->output );
+
 					$this->output = rtrim( $this->output ) . "\n";
 
 					if ( $this->options['auto_indent'] ) {
@@ -440,11 +443,9 @@ class WPCF7_HTMLFormatter {
 				$this->output .= sprintf( '</%s>', $element );
 
 				// Remove trailing <p></p>.
-				$this->output = preg_replace(
-					'/<p>\s*<\/p>$/', '', $this->output, 1, $count
-				);
+				$this->output = preg_replace( '/<p>\s*<\/p>$/', '', $this->output );
 
-				if ( $count or $element === $tag_name ) {
+				if ( $element === $tag_name ) {
 					break;
 				}
 			}
