@@ -295,8 +295,10 @@ class WPCF7_HTMLFormatter {
 	public function append_text( $content ) {
 		if ( $this->is_inside( 'pre' ) ) {
 			$this->output .= $content;
+			return;
+		}
 
-		} elseif (
+		if (
 			$this->is_inside( self::p_child_elements ) or
 			$this->has_parent( self::p_nonparent_elements )
 		) {
