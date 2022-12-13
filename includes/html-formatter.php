@@ -355,7 +355,7 @@ class WPCF7_HTMLFormatter {
 			}
 
 			// Cases where the content is a single line break.
-			if ( ! $paragraphs ) {
+			if ( preg_match( '/^\s*\n\s*$/', $content ) ) {
 				$auto_br = $this->options['auto_br'] && $this->is_inside( 'p' );
 
 				$content = self::normalize_paragraph( $content, $auto_br );
