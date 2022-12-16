@@ -90,19 +90,6 @@ function wpcf7_is_rtl( $locale = '' ) {
  * @return bool True on success, false on failure.
  */
 function wpcf7_load_textdomain( $locale = '' ) {
-	static $available_locales = null;
-
-	if ( ! isset( $available_locales ) ) {
-		$available_locales = array_merge(
-			array( 'en_US' ),
-			get_available_languages()
-		);
-	}
-
-	if ( ! in_array( $locale, $available_locales, true ) ) {
-		$locale = determine_locale();
-	}
-
 	$mofile = path_join(
 		WP_LANG_DIR . '/plugins/',
 		sprintf( '%s-%s.mo', WPCF7_TEXT_DOMAIN, $locale )
@@ -134,9 +121,24 @@ function wpcf7_unload_textdomain( $reloadable = false ) {
  * @return mixed The return value of the callback.
  */
 function wpcf7_switch_locale( $locale, callable $callback, ...$args ) {
+	static $available_locales = null;
+
+	if ( ! isset( $available_locales ) ) {
+		$available_locales = array_merge(
+			array( 'en_US' ),
+			get_available_languages()
+		);
+	}
+
 	$previous_locale = determine_locale();
 
-	if ( $locale !== $previous_locale ) {
+	$do_switch_locale = (
+		$locale !== $previous_locale &&
+		in_array( $locale, $available_locales, true ) &&
+		in_array( $previous_locale, $available_locales, true )
+	);
+
+	if ( $do_switch_locale ) {
 		wpcf7_unload_textdomain();
 		switch_to_locale( $locale );
 		wpcf7_load_textdomain( $locale );
@@ -144,7 +146,7 @@ function wpcf7_switch_locale( $locale, callable $callback, ...$args ) {
 
 	$result = call_user_func( $callback, ...$args );
 
-	if ( $locale !== $previous_locale ) {
+	if ( $do_switch_locale ) {
 		wpcf7_unload_textdomain( true );
 		restore_current_locale();
 		wpcf7_load_textdomain( $previous_locale );
