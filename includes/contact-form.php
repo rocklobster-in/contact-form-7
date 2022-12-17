@@ -108,9 +108,13 @@ class WPCF7_ContactForm {
 	 */
 	public static function get_template( $args = '' ) {
 		$args = wp_parse_args( $args, array(
-			'locale' => determine_locale(),
+			'locale' => null,
 			'title' => __( 'Untitled', 'contact-form-7' ),
 		) );
+
+		if ( ! isset( $args['locale'] ) ) {
+			$args['locale'] = determine_locale();
+		}
 
 		$callback = function ( $args ) {
 			$contact_form = new self;
