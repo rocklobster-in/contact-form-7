@@ -411,6 +411,12 @@ class WPCF7_HTMLFormatter {
 			$this->end_tag( 'option' );
 		}
 
+		if ( 'rp' === $tag_name or 'rt' === $tag_name ) {
+			// Close <rp> and <rt> if closing tag is omitted.
+			$this->end_tag( 'rp' );
+			$this->end_tag( 'rt' );
+		}
+
 		if ( ! in_array( $tag_name, self::void_elements ) ) {
 			array_unshift( $this->stacked_elements, $tag_name );
 		}
