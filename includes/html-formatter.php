@@ -48,13 +48,14 @@ class WPCF7_HTMLFormatter {
 	 */
 	const p_nonparent_elements = array(
 		'colgroup', 'dl', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
-		'head', 'hgroup', 'html', 'legend', 'menu', 'ol', 'optgroup',
-		'option', 'pre', 'rp', 'rt', 'style', 'summary', 'table',
+		'head', 'hgroup', 'html', 'legend', 'menu', 'ol',
+		'pre', 'style', 'summary', 'table',
 		'tbody', 'tfoot', 'thead', 'title', 'tr', 'ul',
 	);
 
 	/**
-	 * HTML elements in the phrasing content category.
+	 * HTML elements in the phrasing content category, plus non-phrasing
+	 * content elements that can be grandchildren of a paragraph element.
 	 */
 	const p_child_elements = array(
 		'a', 'abbr', 'area', 'audio', 'b', 'bdi', 'bdo', 'br', 'button',
@@ -64,7 +65,9 @@ class WPCF7_HTMLFormatter {
 		'meter', 'noscript', 'object', 'output', 'picture', 'progress',
 		'q', 'ruby', 's', 'samp', 'script', 'select', 'slot', 'small',
 		'span', 'strong', 'sub', 'sup', 'svg', 'template', 'textarea',
-		'time', 'u', 'var', 'video', 'wbr', self::placeholder_inline,
+		'time', 'u', 'var', 'video', 'wbr',
+		'optgroup', 'option', 'rp', 'rt', // non-phrasing grandchildren
+		self::placeholder_inline,
 	);
 
 	/**
