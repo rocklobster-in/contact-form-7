@@ -47,10 +47,9 @@ class WPCF7_HTMLFormatter {
 	 * a paragraph element.
 	 */
 	const p_nonparent_elements = array(
-		'colgroup', 'dl', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
-		'head', 'hgroup', 'html', 'legend', 'menu', 'ol',
-		'pre', 'style', 'summary', 'table',
-		'tbody', 'tfoot', 'thead', 'title', 'tr', 'ul',
+		'colgroup', 'dl', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'head',
+		'hgroup', 'html', 'legend', 'menu', 'ol', 'pre', 'style', 'summary',
+		'table', 'tbody', 'tfoot', 'thead', 'title', 'tr', 'ul',
 	);
 
 	/**
