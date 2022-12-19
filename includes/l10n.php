@@ -148,7 +148,7 @@ function wpcf7_switch_locale( $locale, callable $callback, ...$args ) {
 
 	if ( $do_switch_locale ) {
 		wpcf7_unload_textdomain( true );
-		restore_current_locale();
+		restore_previous_locale();
 		wpcf7_load_textdomain( $previous_locale );
 	}
 
