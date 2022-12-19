@@ -400,6 +400,17 @@ class WPCF7_HTMLFormatter {
 			$this->end_tag( 'li' );
 		}
 
+		if ( 'optgroup' === $tag_name ) {
+			// Close <option> and <optgroup> if closing tag is omitted.
+			$this->end_tag( 'option' );
+			$this->end_tag( 'optgroup' );
+		}
+
+		if ( 'option' === $tag_name ) {
+			// Close <option> if closing tag is omitted.
+			$this->end_tag( 'option' );
+		}
+
 		if ( ! in_array( $tag_name, self::void_elements ) ) {
 			array_unshift( $this->stacked_elements, $tag_name );
 		}
