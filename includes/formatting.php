@@ -9,13 +9,44 @@
  * @return string Text which has been converted into correct paragraph tags.
  */
 function wpcf7_autop( $input, $br = true ) {
+	$placeholders = array();
+
+	// Replace non-HTML embedded elements with placeholders.
+	$input = preg_replace_callback(
+		'/<(math|svg).*?<\/\1>/is',
+		function ( $matches ) use ( &$placeholders ) {
+			$placeholder = sprintf(
+				'<%1$s id="%2$s" />',
+				WPCF7_HTMLFormatter::placeholder_inline,
+				sha1( $matches[0] )
+			);
+
+			list( $placeholder ) =
+				WPCF7_HTMLFormatter::normalize_start_tag( $placeholder );
+
+			$placeholders[$placeholder] = $matches[0];
+
+			return $placeholder;
+		},
+		$input
+	);
+
 	$formatter = new WPCF7_HTMLFormatter( array(
 		'auto_br' => $br,
 	) );
 
 	$chunks = $formatter->separate_into_chunks( $input );
 
-	return $formatter->format( $chunks );
+	$output = $formatter->format( $chunks );
+
+	// Restore from placeholders.
+	$output = str_replace(
+		array_keys( $placeholders ),
+		array_values( $placeholders ),
+		$output
+	);
+
+	return $output;
 }
 
 
