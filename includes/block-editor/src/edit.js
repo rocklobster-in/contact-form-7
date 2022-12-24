@@ -7,7 +7,6 @@ import {
 	ExternalLink,
 	ComboboxControl,
 	TextControl,
-	ToggleControl
 } from '@wordpress/components';
 
 import fetchContactForms from './fetch';
@@ -88,15 +87,6 @@ export default function ContactFormSelectorEdit( { attributes, setAttributes } )
 							onChange={
 								( value ) => setAttributes( {
 									htmlClass: value
-								} )
-							}
-						/>
-						<ToggleControl
-							label={ __( 'Output the raw form template', 'contact-form-7' ) }
-							checked={ 'raw_form' === attributes.output }
-							onChange={
-								( state ) => setAttributes( {
-									output: state ? 'raw_form' : 'form'
 								} )
 							}
 						/>
