@@ -60,10 +60,10 @@ class WPCF7_HTMLFormatter {
 		'a', 'abbr', 'area', 'audio', 'b', 'bdi', 'bdo', 'br', 'button',
 		'canvas', 'cite', 'code', 'data', 'datalist', 'del', 'dfn',
 		'em', 'embed', 'i', 'iframe', 'img', 'input', 'ins', 'kbd',
-		'keygen', 'label', 'link', 'map', 'mark', 'math', 'meta',
+		'keygen', 'label', 'link', 'map', 'mark', 'meta',
 		'meter', 'noscript', 'object', 'output', 'picture', 'progress',
 		'q', 'ruby', 's', 'samp', 'script', 'select', 'slot', 'small',
-		'span', 'strong', 'sub', 'sup', 'svg', 'template', 'textarea',
+		'span', 'strong', 'sub', 'sup', 'template', 'textarea',
 		'time', 'u', 'var', 'video', 'wbr',
 		'optgroup', 'option', 'rp', 'rt', // non-phrasing grandchildren
 		self::placeholder_inline,
