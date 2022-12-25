@@ -53,7 +53,7 @@ export default function ContactFormSelectorEdit( { attributes, setAttributes } )
 					</PanelBody>
 				) }
 				{ attributes.id && (
-					<PanelBody title={ __( 'Shortcode attributes', 'contact-form-7' ) }>
+					<PanelBody title={ __( 'Form attributes', 'contact-form-7' ) }>
 						<TextControl
 							label={ __( 'ID', 'contact-form-7' ) }
 							value={ attributes.htmlId }
