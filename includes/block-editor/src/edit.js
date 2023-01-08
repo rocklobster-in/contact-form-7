@@ -53,7 +53,10 @@ export default function ContactFormSelectorEdit( { attributes, setAttributes } )
 					</PanelBody>
 				) }
 				{ attributes.id && (
-					<PanelBody title={ __( 'Form attributes', 'contact-form-7' ) }>
+					<PanelBody
+						title={ __( 'Form attributes', 'contact-form-7' ) }
+						initialOpen={ false }
+					>
 						<TextControl
 							label={ __( 'ID', 'contact-form-7' ) }
 							value={ attributes.htmlId }
@@ -61,6 +64,9 @@ export default function ContactFormSelectorEdit( { attributes, setAttributes } )
 								( value ) => setAttributes( {
 									htmlId: value
 								} )
+							}
+							help={
+								__( 'Used for the id attribute value of the form element.', 'contact-form-7' )
 							}
 						/>
 						<TextControl
@@ -71,6 +77,9 @@ export default function ContactFormSelectorEdit( { attributes, setAttributes } )
 									htmlName: value
 								} )
 							}
+							help={
+								__( 'Used for the name attribute value of the form element.', 'contact-form-7' )
+							}
 						/>
 						<TextControl
 							label={ __( 'Title', 'contact-form-7' ) }
@@ -80,6 +89,9 @@ export default function ContactFormSelectorEdit( { attributes, setAttributes } )
 									htmlTitle: value
 								} )
 							}
+							help={
+								__( 'Used for the aria-label attribute value of the form element.', 'contact-form-7' )
+							}
 						/>
 						<TextControl
 							label={ __( 'Class', 'contact-form-7' ) }
@@ -88,6 +100,9 @@ export default function ContactFormSelectorEdit( { attributes, setAttributes } )
 								( value ) => setAttributes( {
 									htmlClass: value
 								} )
+							}
+							help={
+								__( 'Used for the class attribute value of the form element.', 'contact-form-7' )
 							}
 						/>
 					</PanelBody>
