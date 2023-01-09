@@ -232,20 +232,29 @@ export const updateReflection = ( form, field, validInputs ) => {
 	form.querySelectorAll(
 		`[data-reflection-of="${ field }"]`
 	).forEach( reflection => {
-		reflection.innerHTML = '';
+		if ( 'output' === reflection.tagName.toLowerCase() ) {
+			const output = reflection;
 
-		validInputs.forEach( input => {
+			validInputs.slice( 0, 1 ).forEach( input => {
+				output.textContent = input;
+			} );
 
-			if ( input instanceof File ) {
-				input = input.name;
-			}
+		} else {
+			reflection.innerHTML = '';
 
-			const output = document.createElement( 'output' );
+			validInputs.forEach( input => {
 
-			output.setAttribute( 'name', field );
-			output.insertAdjacentText( 'beforeend', input );
+				if ( input instanceof File ) {
+					input = input.name;
+				}
 
-			reflection.appendChild( output );
-		} );
+				const output = document.createElement( 'output' );
+
+				output.setAttribute( 'name', field );
+				output.insertAdjacentText( 'beforeend', input );
+
+				reflection.appendChild( output );
+			} );
+		}
 	} );
 };

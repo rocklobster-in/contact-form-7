@@ -11,6 +11,14 @@ function wpcf7_add_form_tag_reflection() {
 			'not-for-mail' => true,
 		)
 	);
+
+	wpcf7_add_form_tag( 'output',
+		'wpcf7_output_form_tag_handler',
+		array(
+			'name-attr' => true,
+			'not-for-mail' => true,
+		)
+	);
 }
 
 function wpcf7_reflection_form_tag_handler( $tag ) {
@@ -52,6 +60,37 @@ function wpcf7_reflection_form_tag_handler( $tag ) {
 			'id' => $tag->get_id_option(),
 		) ),
 		$content
+	);
+
+	return $html;
+}
+
+function wpcf7_output_form_tag_handler( $tag ) {
+	if ( empty( $tag->name ) ) {
+		return '';
+	}
+
+	$value = (string) reset( $tag->values );
+
+	if ( ! wpcf7_get_validation_error( $tag->name ) ) {
+		$hangover = array_filter( (array) wpcf7_get_hangover( $tag->name ) );
+
+		if ( $hangover ) {
+			$value = (string) reset( $hangover );
+		}
+	}
+
+	$html = sprintf(
+		'<output %1$s>%2$s</output>',
+		wpcf7_format_atts( array(
+			'data-reflection-of' => $tag->name,
+			'name' => $tag->name,
+			'class' => $tag->get_class_option(
+				wpcf7_form_controls_class( $tag->type )
+			),
+			'id' => $tag->get_id_option(),
+		) ),
+		esc_html( $value )
 	);
 
 	return $html;
