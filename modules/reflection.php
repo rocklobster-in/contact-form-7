@@ -20,7 +20,10 @@ function wpcf7_reflection_form_tag_handler( $tag ) {
 
 	$content = '';
 
-	$values = (array) wpcf7_get_hangover( $tag->name );
+	$values = (array) wpcf7_get_hangover(
+		$tag->name,
+		(string) reset( $tag->values )
+	);
 
 	if ( $values and ! wpcf7_get_validation_error( $tag->name ) ) {
 		$values = array_map(
