@@ -1,4 +1,10 @@
 <?php
+/**
+ * Reflection module
+ *
+ * @link https://contactform7.com/reflection/
+ */
+
 
 add_action( 'wpcf7_init', 'wpcf7_add_form_tag_reflection', 10, 0 );
 
