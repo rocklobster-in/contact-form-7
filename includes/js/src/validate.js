@@ -251,7 +251,7 @@ export const updateReflection = ( form, field, validInputs ) => {
 				const output = document.createElement( 'output' );
 
 				output.setAttribute( 'name', field );
-				output.insertAdjacentText( 'beforeend', input );
+				output.textContent = input;
 
 				reflection.appendChild( output );
 			} );
