@@ -236,6 +236,10 @@ export const updateReflection = ( form, field, validInputs ) => {
 			const output = reflection;
 
 			validInputs.slice( 0, 1 ).forEach( input => {
+				if ( input instanceof File ) {
+					input = input.name;
+				}
+
 				output.textContent = input;
 			} );
 
