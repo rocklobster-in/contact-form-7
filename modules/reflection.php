@@ -8,6 +8,9 @@
 
 add_action( 'wpcf7_init', 'wpcf7_add_form_tag_reflection', 10, 0 );
 
+/**
+ * Registers reflection-related form-tag types.
+ */
 function wpcf7_add_form_tag_reflection() {
 	wpcf7_add_form_tag( 'reflection',
 		'wpcf7_reflection_form_tag_handler',
@@ -27,6 +30,10 @@ function wpcf7_add_form_tag_reflection() {
 	);
 }
 
+
+/**
+ * The form-tag handler for the reflection type.
+ */
 function wpcf7_reflection_form_tag_handler( $tag ) {
 	if ( empty( $tag->name ) ) {
 		return '';
@@ -71,6 +78,10 @@ function wpcf7_reflection_form_tag_handler( $tag ) {
 	return $html;
 }
 
+
+/**
+ * The form-tag handler for the output type.
+ */
 function wpcf7_output_form_tag_handler( $tag ) {
 	if ( empty( $tag->name ) ) {
 		return '';
