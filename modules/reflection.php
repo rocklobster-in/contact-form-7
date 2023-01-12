@@ -55,7 +55,7 @@ function wpcf7_reflection_form_tag_handler( $tag ) {
 			$output_tag = sprintf(
 				'<output name="%1$s">%2$s</output>',
 				esc_attr( $tag->name ),
-				$item ? esc_html( $item ) : '&nbsp;'
+				( '' !== $item ) ? esc_html( $item ) : '&nbsp;'
 			);
 
 			return $carry . $output_tag;
