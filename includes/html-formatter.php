@@ -396,8 +396,10 @@ class WPCF7_HTMLFormatter {
 		}
 
 		if ( 'li' === $tag_name ) {
-			// Close <li> if closing tag is omitted.
-			$this->end_tag( 'li' );
+			if ( ! $this->has_parent( array( 'ol', 'ul', 'menu' ) ) ) {
+				// Close <li> if closing tag is omitted.
+				$this->end_tag( 'li' );
+			}
 		}
 
 		if ( 'optgroup' === $tag_name ) {
