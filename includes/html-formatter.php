@@ -281,9 +281,7 @@ class WPCF7_HTMLFormatter {
 		}
 
 		// Close all remaining tags.
-		if ( $this->stacked_elements ) {
-			$this->end_tag( end( $this->stacked_elements ) );
-		}
+		$this->close_all_tags();
 
 		return $this->output;
 	}
@@ -476,6 +474,16 @@ class WPCF7_HTMLFormatter {
 					break;
 				}
 			}
+		}
+	}
+
+
+	/**
+	 * Closes all open tags.
+	 */
+	public function close_all_tags() {
+		while ( $element = array_shift( $this->stacked_elements ) ) {
+			$this->append_end_tag( $element );
 		}
 	}
 
