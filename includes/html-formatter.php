@@ -468,7 +468,9 @@ class WPCF7_HTMLFormatter {
 			$tag_name = strtolower( $tag );
 		}
 
-		if ( $this->is_inside( $tag_name ) ) {
+		$stacked_elements = array_values( $this->stacked_elements );
+
+		if ( in_array( $tag_name, $stacked_elements ) ) {
 			while ( $element = array_shift( $this->stacked_elements ) ) {
 
 				if ( ! in_array( $element, self::p_child_elements ) ) {
