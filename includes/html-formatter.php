@@ -470,30 +470,28 @@ class WPCF7_HTMLFormatter {
 
 		$stacked_elements = array_values( $this->stacked_elements );
 
-		if ( ! in_array( $tag_name, $stacked_elements ) ) {
-			return;
-		}
+		if ( in_array( $tag_name, $stacked_elements ) ) {
+			while ( $element = array_shift( $this->stacked_elements ) ) {
 
-		while ( $element = array_shift( $this->stacked_elements ) ) {
+				if ( ! in_array( $element, self::p_child_elements ) ) {
+					// Remove unnecessary <br />.
+					$this->output = preg_replace( '/\s*<br \/>\s*$/', '', $this->output );
 
-			if ( ! in_array( $element, self::p_child_elements ) ) {
-				// Remove unnecessary <br />.
-				$this->output = preg_replace( '/\s*<br \/>\s*$/', '', $this->output );
+					$this->output = rtrim( $this->output ) . "\n";
 
-				$this->output = rtrim( $this->output ) . "\n";
-
-				if ( $this->options['auto_indent'] ) {
-					$this->output .= self::indent( count( $this->stacked_elements ) );
+					if ( $this->options['auto_indent'] ) {
+						$this->output .= self::indent( count( $this->stacked_elements ) );
+					}
 				}
-			}
 
-			$this->output .= sprintf( '</%s>', $element );
+				$this->output .= sprintf( '</%s>', $element );
 
-			// Remove trailing <p></p>.
-			$this->output = preg_replace( '/<p>\s*<\/p>$/', '', $this->output );
+				// Remove trailing <p></p>.
+				$this->output = preg_replace( '/<p>\s*<\/p>$/', '', $this->output );
 
-			if ( $element === $tag_name ) {
-				break;
+				if ( $element === $tag_name ) {
+					break;
+				}
 			}
 		}
 	}
