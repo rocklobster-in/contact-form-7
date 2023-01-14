@@ -457,7 +457,7 @@ class WPCF7_HTMLFormatter {
 
 
 	/**
-	 * Appends an end tag to the output property.
+	 * Closes an element and its open descendants at a time.
 	 *
 	 * @param string $tag An end tag.
 	 */
@@ -470,28 +470,37 @@ class WPCF7_HTMLFormatter {
 
 		if ( $this->is_inside( $tag_name ) ) {
 			while ( $element = array_shift( $this->stacked_elements ) ) {
-
-				if ( ! in_array( $element, self::p_child_elements ) ) {
-					// Remove unnecessary <br />.
-					$this->output = preg_replace( '/\s*<br \/>\s*$/', '', $this->output );
-
-					$this->output = rtrim( $this->output ) . "\n";
-
-					if ( $this->options['auto_indent'] ) {
-						$this->output .= self::indent( count( $this->stacked_elements ) );
-					}
-				}
-
-				$this->output .= sprintf( '</%s>', $element );
-
-				// Remove trailing <p></p>.
-				$this->output = preg_replace( '/<p>\s*<\/p>$/', '', $this->output );
+				$this->append_end_tag( $element );
 
 				if ( $element === $tag_name ) {
 					break;
 				}
 			}
 		}
+	}
+
+
+	/**
+	 * Appends an end tag to the output property.
+	 *
+	 * @param string $tag_name Tag name.
+	 */
+	public function append_end_tag( $tag_name ) {
+		if ( ! in_array( $tag_name, self::p_child_elements ) ) {
+			// Remove unnecessary <br />.
+			$this->output = preg_replace( '/\s*<br \/>\s*$/', '', $this->output );
+
+			$this->output = rtrim( $this->output ) . "\n";
+
+			if ( $this->options['auto_indent'] ) {
+				$this->output .= self::indent( count( $this->stacked_elements ) );
+			}
+		}
+
+		$this->output .= sprintf( '</%s>', $tag_name );
+
+		// Remove trailing <p></p>.
+		$this->output = preg_replace( '/<p>\s*<\/p>$/', '', $this->output );
 	}
 
 
