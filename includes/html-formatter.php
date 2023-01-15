@@ -281,9 +281,7 @@ class WPCF7_HTMLFormatter {
 		}
 
 		// Close all remaining tags.
-		if ( $this->stacked_elements ) {
-			$this->end_tag( end( $this->stacked_elements ) );
-		}
+		$this->close_all_tags();
 
 		return $this->output;
 	}
@@ -457,7 +455,7 @@ class WPCF7_HTMLFormatter {
 
 
 	/**
-	 * Appends an end tag to the output property.
+	 * Closes an element and its open descendants at a time.
 	 *
 	 * @param string $tag An end tag.
 	 */
@@ -468,30 +466,88 @@ class WPCF7_HTMLFormatter {
 			$tag_name = strtolower( $tag );
 		}
 
-		if ( $this->is_inside( $tag_name ) ) {
-			while ( $element = array_shift( $this->stacked_elements ) ) {
+		$stacked_elements = array_values( $this->stacked_elements );
 
-				if ( ! in_array( $element, self::p_child_elements ) ) {
-					// Remove unnecessary <br />.
-					$this->output = preg_replace( '/\s*<br \/>\s*$/', '', $this->output );
+		$tag_position = array_search( $tag_name, $stacked_elements );
 
-					$this->output = rtrim( $this->output ) . "\n";
+		if ( false === $tag_position ) {
+			return;
+		}
 
-					if ( $this->options['auto_indent'] ) {
-						$this->output .= self::indent( count( $this->stacked_elements ) );
-					}
-				}
+		// Element groups that make up an indirect nesting structure.
+		// Descendant can contain ancestors.
+		static $nesting_families = array(
+			array(
+				'ancestors' => array( 'dl', ),
+				'descendants' => array( 'dd', 'dt', ),
+			),
+			array(
+				'ancestors' => array( 'ol', 'ul', 'menu', ),
+				'descendants' => array( 'li', ),
+			),
+			array(
+				'ancestors' => array( 'table', ),
+				'descendants' => array( 'td', 'th', 'tr', 'thead', 'tbody', 'tfoot', ),
+			),
+		);
 
-				$this->output .= sprintf( '</%s>', $element );
+		foreach ( $nesting_families as $family ) {
+			$ancestors = (array) $family['ancestors'];
+			$descendants = (array) $family['descendants'];
 
-				// Remove trailing <p></p>.
-				$this->output = preg_replace( '/<p>\s*<\/p>$/', '', $this->output );
+			if ( in_array( $tag_name, $descendants ) ) {
+				$intersect = array_intersect(
+					$ancestors,
+					array_slice( $stacked_elements, 0, $tag_position )
+				);
 
-				if ( $element === $tag_name ) {
-					break;
+				if ( $intersect ) { // Ancestor appears after descendant.
+					return;
 				}
 			}
 		}
+
+		while ( $element = array_shift( $this->stacked_elements ) ) {
+			$this->append_end_tag( $element );
+
+			if ( $element === $tag_name ) {
+				break;
+			}
+		}
+	}
+
+
+	/**
+	 * Closes all open tags.
+	 */
+	public function close_all_tags() {
+		while ( $element = array_shift( $this->stacked_elements ) ) {
+			$this->append_end_tag( $element );
+		}
+	}
+
+
+	/**
+	 * Appends an end tag to the output property.
+	 *
+	 * @param string $tag_name Tag name.
+	 */
+	public function append_end_tag( $tag_name ) {
+		if ( ! in_array( $tag_name, self::p_child_elements ) ) {
+			// Remove unnecessary <br />.
+			$this->output = preg_replace( '/\s*<br \/>\s*$/', '', $this->output );
+
+			$this->output = rtrim( $this->output ) . "\n";
+
+			if ( $this->options['auto_indent'] ) {
+				$this->output .= self::indent( count( $this->stacked_elements ) );
+			}
+		}
+
+		$this->output .= sprintf( '</%s>', $tag_name );
+
+		// Remove trailing <p></p>.
+		$this->output = preg_replace( '/<p>\s*<\/p>$/', '', $this->output );
 	}
 
 
