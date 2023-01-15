@@ -466,13 +466,52 @@ class WPCF7_HTMLFormatter {
 			$tag_name = strtolower( $tag );
 		}
 
-		if ( $this->is_inside( $tag_name ) ) {
-			while ( $element = array_shift( $this->stacked_elements ) ) {
-				$this->append_end_tag( $element );
+		$stacked_elements = array_values( $this->stacked_elements );
 
-				if ( $element === $tag_name ) {
-					break;
+		$tag_position = array_search( $tag_name, $stacked_elements );
+
+		if ( false === $tag_position ) {
+			return;
+		}
+
+		// Element groups that make up an indirect nesting structure.
+		// Descendant can contain ancestors.
+		static $nesting_families = array(
+			array(
+				'ancestors' => array( 'dl', ),
+				'descendants' => array( 'dd', 'dt', ),
+			),
+			array(
+				'ancestors' => array( 'ol', 'ul', 'menu', ),
+				'descendants' => array( 'li', ),
+			),
+			array(
+				'ancestors' => array( 'table', ),
+				'descendants' => array( 'td', 'th', 'tr', 'thead', 'tbody', 'tfoot', ),
+			),
+		);
+
+		foreach ( $nesting_families as $family ) {
+			$ancestors = (array) $family['ancestors'];
+			$descendants = (array) $family['descendants'];
+
+			if ( in_array( $tag_name, $descendants ) ) {
+				$intersect = array_intersect(
+					$ancestors,
+					array_slice( $stacked_elements, 0, $tag_position )
+				);
+
+				if ( $intersect ) { // Ancestor appears after descendant.
+					return;
 				}
+			}
+		}
+
+		while ( $element = array_shift( $this->stacked_elements ) ) {
+			$this->append_end_tag( $element );
+
+			if ( $element === $tag_name ) {
+				break;
 			}
 		}
 	}
