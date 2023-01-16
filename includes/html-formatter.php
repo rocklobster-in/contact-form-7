@@ -293,7 +293,7 @@ class WPCF7_HTMLFormatter {
 	 * @param string $content Text node content.
 	 */
 	public function append_text( $content ) {
-		if ( $this->is_inside( 'pre' ) ) {
+		if ( $this->is_inside( array( 'pre', 'template' ) ) ) {
 			$this->output .= $content;
 			return;
 		}
