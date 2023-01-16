@@ -39,7 +39,7 @@ class WPCF7_HTMLFormatter {
 		'address', 'article', 'aside', 'blockquote', 'body', 'caption',
 		'dd', 'details', 'dialog', 'div', 'dt', 'fieldset', 'figcaption',
 		'figure', 'footer', 'form', 'header', 'li', 'main', 'nav',
-		'section', 'template', 'td', 'th',
+		'section', 'td', 'th',
 	);
 
 	/**
@@ -49,7 +49,7 @@ class WPCF7_HTMLFormatter {
 	const p_nonparent_elements = array(
 		'colgroup', 'dl', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'head',
 		'hgroup', 'html', 'legend', 'menu', 'ol', 'pre', 'style', 'summary',
-		'table', 'tbody', 'tfoot', 'thead', 'title', 'tr', 'ul',
+		'table', 'tbody', 'template', 'tfoot', 'thead', 'title', 'tr', 'ul',
 	);
 
 	/**
@@ -63,7 +63,7 @@ class WPCF7_HTMLFormatter {
 		'keygen', 'label', 'link', 'map', 'mark', 'meta',
 		'meter', 'noscript', 'object', 'output', 'picture', 'progress',
 		'q', 'ruby', 's', 'samp', 'script', 'select', 'slot', 'small',
-		'span', 'strong', 'sub', 'sup', 'template', 'textarea',
+		'span', 'strong', 'sub', 'sup', 'textarea',
 		'time', 'u', 'var', 'video', 'wbr',
 		'optgroup', 'option', 'rp', 'rt', // non-phrasing grandchildren
 		self::placeholder_inline,
@@ -79,9 +79,9 @@ class WPCF7_HTMLFormatter {
 		'dt', 'em', 'fieldset', 'figcaption', 'figure', 'footer', 'form',
 		'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'header', 'i', 'ins', 'kbd',
 		'label', 'legend', 'li', 'main', 'map', 'mark', 'meter', 'nav',
-		'noscript', 'object', 'output', 'p', 'pre', 'progress', 'q', 'rt',
+		'noscript', 'object', 'output', 'p', 'progress', 'q', 'rt',
 		'ruby', 's', 'samp', 'section', 'slot', 'small', 'span', 'strong',
-		'sub', 'summary', 'sup', 'td', 'template', 'th', 'time', 'u', 'var',
+		'sub', 'summary', 'sup', 'td', 'th', 'time', 'u', 'var',
 		'video',
 	);
 
@@ -293,7 +293,7 @@ class WPCF7_HTMLFormatter {
 	 * @param string $content Text node content.
 	 */
 	public function append_text( $content ) {
-		if ( $this->is_inside( 'pre' ) ) {
+		if ( $this->is_inside( array( 'pre', 'template' ) ) ) {
 			$this->output .= $content;
 			return;
 		}
