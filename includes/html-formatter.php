@@ -79,7 +79,7 @@ class WPCF7_HTMLFormatter {
 		'dt', 'em', 'fieldset', 'figcaption', 'figure', 'footer', 'form',
 		'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'header', 'i', 'ins', 'kbd',
 		'label', 'legend', 'li', 'main', 'map', 'mark', 'meter', 'nav',
-		'noscript', 'object', 'output', 'p', 'pre', 'progress', 'q', 'rt',
+		'noscript', 'object', 'output', 'p', 'progress', 'q', 'rt',
 		'ruby', 's', 'samp', 'section', 'slot', 'small', 'span', 'strong',
 		'sub', 'summary', 'sup', 'td', 'template', 'th', 'time', 'u', 'var',
 		'video',
