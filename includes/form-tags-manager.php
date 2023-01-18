@@ -501,22 +501,22 @@ class WPCF7_FormTagsManager {
 			}
 		}
 
-		if ( is_array( $attr ) ) {
-			if ( is_array( $attr['options'] ) ) {
-				if ( $this->tag_type_supports( $tag_type, 'name-attr' )
-				and ! empty( $attr['options'] ) ) {
-					$scanned_tag['raw_name'] = array_shift( $attr['options'] );
-
-					if ( ! wpcf7_is_name( $scanned_tag['raw_name'] ) ) {
-						return $matches[0]; // Invalid name is used. Ignore this tag.
-					}
-
-					$scanned_tag['name'] = strtr( $scanned_tag['raw_name'], '.', '_' );
-				}
-
-				$scanned_tag['options'] = (array) $attr['options'];
+		if ( $this->tag_type_supports( $tag_type, 'name-attr' ) ) {
+			if ( ! is_array( $attr ) ) {
+				return $matches[0]; // Invalid form-tag.
 			}
 
+			$scanned_tag['raw_name'] = (string) array_shift( $attr['options'] );
+
+			if ( ! wpcf7_is_name( $scanned_tag['raw_name'] ) ) {
+				return $matches[0]; // Invalid name is used. Ignore this tag.
+			}
+
+			$scanned_tag['name'] = strtr( $scanned_tag['raw_name'], '.', '_' );
+		}
+
+		if ( is_array( $attr ) ) {
+			$scanned_tag['options'] = (array) $attr['options'];
 			$scanned_tag['raw_values'] = (array) $attr['values'];
 
 			if ( WPCF7_USE_PIPE ) {
