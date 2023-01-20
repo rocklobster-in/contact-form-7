@@ -381,7 +381,11 @@ class WPCF7_HTMLFormatter {
 				// Open <p> if it does not exist.
 				$this->start_tag( 'p' );
 			}
-		} else {
+		} elseif (
+			'p' === $tag_name or
+			in_array( $tag_name, self::p_parent_elements ) or
+			in_array( $tag_name, self::p_nonparent_elements )
+		) {
 			// Close <p> if it exists.
 			$this->end_tag( 'p' );
 		}
