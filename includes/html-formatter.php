@@ -299,18 +299,10 @@ class WPCF7_HTMLFormatter {
 		}
 
 		if (
-			$this->is_inside( self::p_child_elements ) or
-			$this->has_parent( self::p_nonparent_elements )
+			empty( $this->stacked_elements ) or
+			$this->has_parent( 'p' ) or
+			$this->has_parent( self::p_parent_elements )
 		) {
-			$auto_br = $this->options['auto_br'] &&
-				$this->has_parent( self::br_parent_elements );
-
-			$content = self::normalize_paragraph( $content, $auto_br );
-
-			$this->output .= $content;
-
-		} else {
-
 			// Close <p> if the content starts with multiple line breaks.
 			if ( preg_match( '/^\s*\n\s*\n\s*/', $content ) ) {
 				$this->end_tag( 'p' );
@@ -362,6 +354,13 @@ class WPCF7_HTMLFormatter {
 
 				$this->output .= $content;
 			}
+		} else {
+			$auto_br = $this->options['auto_br'] &&
+				$this->has_parent( self::br_parent_elements );
+
+			$content = self::normalize_paragraph( $content, $auto_br );
+
+			$this->output .= $content;
 		}
 	}
 
