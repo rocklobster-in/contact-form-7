@@ -3,6 +3,7 @@
 $test_cases = array(
 	'default',
 	'nest',
+	'nonstandard',
 );
 
 foreach ( $test_cases as $test_case ) {
