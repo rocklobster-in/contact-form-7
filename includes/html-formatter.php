@@ -332,6 +332,8 @@ class WPCF7_HTMLFormatter {
 				foreach ( $paragraphs as $paragraph ) {
 					$this->start_tag( 'p' );
 
+					$paragraph = ltrim( $paragraph );
+
 					$paragraph = self::normalize_paragraph(
 						$paragraph,
 						$this->options['auto_br']
