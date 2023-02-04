@@ -43,6 +43,10 @@ function wpcf7_number_form_tag_handler( $tag ) {
 	$atts['step'] = $tag->get_option( 'step', 'num', true );
 	$atts['readonly'] = $tag->has_option( 'readonly' );
 
+	$atts['autocomplete'] = $tag->get_option(
+		'autocomplete', '[-0-9a-zA-Z]+', true
+	);
+
 	if ( $tag->is_required() ) {
 		$atts['aria-required'] = 'true';
 	}
