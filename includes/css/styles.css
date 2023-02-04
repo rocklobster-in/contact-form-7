@@ -162,3 +162,7 @@ form.submitting .wpcf7-spinner {
 	display: list-item;
 	list-style: none;
 }
+
+.wpcf7-reflection > output[hidden] {
+	display: none;
+}
