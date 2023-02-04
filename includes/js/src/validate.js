@@ -235,6 +235,10 @@ export const updateReflection = ( form, field, validInputs ) => {
 		if ( 'output' === reflection.tagName.toLowerCase() ) {
 			const output = reflection;
 
+			if ( 0 === validInputs.length ) {
+				validInputs.push( output.dataset.default );
+			}
+
 			validInputs.slice( 0, 1 ).forEach( input => {
 				if ( input instanceof File ) {
 					input = input.name;
@@ -244,7 +248,19 @@ export const updateReflection = ( form, field, validInputs ) => {
 			} );
 
 		} else {
-			reflection.innerHTML = '';
+			reflection.querySelectorAll(
+				'output'
+			).forEach( output => {
+				if ( output.hasAttribute( 'data-default' ) ) {
+					if ( 0 === validInputs.length ) {
+						output.removeAttribute( 'hidden' );
+					} else {
+						output.setAttribute( 'hidden', 'hidden' );
+					}
+				} else {
+					output.remove();
+				}
+			} );
 
 			validInputs.forEach( input => {
 
