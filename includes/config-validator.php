@@ -646,6 +646,13 @@ class WPCF7_ConfigValidator {
 	 * Runs error detection for the mail sections.
 	 */
 	public function validate_mail( $template = 'mail' ) {
+		if (
+			$this->contact_form->is_true( 'demo_mode' ) or
+			$this->contact_form->is_true( 'skip_mail' )
+		) {
+			return;
+		}
+
 		$components = (array) $this->contact_form->prop( $template );
 
 		if ( ! $components ) {
