@@ -84,14 +84,21 @@ class WPCF7_Mail {
 <title>' . esc_html( $this->get( 'subject', true ) ) . '</title>
 </head>
 <body>
-', $this );
+',
+			$this
+		);
+
+		add_filter( 'wpcf7_mail_html_body', 'wpcf7_autop', 10, 1 );
+
+		$body = apply_filters( 'wpcf7_mail_html_body', $body );
 
 		$footer = apply_filters( 'wpcf7_mail_html_footer',
 			'</body>
-</html>', $this );
+</html>',
+			$this
+		);
 
-		$html = $header . wpcf7_autop( $body ) . $footer;
-		return $html;
+		return $header . $body . $footer;
 	}
 
 	private function compose( $send = true ) {
