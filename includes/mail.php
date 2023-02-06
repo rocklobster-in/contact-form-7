@@ -56,9 +56,23 @@ class WPCF7_Mail {
 				'exclude_blank' => $exclude_blank,
 			) );
 
-			if ( $use_html
-			and ! preg_match( '%<html[>\s].*</html>%is', $component ) ) {
-				$component = $this->htmlize( $component );
+			if ( $use_html ) {
+				// Convert <example@example.com> to &lt;example@example.com&gt;.
+				$component = preg_replace_callback(
+					'/<(.*?)>/',
+					function ( $matches ) {
+						if ( is_email( $matches[1] ) ) {
+							return sprintf( '&lt;%s&gt;', $matches[1] );
+						} else {
+							return $matches[0];
+						}
+					},
+					$component
+				);
+
+				if ( ! preg_match( '%<html[>\s].*</html>%is', $component ) ) {
+					$component = $this->htmlize( $component );
+				}
 			}
 		}
 
