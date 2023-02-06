@@ -51,15 +51,6 @@ class WPCF7_Mail {
 		$component = isset( $template[$component] ) ? $template[$component] : '';
 
 		if ( $replace_tags ) {
-			if ( $use_html ) {
-				$pattern = '/<(\[[\t ]*' // <[
-					. '[a-zA-Z_][0-9a-zA-Z:._-]*'
-					. '(?:[\t ]+"[^"]*"|[\t ]+\'[^\']*\')*'
-					. '[\t ]*\])>/'; // ]>
-
-				$component = preg_replace( $pattern, '&lt;\1&gt;', $component );
-			}
-
 			$component = $this->replace_tags( $component, array(
 				'html' => $use_html,
 				'exclude_blank' => $exclude_blank,
