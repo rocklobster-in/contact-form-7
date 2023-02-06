@@ -60,9 +60,9 @@ class WPCF7_ContactFormTemplate {
 			),
 			'body' =>
 				sprintf(
-					/* translators: %s: [your-name] <[your-email]> */
+					/* translators: %s: [your-name] [your-email] */
 					__( 'From: %s', 'contact-form-7' ),
-					'[your-name] <[your-email]>'
+					'[your-name] [your-email]'
 				) . "\n"
 				. sprintf(
 					/* translators: %s: [your-subject] */
