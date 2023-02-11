@@ -35,6 +35,14 @@ class WPCF7_Mail {
 		return self::$current->compose();
 	}
 
+
+	/**
+	 * The constructor method.
+	 *
+	 * @param string $name The name of the email template.
+	 *               Such as 'mail' or 'mail_2'.
+	 * @param array $template Array of email template.
+	 */
 	private function __construct( $name, $template ) {
 		$this->name = trim( $name );
 		$this->use_html = ! empty( $template['use_html'] );
@@ -55,6 +63,10 @@ class WPCF7_Mail {
 		}
 	}
 
+
+	/**
+	 * Returns the name of the email template.
+	 */
 	public function name() {
 		return $this->name;
 	}
