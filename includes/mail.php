@@ -71,6 +71,15 @@ class WPCF7_Mail {
 		return $this->name;
 	}
 
+
+	/**
+	 * Retrieves a component from the email template.
+	 *
+	 * @param string $component The name of the component.
+	 * @param bool $replace_tags Whether to replace mail-tags
+	 *             within the component.
+	 * @return string The text representation of the email component.
+	 */
 	public function get( $component, $replace_tags = false ) {
 		$use_html = ( $this->use_html && 'body' == $component );
 		$exclude_blank = ( $this->exclude_blank && 'body' == $component );
@@ -107,6 +116,13 @@ class WPCF7_Mail {
 		return $component;
 	}
 
+
+	/**
+	 * Creates HTML message body by adding the header and footer.
+	 *
+	 * @param string $body The body part of HTML.
+	 * @return string Formatted HTML.
+	 */
 	private function htmlize( $body ) {
 		if ( $this->locale ) {
 			$lang_atts = sprintf( ' %s',
@@ -136,6 +152,12 @@ class WPCF7_Mail {
 		return $html;
 	}
 
+
+	/**
+	 * Composes an email message and attempts to send it.
+	 *
+	 * @param bool $send Whether to attempt to send email. Default true.
+	 */
 	private function compose( $send = true ) {
 		$components = array(
 			'subject' => $this->get( 'subject', true ),
@@ -236,6 +258,10 @@ class WPCF7_Mail {
 		return wp_mail( $recipient, $subject, $body, $headers, $attachments );
 	}
 
+
+	/**
+	 * Replaces mail-tags within the given text.
+	 */
 	public function replace_tags( $content, $args = '' ) {
 		if ( true === $args ) {
 			$args = array( 'html' => true );
@@ -249,6 +275,10 @@ class WPCF7_Mail {
 		return wpcf7_mail_replace_tags( $content, $args );
 	}
 
+
+	/**
+	 * Creates an array of attachments based on uploaded files and local files.
+	 */
 	private function attachments( $template = null ) {
 		if ( ! $template ) {
 			$template = $this->get( 'attachments' );
