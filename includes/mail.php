@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Class that represents an attempt to compose and send email.
+ */
 class WPCF7_Mail {
 
 	private static $current = null;
@@ -10,10 +13,23 @@ class WPCF7_Mail {
 	private $use_html = false;
 	private $exclude_blank = false;
 
+
+	/**
+	 * Returns the singleton instance of this class.
+	 */
 	public static function get_current() {
 		return self::$current;
 	}
 
+
+	/**
+	 * Composes and sends email based on the specified template.
+	 *
+	 * @param array $template Array of email template.
+	 * @param string $name Optional name of the template, such as
+	 *               'mail' or 'mail_2'. Default empty string.
+	 * @return bool Whether the email was sent successfully.
+	 */
 	public static function send( $template, $name = '' ) {
 		self::$current = new self( $name, $template );
 		return self::$current->compose();
