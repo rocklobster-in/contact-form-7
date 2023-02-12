@@ -404,6 +404,10 @@ class WPCF7_MailTaggedText {
 	private $content = '';
 	private $replaced_tags = array();
 
+
+	/**
+	 * The constructor method.
+	 */
 	public function __construct( $content, $args = '' ) {
 		$args = wp_parse_args( $args, array(
 			'html' => false,
@@ -424,10 +428,20 @@ class WPCF7_MailTaggedText {
 		$this->content = $content;
 	}
 
+
+	/**
+	 * Retrieves mail-tags that have been replaced by this instance.
+	 *
+	 * @return array List of mail-tags replaced.
+	 */
 	public function get_replaced_tags() {
 		return $this->replaced_tags;
 	}
 
+
+	/**
+	 * Replaces mail-tags based on regexp.
+	 */
 	public function replace_tags() {
 		$regex = '/(\[?)\[[\t ]*'
 			. '([a-zA-Z_][0-9a-zA-Z:._-]*)' // [2] = name
@@ -437,10 +451,18 @@ class WPCF7_MailTaggedText {
 		return preg_replace_callback( $regex, $this->callback, $this->content );
 	}
 
+
+	/**
+	 * Callback function for replacement. For HTML message body.
+	 */
 	private function replace_tags_callback_html( $matches ) {
 		return $this->replace_tags_callback( $matches, true );
 	}
 
+
+	/**
+	 * Callback function for replacement.
+	 */
 	private function replace_tags_callback( $matches, $html = false ) {
 		// allow [[foo]] syntax for escaping a tag
 		if ( $matches[1] == '['
@@ -516,6 +538,10 @@ class WPCF7_MailTaggedText {
 		return $tag;
 	}
 
+
+	/**
+	 * Formats string based on the formatting option in the form-tag.
+	 */
 	public function format( $original, $format ) {
 		$original = (array) $original;
 
