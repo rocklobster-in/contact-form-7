@@ -317,6 +317,14 @@ class WPCF7_Mail {
 	}
 }
 
+
+/**
+ * Replaces all mail-tags within the given text content.
+ *
+ * @param string $content Text including mail-tags.
+ * @param string|array $args Optional. Output options.
+ * @return string Result of replacement.
+ */
 function wpcf7_mail_replace_tags( $content, $args = '' ) {
 	$args = wp_parse_args( $args, array(
 		'html' => false,
@@ -356,8 +364,12 @@ function wpcf7_mail_replace_tags( $content, $args = '' ) {
 	return $content;
 }
 
+
 add_action( 'phpmailer_init', 'wpcf7_phpmailer_init', 10, 1 );
 
+/**
+ * Adds custom properties to the PHPMailer object.
+ */
 function wpcf7_phpmailer_init( $phpmailer ) {
 	$custom_headers = $phpmailer->getCustomHeaders();
 	$phpmailer->clearCustomHeaders();
@@ -381,6 +393,10 @@ function wpcf7_phpmailer_init( $phpmailer ) {
 	}
 }
 
+
+/**
+ * Class that represents a single-line text including mail-tags.
+ */
 class WPCF7_MailTaggedText {
 
 	private $html = false;
