@@ -557,8 +557,13 @@ class WPCF7_MailTaggedText {
 
 		return $original;
 	}
+
 }
 
+
+/**
+ * Class that represents a mail-tag.
+ */
 class WPCF7_MailTag {
 
 	private $tag;
@@ -568,6 +573,10 @@ class WPCF7_MailTag {
 	private $values = array();
 	private $form_tag = null;
 
+
+	/**
+	 * The constructor method.
+	 */
 	public function __construct( $tag, $tagname, $values ) {
 		$this->tag = $tag;
 		$this->name = $this->tagname = $tagname;
@@ -593,22 +602,42 @@ class WPCF7_MailTag {
 		}
 	}
 
+
+	/**
+	 * Returns the name part of this mail-tag.
+	 */
 	public function tag_name() {
 		return $this->tagname;
 	}
 
+
+	/**
+	 * Returns the form field name corresponding to this mail-tag.
+	 */
 	public function field_name() {
 		return strtr( $this->name, '.', '_' );
 	}
 
+
+	/**
+	 * Returns the value of the specified option.
+	 */
 	public function get_option( $option ) {
 		return $this->options[$option];
 	}
 
+
+	/**
+	 * Returns the values part of this mail-tag.
+	 */
 	public function values() {
 		return $this->values;
 	}
 
+
+	/**
+	 * Retrieves the WPCF7_FormTag object that corresponds to this mail-tag.
+	 */
 	public function corresponding_form_tag() {
 		if ( $this->form_tag instanceof WPCF7_FormTag ) {
 			return $this->form_tag;
@@ -628,4 +657,5 @@ class WPCF7_MailTag {
 
 		return $this->form_tag;
 	}
+
 }
