@@ -3,8 +3,15 @@ import submit from './submit';
 import reset from './reset';
 import validate from './validate';
 
-document.addEventListener( 'DOMContentLoaded', event => {
+if(document.readyState == 'interactive' || document.readyState == 'complete' ) {
+	start_wpcf7_index();
+}
 
+document.addEventListener( 'DOMContentLoaded', event => {
+	start_wpcf7_index();
+} );
+
+function start_wpcf7_index() {
 	if ( typeof wpcf7 === 'undefined' ) {
 		console.error( "wpcf7 is not defined." );
 		return;
@@ -49,5 +56,4 @@ document.addEventListener( 'DOMContentLoaded', event => {
 		wpcf7.init( form );
 		form.closest( '.wpcf7' ).classList.replace( 'no-js', 'js' );
 	} );
-
-} );
+}
