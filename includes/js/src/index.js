@@ -3,7 +3,7 @@ import submit from './submit';
 import reset from './reset';
 import validate from './validate';
 
-if(document.readyState == 'interactive' || document.readyState == 'complete' ) {
+if( document.readyState == 'interactive' || document.readyState == 'complete' ) {
 	start_wpcf7_index();
 }
 
