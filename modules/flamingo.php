@@ -36,6 +36,18 @@ function wpcf7_flamingo_submit( $contact_form, $result ) {
 		return;
 	}
 
+	// Exclude do-not-store form-tag values.
+	$posted_data = array_filter(
+		$posted_data,
+		function ( $name ) use ( $contact_form ) {
+			return ! $contact_form->scan_form_tags( array(
+				'name' => $name,
+				'feature' => 'do-not-store',
+			) );
+		},
+		ARRAY_FILTER_USE_KEY
+	);
+
 	$email = wpcf7_flamingo_get_value( 'email', $contact_form );
 	$name = wpcf7_flamingo_get_value( 'name', $contact_form );
 	$subject = wpcf7_flamingo_get_value( 'subject', $contact_form );

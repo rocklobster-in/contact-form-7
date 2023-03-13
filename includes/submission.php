@@ -389,11 +389,6 @@ class WPCF7_Submission {
 			$name = $tag->name;
 			$pipes = $tag->pipes;
 
-			if ( wpcf7_form_tag_supports( $type, 'do-not-store' ) ) {
-				unset( $posted_data[$name] );
-				continue;
-			}
-
 			$value_orig = $value = '';
 
 			if ( isset( $posted_data[$name] ) ) {
