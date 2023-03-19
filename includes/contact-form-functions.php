@@ -40,13 +40,18 @@ function wpcf7_get_contact_form_by_old_id( $old_id ) {
  * @return WPCF7_ContactForm|null Contact form object if found, null otherwise.
  */
 function wpcf7_get_contact_form_by_title( $title ) {
-	$page = get_page_by_title( $title, OBJECT, WPCF7_ContactForm::post_type );
-
-	if ( $page ) {
-		return wpcf7_contact_form( $page->ID );
+	if ( ! is_string( $title ) or '' === $title ) {
+		return null;
 	}
 
-	return null;
+	$contact_forms = WPCF7_ContactForm::find( array(
+		'title' => $title,
+		'posts_per_page' => 1,
+	) );
+
+	if ( $contact_forms ) {
+		return reset( $contact_forms );
+	}
 }
 
 
