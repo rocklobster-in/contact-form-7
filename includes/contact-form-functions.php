@@ -220,8 +220,9 @@ function wpcf7_contact_form_tag_func( $atts, $content = null, $code = '' ) {
 
 	if ( ! $contact_form ) {
 		return sprintf(
-			'[contact-form-7 404 "%s"]',
-			esc_html( __( 'Not Found', 'contact-form-7' ) )
+			'<p class="wpcf7-contact-form-not-found"><strong>%1$s</strong> %2$s</p>',
+			esc_html( __( 'Error:', 'contact-form-7' ) ),
+			esc_html( __( "Contact form not found.", 'contact-form-7' ) ),
 		);
 	}
 
