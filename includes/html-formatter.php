@@ -378,6 +378,7 @@ class WPCF7_HTMLFormatter {
 		if ( in_array( $tag_name, self::p_child_elements ) ) {
 			if (
 				! $this->is_inside( 'p' ) and
+				! $this->is_inside( self::p_child_elements ) and
 				! $this->has_parent( self::p_nonparent_elements )
 			) {
 				// Open <p> if it does not exist.
