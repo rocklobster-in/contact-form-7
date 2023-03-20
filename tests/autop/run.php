@@ -5,6 +5,7 @@ $test_cases = array(
 	'nest',
 	'nonstandard',
 	'br',
+	'inheader',
 );
 
 foreach ( $test_cases as $test_case ) {
