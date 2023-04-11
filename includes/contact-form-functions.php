@@ -7,8 +7,8 @@
 /**
  * Wrapper function of WPCF7_ContactForm::get_instance().
  *
- * @param int|WP_Post $post Post ID or post object.
- * @return WPCF7_ContactForm Contact form object.
+ * @param WPCF7_ContactForm|WP_Post|int $post Object or post ID.
+ * @return WPCF7_ContactForm|null Contact form object. Null if unset.
  */
 function wpcf7_contact_form( $post ) {
 	return WPCF7_ContactForm::get_instance( $post );

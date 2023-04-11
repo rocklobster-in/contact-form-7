@@ -33,7 +33,7 @@ class WPCF7_ContactForm {
 	/**
 	 * Returns the contact form that is currently processed.
 	 *
-	 * @return WPCF7_ContactForm Current contact form object.
+	 * @return WPCF7_ContactForm|null Current contact form object. Null if unset.
 	 */
 	public static function get_current() {
 		return self::$current;
@@ -151,19 +151,25 @@ class WPCF7_ContactForm {
 
 
 	/**
-	 * Returns an instance of WPCF7_ContactForm.
+	 * Creates a WPCF7_ContactForm object and sets it as the current instance.
 	 *
-	 * @return WPCF7_ContactForm A new contact form object.
+	 * @param WPCF7_ContactForm|WP_Post|int $post Object or post ID.
+	 * @return WPCF7_ContactForm|null Contact form object. Null if unset.
 	 */
 	public static function get_instance( $post ) {
-		$post = get_post( $post );
+		$contact_form = null;
 
-		if ( ! $post
-		or self::post_type != get_post_type( $post ) ) {
-			return false;
+		if ( $post instanceof self ) {
+			$contact_form = $post;
+		} elseif ( ! empty( $post ) ) {
+			$post = get_post( $post );
+
+			if ( isset( $post ) and self::post_type === get_post_type( $post ) ) {
+				$contact_form = new self( $post );
+			}
 		}
 
-		return self::$current = new self( $post );
+		return self::$current = $contact_form;
 	}
 
 
