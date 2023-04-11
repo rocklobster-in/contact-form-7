@@ -50,7 +50,7 @@ function wpcf7_get_contact_form_by_title( $title ) {
 	) );
 
 	if ( $contact_forms ) {
-		return reset( $contact_forms );
+		return wpcf7_contact_form( reset( $contact_forms ) );
 	}
 }
 
