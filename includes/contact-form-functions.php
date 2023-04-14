@@ -49,8 +49,9 @@ function wpcf7_get_contact_form_by_title( $title ) {
 		'posts_per_page' => 1,
 	) );
 
-	if ( $contact_forms ) {
-		return wpcf7_contact_form( reset( $contact_forms ) );
+	if ( !empty( $contact_forms ) ) {
+		$contact_form = reset( $contact_forms );
+		return wpcf7_contact_form( $contact_form->id() );
 	}
 }
 
