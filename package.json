@@ -29,6 +29,6 @@
 	"homepage": "https://github.com/takayukister/contact-form-7#readme",
 	"devDependencies": {
 		"@contactable/swv": "^1.1.0",
-		"@wordpress/scripts": "^26.0.0"
+		"@wordpress/scripts": "^26.2.0"
 	}
 }
