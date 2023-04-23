@@ -19,7 +19,12 @@ function wpcf7_listo( $data, $options, $args ) {
 	foreach ( (array) $options as $option ) {
 		$option = explode( '.', $option );
 		$type = $option[0];
-		$args['group'] = isset( $option[1] ) ? $option[1] : null;
+
+		if ( isset( $option[1] ) ) {
+			$args['group'] = $option[1];
+		} else {
+			unset( $args['group'] );
+		}
 
 		if ( $list = listo( $type, $args ) ) {
 			$data = array_merge( (array) $data, $list );
