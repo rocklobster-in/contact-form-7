@@ -44,10 +44,18 @@ function wpcf7_recaptcha_enqueue_scripts() {
 		$url = 'https://www.recaptcha.net/recaptcha/api.js';
 	}
 
+
+	$badge_postition = apply_filters( 'wpcf7_recaptcha_badge_position', 'bottomright' );
+
+	if ( ! in_array( $badge_postition, [ 'bottomright' , 'bottomleft' , 'inline' ] ) ) {
+		$badge_postition = 'bottomright';
+	}
+
 	wp_register_script( 'google-recaptcha',
 		add_query_arg(
 			array(
 				'render' => $service->get_sitekey(),
+				'badge' => $badge_postition,
 			),
 			$url
 		),
