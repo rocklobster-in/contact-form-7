@@ -27,7 +27,7 @@ class WPCF7_Sendinblue extends WPCF7_Service {
 	}
 
 	public function get_title() {
-		return __( 'Sendinblue', 'contact-form-7' );
+		return __( 'Brevo (formerly Sendinblue)', 'contact-form-7' );
 	}
 
 	public function is_active() {
@@ -47,8 +47,8 @@ class WPCF7_Sendinblue extends WPCF7_Service {
 
 	public function link() {
 		echo wpcf7_link(
-			'https://www.sendinblue.com/?tap_a=30591-fb13f0&tap_s=1031580-b1bb1d',
-			'sendinblue.com'
+			'https://www.brevo.com/?tap_a=30591-fb13f0&tap_s=1031580-b1bb1d',
+			'brevo.com'
 		);
 	}
 
@@ -146,21 +146,21 @@ class WPCF7_Sendinblue extends WPCF7_Service {
 	public function display( $action = '' ) {
 		echo sprintf(
 			'<p>%s</p>',
-			esc_html( __( "Store and organize your contacts while protecting user privacy on Sendinblue, the leading CRM & email marketing platform in Europe. Sendinblue offers unlimited contacts and advanced marketing features.", 'contact-form-7' ) )
+			esc_html( __( "Store and organize your contacts while protecting user privacy on Brevo, the leading CRM & email marketing platform in Europe. Brevo offers unlimited contacts and advanced marketing features.", 'contact-form-7' ) )
 		);
 
 		echo sprintf(
 			'<p><strong>%s</strong></p>',
 			wpcf7_link(
 				__( 'https://contactform7.com/sendinblue-integration/', 'contact-form-7' ),
-				__( 'Sendinblue integration', 'contact-form-7' )
+				__( 'Brevo (formerly Sendinblue) integration', 'contact-form-7' )
 			)
 		);
 
 		if ( $this->is_active() ) {
 			echo sprintf(
 				'<p class="dashicons-before dashicons-yes">%s</p>',
-				esc_html( __( "Sendinblue is active on this site.", 'contact-form-7' ) )
+				esc_html( __( "Brevo is active on this site.", 'contact-form-7' ) )
 			);
 		}
 

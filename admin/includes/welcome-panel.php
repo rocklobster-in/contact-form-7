@@ -146,11 +146,11 @@ class WPCF7_WelcomePanelColumn_Integration extends WPCF7_WelcomePanelColumn {
 	protected function content() {
 		return array(
 			sprintf(
-				/* translators: 1: link labeled 'Sendinblue', 2: link labeled 'Constant Contact' */
+				/* translators: 1: link labeled 'Brevo', 2: link labeled 'Constant Contact' */
 				esc_html( __( 'Your contact forms will become more powerful and versatile by integrating them with external APIs. With CRM and email marketing services, you can build your own contact lists (%1$s and %2$s).', 'contact-form-7' ) ),
 				wpcf7_link(
 					__( 'https://contactform7.com/sendinblue-integration/', 'contact-form-7' ),
-					__( 'Sendinblue', 'contact-form-7' )
+					__( 'Brevo', 'contact-form-7' )
 				),
 				wpcf7_link(
 					__( 'https://contactform7.com/constant-contact-integration/', 'contact-form-7' ),
