@@ -311,7 +311,7 @@ class WPCF7_HTMLFormatter {
 			// Split up the contents into paragraphs, separated by double line breaks.
 			$paragraphs = preg_split( '/\s*\n\s*\n\s*/', $content );
 
-			$paragraphs = array_filter( $paragraphs, function ( $paragraph ) {
+			$paragraphs = array_filter( $paragraphs, static function ( $paragraph ) {
 				return '' !== trim( $paragraph );
 			} );
 
