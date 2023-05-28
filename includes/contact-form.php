@@ -116,7 +116,7 @@ class WPCF7_ContactForm {
 			$args['locale'] = determine_locale();
 		}
 
-		$callback = function ( $args ) {
+		$callback = static function ( $args ) {
 			$contact_form = new self;
 			$contact_form->title = $args['title'];
 			$contact_form->locale = $args['locale'];
@@ -289,7 +289,7 @@ class WPCF7_ContactForm {
 		// Filtering out properties with invalid name
 		$properties = array_filter(
 			$properties,
-			function ( $key ) {
+			static function ( $key ) {
 				$sanitized_key = sanitize_key( $key );
 				return $key === $sanitized_key;
 			},
