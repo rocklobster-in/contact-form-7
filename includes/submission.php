@@ -371,7 +371,7 @@ class WPCF7_Submission {
 	 * Constructs posted data property based on user input values.
 	 */
 	private function setup_posted_data() {
-		$posted_data = array_filter( (array) $_POST, function( $key ) {
+		$posted_data = array_filter( (array) $_POST, static function ( $key ) {
 			return '_' !== substr( $key, 0, 1 );
 		}, ARRAY_FILTER_USE_KEY );
 
@@ -422,7 +422,7 @@ class WPCF7_Submission {
 					);
 
 					list( $last_val, $tied_item ) = array_map(
-						function ( $item ) {
+						static function ( $item ) {
 							return wpcf7_canonicalize( $item, array(
 								'strto' => 'as-is',
 							) );

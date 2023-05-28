@@ -189,7 +189,7 @@ function wpcf7_acceptable_filetypes( $types = 'default', $format = 'regex' ) {
 		);
 	} else {
 		$types = array_map(
-			function ( $type ) {
+			static function ( $type ) {
 				if ( is_string( $type ) ) {
 					return preg_split( '/[\s|,]+/', strtolower( $type ) );
 				}
@@ -203,7 +203,7 @@ function wpcf7_acceptable_filetypes( $types = 'default', $format = 'regex' ) {
 
 	if ( 'attr' === $format or 'attribute' === $format ) {
 		$types = array_map(
-			function ( $type ) {
+			static function ( $type ) {
 				if ( false === strpos( $type, '/' ) ) {
 					return sprintf( '.%s', trim( $type, '.' ) );
 				} elseif ( preg_match( '%^([a-z]+)/[*]$%i', $type, $matches ) ) {
@@ -225,7 +225,7 @@ function wpcf7_acceptable_filetypes( $types = 'default', $format = 'regex' ) {
 
 	} elseif ( 'regex' === $format ) {
 		$types = array_map(
-			function ( $type ) {
+			static function ( $type ) {
 				if ( false === strpos( $type, '/' ) ) {
 					return preg_quote( trim( $type, '.' ) );
 				} elseif ( $type = wpcf7_convert_mime_to_ext( $type ) ) {

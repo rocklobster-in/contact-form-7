@@ -112,7 +112,7 @@ function wpcf7_akismet_is_available() {
 function wpcf7_akismet_submitted_params() {
 	$akismet_tags = array_filter(
 		wpcf7_scan_form_tags(),
-		function ( $tag ) {
+		static function ( $tag ) {
 			$akismet_option = $tag->get_option( 'akismet',
 				'(author|author_email|author_url)',
 				true
@@ -141,7 +141,7 @@ function wpcf7_akismet_submitted_params() {
 
 		$vals = array_filter(
 			wpcf7_array_flatten( $val ),
-			function ( $val ) {
+			static function ( $val ) {
 				return '' !== trim( $val );
 			}
 		);
@@ -182,7 +182,7 @@ function wpcf7_akismet_submitted_params() {
 
 			$vals = array_filter(
 				$vals,
-				function ( $val ) use ( $tag ) {
+				static function ( $val ) use ( $tag ) {
 					if ( wpcf7_form_tag_supports( $tag->type, 'selectable-values' )
 					and in_array( $val, $tag->labels ) ) {
 						return false;
