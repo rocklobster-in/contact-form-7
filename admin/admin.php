@@ -9,7 +9,7 @@ require_once WPCF7_PLUGIN_DIR . '/admin/includes/config-validator.php';
 
 add_action(
 	'admin_init',
-	function () {
+	static function () {
 		do_action( 'wpcf7_admin_init' );
 	},
 	10, 0
@@ -183,7 +183,7 @@ function wpcf7_admin_enqueue_scripts( $hook_suffix ) {
 
 add_filter(
 	'set_screen_option_wpcf7_contact_forms_per_page',
-	function ( $result, $option, $value ) {
+	static function ( $result, $option, $value ) {
 		$wpcf7_screens = array(
 			'wpcf7_contact_forms_per_page',
 		);
