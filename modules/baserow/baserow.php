@@ -5,55 +5,63 @@
  * @link https://contactform7.com/baserow-integration/
  */
 
-wpcf7_include_module_file( 'baserow/service.php' );
-wpcf7_include_module_file( 'baserow/contact-form-properties.php' );
-wpcf7_include_module_file( 'baserow/doi.php' );
+wpcf7_include_module_file('baserow/service.php');
+wpcf7_include_module_file('baserow/contact-form-properties.php');
+wpcf7_include_module_file('baserow/doi.php');
 
 
-add_action( 'wpcf7_init', 'wpcf7_baserow_register_service', 10, 0 );
+add_action('wpcf7_init', 'wpcf7_baserow_register_service', 10, 0);
 
 /**
  * Registers the Baserow service.
  */
-function wpcf7_baserow_register_service() {
-	$integration = WPCF7_Integration::get_instance();
+function wpcf7_baserow_register_service()
+{
+    $integration = WPCF7_Integration::get_instance();
 
-	$integration->add_service( 'baserow',
-		WPCF7_Baserow::get_instance()
-	);
+    $integration->add_service('baserow',
+        WPCF7_Baserow::get_instance()
+    );
 }
 
 
-add_action( 'wpcf7_submit', 'wpcf7_baserow_submit', 10, 2 );
+add_action('wpcf7_submit', 'wpcf7_baserow_submit', 10, 2);
 
 /**
  * Callback to the wpcf7_submit action hook. Creates a contact
  * based on the submission.
  */
-function wpcf7_baserow_submit( $contact_form, $result ) {
+function wpcf7_baserow_submit($contact_form, $result)
+{
 
-	if ( $contact_form->in_demo_mode() ) {
-		return;
-	}
+    if ($contact_form->in_demo_mode()) {
+        return;
+    }
 
-	$service = WPCF7_Baserow::get_instance();
+    $service = WPCF7_Baserow::get_instance();
 
-	if ( ! $service->is_active() ) {
-		return;
-	}
+    if (!$service->is_active()) {
+        return;
+    }
 
-	if ( empty( $result['posted_data_hash'] ) ) {
-		return;
-	}
+    if (empty($result['posted_data_hash'])) {
+        return;
+    }
 
-	if ( empty( $result['status'] )
-	or ! in_array( $result['status'], array( 'mail_sent', 'mail_failed' ) ) ) {
-		return;
-	}
+    if (empty($result['status'])
+        or !in_array($result['status'], array('mail_sent', 'mail_failed'))) {
+        return;
+    }
 
-	$submission = WPCF7_Submission::get_instance();
+    $submission = WPCF7_Submission::get_instance();
 
-	$consented = true;
+    // var_dump($contact_form->scan_form_tags()); die();
+    // var_dump($contact_form->baserow['database_id']); die();
+    // var_dump($contact_form->baserow['mapping']); die();
+
+
+    // $service->create_row($contact_form->baserow['database_id'] );
+
 
     // $contact_form->additional_settings
     // $contact_form->baserow
@@ -76,98 +84,39 @@ function wpcf7_baserow_submit( $contact_form, $result ) {
 	}
     */
 
-	$prop = wp_parse_args(
-		$contact_form->prop( 'baserow' ),
-		array(
-			'enable_contact_list' => false,
-			'contact_lists' => array(),
-			'enable_transactional_email' => false,
-			'email_template' => 0,
-		)
-	);
+    $prop = wp_parse_args(
+        $contact_form->prop('baserow'),
+        array(
+            'database_id' => 0,
+            'mapping' => array()
+        )
+    );
+
+    // var_dump($prop);
+    // die();
+
+    $attributes = wpcf7_baserow_collect_parameters();
+    // var_dump($attributes); die();
+
+    $data = array();
+    foreach ($attributes as $attribute_key => $attribute) {
+        $data[$prop['mapping'][$attribute_key]] = $attribute;
+    }
+
+    // var_dump($data); die();
+
+
+    $result = $service->create_row($contact_form->baserow['database_id'], $data );
+
+    var_dump($result); die();
 
     /*
-    var_dump($prop); die();
-
-	if ( ! $prop['enable_contact_list'] ) {
-		return;
-	}
-    */
-
-	$attributes = wpcf7_baserow_collect_parameters();
 
 
-	$params = array(
-		'contact' => array(),
-		'email' => array(),
-	);
 
-    /*
 
-	if ( ! empty( $attributes['EMAIL'] ) or ! empty( $attributes['SMS'] ) ) {
-		$params['contact'] = apply_filters(
-			'wpcf7_baserow_contact_parameters',
-			array(
-				'email' => $attributes['EMAIL'],
-				'attributes' => (object) $attributes,
-				'listIds' => (array) $prop['contact_lists'],
-				'updateEnabled' => false,
-			)
-		);
-	}
 
-	if ( $prop['enable_transactional_email'] and $prop['email_template'] ) {
-		$first_name = isset( $attributes['FIRSTNAME'] )
-			? trim( $attributes['FIRSTNAME'] )
-			: '';
 
-		$last_name = isset( $attributes['LASTNAME'] )
-			? trim( $attributes['LASTNAME'] )
-			: '';
-
-		if ( $first_name or $last_name ) {
-			$email_to_name = sprintf(
-
-				_x( '%1$s %2$s', 'personal name', 'contact-form-7' ),
-				$first_name,
-				$last_name
-			);
-		} else {
-			$email_to_name = '';
-		}
-
-		$params['email'] = apply_filters(
-			'wpcf7_baserow_email_parameters',
-			array(
-				'templateId' => absint( $prop['email_template'] ),
-				'to' => array(
-					array(
-						'name' => $email_to_name,
-						'email' => $attributes['EMAIL'],
-					),
-				),
-				'params' => (object) $attributes,
-				'tags' => array( 'Contact Form 7' ),
-			)
-		);
-	}
-
-	if ( is_email( $attributes['EMAIL'] ) ) {
-		$token = null;
-
-		do_action_ref_array( 'wpcf7_doi', array(
-			'wpcf7_baserow',
-			array(
-				'email_to' => $attributes['EMAIL'],
-				'properties' => $params,
-			),
-			&$token,
-		) );
-
-		if ( isset( $token ) ) {
-			return;
-		}
-	}
 
 	if ( ! empty( $params['contact'] ) ) {
 		$contact_id = $service->create_contact( $params['contact'] );
@@ -186,64 +135,26 @@ function wpcf7_baserow_submit( $contact_form, $result ) {
  *
  * @return array Baserow contact parameters.
  */
-function wpcf7_baserow_collect_parameters() {
+function wpcf7_baserow_collect_parameters()
+{
 
-	$params = array();
+    $params = array();
 
-	$submission = WPCF7_Submission::get_instance();
+    $submission = WPCF7_Submission::get_instance();
 
-	foreach ( (array) $submission->get_posted_data() as $name => $val ) {
-		$name = strtoupper( $name );
-
-		if ( 'YOUR-' == substr( $name, 0, 5 ) ) {
-			$name = substr( $name, 5 );
-		}
-
-		if ( $val ) {
-			$params += array(
-				$name => $val,
-			);
-		}
-	}
-
-	if ( isset( $params['SMS'] ) ) {
-		$sms = implode( ' ', (array) $params['SMS'] );
-		$sms = trim( $sms );
-
-		$plus = '+' == substr( $sms, 0, 1 ) ? '+' : '';
-		$sms = preg_replace( '/[^0-9]/', '', $sms );
-
-		if ( 6 < strlen( $sms ) and strlen( $sms ) < 18 ) {
-			$params['SMS'] = $plus . $sms;
-		} else { // Invalid phone number
-			unset( $params['SMS'] );
-		}
-	}
-
-	if ( isset( $params['NAME'] ) ) {
-		$your_name = implode( ' ', (array) $params['NAME'] );
-		$your_name = explode( ' ', $your_name );
-
-		if ( ! isset( $params['LASTNAME'] ) ) {
-			$params['LASTNAME'] = implode(
-				' ',
-				array_slice( $your_name, 1 )
-			);
-		}
-
-		if ( ! isset( $params['FIRSTNAME'] ) ) {
-			$params['FIRSTNAME'] = implode(
-				' ',
-				array_slice( $your_name, 0, 1 )
-			);
-		}
-	}
-
-	$params = apply_filters(
-		'wpcf7_baserow_collect_parameters',
-		$params
-	);
+    foreach ((array)$submission->get_posted_data() as $name => $val) {
+        if ($val) {
+            $params += array(
+                $name => $val,
+            );
+        }
+    }
 
 
-	return $params;
+    $params = apply_filters(
+        'wpcf7_baserow_collect_parameters',
+        $params
+    );
+
+    return $params;
 }

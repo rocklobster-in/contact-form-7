@@ -289,9 +289,6 @@ trait WPCF7_Baserow_API
 
         $request = array(
             'headers' => array(
-                //'Accept' => 'application/json',
-                //'Content-Type' => 'application/json; charset=utf-8',
-                //'API-Key' => $this->get_api_key(),
                 'Authorization' => "Token " . $this->api_key
             ),
         );
@@ -420,11 +417,37 @@ trait WPCF7_Baserow_API
     }
 
 
-    public function create_row($properties)
+    public function create_row($database_id, $data)
     {
+        if (!$database_id) {
+            return false;
+        }
+
+        $request = array(
+            'headers' => array(
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json; charset=utf-8',
+                'Authorization' => "Token " . $this->api_key
+            ),
+            'body' => json_encode($data),
+        );
+
         $endpoint = $this->url . '/api/database/rows/table/' . $database_id . '/?user_field_names=true';
 
+        $response = wp_remote_post($endpoint, $request);
+        $response_code = (int)wp_remote_retrieve_response_code($response);
 
+
+        if (in_array($response_code, array(201, 204, 200), true)) {
+            $row = wp_remote_retrieve_body($response);
+            return $row;
+        } elseif (400 <= $response_code) {
+            if (WP_DEBUG) {
+                $this->log($endpoint, $request, $response);
+            }
+        }
+
+        return false;
     }
 
     public function create_contact($properties)
