@@ -155,7 +155,7 @@ class WPCF7_Baserow extends WPCF7_Service
             echo sprintf(
                 '<div class="notice notice-error"><p><strong>%1$s</strong>: %2$s</p></div>',
                 esc_html(__("Error", 'contact-form-7')),
-                esc_html(__("You have not been authenticated. Make sure the provided API key is correct.", 'contact-form-7'))
+                esc_html(__("You have not been authenticated. Make sure the provided API Token is correct.", 'contact-form-7'))
             );
         }
 
@@ -221,7 +221,7 @@ class WPCF7_Baserow extends WPCF7_Service
                 <tbody>
                 <tr>
                     <th scope="row">
-                        <label for="publishable"><?php echo esc_html(__('API key', 'contact-form-7')); ?></label></th>
+                        <label for="publishable"><?php echo esc_html(__('API Token', 'contact-form-7')); ?></label></th>
                     <td><?php
                         if ($this->is_active()) {
                             echo esc_html($token);
