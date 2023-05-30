@@ -9,7 +9,7 @@ class WPCF7_Baserow extends WPCF7_Service
     use WPCF7_Baserow_API;
 
     private static $instance;
-    private $api_key;
+    private $token;
     private $url;
 
     public static function get_instance()
@@ -25,8 +25,8 @@ class WPCF7_Baserow extends WPCF7_Service
     {
         $option = WPCF7::get_option('baserow');
 
-        if (isset($option['api_key'])) {
-            $this->api_key = $option['api_key'];
+        if (isset($option['token'])) {
+            $this->token = $option['token'];
         }
 
         if (isset($option['url'])) {
@@ -42,12 +42,12 @@ class WPCF7_Baserow extends WPCF7_Service
 
     public function is_active()
     {
-        return (bool)$this->get_api_key();
+        return ($this->get_token() && $this->get_url());
     }
 
-    public function get_api_key()
+    public function get_token()
     {
-        return $this->api_key;
+        return $this->token;
     }
 
     public function get_url()
@@ -67,8 +67,8 @@ class WPCF7_Baserow extends WPCF7_Service
     public function link()
     {
         echo wpcf7_link(
-            'https://www.baserow.com/?tap_a=30591-fb13f0&tap_s=1031580-b1bb1d',
-            'baserow.com'
+            'https://github.com/bram2w/baserow',
+            'https://github.com/bram2w/baserow'
         );
     }
 
@@ -94,14 +94,14 @@ class WPCF7_Baserow extends WPCF7_Service
     protected function save_data()
     {
         WPCF7::update_option('baserow', array(
-            'api_key' => $this->api_key,
+            'token' => $this->token,
             'url' => $this->url
         ));
     }
 
     protected function reset_data()
     {
-        $this->api_key = null;
+        $this->token = null;
         $this->url = null;
         $this->save_data();
     }
@@ -115,8 +115,8 @@ class WPCF7_Baserow extends WPCF7_Service
                 $this->reset_data();
                 $redirect_to = $this->menu_page_url('action=setup');
             } else {
-                $this->api_key = isset($_POST['api_key'])
-                    ? trim($_POST['api_key'])
+                $this->token = isset($_POST['token'])
+                    ? trim($_POST['token'])
                     : '';
 
                 $this->url = isset($_POST['url'])
@@ -186,7 +186,7 @@ class WPCF7_Baserow extends WPCF7_Service
         echo sprintf(
             '<p><strong>%s</strong></p>',
             wpcf7_link(
-                __('https://contactform7.com/baserow-integration/', 'contact-form-7'),
+                __('https://github.com/bram2w/baserow', 'contact-form-7'),
                 __('Baserow integration', 'contact-form-7')
             )
         );
@@ -211,7 +211,7 @@ class WPCF7_Baserow extends WPCF7_Service
 
     private function display_setup()
     {
-        $api_key = $this->get_api_key();
+        $token = $this->get_token();
         $url = $this->get_url();
 
         ?>
@@ -220,19 +220,19 @@ class WPCF7_Baserow extends WPCF7_Service
             <table class="form-table">
                 <tbody>
                 <tr>
-                    <th scope="row"><label
-                                for="publishable"><?php echo esc_html(__('API key', 'contact-form-7')); ?></label></th>
+                    <th scope="row">
+                        <label for="publishable"><?php echo esc_html(__('API key', 'contact-form-7')); ?></label></th>
                     <td><?php
                         if ($this->is_active()) {
-                            echo esc_html($api_key);
+                            echo esc_html($token);
                             echo sprintf(
-                                '<input type="hidden" value="%s" id="api_key" name="api_key" />',
-                                esc_attr($api_key)
+                                '<input type="hidden" value="%s" id="token" name="token" />',
+                                esc_attr($token)
                             );
                         } else {
                             echo sprintf(
-                                '<input type="text" aria-required="true" value="%s" id="api_key" name="api_key" class="regular-text code" />',
-                                esc_attr($api_key)
+                                '<input type="text" aria-required="true" value="%s" id="token" name="token" class="regular-text code" />',
+                                esc_attr($token)
                             );
                         }
                         ?></td>
@@ -278,7 +278,7 @@ class WPCF7_Baserow extends WPCF7_Service
 /**
  * Trait for the Baserow API (v3).
  *
- * @link https://developers.baserow.com/reference
+ * @link https://github.com/bram2w/baserow
  */
 trait WPCF7_Baserow_API
 {
@@ -289,7 +289,7 @@ trait WPCF7_Baserow_API
 
         $request = array(
             'headers' => array(
-                'Authorization' => "Token " . $this->api_key
+                'Authorization' => "Token " . $this->token
             ),
         );
 
@@ -317,7 +317,7 @@ trait WPCF7_Baserow_API
 
         $request = array(
             'headers' => array(
-                'Authorization' => "Token " . $this->api_key
+                'Authorization' => "Token " . $this->token
             ),
         );
 
@@ -340,83 +340,6 @@ trait WPCF7_Baserow_API
 
     }
 
-    public function get_lists()
-    {
-        $endpoint = add_query_arg(
-            array(
-                'limit' => 50,
-                'offset' => 0,
-            ),
-            'https://api.baserow.com/v3/contacts/lists'
-        );
-
-        $request = array(
-            'headers' => array(
-                'Accept' => 'application/json',
-                'Content-Type' => 'application/json; charset=utf-8',
-                'API-Key' => $this->get_api_key(),
-            ),
-        );
-
-        $response = wp_remote_get($endpoint, $request);
-        $response_code = (int)wp_remote_retrieve_response_code($response);
-
-        if (200 === $response_code) { // 200 OK
-            $response_body = wp_remote_retrieve_body($response);
-            $response_body = json_decode($response_body, true);
-
-            if (empty($response_body['lists'])) {
-                return array();
-            } else {
-                return (array)$response_body['lists'];
-            }
-        } elseif (400 <= $response_code) {
-            if (WP_DEBUG) {
-                $this->log($endpoint, $request, $response);
-            }
-        }
-    }
-
-
-    public function get_templates()
-    {
-        $endpoint = add_query_arg(
-            array(
-                'templateStatus' => 'true',
-                'limit' => 100,
-                'offset' => 0,
-            ),
-            'https://api.baserow.com/v3/smtp/templates'
-        );
-
-        $request = array(
-            'headers' => array(
-                'Accept' => 'application/json',
-                'Content-Type' => 'application/json; charset=utf-8',
-                'API-Key' => $this->get_api_key(),
-            ),
-        );
-
-        $response = wp_remote_get($endpoint, $request);
-        $response_code = (int)wp_remote_retrieve_response_code($response);
-
-        if (200 === $response_code) { // 200 OK
-            $response_body = wp_remote_retrieve_body($response);
-            $response_body = json_decode($response_body, true);
-
-            if (empty($response_body['templates'])) {
-                return array();
-            } else {
-                return (array)$response_body['templates'];
-            }
-        } elseif (400 <= $response_code) {
-            if (WP_DEBUG) {
-                $this->log($endpoint, $request, $response);
-            }
-        }
-    }
-
-
     public function create_row($database_id, $data)
     {
         if (!$database_id) {
@@ -427,7 +350,7 @@ trait WPCF7_Baserow_API
             'headers' => array(
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json; charset=utf-8',
-                'Authorization' => "Token " . $this->api_key
+                'Authorization' => "Token " . $this->token
             ),
             'body' => json_encode($data),
         );
@@ -449,63 +372,4 @@ trait WPCF7_Baserow_API
 
         return false;
     }
-
-    public function create_contact($properties)
-    {
-        $endpoint = 'https://api.baserow.com/v3/contacts';
-
-        $request = array(
-            'headers' => array(
-                'Accept' => 'application/json',
-                'Content-Type' => 'application/json; charset=utf-8',
-                'API-Key' => $this->get_api_key(),
-            ),
-            'body' => json_encode($properties),
-        );
-
-        $response = wp_remote_post($endpoint, $request);
-        $response_code = (int)wp_remote_retrieve_response_code($response);
-
-        if (in_array($response_code, array(201, 204), true)) {
-            $contact_id = wp_remote_retrieve_body($response);
-            return $contact_id;
-        } elseif (400 <= $response_code) {
-            if (WP_DEBUG) {
-                $this->log($endpoint, $request, $response);
-            }
-        }
-
-        return false;
-    }
-
-
-    public function send_email($properties)
-    {
-        $endpoint = 'https://api.baserow.com/v3/smtp/email';
-
-        $request = array(
-            'headers' => array(
-                'Accept' => 'application/json',
-                'Content-Type' => 'application/json; charset=utf-8',
-                'API-Key' => $this->get_api_key(),
-            ),
-            'body' => json_encode($properties),
-        );
-
-        $response = wp_remote_post($endpoint, $request);
-        $response_code = (int)wp_remote_retrieve_response_code($response);
-
-        if (201 === $response_code) { // 201 Transactional email sent
-            $message_id = wp_remote_retrieve_body($response);
-            return $message_id;
-        } elseif (400 <= $response_code) {
-            if (WP_DEBUG) {
-                $this->log($endpoint, $request, $response);
-            }
-        }
-
-        return false;
-    }
-
-
 }

@@ -94,7 +94,7 @@ function wpcf7_baserow_editor_panels($panels)
                 __("You can set up the Baserow integration here. For details, see %s.", 'contact-form-7')
             ),
             wpcf7_link(
-                __('https://contactform7.com/baserow-integration/', 'contact-form-7'),
+                __('https://github.com/bram2w/baserow', 'contact-form-7'),
                 __('Baserow integration', 'contact-form-7')
             )
         );
@@ -165,7 +165,6 @@ function wpcf7_baserow_editor_panels($panels)
                 </tr>
 
                 <?php foreach ($contact_form->scan_form_tags() as $form_tag): ?>
-
                     <tr>
                         <td>
                             <?php echo esc_html(__($form_tag->name, 'contact-form-7')); ?>
@@ -189,7 +188,7 @@ function wpcf7_baserow_editor_panels($panels)
                                         <option value="">-- No Mapping --</option>
                                         <?php foreach ($database_fields as $database_field): ?>
                                             <option
-                                                    <?php echo $database_field['name'] == $prop['mapping'][$form_tag->raw_name] ? "selected" : ""?>
+                                                <?php echo $database_field['name'] == $prop['mapping'][$form_tag->raw_name] ? "selected" : "" ?>
                                                     value="<?php echo $database_field['name'] ?>">
                                                 <?php echo $database_field['name'] ?>
                                                 (<?php echo $database_field['type'] ?>)
@@ -203,26 +202,6 @@ function wpcf7_baserow_editor_panels($panels)
                     </tr>
 
                 <?php endforeach; ?>
-
-                <tr>
-                    <th scope="row"></th>
-                    <td>
-                        <fieldset>
-                            <pre>
-                            <?php
-
-                            //var_dump($contact_form->scan_form_tags());
-                            //echo "<hr>";
-                            //var_dump($database_fields);
-                            ?>
-                            </pre>
-                        </fieldset>
-
-
-                    </td>
-                </tr>
-
-
                 </tbody>
             </table>
         </fieldset>

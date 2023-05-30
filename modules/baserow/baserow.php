@@ -1,8 +1,6 @@
 <?php
 /**
  * Baserow module main file
- *
- * @link https://contactform7.com/baserow-integration/
  */
 
 wpcf7_include_module_file('baserow/service.php');
@@ -28,7 +26,7 @@ function wpcf7_baserow_register_service()
 add_action('wpcf7_submit', 'wpcf7_baserow_submit', 10, 2);
 
 /**
- * Callback to the wpcf7_submit action hook. Creates a contact
+ * Callback to the wpcf7_submit action hook.
  * based on the submission.
  */
 function wpcf7_baserow_submit($contact_form, $result)
@@ -55,35 +53,6 @@ function wpcf7_baserow_submit($contact_form, $result)
 
     $submission = WPCF7_Submission::get_instance();
 
-    // var_dump($contact_form->scan_form_tags()); die();
-    // var_dump($contact_form->baserow['database_id']); die();
-    // var_dump($contact_form->baserow['mapping']); die();
-
-
-    // $service->create_row($contact_form->baserow['database_id'] );
-
-
-    // $contact_form->additional_settings
-    // $contact_form->baserow
-
-    // var_dump($contact_form); die();
-    // var_dump($submission); die();
-
-    /*
-	foreach ( $contact_form->scan_form_tags( 'feature=name-attr' ) as $tag ) {
-		if ( $tag->has_option( 'consent_for:baserow' )
-		and null == $submission->get_posted_data( $tag->name ) ) {
-			$consented = false;
-			break;
-		}
-	}
-
-
-	if ( ! $consented ) {
-		return;
-	}
-    */
-
     $prop = wp_parse_args(
         $contact_form->prop('baserow'),
         array(
@@ -92,41 +61,14 @@ function wpcf7_baserow_submit($contact_form, $result)
         )
     );
 
-    // var_dump($prop);
-    // die();
-
     $attributes = wpcf7_baserow_collect_parameters();
-    // var_dump($attributes); die();
 
     $data = array();
     foreach ($attributes as $attribute_key => $attribute) {
         $data[$prop['mapping'][$attribute_key]] = $attribute;
     }
 
-    // var_dump($data); die();
-
-
     $result = $service->create_row($contact_form->baserow['database_id'], $data );
-
-    var_dump($result); die();
-
-    /*
-
-
-
-
-
-
-
-	if ( ! empty( $params['contact'] ) ) {
-		$contact_id = $service->create_contact( $params['contact'] );
-
-		if ( $contact_id and ! empty( $params['email'] ) ) {
-			$service->send_email( $params['email'] );
-		}
-	}
-
-    */
 }
 
 
