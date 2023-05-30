@@ -97,7 +97,7 @@ class WPCF7_Mail {
 				// Convert <example@example.com> to &lt;example@example.com&gt;.
 				$component = preg_replace_callback(
 					'/<(.*?)>/',
-					function ( $matches ) {
+					static function ( $matches ) {
 						if ( is_email( $matches[1] ) ) {
 							return sprintf( '&lt;%s&gt;', $matches[1] );
 						} else {

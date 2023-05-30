@@ -254,7 +254,7 @@ abstract class WPCF7_SWV_CompositeRule extends WPCF7_SWV_Rule {
 	 */
 	public function to_array() {
 		$rules_arrays = array_map(
-			function ( $rule ) {
+			static function ( $rule ) {
 				return $rule->to_array();
 			},
 			$this->rules

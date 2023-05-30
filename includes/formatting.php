@@ -14,7 +14,7 @@ function wpcf7_autop( $input, $br = true ) {
 	// Replace non-HTML embedded elements with placeholders.
 	$input = preg_replace_callback(
 		'/<(math|svg).*?<\/\1>/is',
-		function ( $matches ) use ( &$placeholders ) {
+		static function ( $matches ) use ( &$placeholders ) {
 			$placeholder = sprintf(
 				'<%1$s id="%2$s" />',
 				WPCF7_HTMLFormatter::placeholder_inline,
@@ -444,7 +444,7 @@ function wpcf7_kses_allowed_html( $context = 'form' ) {
 		);
 
 		$additional_tags_for_form = array_map(
-			function ( $elm ) {
+			static function ( $elm ) {
 				$global_attributes = array(
 					'aria-atomic' => true,
 					'aria-checked' => true,

@@ -393,7 +393,7 @@ class WPCF7_FormTagsManager {
 			'feature' => array(),
 		) );
 
-		$cond = array_map( function ( $c ) {
+		$cond = array_map( static function ( $c ) {
 			return array_filter( array_map( 'trim', (array) $c ) );
 		}, $cond );
 

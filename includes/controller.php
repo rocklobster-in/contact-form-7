@@ -33,7 +33,7 @@ function wpcf7_control_init() {
  */
 add_action(
 	'wp_enqueue_scripts',
-	function () {
+	static function () {
 		$assets = array();
 		$asset_file = wpcf7_plugin_path( 'includes/js/index.asset.php' );
 

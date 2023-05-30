@@ -99,7 +99,7 @@ class WPCF7_Pipes {
 
 	public function to_array() {
 		return array_map(
-			function( WPCF7_Pipe $pipe ) {
+			static function ( WPCF7_Pipe $pipe ) {
 				return array(
 					$pipe->before,
 					$pipe->after,
