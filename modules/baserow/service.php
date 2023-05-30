@@ -321,7 +321,7 @@ trait WPCF7_Baserow_API
             ),
         );
 
-        $endpoint = $this->url . '/api/database/fields/table/' . $database_id . '/';
+        $endpoint = $this->url . '/database/fields/table/' . $database_id . '/';
 
         $response = wp_remote_get($endpoint, $request);
         $response_code = (int)wp_remote_retrieve_response_code($response);
@@ -355,7 +355,7 @@ trait WPCF7_Baserow_API
             'body' => json_encode($data),
         );
 
-        $endpoint = $this->url . '/api/database/rows/table/' . $database_id . '/?user_field_names=true';
+        $endpoint = $this->url . '/database/rows/table/' . $database_id . '/?user_field_names=true';
 
         $response = wp_remote_post($endpoint, $request);
         $response_code = (int)wp_remote_retrieve_response_code($response);
