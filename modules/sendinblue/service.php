@@ -325,6 +325,37 @@ trait WPCF7_Sendinblue_API {
 			}
 		}
 	}
+	
+	
+	public function get_tasktypes() {
+		$endpoint = 'https://api.sendinblue.com/v3/crm/tasktypes';
+
+		$request = array(
+			'headers' => array(
+				'Accept' => 'application/json',
+				'Content-Type' => 'application/json; charset=utf-8',
+				'API-Key' => $this->get_api_key(),
+			),
+		);
+
+		$response = wp_remote_get( $endpoint, $request );
+		$response_code = (int) wp_remote_retrieve_response_code( $response );
+
+		if ( 200 === $response_code ) { // 200 OK
+			$response_body = wp_remote_retrieve_body( $response );
+			$response_body = json_decode( $response_body, true );
+
+			if ( empty( $response_body ) ) {
+				return array();
+			} else {
+				return (array) $response_body;
+			}
+		} elseif ( 400 <= $response_code ) {
+			if ( WP_DEBUG ) {
+				$this->log( $endpoint, $request, $response );
+			}
+		}
+	}
 
 
 	public function create_contact( $properties ) {
@@ -373,6 +404,87 @@ trait WPCF7_Sendinblue_API {
 		if ( 201 === $response_code ) { // 201 Transactional email sent
 			$message_id = wp_remote_retrieve_body( $response );
 			return $message_id;
+		} elseif ( 400 <= $response_code ) {
+			if ( WP_DEBUG ) {
+				$this->log( $endpoint, $request, $response );
+			}
+		}
+
+		return false;
+	}
+	
+	public function create_deal( $properties ) {
+		$endpoint = 'https://api.sendinblue.com/v3/crm/deals';
+
+		$request = array(
+			'headers' => array(
+				'Accept' => 'application/json',
+				'Content-Type' => 'application/json; charset=utf-8',
+				'API-Key' => $this->get_api_key(),
+			),
+			'body' => json_encode( $properties ),
+		);
+
+		$response = wp_remote_post( $endpoint, $request );
+		$response_code = (int) wp_remote_retrieve_response_code( $response );
+
+		if ( 201 === $response_code ) { // 201 Transactional email sent
+			$deal_id = wp_remote_retrieve_body( $response );
+			return $deal_id;
+		} elseif ( 400 <= $response_code ) {
+			if ( WP_DEBUG ) {
+				$this->log( $endpoint, $request, $response );
+			}
+		}
+
+		return false;
+	}
+	
+	public function link_deal( $deal_id, $properties ) {
+		$endpoint = 'https://api.sendinblue.com/v3/crm/deals/link-unlink/'.$deal_id;
+
+		$request = array(
+			'headers' => array(
+				'Accept' => 'application/json',
+				'Content-Type' => 'application/json; charset=utf-8',
+				'API-Key' => $this->get_api_key(),
+			),
+			'body' => json_encode( $properties ),
+		);
+
+		$response = wp_remote_post( $endpoint, $request );
+		$response_code = (int) wp_remote_retrieve_response_code( $response );
+
+		if ( 201 === $response_code ) { // 201 Transactional email sent
+			$deal_id = wp_remote_retrieve_body( $response );
+			return $deal_id;
+		} elseif ( 400 <= $response_code ) {
+			if ( WP_DEBUG ) {
+				$this->log( $endpoint, $request, $response );
+			}
+		}
+
+		return false;
+	}
+	
+	public function create_task( $properties ) {
+		$endpoint = 'https://api.sendinblue.com/v3/crm/tasks';
+
+		$request = array(
+			'headers' => array(
+				'Accept' => 'application/json',
+				'Content-Type' => 'application/json; charset=utf-8',
+				'API-Key' => $this->get_api_key(),
+			),
+			'body' => json_encode( $properties ),
+		);
+
+		$response = wp_remote_post( $endpoint, $request );
+		$response_code = (int) wp_remote_retrieve_response_code( $response );
+
+		if ( 201 === $response_code ) { // 201 Transactional email sent
+			$task_id = wp_remote_retrieve_body( $response );
+			return $task_id;
 		} elseif ( 400 <= $response_code ) {
 			if ( WP_DEBUG ) {
 				$this->log( $endpoint, $request, $response );
