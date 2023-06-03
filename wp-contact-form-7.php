@@ -5,14 +5,18 @@ Plugin URI: https://contactform7.com/
 Description: Just another contact form plugin. Simple but flexible.
 Author: Takayuki Miyoshi
 Author URI: https://ideasilo.wordpress.com/
+License: GPL v2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: contact-form-7
 Domain Path: /languages/
-Version: 5.7.7
+Version: 5.8-dev
+Requires at least: 6.1
+Requires PHP: 7.4
 */
 
-define( 'WPCF7_VERSION', '5.7.7' );
+define( 'WPCF7_VERSION', '5.8-dev' );
 
-define( 'WPCF7_REQUIRED_WP_VERSION', '6.0' );
+define( 'WPCF7_REQUIRED_WP_VERSION', '6.1' );
 
 define( 'WPCF7_TEXT_DOMAIN', 'contact-form-7' );
 
