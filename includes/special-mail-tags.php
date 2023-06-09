@@ -192,6 +192,14 @@ function wpcf7_site_related_smt( $output, $name, $html, $mail_tag = null ) {
 		return get_bloginfo( 'url', $filter );
 	}
 
+	if ( '_site_domain' == $name ) {
+		$url = get_bloginfo( 'url', $filter );
+		$parse = parse_url( $url );
+		$domain = preg_replace( '/^www\./', '', $parse['host'] );
+
+		return $domain;
+	}
+	
 	if ( '_site_admin_email' == $name ) {
 		return get_bloginfo( 'admin_email', $filter );
 	}
