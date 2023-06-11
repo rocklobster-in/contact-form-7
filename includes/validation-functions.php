@@ -75,13 +75,43 @@ function wpcf7_is_number( $text ) {
  * @link https://html.spec.whatwg.org/multipage/input.html#date-state-(type=date)
  */
 function wpcf7_is_date( $text ) {
-	$result = preg_match( '/^([0-9]{4,})-([0-9]{2})-([0-9]{2})$/', $text, $matches );
+	$result = preg_match(
+		'/^([0-9]{4,})-([0-9]{2})-([0-9]{2})$/',
+		$text,
+		$matches
+	);
 
 	if ( $result ) {
 		$result = checkdate( $matches[2], $matches[3], $matches[1] );
 	}
 
 	return apply_filters( 'wpcf7_is_date', $result, $text );
+}
+
+
+/**
+ * Checks whether the given text is a valid time.
+ *
+ * @link https://html.spec.whatwg.org/multipage/input.html#time-state-(type=time)
+ */
+function wpcf7_is_time( $text ) {
+	$result = preg_match(
+		'/^([0-9]{2})\:([0-9]{2})(?:\:([0-9]{2}))?$/',
+		$text,
+		$matches
+	);
+
+	if ( $result ) {
+		$hour = (int) $matches[1];
+		$minute = (int) $matches[2];
+		$second = empty( $matches[3] ) ? 0 : (int) $matches[3];
+
+		$result = 0 <= $hour && $hour <= 23 &&
+			0 <= $minute && $minute <= 59 &&
+			0 <= $second && $second <= 59;
+	}
+
+	return apply_filters( 'wpcf7_is_time', $result, $text );
 }
 
 

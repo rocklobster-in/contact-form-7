@@ -19,6 +19,7 @@ function wpcf7_swv_available_rules() {
 		'tel' => 'WPCF7_SWV_TelRule',
 		'number' => 'WPCF7_SWV_NumberRule',
 		'date' => 'WPCF7_SWV_DateRule',
+		'time' => 'WPCF7_SWV_TimeRule',
 		'file' => 'WPCF7_SWV_FileRule',
 		'enum' => 'WPCF7_SWV_EnumRule',
 		'dayofweek' => 'WPCF7_SWV_DayofweekRule',
