@@ -30,26 +30,15 @@ class WPCF7_SWV_DayofweekRule extends WPCF7_SWV_Rule {
 		$acceptable_values = array_unique( $acceptable_values );
 
 		foreach ( $input as $i ) {
-			if ( ! wpcf7_is_date( $i ) ) {
-				return new WP_Error( 'wpcf7_invalid_dayofweek',
-					$this->get_property( 'error' )
-				);
-			}
+			if ( wpcf7_is_date( $i ) ) {
+				$datetime = date_create_immutable( $i, wp_timezone() );
+				$dow = (int) $datetime->format( 'N' );
 
-			$datetime = date_create( $i, wp_timezone() );
-
-			if ( false === $datetime ) {
-				return new WP_Error( 'wpcf7_invalid_dayofweek',
-					$this->get_property( 'error' )
-				);
-			}
-
-			$dow = (int) $datetime->format( 'N' );
-
-			if ( ! in_array( $dow, $acceptable_values, true ) ) {
-				return new WP_Error( 'wpcf7_invalid_dayofweek',
-					$this->get_property( 'error' )
-				);
+				if ( ! in_array( $dow, $acceptable_values, true ) ) {
+					return new WP_Error( 'wpcf7_invalid_dayofweek',
+						$this->get_property( 'error' )
+					);
+				}
 			}
 		}
 
