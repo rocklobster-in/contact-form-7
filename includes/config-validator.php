@@ -279,16 +279,11 @@ class WPCF7_ConfigValidator {
 				continue;
 			}
 
-			if ( ! is_array( $errors ) ) { // for back-compat
-				$code = $errors;
-				$this->add_error( $section, $code );
-			} else {
-				foreach ( (array) $errors as $error ) {
-					if ( ! empty( $error['code'] ) ) {
-						$code = $error['code'];
-						$args = isset( $error['args'] ) ? $error['args'] : '';
-						$this->add_error( $section, $code, $args );
-					}
+			foreach ( (array) $errors as $error ) {
+				if ( ! empty( $error['code'] ) ) {
+					$code = $error['code'];
+					$args = isset( $error['args'] ) ? $error['args'] : '';
+					$this->add_error( $section, $code, $args );
 				}
 			}
 		}
