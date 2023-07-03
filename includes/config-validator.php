@@ -174,25 +174,8 @@ class WPCF7_ConfigValidator {
 	 * Returns a default message that is used when the message for the error
 	 * is not specified.
 	 */
-	public function get_default_message( $code ) {
-		switch ( $code ) {
-			case self::error_maybe_empty:
-				return __( "There is a possible empty field.", 'contact-form-7' );
-			case self::error_invalid_mailbox_syntax:
-				return __( "Invalid mailbox syntax is used.", 'contact-form-7' );
-			case self::error_email_not_in_site_domain:
-				return __( "Sender email address does not belong to the site domain.", 'contact-form-7' );
-			case self::error_html_in_message:
-				return __( "HTML tags are used in a message.", 'contact-form-7' );
-			case self::error_multiple_controls_in_label:
-				return __( "Multiple form controls are in a single label element.", 'contact-form-7' );
-			case self::error_invalid_mail_header:
-				return __( "There are invalid mail header fields.", 'contact-form-7' );
-			case self::error_deprecated_settings:
-				return __( "Deprecated settings are used.", 'contact-form-7' );
-			default:
-				return '';
-		}
+	public function get_default_message( $code = '' ) {
+		return __( "Configuration error is detected.", 'contact-form-7' );
 	}
 
 
@@ -454,6 +437,7 @@ class WPCF7_ConfigValidator {
 					if ( 1 < $fields_count ) {
 						return $this->add_error( $section,
 							self::error_multiple_controls_in_label, array(
+								'message' => __( "Multiple form controls are in a single label element.", 'contact-form-7' ),
 								'link' => self::get_doc_link( 'multiple_controls_in_label' ),
 							)
 						);
@@ -700,6 +684,7 @@ class WPCF7_ConfigValidator {
 		if ( ! $invalid_mailbox and ! wpcf7_is_email_in_site_domain( $sender ) ) {
 			$this->add_error( sprintf( '%s.sender', $template ),
 				self::error_email_not_in_site_domain, array(
+					'message' => __( "Sender email address does not belong to the site domain.", 'contact-form-7' ),
 					'link' => self::get_doc_link( 'email_not_in_site_domain' ),
 				)
 			);
@@ -747,8 +732,7 @@ class WPCF7_ConfigValidator {
 						sprintf( '%s.additional_headers', $template ),
 						$header_value,
 						array(
-							'message' =>
-								__( "Invalid mailbox syntax is used in the %name% field.", 'contact-form-7' ),
+							'message' => __( "Invalid mailbox syntax is used in the %name% field.", 'contact-form-7' ),
 							'params' => array( 'name' => $header_name )
 						)
 					);
@@ -759,6 +743,7 @@ class WPCF7_ConfigValidator {
 		if ( $invalid_mail_header_exists ) {
 			$this->add_error( sprintf( '%s.additional_headers', $template ),
 				self::error_invalid_mail_header, array(
+					'message' => __( "There are invalid mail header fields.", 'contact-form-7' ),
 					'link' => self::get_doc_link( 'invalid_mail_header' ),
 				)
 			);
@@ -846,7 +831,7 @@ class WPCF7_ConfigValidator {
 	public function detect_invalid_mailbox_syntax( $section, $content, $args = '' ) {
 		$args = wp_parse_args( $args, array(
 			'link' => self::get_doc_link( 'invalid_mailbox_syntax' ),
-			'message' => '',
+			'message' => __( "Invalid mailbox syntax is used.", 'contact-form-7' ),
 			'params' => array(),
 		) );
 
@@ -869,6 +854,7 @@ class WPCF7_ConfigValidator {
 		if ( '' === $content ) {
 			return $this->add_error( $section,
 				self::error_maybe_empty, array(
+					'message' => __( "There is a possible empty field.", 'contact-form-7' ),
 					'link' => self::get_doc_link( 'maybe_empty' ),
 				)
 			);
@@ -890,8 +876,7 @@ class WPCF7_ConfigValidator {
 			return $this->add_error( $section,
 				self::error_file_not_found,
 				array(
-					'message' =>
-						__( "Attachment file does not exist at %path%.", 'contact-form-7' ),
+					'message' => __( "Attachment file does not exist at %path%.", 'contact-form-7' ),
 					'params' => array( 'path' => $content ),
 					'link' => self::get_doc_link( 'file_not_found' ),
 				)
@@ -914,8 +899,7 @@ class WPCF7_ConfigValidator {
 			return $this->add_error( $section,
 				self::error_file_not_in_content_dir,
 				array(
-					'message' =>
-						__( "It is not allowed to use files outside the wp-content directory.", 'contact-form-7' ),
+					'message' => __( "It is not allowed to use files outside the wp-content directory.", 'contact-form-7' ),
 					'link' => self::get_doc_link( 'file_not_in_content_dir' ),
 				)
 			);
@@ -959,6 +943,7 @@ class WPCF7_ConfigValidator {
 			return $this->add_error( $section,
 				self::error_html_in_message,
 				array(
+					'message' => __( "HTML tags are used in a message.", 'contact-form-7' ),
 					'link' => self::get_doc_link( 'html_in_message' ),
 				)
 			);
@@ -980,6 +965,7 @@ class WPCF7_ConfigValidator {
 			return $this->add_error( 'additional_settings.body',
 				self::error_deprecated_settings,
 				array(
+					'message' => __( "Deprecated settings are used.", 'contact-form-7' ),
 					'link' => self::get_doc_link( 'deprecated_settings' ),
 				)
 			);
