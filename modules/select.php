@@ -55,7 +55,8 @@ function wpcf7_select_form_tag_handler( $tag ) {
 
 	$multiple = $tag->has_option( 'multiple' );
 	$include_blank = $tag->has_option( 'include_blank' );
-	$first_as_label = $tag->has_option( 'first_as_label' );
+	$first_as_placeholder = $tag->has_option('first_as_placeholder');
+	$first_as_label = !$first_as_placeholder && $tag->has_option( 'first_as_label' );
 
 	if ( $tag->has_option( 'size' ) ) {
 		$size = $tag->get_option( 'size', 'int', true );
@@ -76,6 +77,7 @@ function wpcf7_select_form_tag_handler( $tag ) {
 
 	$values = $tag->values;
 	$labels = $tag->labels;
+	$placeholder = '';
 
 	$default_choice = $tag->get_default_option( null, array(
 		'multiple' => $multiple,
@@ -90,6 +92,9 @@ function wpcf7_select_form_tag_handler( $tag ) {
 		array_unshift( $values, '' );
 	} elseif ( $first_as_label ) {
 		$values[0] = '';
+	} elseif ($first_as_placeholder) {
+		$placeholder = isset($values[0]) ? $values[0] : '';
+		unset($values[0]);
 	}
 
 	$html = '';
@@ -118,6 +123,7 @@ function wpcf7_select_form_tag_handler( $tag ) {
 
 	$atts['multiple'] = (bool) $multiple;
 	$atts['name'] = $tag->name . ( $multiple ? '[]' : '' );
+	$atts['placeholder'] = $placeholder;
 
 	$html = sprintf(
 		'<span class="wpcf7-form-control-wrap" data-name="%1$s"><select %2$s>%3$s</select>%4$s</span>',
