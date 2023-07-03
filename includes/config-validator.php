@@ -128,7 +128,8 @@ class WPCF7_ConfigValidator {
 				} else {
 					$message = $this->build_message(
 						$error['args']['message'],
-						$error['args']['params'] );
+						$error['args']['params']
+					);
 				}
 
 				$link = '';
@@ -252,11 +253,14 @@ class WPCF7_ConfigValidator {
 			return;
 		}
 
+		// Delete the old metadata.
 		delete_post_meta( $this->contact_form->id(), '_config_errors' );
+
+		delete_post_meta( $this->contact_form->id(), '_config_validation' );
 
 		if ( $this->errors ) {
 			update_post_meta(
-				$this->contact_form->id(), '_config_errors', $this->errors
+				$this->contact_form->id(), '_config_validation', $this->errors
 			);
 		}
 	}
@@ -267,7 +271,7 @@ class WPCF7_ConfigValidator {
 	 */
 	public function restore() {
 		$config_errors = get_post_meta(
-			$this->contact_form->id(), '_config_errors', true
+			$this->contact_form->id(), '_config_validation', true
 		);
 
 		foreach ( (array) $config_errors as $section => $errors ) {
