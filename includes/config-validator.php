@@ -12,22 +12,23 @@ class WPCF7_ConfigValidator {
 	 */
 	const last_important_update = '5.6.1';
 
-	const error = 100;
-	const error_maybe_empty = 101;
-	const error_invalid_mailbox_syntax = 102;
-	const error_email_not_in_site_domain = 103;
-	const error_html_in_message = 104;
-	const error_multiple_controls_in_label = 105;
-	const error_file_not_found = 106;
-	const error_unavailable_names = 107;
-	const error_invalid_mail_header = 108;
-	const error_deprecated_settings = 109;
-	const error_file_not_in_content_dir = 110;
-	const error_unavailable_html_elements = 111;
-	const error_attachments_overweight = 112;
-	const error_dots_in_names = 113;
-	const error_colons_in_names = 114;
-	const error_upload_filesize_overlimit = 115;
+	const error_codes = array(
+		'maybe_empty',
+		'invalid_mailbox_syntax',
+		'email_not_in_site_domain',
+		'html_in_message',
+		'multiple_controls_in_label',
+		'file_not_found',
+		'unavailable_names',
+		'invalid_mail_header',
+		'deprecated_settings',
+		'file_not_in_content_dir',
+		'unavailable_html_elements',
+		'attachments_overweight',
+		'dots_in_names',
+		'colons_in_names',
+		'upload_filesize_overlimit',
+	);
 
 
 	/**
@@ -184,8 +185,7 @@ class WPCF7_ConfigValidator {
 	 * Adds a validation error.
 	 *
 	 * @param string $section The section where the error detected.
-	 * @param int $code The unique code of the error.
-	 *            This must be one of the class constants.
+	 * @param string $code The unique code of the error.
 	 * @param string|array $args Optional options for the error.
 	 */
 	public function add_error( $section, $code, $args = '' ) {
@@ -193,6 +193,16 @@ class WPCF7_ConfigValidator {
 			'message' => '',
 			'params' => array(),
 		) );
+
+		$available_error_codes = (array) apply_filters(
+			'wpcf7_config_validator_available_error_codes',
+			self::error_codes,
+			$this->contact_form
+		);
+
+		if ( ! in_array( $code, $available_error_codes, true ) ) {
+			return false;
+		}
 
 		if ( ! isset( $this->errors[$section] ) ) {
 			$this->errors[$section] = array();
@@ -206,6 +216,9 @@ class WPCF7_ConfigValidator {
 
 	/**
 	 * Removes an error.
+	 *
+	 * @param string $section The section where the error detected.
+	 * @param string $code The unique code of the error.
 	 */
 	public function remove_error( $section, $code ) {
 		if ( empty( $this->errors[$section] ) ) {
@@ -432,7 +445,8 @@ class WPCF7_ConfigValidator {
 
 					if ( 1 < $fields_count ) {
 						return $this->add_error( $section,
-							self::error_multiple_controls_in_label, array(
+							'multiple_controls_in_label',
+							array(
 								'message' => __( "Multiple form controls are in a single label element.", 'contact-form-7' ),
 								'link' => self::get_doc_link( 'multiple_controls_in_label' ),
 							)
@@ -478,7 +492,7 @@ class WPCF7_ConfigValidator {
 			$ng_names = array_unique( $ng_names );
 
 			return $this->add_error( $section,
-				self::error_unavailable_names,
+				'unavailable_names',
 				array(
 					'message' =>
 						/* translators: %names%: a list of form control names */
@@ -503,7 +517,7 @@ class WPCF7_ConfigValidator {
 
 		if ( preg_match( $pattern, $content ) ) {
 			return $this->add_error( $section,
-				self::error_unavailable_html_elements,
+				'unavailable_html_elements',
 				array(
 					'message' => __( "Unavailable HTML elements are used in the form template.", 'contact-form-7' ),
 					'link' => self::get_doc_link( 'unavailable_html_elements' ),
@@ -530,7 +544,7 @@ class WPCF7_ConfigValidator {
 		foreach ( $tags as $tag ) {
 			if ( false !== strpos( $tag->raw_name, '.' ) ) {
 				return $this->add_error( $section,
-					self::error_dots_in_names,
+					'dots_in_names',
 					array(
 						'message' => __( "Dots are used in form-tag names.", 'contact-form-7' ),
 						'link' => self::get_doc_link( 'dots_in_names' ),
@@ -558,7 +572,7 @@ class WPCF7_ConfigValidator {
 		foreach ( $tags as $tag ) {
 			if ( false !== strpos( $tag->raw_name, ':' ) ) {
 				return $this->add_error( $section,
-					self::error_colons_in_names,
+					'colons_in_names',
 					array(
 						'message' => __( "Colons are used in form-tag names.", 'contact-form-7' ),
 						'link' => self::get_doc_link( 'colons_in_names' ),
@@ -609,7 +623,7 @@ class WPCF7_ConfigValidator {
 		foreach ( $tags as $tag ) {
 			if ( $upload_max_filesize < $tag->get_limit_option() ) {
 				return $this->add_error( $section,
-					self::error_upload_filesize_overlimit,
+					'upload_filesize_overlimit',
 					array(
 						'message' => __( "Uploadable file size exceeds PHP’s maximum acceptable size.", 'contact-form-7' ),
 						'link' => self::get_doc_link( 'upload_filesize_overlimit' ),
@@ -679,7 +693,8 @@ class WPCF7_ConfigValidator {
 
 		if ( ! $invalid_mailbox and ! wpcf7_is_email_in_site_domain( $sender ) ) {
 			$this->add_error( sprintf( '%s.sender', $template ),
-				self::error_email_not_in_site_domain, array(
+				'email_not_in_site_domain',
+				array(
 					'message' => __( "Sender email address does not belong to the site domain.", 'contact-form-7' ),
 					'link' => self::get_doc_link( 'email_not_in_site_domain' ),
 				)
@@ -738,7 +753,8 @@ class WPCF7_ConfigValidator {
 
 		if ( $invalid_mail_header_exists ) {
 			$this->add_error( sprintf( '%s.additional_headers', $template ),
-				self::error_invalid_mail_header, array(
+				'invalid_mail_header',
+				array(
 					'message' => __( "There are invalid mail header fields.", 'contact-form-7' ),
 					'link' => self::get_doc_link( 'invalid_mail_header' ),
 				)
@@ -808,7 +824,7 @@ class WPCF7_ConfigValidator {
 
 			if ( $max < $total_size ) {
 				$this->add_error( sprintf( '%s.attachments', $template ),
-					self::error_attachments_overweight,
+					'attachments_overweight',
 					array(
 						'message' => __( "The total size of attachment files is too large.", 'contact-form-7' ),
 						'link' => self::get_doc_link( 'attachments_overweight' ),
@@ -833,7 +849,8 @@ class WPCF7_ConfigValidator {
 
 		if ( ! wpcf7_is_mailbox_list( $content ) ) {
 			return $this->add_error( $section,
-				self::error_invalid_mailbox_syntax, $args
+				'invalid_mailbox_syntax',
+				$args
 			);
 		}
 
@@ -849,7 +866,8 @@ class WPCF7_ConfigValidator {
 	public function detect_maybe_empty( $section, $content ) {
 		if ( '' === $content ) {
 			return $this->add_error( $section,
-				self::error_maybe_empty, array(
+				'maybe_empty',
+				array(
 					'message' => __( "There is a possible empty field.", 'contact-form-7' ),
 					'link' => self::get_doc_link( 'maybe_empty' ),
 				)
@@ -870,7 +888,7 @@ class WPCF7_ConfigValidator {
 
 		if ( ! is_readable( $path ) or ! is_file( $path ) ) {
 			return $this->add_error( $section,
-				self::error_file_not_found,
+				'file_not_found',
 				array(
 					'message' => __( "Attachment file does not exist at %path%.", 'contact-form-7' ),
 					'params' => array( 'path' => $content ),
@@ -893,7 +911,7 @@ class WPCF7_ConfigValidator {
 
 		if ( ! wpcf7_is_file_path_in_content_dir( $path ) ) {
 			return $this->add_error( $section,
-				self::error_file_not_in_content_dir,
+				'file_not_in_content_dir',
 				array(
 					'message' => __( "It is not allowed to use files outside the wp-content directory.", 'contact-form-7' ),
 					'link' => self::get_doc_link( 'file_not_in_content_dir' ),
@@ -937,7 +955,7 @@ class WPCF7_ConfigValidator {
 
 		if ( $stripped != $content ) {
 			return $this->add_error( $section,
-				self::error_html_in_message,
+				'html_in_message',
 				array(
 					'message' => __( "HTML tags are used in a message.", 'contact-form-7' ),
 					'link' => self::get_doc_link( 'html_in_message' ),
@@ -959,7 +977,7 @@ class WPCF7_ConfigValidator {
 
 		if ( $deprecated_settings_used ) {
 			return $this->add_error( 'additional_settings.body',
-				self::error_deprecated_settings,
+				'deprecated_settings',
 				array(
 					'message' => __( "Deprecated settings are used.", 'contact-form-7' ),
 					'link' => self::get_doc_link( 'deprecated_settings' ),
