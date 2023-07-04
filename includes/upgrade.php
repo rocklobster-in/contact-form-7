@@ -1,7 +1,35 @@
 <?php
 
+add_action( 'wpcf7_upgrade', 'wpcf7_delete_config_errors_post_meta', 10, 2 );
+
+/**
+ * Deletes the old post meta for config-validation results.
+ *
+ * @since 5.8.0 New `_config_validation` post meta is introduced.
+ */
+function wpcf7_delete_config_errors_post_meta( $new_ver, $old_ver ) {
+	if ( ! version_compare( $old_ver, '5.8-dev', '<' ) ) {
+		return;
+	}
+
+	$posts = WPCF7_ContactForm::find( array(
+		'post_status' => 'any',
+		'posts_per_page' => -1,
+	) );
+
+	foreach ( $posts as $post ) {
+		delete_post_meta( $post->id(), '_config_errors' );
+	}
+}
+
+
 add_action( 'wpcf7_upgrade', 'wpcf7_convert_to_cpt', 10, 2 );
 
+/**
+ * Converts old data in the dedicated database table to custom posts.
+ *
+ * @since 3.0.0 `wpcf7_contact_form` CPT is introduced.
+ */
 function wpcf7_convert_to_cpt( $new_ver, $old_ver ) {
 	global $wpdb;
 
@@ -44,18 +72,29 @@ function wpcf7_convert_to_cpt( $new_ver, $old_ver ) {
 		if ( $post_id ) {
 			update_post_meta( $post_id, '_old_cf7_unit_id', $row->cf7_unit_id );
 
-			$metas = array( 'form', 'mail', 'mail_2', 'messages', 'additional_settings' );
+			$metas = array(
+				'form',
+				'mail',
+				'mail_2',
+				'messages',
+				'additional_settings',
+			);
 
 			foreach ( $metas as $meta ) {
 				update_post_meta( $post_id, '_' . $meta,
-					wpcf7_normalize_newline_deep( maybe_unserialize( $row->{$meta} ) ) );
+					wpcf7_normalize_newline_deep( maybe_unserialize( $row->{$meta} ) )
+				);
 			}
 		}
 	}
 }
 
+
 add_action( 'wpcf7_upgrade', 'wpcf7_prepend_underscore', 10, 2 );
 
+/**
+ * Prepends an underscore to post meta keys.
+ */
 function wpcf7_prepend_underscore( $new_ver, $old_ver ) {
 	if ( version_compare( $old_ver, '3.0-dev', '<' ) ) {
 		return;

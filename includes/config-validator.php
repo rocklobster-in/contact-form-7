@@ -253,9 +253,6 @@ class WPCF7_ConfigValidator {
 			return;
 		}
 
-		// Delete the old metadata.
-		delete_post_meta( $this->contact_form->id(), '_config_errors' );
-
 		delete_post_meta( $this->contact_form->id(), '_config_validation' );
 
 		if ( $this->errors ) {
