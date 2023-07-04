@@ -68,7 +68,7 @@ export const resetCaptcha = ( form, refill ) => {
 		} );
 
 		form.querySelectorAll(
-			`img.wpcf7-captcha-${ name.replaceAll( ':', '' ) }`
+			`img.wpcf7-captcha-${ name.replace( /:/g, '' ) }`
 		).forEach( img => {
 			img.setAttribute( 'src', url );
 		} );

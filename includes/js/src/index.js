@@ -30,11 +30,6 @@ document.addEventListener( 'DOMContentLoaded', event => {
 		return;
 	}
 
-	if ( typeof String.prototype.replaceAll !== 'function' ) {
-		console.error( "Your browser does not support String.replaceAll()." );
-		return;
-	}
-
 	wpcf7 = {
 		init,
 		submit,

@@ -124,7 +124,7 @@ export const setValidationError = ( form, fieldName, message, options ) => {
 	} = options ?? {};
 
 	const errorId = `${ form.wpcf7?.unitTag }-ve-${ fieldName }`
-		.replaceAll( /[^0-9a-z_-]+/ig, '' );
+		.replace( /[^0-9a-z_-]+/ig, '' );
 
 	const firstFoundControl = form.querySelector(
 		`.wpcf7-form-control-wrap[data-name="${ fieldName }"] .wpcf7-form-control`
@@ -201,7 +201,7 @@ export const setValidationError = ( form, fieldName, message, options ) => {
 
 export const removeValidationError = ( form, fieldName ) => {
 	const errorId = `${ form.wpcf7?.unitTag }-ve-${ fieldName }`
-		.replaceAll( /[^0-9a-z_-]+/ig, '' );
+		.replace( /[^0-9a-z_-]+/ig, '' );
 
 	form.wpcf7.parent.querySelector(
 		`.screen-reader-response ul li#${ errorId }`
