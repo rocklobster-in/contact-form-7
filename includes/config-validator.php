@@ -34,15 +34,15 @@ class WPCF7_ConfigValidator {
 	/**
 	 * Returns a URL linking to the documentation page for the error type.
 	 */
-	public static function get_doc_link( $error_code = '' ) {
+	public static function get_doc_link( $child_page = '' ) {
 		$url = __( 'https://contactform7.com/configuration-errors/',
 			'contact-form-7'
 		);
 
-		if ( '' !== $error_code ) {
-			$error_code = strtr( $error_code, '_', '-' );
+		if ( '' !== $child_page ) {
+			$child_page = strtr( $child_page, '_', '-' );
 
-			$url = sprintf( '%s/%s', untrailingslashit( $url ), $error_code );
+			$url = sprintf( '%s/%s', untrailingslashit( $url ), $child_page );
 		}
 
 		return esc_url( $url );
@@ -202,6 +202,10 @@ class WPCF7_ConfigValidator {
 
 		if ( ! in_array( $code, $available_error_codes, true ) ) {
 			return false;
+		}
+
+		if ( ! isset( $args['link'] ) ) {
+			$args['link'] = self::get_doc_link( $code );
 		}
 
 		if ( ! isset( $this->errors[$section] ) ) {
@@ -448,7 +452,6 @@ class WPCF7_ConfigValidator {
 							'multiple_controls_in_label',
 							array(
 								'message' => __( "Multiple form controls are in a single label element.", 'contact-form-7' ),
-								'link' => self::get_doc_link( 'multiple_controls_in_label' ),
 							)
 						);
 					}
@@ -498,7 +501,6 @@ class WPCF7_ConfigValidator {
 						/* translators: %names%: a list of form control names */
 						__( "Unavailable names (%names%) are used for form controls.", 'contact-form-7' ),
 					'params' => array( 'names' => implode( ', ', $ng_names ) ),
-					'link' => self::get_doc_link( 'unavailable_names' ),
 				)
 			);
 		}
@@ -520,7 +522,6 @@ class WPCF7_ConfigValidator {
 				'unavailable_html_elements',
 				array(
 					'message' => __( "Unavailable HTML elements are used in the form template.", 'contact-form-7' ),
-					'link' => self::get_doc_link( 'unavailable_html_elements' ),
 				)
 			);
 		}
@@ -547,7 +548,6 @@ class WPCF7_ConfigValidator {
 					'dots_in_names',
 					array(
 						'message' => __( "Dots are used in form-tag names.", 'contact-form-7' ),
-						'link' => self::get_doc_link( 'dots_in_names' ),
 					)
 				);
 			}
@@ -575,7 +575,6 @@ class WPCF7_ConfigValidator {
 					'colons_in_names',
 					array(
 						'message' => __( "Colons are used in form-tag names.", 'contact-form-7' ),
-						'link' => self::get_doc_link( 'colons_in_names' ),
 					)
 				);
 			}
@@ -626,7 +625,6 @@ class WPCF7_ConfigValidator {
 					'upload_filesize_overlimit',
 					array(
 						'message' => __( "Uploadable file size exceeds PHP’s maximum acceptable size.", 'contact-form-7' ),
-						'link' => self::get_doc_link( 'upload_filesize_overlimit' ),
 					)
 				);
 			}
@@ -696,7 +694,6 @@ class WPCF7_ConfigValidator {
 				'email_not_in_site_domain',
 				array(
 					'message' => __( "Sender email address does not belong to the site domain.", 'contact-form-7' ),
-					'link' => self::get_doc_link( 'email_not_in_site_domain' ),
 				)
 			);
 		}
@@ -756,7 +753,6 @@ class WPCF7_ConfigValidator {
 				'invalid_mail_header',
 				array(
 					'message' => __( "There are invalid mail header fields.", 'contact-form-7' ),
-					'link' => self::get_doc_link( 'invalid_mail_header' ),
 				)
 			);
 		}
@@ -827,7 +823,6 @@ class WPCF7_ConfigValidator {
 					'attachments_overweight',
 					array(
 						'message' => __( "The total size of attachment files is too large.", 'contact-form-7' ),
-						'link' => self::get_doc_link( 'attachments_overweight' ),
 					)
 				);
 			}
@@ -842,7 +837,6 @@ class WPCF7_ConfigValidator {
 	 */
 	public function detect_invalid_mailbox_syntax( $section, $content, $args = '' ) {
 		$args = wp_parse_args( $args, array(
-			'link' => self::get_doc_link( 'invalid_mailbox_syntax' ),
 			'message' => __( "Invalid mailbox syntax is used.", 'contact-form-7' ),
 			'params' => array(),
 		) );
@@ -869,7 +863,6 @@ class WPCF7_ConfigValidator {
 				'maybe_empty',
 				array(
 					'message' => __( "There is a possible empty field.", 'contact-form-7' ),
-					'link' => self::get_doc_link( 'maybe_empty' ),
 				)
 			);
 		}
@@ -892,7 +885,6 @@ class WPCF7_ConfigValidator {
 				array(
 					'message' => __( "Attachment file does not exist at %path%.", 'contact-form-7' ),
 					'params' => array( 'path' => $content ),
-					'link' => self::get_doc_link( 'file_not_found' ),
 				)
 			);
 		}
@@ -914,7 +906,6 @@ class WPCF7_ConfigValidator {
 				'file_not_in_content_dir',
 				array(
 					'message' => __( "It is not allowed to use files outside the wp-content directory.", 'contact-form-7' ),
-					'link' => self::get_doc_link( 'file_not_in_content_dir' ),
 				)
 			);
 		}
@@ -958,7 +949,6 @@ class WPCF7_ConfigValidator {
 				'html_in_message',
 				array(
 					'message' => __( "HTML tags are used in a message.", 'contact-form-7' ),
-					'link' => self::get_doc_link( 'html_in_message' ),
 				)
 			);
 		}
@@ -980,7 +970,6 @@ class WPCF7_ConfigValidator {
 				'deprecated_settings',
 				array(
 					'message' => __( "Deprecated settings are used.", 'contact-form-7' ),
-					'link' => self::get_doc_link( 'deprecated_settings' ),
 				)
 			);
 		}
