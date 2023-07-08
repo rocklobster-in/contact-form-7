@@ -52,6 +52,10 @@ class WPCF7_ConfigValidator {
 	private $contact_form;
 	private $errors = array();
 
+
+	/**
+	 * Constructor.
+	 */
 	public function __construct( WPCF7_ContactForm $contact_form ) {
 		$this->contact_form = $contact_form;
 	}
@@ -90,8 +94,8 @@ class WPCF7_ConfigValidator {
 			}
 
 			if ( $args['section']
-			and $key != $args['section']
-			and preg_replace( '/\..*$/', '', $key, 1 ) != $args['section'] ) {
+			and $key !== $args['section']
+			and preg_replace( '/\..*$/', '', $key, 1 ) !== $args['section'] ) {
 				continue;
 			}
 
@@ -100,7 +104,7 @@ class WPCF7_ConfigValidator {
 					continue;
 				}
 
-				if ( $args['code'] and $error['code'] != $args['code'] ) {
+				if ( $args['code'] and $error['code'] !== $args['code'] ) {
 					continue;
 				}
 
@@ -212,7 +216,10 @@ class WPCF7_ConfigValidator {
 			$this->errors[$section] = array();
 		}
 
-		$this->errors[$section][] = array( 'code' => $code, 'args' => $args );
+		$this->errors[$section][] = array(
+			'code' => $code,
+			'args' => $args,
+		);
 
 		return true;
 	}
@@ -230,8 +237,7 @@ class WPCF7_ConfigValidator {
 		}
 
 		foreach ( (array) $this->errors[$section] as $key => $error ) {
-			if ( isset( $error['code'] )
-			and $error['code'] == $code ) {
+			if ( isset( $error['code'] ) and $error['code'] === $code ) {
 				unset( $this->errors[$section][$key] );
 			}
 		}
@@ -310,7 +316,7 @@ class WPCF7_ConfigValidator {
 	 */
 	public function replace_mail_tags_with_minimum_input( $matches ) {
 		// allow [[foo]] syntax for escaping a tag
-		if ( $matches[1] == '[' && $matches[4] == ']' ) {
+		if ( $matches[1] === '[' and $matches[4] === ']' ) {
 			return substr( $matches[0], 1, -1 );
 		}
 
@@ -332,7 +338,7 @@ class WPCF7_ConfigValidator {
 		if ( $form_tags ) {
 			$form_tag = new WPCF7_FormTag( $form_tags[0] );
 
-			$is_required = ( $form_tag->is_required() || 'radio' == $form_tag->type );
+			$is_required = $form_tag->is_required() || 'radio' === $form_tag->type;
 
 			if ( ! $is_required ) {
 				return $example_blank;
@@ -358,7 +364,7 @@ class WPCF7_ConfigValidator {
 				}
 			}
 
-			if ( 'email' == $form_tag->basetype ) {
+			if ( 'email' === $form_tag->basetype ) {
 				return $example_email;
 			} else {
 				return $example_text;
@@ -368,24 +374,24 @@ class WPCF7_ConfigValidator {
 			// for back-compat
 			$field_name = preg_replace( '/^wpcf7\./', '_', $field_name );
 
-			if ( '_site_admin_email' == $field_name ) {
+			if ( '_site_admin_email' === $field_name ) {
 				return get_bloginfo( 'admin_email', 'raw' );
 
-			} elseif ( '_user_agent' == $field_name ) {
+			} elseif ( '_user_agent' === $field_name ) {
 				return $example_text;
 
-			} elseif ( '_user_email' == $field_name ) {
+			} elseif ( '_user_email' === $field_name ) {
 				return $this->contact_form->is_true( 'subscribers_only' )
 					? $example_email
 					: $example_blank;
 
-			} elseif ( '_user_' == substr( $field_name, 0, 6 ) ) {
+			} elseif ( '_user_' === substr( $field_name, 0, 6 ) ) {
 				return $this->contact_form->is_true( 'subscribers_only' )
 					? $example_text
 					: $example_blank;
 
-			} elseif ( '_' == substr( $field_name, 0, 1 ) ) {
-				return '_email' == substr( $field_name, -6 )
+			} elseif ( '_' === substr( $field_name, 0, 1 ) ) {
+				return '_email' === substr( $field_name, -6 )
 					? $example_email
 					: $example_text;
 
@@ -782,8 +788,7 @@ class WPCF7_ConfigValidator {
 
 				$limit = (int) $tag->get_limit_option();
 
-				if ( empty( $attachables[$name] )
-				or $attachables[$name] < $limit ) {
+				if ( empty( $attachables[$name] ) or $attachables[$name] < $limit ) {
 					$attachables[$name] = $limit;
 				}
 			}
@@ -796,7 +801,7 @@ class WPCF7_ConfigValidator {
 			foreach ( explode( "\n", $components['attachments'] ) as $line ) {
 				$line = trim( $line );
 
-				if ( '' === $line or '[' == substr( $line, 0, 1 ) ) {
+				if ( '' === $line or '[' === substr( $line, 0, 1 ) ) {
 					continue;
 				}
 
