@@ -385,13 +385,13 @@ class WPCF7_ConfigValidator {
 					? $example_email
 					: $example_blank;
 
-			} elseif ( '_user_' === substr( $field_name, 0, 6 ) ) {
+			} elseif ( str_starts_with( $field_name, '_user_' ) ) {
 				return $this->contact_form->is_true( 'subscribers_only' )
 					? $example_text
 					: $example_blank;
 
-			} elseif ( '_' === substr( $field_name, 0, 1 ) ) {
-				return '_email' === substr( $field_name, -6 )
+			} elseif ( str_starts_with( $field_name, '_' ) ) {
+				return str_ends_with( $field_name, '_email' )
 					? $example_email
 					: $example_text;
 
@@ -549,7 +549,7 @@ class WPCF7_ConfigValidator {
 		) );
 
 		foreach ( $tags as $tag ) {
-			if ( false !== strpos( $tag->raw_name, '.' ) ) {
+			if ( str_contains( $tag->raw_name, '.' ) ) {
 				return $this->add_error( $section,
 					'dots_in_names',
 					array(
@@ -576,7 +576,7 @@ class WPCF7_ConfigValidator {
 		) );
 
 		foreach ( $tags as $tag ) {
-			if ( false !== strpos( $tag->raw_name, ':' ) ) {
+			if ( str_contains( $tag->raw_name, ':' ) ) {
 				return $this->add_error( $section,
 					'colons_in_names',
 					array(
@@ -782,7 +782,7 @@ class WPCF7_ConfigValidator {
 			foreach ( $tags as $tag ) {
 				$name = $tag->name;
 
-				if ( false === strpos( $components['attachments'], "[{$name}]" ) ) {
+				if ( ! str_contains( $components['attachments'], "[{$name}]" ) ) {
 					continue;
 				}
 
@@ -801,7 +801,7 @@ class WPCF7_ConfigValidator {
 			foreach ( explode( "\n", $components['attachments'] ) as $line ) {
 				$line = trim( $line );
 
-				if ( '' === $line or '[' === substr( $line, 0, 1 ) ) {
+				if ( '' === $line or str_starts_with( $line, '[' ) ) {
 					continue;
 				}
 
