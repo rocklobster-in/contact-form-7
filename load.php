@@ -21,7 +21,7 @@ require_once WPCF7_PLUGIN_DIR . '/includes/validation.php';
 require_once WPCF7_PLUGIN_DIR . '/includes/submission.php';
 require_once WPCF7_PLUGIN_DIR . '/includes/upgrade.php';
 require_once WPCF7_PLUGIN_DIR . '/includes/integration.php';
-require_once WPCF7_PLUGIN_DIR . '/includes/config-validator.php';
+require_once WPCF7_PLUGIN_DIR . '/includes/config-validator/validator.php';
 require_once WPCF7_PLUGIN_DIR . '/includes/rest-api.php';
 require_once WPCF7_PLUGIN_DIR . '/includes/block-editor/block-editor.php';
 require_once WPCF7_PLUGIN_DIR . '/includes/html-formatter.php';
