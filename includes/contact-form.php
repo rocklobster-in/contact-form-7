@@ -18,6 +18,7 @@ class WPCF7_ContactForm {
 	private $responses_count = 0;
 	private $scanned_form_tags;
 	private $shortcode_atts = array();
+	private $hash = '';
 
 
 	/**
@@ -207,11 +208,12 @@ class WPCF7_ContactForm {
 		$post = get_post( $post );
 
 		if ( $post
-		and self::post_type == get_post_type( $post ) ) {
+		and self::post_type === get_post_type( $post ) ) {
 			$this->id = $post->ID;
 			$this->name = $post->post_name;
 			$this->title = $post->post_title;
 			$this->locale = get_post_meta( $post->ID, '_locale', true );
+			$this->hash = get_post_meta( $post->ID, '_hash', true );
 
 			$this->construct_properties( $post );
 			$this->upgrade();
@@ -468,6 +470,17 @@ class WPCF7_ContactForm {
 		} else {
 			$this->locale = 'en_US';
 		}
+	}
+
+
+	/**
+	 * Retrieves the random hash string tied to this contact form.
+	 *
+	 * @param int $length Length of hash string.
+	 * @return string Hash string unique to this contact form.
+	 */
+	public function hash( $length = 7 ) {
+		return substr( $this->hash, 0, absint( $length ) );
 	}
 
 
@@ -1338,8 +1351,8 @@ class WPCF7_ContactForm {
 			}
 		} else {
 			$shortcode = sprintf(
-				'[contact-form-7 id="%1$d" title="%2$s"]',
-				$this->id,
+				'[contact-form-7 id="%1$s" title="%2$s"]',
+				$this->hash(),
 				$title
 			);
 		}
