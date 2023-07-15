@@ -447,3 +447,19 @@ function wpcf7_sanitize_additional_settings( $input, $default_template = '' ) {
 	$output = trim( $input );
 	return $output;
 }
+
+
+/**
+ * Generates a random hash string for a contact form.
+ *
+ * @param int $post_id Post ID.
+ * @return string SHA-1 hash.
+ */
+function wpcf7_generate_contact_form_hash( $post_id ) {
+	return sha1( implode( '|', array(
+		get_current_user_id(),
+		$post_id,
+		time(),
+		home_url(),
+	) ) );
+}
