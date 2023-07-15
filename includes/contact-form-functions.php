@@ -34,6 +34,32 @@ function wpcf7_get_contact_form_by_old_id( $old_id ) {
 
 
 /**
+ * Searches for a contact form by a hash string.
+ *
+ * @param string $hash Part of a hash string.
+ * @return WPCF7_ContactForm Contact form object.
+ */
+function wpcf7_get_contact_form_by_hash( $hash ) {
+	global $wpdb;
+
+	$hash = trim( $hash );
+
+	if ( strlen( $hash ) < 7 ) {
+		return null;
+	}
+
+	$like = $wpdb->esc_like( $hash ) . '%';
+
+	$q = "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = '_hash'"
+		. $wpdb->prepare( " AND meta_value LIKE %s", $like );
+
+	if ( $post_id = $wpdb->get_var( $q ) ) {
+		return wpcf7_contact_form( $post_id );
+	}
+}
+
+
+/**
  * Searches for a contact form by title.
  *
  * @param string $title Title of contact form.
@@ -196,7 +222,7 @@ function wpcf7_contact_form_tag_func( $atts, $content = null, $code = '' ) {
 	if ( 'contact-form-7' == $code ) {
 		$atts = shortcode_atts(
 			array(
-				'id' => 0,
+				'id' => '',
 				'title' => '',
 				'html_id' => '',
 				'html_name' => '',
@@ -207,10 +233,16 @@ function wpcf7_contact_form_tag_func( $atts, $content = null, $code = '' ) {
 			$atts, 'wpcf7'
 		);
 
-		$id = (int) $atts['id'];
+		$id = trim( $atts['id'] );
 		$title = trim( $atts['title'] );
 
-		if ( ! $contact_form = wpcf7_contact_form( $id ) ) {
+		$contact_form = wpcf7_get_contact_form_by_hash( $id );
+
+		if ( ! $contact_form ) {
+			$contact_form = wpcf7_contact_form( $id );
+		}
+
+		if ( ! $contact_form ) {
 			$contact_form = wpcf7_get_contact_form_by_title( $title );
 		}
 

@@ -1263,6 +1263,15 @@ class WPCF7_ContactForm {
 				update_post_meta( $post_id, '_locale', $this->locale );
 			}
 
+			$hash = sha1( implode( '|', array(
+				get_current_user_id(),
+				$post_id,
+				time(),
+				home_url(),
+			) ) );
+
+			add_post_meta( $post_id, '_hash', $hash, true );
+
 			if ( $this->initial() ) {
 				$this->id = $post_id;
 				do_action( 'wpcf7_after_create', $this );
