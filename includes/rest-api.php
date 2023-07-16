@@ -179,6 +179,7 @@ class WPCF7_REST_Controller {
 		foreach ( $items as $item ) {
 			$response[] = array(
 				'id' => $item->id(),
+				'hash' => $item->hash(),
 				'slug' => $item->name(),
 				'title' => $item->title(),
 				'locale' => $item->locale(),

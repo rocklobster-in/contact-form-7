@@ -1,13 +1,13 @@
 <?php
 
-add_action( 'wpcf7_upgrade', 'wpcf7_delete_config_errors_post_meta', 10, 2 );
+add_action( 'wpcf7_upgrade', 'wpcf7_upgrade_58', 10, 2 );
 
 /**
- * Deletes the old post meta for config-validation results.
+ * Runs functions necessary when upgrading from old plugin versions before 5.8.
  *
  * @since 5.8.0 New `_config_validation` post meta is introduced.
  */
-function wpcf7_delete_config_errors_post_meta( $new_ver, $old_ver ) {
+function wpcf7_upgrade_58( $new_ver, $old_ver ) {
 	if ( ! version_compare( $old_ver, '5.8-dev', '<' ) ) {
 		return;
 	}
@@ -18,7 +18,16 @@ function wpcf7_delete_config_errors_post_meta( $new_ver, $old_ver ) {
 	) );
 
 	foreach ( $posts as $post ) {
-		delete_post_meta( $post->id(), '_config_errors' );
+		$post_id = $post->id();
+
+		// Delete the old post meta for config-validation results.
+		delete_post_meta( $post_id, '_config_errors' );
+
+		// Add the contact form hash.
+		add_post_meta( $post_id, '_hash',
+			wpcf7_generate_contact_form_hash( $post_id ),
+			true // Unique
+		);
 	}
 }
 

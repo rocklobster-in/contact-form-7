@@ -4,7 +4,11 @@ import { addQueryArgs } from '@wordpress/url';
 export const createShortcode = attributes => {
 	let shortcode = `[contact-form-7]`;
 
-	if ( attributes.id ) {
+	if ( attributes.hash ) {
+		shortcode = shortcode.replace( /\]$/,
+			` id="${ attributes.hash }"]`
+		);
+	} else if ( attributes.id ) {
 		shortcode = shortcode.replace( /\]$/,
 			` id="${ attributes.id }"]`
 		);

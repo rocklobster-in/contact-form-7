@@ -62,6 +62,7 @@ function wpcf7_enqueue_block_editor_assets() {
 		static function ( $contact_form ) {
 			return array(
 				'id' => $contact_form->id(),
+				'hash' => $contact_form->hash(),
 				'slug' => $contact_form->name(),
 				'title' => $contact_form->title(),
 				'locale' => $contact_form->locale(),
