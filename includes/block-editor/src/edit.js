@@ -116,6 +116,7 @@ export default function ContactFormSelectorEdit( { attributes, setAttributes } )
 					onChange={
 						( value ) => setAttributes( {
 							id: parseInt( value ),
+							hash: contactForms.get( parseInt( value ) )?.hash,
 							title: contactForms.get( parseInt( value ) )?.title
 						} )
 					}
