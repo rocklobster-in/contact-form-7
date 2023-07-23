@@ -170,7 +170,13 @@ abstract class WPCF7_SWV_Rule {
 	 * @return array Array of properties.
 	 */
 	public function to_array() {
-		return (array) $this->properties;
+		$properties = (array) $this->properties;
+
+		if ( defined( 'static::rule_name' ) and static::rule_name ) {
+			$properties = array( 'rule' => static::rule_name ) + $properties;
+		}
+
+		return $properties;
 	}
 
 
