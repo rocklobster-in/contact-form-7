@@ -50,10 +50,8 @@ function wpcf7_akismet( $spam, $submission ) {
 		'blog' => home_url(),
 		'blog_lang' => get_locale(),
 		'blog_charset' => get_option( 'blog_charset' ),
-		'user_ip' => isset( $_SERVER['REMOTE_ADDR'] )
-			? $_SERVER['REMOTE_ADDR'] : '',
-		'user_agent' => isset( $_SERVER['HTTP_USER_AGENT'] )
-			? $_SERVER['HTTP_USER_AGENT'] : '',
+		'user_ip' => $submission->get_meta( 'remote_ip' ),
+		'user_agent' => $submission->get_meta( 'user_agent' ),
 		'referrer' => isset( $_SERVER['HTTP_REFERER'] )
 			? $_SERVER['HTTP_REFERER'] : '',
 	);
@@ -70,13 +68,12 @@ function wpcf7_akismet( $spam, $submission ) {
 		$comment['permalink'] = $permalink;
 	}
 
-	$ignore = array( 'HTTP_COOKIE', 'HTTP_COOKIE2', 'PHP_AUTH_PW' );
+	$server_vars = array_diff_key(
+		$_SERVER,
+		array_flip( array( 'HTTP_COOKIE', 'HTTP_COOKIE2', 'PHP_AUTH_PW' ) )
+	);
 
-	foreach ( $_SERVER as $key => $value ) {
-		if ( ! in_array( $key, (array) $ignore ) ) {
-			$comment["$key"] = $value;
-		}
-	}
+	$comment = array_merge( $comment, $server_vars );
 
 	$comment = apply_filters( 'wpcf7_akismet_parameters', $comment );
 
