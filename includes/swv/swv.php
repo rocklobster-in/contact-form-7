@@ -170,7 +170,13 @@ abstract class WPCF7_SWV_Rule {
 	 * @return array Array of properties.
 	 */
 	public function to_array() {
-		return (array) $this->properties;
+		$properties = (array) $this->properties;
+
+		if ( defined( 'static::rule_name' ) and static::rule_name ) {
+			$properties = array( 'rule' => static::rule_name ) + $properties;
+		}
+
+		return $properties;
 	}
 
 
@@ -278,7 +284,7 @@ abstract class WPCF7_SWV_CompositeRule extends WPCF7_SWV_Rule {
  */
 class WPCF7_SWV_Schema extends WPCF7_SWV_CompositeRule {
 
-	const version = 'Contact Form 7 SWV Schema 2022-10';
+	const version = 'Contact Form 7 SWV Schema 2023-07';
 
 	public function __construct( $properties = '' ) {
 		$this->properties = wp_parse_args( $properties, array(
