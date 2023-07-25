@@ -115,7 +115,21 @@ class WPCF7_FormTag implements ArrayAccess {
 	 * Retrieves the id option value from the form-tag.
 	 */
 	public function get_id_option() {
-		return $this->get_option( 'id', 'id', true );
+		static $used = array();
+
+		$option = $this->get_option( 'id', 'id', true );
+
+		if (
+			! $option or
+			str_starts_with( $option, 'wpcf7' ) or
+			in_array( $option, $used, true )
+		) {
+			return false;
+		}
+
+		$used[] = $option;
+
+		return $option;
 	}
 
 
