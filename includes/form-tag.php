@@ -134,9 +134,10 @@ class WPCF7_FormTag implements ArrayAccess {
 
 		$options = array_merge(
 			(array) $default_classes,
-			(array) $this->get_option( 'class', 'class' )
+			(array) $this->get_option( 'class' )
 		);
 
+		$options = array_map( 'sanitize_html_class', $options );
 		$options = array_filter( array_unique( $options ) );
 
 		if ( empty( $options ) ) {
