@@ -35,7 +35,7 @@ class WPCF7_FormTag implements ArrayAccess {
 	 * Returns true if the type has a trailing asterisk.
 	 */
 	public function is_required() {
-		return ( '*' === substr( $this->type, -1 ) );
+		return str_ends_with( $this->type, '*' );
 	}
 
 

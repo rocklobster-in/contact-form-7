@@ -32,7 +32,7 @@ function wpcf7_special_mail_tag( $output, $name, $html, $mail_tag = null ) {
 		return $output;
 	}
 
-	if ( '_remote_ip' == $name ) {
+	if ( '_remote_ip' === $name ) {
 		if ( $remote_ip = $submission->get_meta( 'remote_ip' ) ) {
 			return $remote_ip;
 		} else {
@@ -40,7 +40,7 @@ function wpcf7_special_mail_tag( $output, $name, $html, $mail_tag = null ) {
 		}
 	}
 
-	if ( '_user_agent' == $name ) {
+	if ( '_user_agent' === $name ) {
 		if ( $user_agent = $submission->get_meta( 'user_agent' ) ) {
 			return $html ? esc_html( $user_agent ) : $user_agent;
 		} else {
@@ -48,7 +48,7 @@ function wpcf7_special_mail_tag( $output, $name, $html, $mail_tag = null ) {
 		}
 	}
 
-	if ( '_url' == $name ) {
+	if ( '_url' === $name ) {
 		if ( $url = $submission->get_meta( 'url' ) ) {
 			return $url;
 		} else {
@@ -56,14 +56,13 @@ function wpcf7_special_mail_tag( $output, $name, $html, $mail_tag = null ) {
 		}
 	}
 
-	if ( '_date' == $name
-	or '_time' == $name ) {
+	if ( '_date' === $name or '_time' === $name ) {
 		if ( $timestamp = $submission->get_meta( 'timestamp' ) ) {
-			if ( '_date' == $name ) {
+			if ( '_date' === $name ) {
 				return wp_date( get_option( 'date_format' ), $timestamp );
 			}
 
-			if ( '_time' == $name ) {
+			if ( '_time' === $name ) {
 				return wp_date( get_option( 'time_format' ), $timestamp );
 			}
 		}
@@ -71,7 +70,7 @@ function wpcf7_special_mail_tag( $output, $name, $html, $mail_tag = null ) {
 		return '';
 	}
 
-	if ( '_invalid_fields' == $name ) {
+	if ( '_invalid_fields' === $name ) {
 		return count( $submission->get_invalid_fields() );
 	}
 
@@ -99,7 +98,7 @@ function wpcf7_post_related_smt( $output, $name, $html, $mail_tag = null ) {
 		);
 	}
 
-	if ( '_post_' != substr( $name, 0, 6 ) ) {
+	if ( ! str_starts_with( $name, '_post_' ) ) {
 		return $output;
 	}
 
@@ -111,34 +110,33 @@ function wpcf7_post_related_smt( $output, $name, $html, $mail_tag = null ) {
 
 	$post_id = (int) $submission->get_meta( 'container_post_id' );
 
-	if ( ! $post_id
-	or ! $post = get_post( $post_id ) ) {
+	if ( ! $post_id or ! $post = get_post( $post_id ) ) {
 		return '';
 	}
 
-	if ( '_post_id' == $name ) {
+	if ( '_post_id' === $name ) {
 		return (string) $post->ID;
 	}
 
-	if ( '_post_name' == $name ) {
+	if ( '_post_name' === $name ) {
 		return $post->post_name;
 	}
 
-	if ( '_post_title' == $name ) {
+	if ( '_post_title' === $name ) {
 		return $html ? esc_html( $post->post_title ) : $post->post_title;
 	}
 
-	if ( '_post_url' == $name ) {
+	if ( '_post_url' === $name ) {
 		return get_permalink( $post->ID );
 	}
 
 	$user = new WP_User( $post->post_author );
 
-	if ( '_post_author' == $name ) {
+	if ( '_post_author' === $name ) {
 		return $user->display_name;
 	}
 
-	if ( '_post_author_email' == $name ) {
+	if ( '_post_author_email' === $name ) {
 		return $user->user_email;
 	}
 
@@ -168,7 +166,7 @@ function wpcf7_site_related_smt( $output, $name, $html, $mail_tag = null ) {
 
 	$filter = $html ? 'display' : 'raw';
 
-	if ( '_site_title' == $name ) {
+	if ( '_site_title' === $name ) {
 		$output = get_bloginfo( 'name', $filter );
 
 		if ( ! $html ) {
@@ -178,7 +176,7 @@ function wpcf7_site_related_smt( $output, $name, $html, $mail_tag = null ) {
 		return $output;
 	}
 
-	if ( '_site_description' == $name ) {
+	if ( '_site_description' === $name ) {
 		$output = get_bloginfo( 'description', $filter );
 
 		if ( ! $html ) {
@@ -188,11 +186,11 @@ function wpcf7_site_related_smt( $output, $name, $html, $mail_tag = null ) {
 		return $output;
 	}
 
-	if ( '_site_url' == $name ) {
+	if ( '_site_url' === $name ) {
 		return get_bloginfo( 'url', $filter );
 	}
 
-	if ( '_site_admin_email' == $name ) {
+	if ( '_site_admin_email' === $name ) {
 		return get_bloginfo( 'admin_email', $filter );
 	}
 
@@ -220,8 +218,7 @@ function wpcf7_user_related_smt( $output, $name, $html, $mail_tag = null ) {
 		);
 	}
 
-	if ( '_user_' != substr( $name, 0, 6 )
-	or '_user_agent' == $name ) {
+	if ( ! str_starts_with( $name, '_user_' ) or '_user_agent' === $name ) {
 		return $output;
 	}
 

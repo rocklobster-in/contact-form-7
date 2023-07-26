@@ -192,20 +192,22 @@ function wpcf7_get_message( $status ) {
  */
 function wpcf7_form_controls_class( $type, $default_classes = '' ) {
 	$type = trim( $type );
-	$default_classes = array_filter( explode( ' ', $default_classes ) );
 
-	$classes = array_merge( array( 'wpcf7-form-control' ), $default_classes );
+	if ( is_string( $default_classes ) ) {
+		$default_classes = explode( ' ', $default_classes );
+	}
 
-	$typebase = rtrim( $type, '*' );
-	$required = ( '*' == substr( $type, -1 ) );
+	$classes = array(
+		'wpcf7-form-control',
+		sprintf( 'wpcf7-%s', rtrim( $type, '*' ) ),
+	);
 
-	$classes[] = 'wpcf7-' . $typebase;
-
-	if ( $required ) {
+	if ( str_ends_with( $type, '*' ) ) {
 		$classes[] = 'wpcf7-validates-as-required';
 	}
 
-	$classes = array_unique( $classes );
+	$classes = array_merge( $classes, $default_classes );
+	$classes = array_filter( array_unique( $classes ) );
 
 	return implode( ' ', $classes );
 }
