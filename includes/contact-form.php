@@ -639,9 +639,9 @@ class WPCF7_ContactForm {
 			'data-status' => $data_status_attr,
 		);
 
-		$atts = wpcf7_format_atts( $atts );
+		$atts += (array) apply_filters( 'wpcf7_form_additional_atts', array() );
 
-		$html .= sprintf( '<form %s>', $atts ) . "\n";
+		$html .= sprintf( '<form %s>', wpcf7_format_atts( $atts ) ) . "\n";
 		$html .= $this->form_hidden_fields();
 		$html .= $this->form_elements();
 
