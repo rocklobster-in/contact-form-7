@@ -7,14 +7,14 @@
  * Author URI: https://ideasilo.wordpress.com/
  * License: GPL v2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
- * Version: 5.8-dev
- * Requires at least: 6.1
+ * Version: 5.8
+ * Requires at least: 6.2
  * Requires PHP: 7.4
  */
 
-define( 'WPCF7_VERSION', '5.8-dev' );
+define( 'WPCF7_VERSION', '5.8' );
 
-define( 'WPCF7_REQUIRED_WP_VERSION', '6.1' );
+define( 'WPCF7_REQUIRED_WP_VERSION', '6.2' );
 
 define( 'WPCF7_TEXT_DOMAIN', 'contact-form-7' );
 
