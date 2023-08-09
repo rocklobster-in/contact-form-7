@@ -652,6 +652,14 @@ class WPCF7_ContactForm {
 		$html .= "\n" . '</form>';
 		$html .= "\n" . '</div>';
 
+		if ( wpcf7_load_js() ) {
+			wpcf7_enqueue_scripts();
+		}
+
+		if ( wpcf7_load_css() ) {
+			wpcf7_enqueue_styles();
+		}
+
 		return $html . "\n";
 	}
 

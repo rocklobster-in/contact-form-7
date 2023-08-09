@@ -29,11 +29,11 @@ function wpcf7_control_init() {
 
 
 /**
- * Registers main scripts and styles.
+ * Registers main scripts.
  */
 add_action(
-	'wp_enqueue_scripts',
-	static function () {
+	'wp_default_scripts',
+	static function ( WP_Scripts $scripts ) {
 		$assets = array();
 		$asset_file = wpcf7_plugin_path( 'includes/js/index.asset.php' );
 
@@ -46,7 +46,7 @@ add_action(
 			'version' => WPCF7_VERSION,
 		) );
 
-		wp_register_script(
+		$scripts->add(
 			'contact-form-7',
 			wpcf7_plugin_url( 'includes/js/index.js' ),
 			array_merge(
@@ -54,22 +54,28 @@ add_action(
 				array( 'swv' )
 			),
 			$assets['version'],
-			true
+			1 // in_footer
 		);
 
-		wp_register_script(
+		$scripts->add(
 			'contact-form-7-html5-fallback',
 			wpcf7_plugin_url( 'includes/js/html5-fallback.js' ),
 			array( 'jquery-ui-datepicker' ),
 			WPCF7_VERSION,
-			true
+			1 // in_footer
 		);
+	},
+	10, 1
+);
 
-		if ( wpcf7_load_js() ) {
-			wpcf7_enqueue_scripts();
-		}
 
-		wp_register_style(
+/**
+ * Registers main styles.
+ */
+add_action(
+	'wp_default_styles',
+	static function ( WP_Styles $styles ) {
+		$styles->add(
 			'contact-form-7',
 			wpcf7_plugin_url( 'includes/css/styles.css' ),
 			array(),
@@ -77,7 +83,7 @@ add_action(
 			'all'
 		);
 
-		wp_register_style(
+		$styles->add(
 			'contact-form-7-rtl',
 			wpcf7_plugin_url( 'includes/css/styles-rtl.css' ),
 			array( 'contact-form-7' ),
@@ -85,7 +91,7 @@ add_action(
 			'all'
 		);
 
-		wp_register_style(
+		$styles->add(
 			'jquery-ui-smoothness',
 			wpcf7_plugin_url(
 				'includes/js/jquery-ui/themes/smoothness/jquery-ui.min.css'
@@ -94,12 +100,8 @@ add_action(
 			'1.12.1',
 			'screen'
 		);
-
-		if ( wpcf7_load_css() ) {
-			wpcf7_enqueue_styles();
-		}
 	},
-	10, 0
+	10, 1
 );
 
 
@@ -107,6 +109,10 @@ add_action(
  * Enqueues scripts.
  */
 function wpcf7_enqueue_scripts() {
+	if ( did_action( 'wpcf7_enqueue_scripts' ) ) {
+		return;
+	}
+
 	wp_enqueue_script( 'contact-form-7' );
 
 	$wpcf7 = array(
@@ -138,6 +144,10 @@ function wpcf7_script_is() {
  * Enqueues styles.
  */
 function wpcf7_enqueue_styles() {
+	if ( did_action( 'wpcf7_enqueue_styles' ) ) {
+		return;
+	}
+
 	wp_enqueue_style( 'contact-form-7' );
 
 	if ( wpcf7_is_rtl() ) {
