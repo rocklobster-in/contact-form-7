@@ -23,7 +23,7 @@ function wpcf7_recaptcha_register_service() {
 
 
 add_action(
-	'wp_enqueue_scripts',
+	'wpcf7_enqueue_scripts',
 	'wpcf7_recaptcha_enqueue_scripts',
 	20, 0
 );
