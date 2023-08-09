@@ -167,7 +167,7 @@ function wpcf7_style_is() {
 
 
 add_action(
-	'wp_enqueue_scripts',
+	'wpcf7_enqueue_scripts',
 	'wpcf7_html5_fallback',
 	20, 0
 );
