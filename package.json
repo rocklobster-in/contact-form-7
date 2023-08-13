@@ -4,7 +4,9 @@
 	"description": "JavaScript packages for Contact Form 7.",
 	"private": true,
 	"scripts": {
-		"build:all": "npm run build:front && npm run build:block && npm run build:swv && npm run build:recaptcha && npm run build:stripe",
+		"build:all": "npm run build:editor && npm run build:front && npm run build:block && npm run build:swv && npm run build:recaptcha && npm run build:stripe",
+		"start:editor": "wp-scripts start admin/includes/editor/src/index.js --output-path=admin/includes/editor",
+		"build:editor": "wp-scripts build admin/includes/editor/src/index.js --output-path=admin/includes/editor",
 		"start:front": "wp-scripts start includes/js/src/index.js --output-path=includes/js",
 		"build:front": "wp-scripts build includes/js/src/index.js --output-path=includes/js",
 		"start:block": "wp-scripts start includes/block-editor/src/index.js --output-path=includes/block-editor",

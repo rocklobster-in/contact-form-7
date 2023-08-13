@@ -178,6 +178,24 @@ function wpcf7_admin_enqueue_scripts( $hook_suffix ) {
 		WPCF7_VERSION,
 		true
 	);
+
+	$asset_file = wpcf7_plugin_path( 'admin/includes/editor/index.asset.php' );
+
+	$assets = file_exists( $asset_file ) ? include( $asset_file ) : array();
+
+	$assets = wp_parse_args( $assets, array(
+		'dependencies' => array(),
+		'version' => WPCF7_VERSION,
+	) );
+
+	wp_register_script(
+		'contact-form-7-block-based-contact-form-editor',
+		wpcf7_plugin_url( 'admin/includes/editor/index.js' ),
+		$assets['dependencies'],
+		$assets['version']
+	);
+
+	wp_enqueue_script( 'contact-form-7-block-based-contact-form-editor' );
 }
 
 
