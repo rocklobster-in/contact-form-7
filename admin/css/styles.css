@@ -1,3 +1,15 @@
+#contact-form-editor {
+	border: 1px solid #c3c4c7;
+	background: #fff;
+	padding: 0;
+	margin: 0;
+	width: 100%;
+}
+
+#contact-form-editor .components-tab-panel__tabs {
+	border-bottom: 1px solid #dcdcde;
+}
+
 #titlediv .inside p.description {
 	margin: 8px 2px 0;
 }

@@ -196,6 +196,10 @@ function wpcf7_admin_enqueue_scripts( $hook_suffix ) {
 	);
 
 	wp_enqueue_script( 'contact-form-7-block-based-contact-form-editor' );
+
+	foreach ( $assets['dependencies'] as $style ) {
+		wp_enqueue_style( $style );
+	}
 }
 
 

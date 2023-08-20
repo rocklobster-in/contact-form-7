@@ -1,6 +1,9 @@
 <?php
 
 return array(
-	'dependencies' => array(),
+	'dependencies' => array(
+		'wp-components',
+		'wp-element',
+	),
 	'version' => WPCF7_VERSION,
 );
