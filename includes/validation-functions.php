@@ -268,5 +268,9 @@ function wpcf7_is_file_path_in_content_dir( $path ) {
 		return true;
 	}
 
+	if ( 0 === strpos( $path, realpath( get_temp_dir() ) ) ) {
+		return true;
+	}
+
 	return false;
 }
