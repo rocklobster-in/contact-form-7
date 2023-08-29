@@ -1,6 +1,8 @@
 import { createRoot, render } from '@wordpress/element';
 import { TabPanel } from '@wordpress/components';
 
+import { store } from './store';
+
 const ContactFormEditor = () => (
 	<TabPanel
 		tabs={ [
