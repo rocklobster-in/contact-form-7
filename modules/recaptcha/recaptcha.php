@@ -23,13 +23,22 @@ function wpcf7_recaptcha_register_service() {
 
 
 add_action(
-	'wpcf7_enqueue_scripts',
+	'wp_enqueue_scripts',
 	'wpcf7_recaptcha_enqueue_scripts',
 	20, 0
 );
 
 /**
  * Enqueues frontend scripts for reCAPTCHA.
+ *
+ * Note that this runs at the `wp_enqueue_scripts` action instead of `wpcf7_enqueue_scripts` because the reCAPTCHA
+ * v3 documentation states that the script should be included on every page of a site, even on pages that don't use it:
+ *
+ * > reCAPTCHA works best when it has the most context about interactions with your site, which comes from seeing both
+ * > legitimate and abusive behavior. For this reason, we recommend including reCAPTCHA verification on forms or actions
+ * > as well as in the background of pages for analytics.
+ *
+ * @link https://developers.google.com/recaptcha/docs/v3#placement_on_your_website
  */
 function wpcf7_recaptcha_enqueue_scripts() {
 	$service = WPCF7_RECAPTCHA::get_instance();
