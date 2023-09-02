@@ -1,1 +1,1 @@
-export const STORE_NAME = 'plugins/contact-form-7';
+export const STORE_NAME = 'contact-form-7/editor';
