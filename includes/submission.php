@@ -573,7 +573,10 @@ class WPCF7_Submission {
 	private function get_remote_ip_addr() {
 		$ip_addr = '';
 
-		if ( isset( $_SERVER['REMOTE_ADDR'] )
+		if ( isset( $_SERVER['HTTP_CF_CONNECTING_IP'] )
+		and WP_Http::is_ip_address( $_SERVER['HTTP_CF_CONNECTING_IP'] ) ) {
+			$ip_addr = $_SERVER['HTTP_CF_CONNECTING_IP'];
+		} elseif ( isset( $_SERVER['REMOTE_ADDR'] )
 		and WP_Http::is_ip_address( $_SERVER['REMOTE_ADDR'] ) ) {
 			$ip_addr = $_SERVER['REMOTE_ADDR'];
 		}
