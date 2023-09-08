@@ -169,6 +169,9 @@ trait WPCF7_ConfigValidator_Mail {
 		$this->detect_invalid_mailbox_syntax(
 			sprintf( '%s.recipient', $template ),
 			$recipient
+		) or $this->detect_unsafe_email_without_protection(
+			sprintf( '%s.recipient', $template ),
+			$recipient
 		);
 
 		$additional_headers = new WPCF7_MailTaggedText(
@@ -365,6 +368,44 @@ trait WPCF7_ConfigValidator_Mail {
 				'file_not_in_content_dir',
 				array(
 					'message' => __( "It is not allowed to use files outside the wp-content directory.", 'contact-form-7' ),
+				)
+			);
+		}
+
+		return false;
+	}
+
+
+	public function detect_unsafe_email_without_protection( $section, $content ) {
+		static $is_recaptcha_active = null;
+
+		if ( null === $is_recaptcha_active ) {
+			$is_recaptcha_active = call_user_func( function () {
+				$service = WPCF7_RECAPTCHA::get_instance();
+				return $service->is_active();
+			} );
+
+			// For compat with the ReCaptcha v2 for Contact Form 7 plugin.
+			// https://wordpress.org/plugins/wpcf7-recaptcha/
+			if ( ! $is_recaptcha_active and class_exists( 'IQFix_ReCaptcha' ) ) {
+				$is_recaptcha_active = call_user_func( function () {
+					$service = IQFix_ReCaptcha::get_instance();
+					return $service->is_active();
+				} );
+			}
+		}
+
+		if ( $is_recaptcha_active ) {
+			return false;
+		}
+
+		$example_email = 'example@example.com';
+
+		if ( str_contains( $content, $example_email ) ) {
+			return $this->add_error( $section,
+				'unsafe_email_without_protection',
+				array(
+					'message' => __( "Unsafe email config is used without sufficient protection.", 'contact-form-7' ),
 				)
 			);
 		}
