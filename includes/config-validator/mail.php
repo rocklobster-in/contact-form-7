@@ -166,13 +166,17 @@ trait WPCF7_ConfigValidator_Mail {
 		$recipient = $recipient->replace_tags();
 		$recipient = wpcf7_strip_newline( $recipient );
 
-		$this->detect_invalid_mailbox_syntax(
-			sprintf( '%s.recipient', $template ),
-			$recipient
-		) or $this->detect_unsafe_email_without_protection(
+		$result = $this->detect_invalid_mailbox_syntax(
 			sprintf( '%s.recipient', $template ),
 			$recipient
 		);
+
+		if ( ! $result ) {
+			$this->detect_unsafe_email_without_protection(
+				sprintf( '%s.recipient', $template ),
+				$recipient
+			);
+		}
 
 		$additional_headers = new WPCF7_MailTaggedText(
 			$components['additional_headers'],
@@ -197,9 +201,11 @@ trait WPCF7_ConfigValidator_Mail {
 				$header_name = $matches[1];
 				$header_value = trim( $matches[2] );
 
-				if ( in_array( strtolower( $header_name ), $mailbox_header_types )
-				and '' !== $header_value ) {
-					$this->detect_invalid_mailbox_syntax(
+				if (
+					in_array( strtolower( $header_name ), $mailbox_header_types ) and
+					'' !== $header_value
+				) {
+					$result = $this->detect_invalid_mailbox_syntax(
 						sprintf( '%s.additional_headers', $template ),
 						$header_value,
 						array(
@@ -207,6 +213,16 @@ trait WPCF7_ConfigValidator_Mail {
 							'params' => array( 'name' => $header_name )
 						)
 					);
+
+					if (
+						! $result and
+						in_array( strtolower( $header_name ), array( 'cc', 'bcc' ) )
+					) {
+						$this->detect_unsafe_email_without_protection(
+ 							sprintf( '%s.additional_headers', $template ),
+ 							$header_value
+ 						);
+					}
 				}
 			}
 		}
