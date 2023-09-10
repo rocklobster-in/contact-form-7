@@ -2,11 +2,22 @@
 
 trait WPCF7_ConfigValidator_Mail {
 
+	public function replace_mail_tags( $content ) {
+		$callback = array( $this, 'replace_mail_tags_with_minimum_input_callback' );
+
+		$content = new WPCF7_MailTaggedText( $content, array(
+			'callback' => $callback,
+		) );
+
+		return $content->replace_tags();
+	}
+
+
 	/**
 	 * Callback function for WPCF7_MailTaggedText. Replaces mail-tags with
 	 * the most conservative inputs.
 	 */
-	public function replace_mail_tags_with_minimum_input( $matches ) {
+	public function replace_mail_tags_with_minimum_input_callback( $matches ) {
 		// allow [[foo]] syntax for escaping a tag
 		if ( $matches[1] === '[' and $matches[4] === ']' ) {
 			return substr( $matches[0], 1, -1 );
@@ -124,69 +135,45 @@ trait WPCF7_ConfigValidator_Mail {
 			'attachments' => '',
 		) );
 
-		$callback = array( $this, 'replace_mail_tags_with_minimum_input' );
-
-		$subject = new WPCF7_MailTaggedText(
-			$components['subject'],
-			array( 'callback' => $callback )
+		$this->detect_maybe_empty(
+			sprintf( '%s.subject', $template ),
+			$components['subject']
 		);
-
-		$subject = $subject->replace_tags();
-		$subject = wpcf7_strip_newline( $subject );
-
-		$this->detect_maybe_empty( sprintf( '%s.subject', $template ), $subject );
-
-		$sender = new WPCF7_MailTaggedText(
-			$components['sender'],
-			array( 'callback' => $callback )
-		);
-
-		$sender = $sender->replace_tags();
-		$sender = wpcf7_strip_newline( $sender );
 
 		$invalid_mailbox = $this->detect_invalid_mailbox_syntax(
 			sprintf( '%s.sender', $template ),
-			$sender
+			$components['sender']
 		);
 
-		if ( ! $invalid_mailbox and ! wpcf7_is_email_in_site_domain( $sender ) ) {
-			$this->add_error( sprintf( '%s.sender', $template ),
-				'email_not_in_site_domain',
-				array(
-					'message' => __( "Sender email address does not belong to the site domain.", 'contact-form-7' ),
-				)
-			);
+		if ( ! $invalid_mailbox ) {
+			$sender = $this->replace_mail_tags( $components['sender'] );
+			$sender = wpcf7_strip_newline( $sender );
+
+			if ( ! wpcf7_is_email_in_site_domain( $sender ) ) {
+				$this->add_error( sprintf( '%s.sender', $template ),
+					'email_not_in_site_domain',
+					array(
+						'message' => __( "Sender email address does not belong to the site domain.", 'contact-form-7' ),
+					)
+				);
+			}
 		}
 
-		$recipient = new WPCF7_MailTaggedText(
-			$components['recipient'],
-			array( 'callback' => $callback )
-		);
-
-		$recipient = $recipient->replace_tags();
-		$recipient = wpcf7_strip_newline( $recipient );
-
-		$result = $this->detect_invalid_mailbox_syntax(
+		$invalid_mailbox = $this->detect_invalid_mailbox_syntax(
 			sprintf( '%s.recipient', $template ),
-			$recipient
+			$components['recipient']
 		);
 
-		if ( ! $result ) {
+		if ( ! $invalid_mailbox ) {
 			$this->detect_unsafe_email_without_protection(
 				sprintf( '%s.recipient', $template ),
-				$recipient
+				$components['recipient']
 			);
 		}
 
-		$additional_headers = new WPCF7_MailTaggedText(
-			$components['additional_headers'],
-			array( 'callback' => $callback )
-		);
-
-		$additional_headers = $additional_headers->replace_tags();
-		$additional_headers = explode( "\n", $additional_headers );
-		$mailbox_header_types = array( 'reply-to', 'cc', 'bcc' );
 		$invalid_mail_header_exists = false;
+
+		$additional_headers = explode( "\n", $components['additional_headers'] );
 
 		foreach ( $additional_headers as $header ) {
 			$header = trim( $header );
@@ -202,10 +189,13 @@ trait WPCF7_ConfigValidator_Mail {
 				$header_value = trim( $matches[2] );
 
 				if (
-					in_array( strtolower( $header_name ), $mailbox_header_types ) and
+					in_array(
+						strtolower( $header_name ),
+						array( 'reply-to', 'cc', 'bcc' )
+					) and
 					'' !== $header_value
 				) {
-					$result = $this->detect_invalid_mailbox_syntax(
+					$invalid_mailbox = $this->detect_invalid_mailbox_syntax(
 						sprintf( '%s.additional_headers', $template ),
 						$header_value,
 						array(
@@ -215,8 +205,11 @@ trait WPCF7_ConfigValidator_Mail {
 					);
 
 					if (
-						! $result and
-						in_array( strtolower( $header_name ), array( 'cc', 'bcc' ) )
+						! $invalid_mailbox and
+						in_array(
+							strtolower( $header_name ),
+							array( 'cc', 'bcc' )
+						)
 					) {
 						$this->detect_unsafe_email_without_protection(
  							sprintf( '%s.additional_headers', $template ),
@@ -236,14 +229,10 @@ trait WPCF7_ConfigValidator_Mail {
 			);
 		}
 
-		$body = new WPCF7_MailTaggedText(
-			$components['body'],
-			array( 'callback' => $callback )
+		$this->detect_maybe_empty(
+			sprintf( '%s.body', $template ),
+			$components['body']
 		);
-
-		$body = $body->replace_tags();
-
-		$this->detect_maybe_empty( sprintf( '%s.body', $template ), $body );
 
 		if ( '' !== $components['attachments'] ) {
 			$attachables = array();
@@ -319,6 +308,9 @@ trait WPCF7_ConfigValidator_Mail {
 			'params' => array(),
 		) );
 
+		$content = $this->replace_mail_tags( $content );
+		$content = wpcf7_strip_newline( $content );
+
 		if ( ! wpcf7_is_mailbox_list( $content ) ) {
 			return $this->add_error( $section,
 				'invalid_mailbox_syntax',
@@ -336,6 +328,9 @@ trait WPCF7_ConfigValidator_Mail {
 	 * @link https://contactform7.com/configuration-errors/maybe-empty/
 	 */
 	public function detect_maybe_empty( $section, $content ) {
+		$content = $this->replace_mail_tags( $content );
+		$content = wpcf7_strip_newline( $content );
+
 		if ( '' === $content ) {
 			return $this->add_error( $section,
 				'maybe_empty',
@@ -414,6 +409,9 @@ trait WPCF7_ConfigValidator_Mail {
 		if ( $is_recaptcha_active ) {
 			return false;
 		}
+
+		$content = $this->replace_mail_tags( $content );
+		$content = wpcf7_strip_newline( $content );
 
 		$example_email = 'example@example.com';
 
