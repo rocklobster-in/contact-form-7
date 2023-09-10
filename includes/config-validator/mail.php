@@ -2,12 +2,17 @@
 
 trait WPCF7_ConfigValidator_Mail {
 
-	public function replace_mail_tags( $content ) {
-		$callback = array( $this, 'replace_mail_tags_with_minimum_input_callback' );
-
-		$content = new WPCF7_MailTaggedText( $content, array(
-			'callback' => $callback,
+	/**
+	 * Replaces all mail-tags in the given content.
+	 */
+	public function replace_mail_tags( $content, $args = '' ) {
+		$args = wp_parse_args( $args, array(
+			'html' => false,
+			'callback' =>
+				array( $this, 'replace_mail_tags_with_minimum_input_callback' ),
 		) );
+
+		$content = new WPCF7_MailTaggedText( $content, $args );
 
 		return $content->replace_tags();
 	}
@@ -387,6 +392,12 @@ trait WPCF7_ConfigValidator_Mail {
 	}
 
 
+	/**
+	 * Detects errors of that unsafe email config is used without
+	 * sufficient protection.
+	 *
+	 * @link https://contactform7.com/configuration-errors/unsafe-email-without-protection/
+	 */
 	public function detect_unsafe_email_without_protection( $section, $content ) {
 		static $is_recaptcha_active = null;
 
@@ -410,10 +421,43 @@ trait WPCF7_ConfigValidator_Mail {
 			return false;
 		}
 
-		$content = $this->replace_mail_tags( $content );
-		$content = wpcf7_strip_newline( $content );
-
 		$example_email = 'example@example.com';
+
+		// Replace mail-tags connected to an email type form-tag first.
+		$content = $this->replace_mail_tags( $content, array(
+			'callback' => function ( $matches ) use ( $example_email ) {
+				// allow [[foo]] syntax for escaping a tag
+				if ( $matches[1] === '[' and $matches[4] === ']' ) {
+					return substr( $matches[0], 1, -1 );
+				}
+
+				$tag = $matches[0];
+				$tagname = $matches[2];
+				$values = $matches[3];
+
+				$mail_tag = new WPCF7_MailTag( $tag, $tagname, $values );
+				$field_name = $mail_tag->field_name();
+
+				$form_tags = $this->contact_form->scan_form_tags(
+					array( 'name' => $field_name )
+				);
+
+				if ( $form_tags ) {
+					$form_tag = new WPCF7_FormTag( $form_tags[0] );
+
+					if ( 'email' === $form_tag->basetype ) {
+						return $example_email;
+					}
+				}
+
+				return $tag;
+			},
+		) );
+
+		// Replace remaining mail-tags.
+		$content = $this->replace_mail_tags( $content );
+
+		$content = wpcf7_strip_newline( $content );
 
 		if ( str_contains( $content, $example_email ) ) {
 			return $this->add_error( $section,
