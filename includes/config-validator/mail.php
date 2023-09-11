@@ -406,15 +406,6 @@ trait WPCF7_ConfigValidator_Mail {
 				$service = WPCF7_RECAPTCHA::get_instance();
 				return $service->is_active();
 			} );
-
-			// For compat with the ReCaptcha v2 for Contact Form 7 plugin.
-			// https://wordpress.org/plugins/wpcf7-recaptcha/
-			if ( ! $is_recaptcha_active and class_exists( 'IQFix_ReCaptcha' ) ) {
-				$is_recaptcha_active = call_user_func( function () {
-					$service = IQFix_ReCaptcha::get_instance();
-					return $service->is_active();
-				} );
-			}
 		}
 
 		if ( $is_recaptcha_active ) {
