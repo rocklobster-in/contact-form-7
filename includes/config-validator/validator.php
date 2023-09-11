@@ -39,6 +39,7 @@ class WPCF7_ConfigValidator {
 		'dots_in_names',
 		'colons_in_names',
 		'upload_filesize_overlimit',
+		'unsafe_email_without_protection',
 	);
 
 	private $contact_form;
