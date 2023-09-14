@@ -323,6 +323,7 @@ trait WPCF7_ConfigValidator_Mail {
 			);
 		}
 
+		$this->remove_error( $section, 'invalid_mailbox_syntax' );
 		return false;
 	}
 
@@ -345,6 +346,7 @@ trait WPCF7_ConfigValidator_Mail {
 			);
 		}
 
+		$this->remove_error( $section, 'maybe_empty' );
 		return false;
 	}
 
@@ -367,6 +369,7 @@ trait WPCF7_ConfigValidator_Mail {
 			);
 		}
 
+		$this->remove_error( $section, 'file_not_found' );
 		return false;
 	}
 
@@ -388,6 +391,7 @@ trait WPCF7_ConfigValidator_Mail {
 			);
 		}
 
+		$this->remove_error( $section, 'file_not_in_content_dir' );
 		return false;
 	}
 
@@ -409,6 +413,7 @@ trait WPCF7_ConfigValidator_Mail {
 		}
 
 		if ( $is_recaptcha_active ) {
+			$this->remove_error( $section, 'unsafe_email_without_protection' );
 			return false;
 		}
 
@@ -459,6 +464,7 @@ trait WPCF7_ConfigValidator_Mail {
 			);
 		}
 
+		$this->remove_error( $section, 'unsafe_email_without_protection' );
 		return false;
 	}
 

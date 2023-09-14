@@ -41,6 +41,7 @@ trait WPCF7_ConfigValidator_Messages {
 			);
 		}
 
+		$this->remove_error( $section, 'html_in_message' );
 		return false;
 	}
 

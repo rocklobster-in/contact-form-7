@@ -65,6 +65,7 @@ trait WPCF7_ConfigValidator_Form {
 			}
 		}
 
+		$this->remove_error( $section, 'multiple_controls_in_label' );
 		return false;
 	}
 
@@ -111,6 +112,7 @@ trait WPCF7_ConfigValidator_Form {
 			);
 		}
 
+		$this->remove_error( $section, 'unavailable_names' );
 		return false;
 	}
 
@@ -132,6 +134,7 @@ trait WPCF7_ConfigValidator_Form {
 			);
 		}
 
+		$this->remove_error( $section, 'unavailable_html_elements' );
 		return false;
 	}
 
@@ -159,6 +162,7 @@ trait WPCF7_ConfigValidator_Form {
 			}
 		}
 
+		$this->remove_error( $section, 'dots_in_names' );
 		return false;
 	}
 
@@ -186,6 +190,7 @@ trait WPCF7_ConfigValidator_Form {
 			}
 		}
 
+		$this->remove_error( $section, 'colons_in_names' );
 		return false;
 	}
 
@@ -199,6 +204,7 @@ trait WPCF7_ConfigValidator_Form {
 		$upload_max_filesize = ini_get( 'upload_max_filesize' );
 
 		if ( ! $upload_max_filesize ) {
+			$this->remove_error( $section, 'upload_filesize_overlimit' );
 			return false;
 		}
 
@@ -206,6 +212,7 @@ trait WPCF7_ConfigValidator_Form {
 		$upload_max_filesize = trim( $upload_max_filesize );
 
 		if ( ! preg_match( '/^(\d+)([kmg]?)$/', $upload_max_filesize, $matches ) ) {
+			$this->remove_error( $section, 'upload_filesize_overlimit' );
 			return false;
 		}
 
@@ -236,6 +243,7 @@ trait WPCF7_ConfigValidator_Form {
 			}
 		}
 
+		$this->remove_error( $section, 'upload_filesize_overlimit' );
 		return false;
 	}
 

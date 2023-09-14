@@ -11,12 +11,14 @@ trait WPCF7_ConfigValidator_AdditionalSettings {
 			$this->contact_form->additional_setting( 'on_submit' );
 
 		if ( $deprecated_settings_used ) {
-			return $this->add_error( 'additional_settings.body',
+			$this->add_error( 'additional_settings.body',
 				'deprecated_settings',
 				array(
 					'message' => __( "Deprecated settings are used.", 'contact-form-7' ),
 				)
 			);
+		} else {
+			$this->remove_error( 'additional_settings.body', 'deprecated_settings' );
 		}
 	}
 

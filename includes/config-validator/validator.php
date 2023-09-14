@@ -298,8 +298,6 @@ class WPCF7_ConfigValidator {
 	 * @return bool True if there is no error detected.
 	 */
 	public function validate() {
-		$this->errors = array();
-
 		$this->validate_form();
 		$this->validate_mail( 'mail' );
 		$this->validate_mail( 'mail_2' );
