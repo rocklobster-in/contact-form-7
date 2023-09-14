@@ -140,14 +140,7 @@ trait WPCF7_ConfigValidator_Mail {
 			'attachments' => '',
 		) );
 
-		if ( $this->supports( 'maybe_empty' ) ) {
-			$this->detect_maybe_empty(
-				sprintf( '%s.subject', $template ),
-				$components['subject']
-			);
-		}
-
-
+		$this->validate_mail_subject( $template, $components['subject'] );
 
 		$this->validate_mail_sender( $template, $components['sender'] );
 
@@ -160,6 +153,19 @@ trait WPCF7_ConfigValidator_Mail {
 		$this->validate_mail_body( $template, $components['body'] );
 
 		$this->validate_mail_attachments( $template, $components['attachments'] );
+	}
+
+
+	/**
+	 * Runs error detection for the mail subject section.
+	 */
+	public function validate_mail_subject( $template, $content ) {
+		if ( $this->supports( 'maybe_empty' ) ) {
+			$this->detect_maybe_empty(
+				sprintf( '%s.subject', $template ),
+				$content
+			);
+		}
 	}
 
 
