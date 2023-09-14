@@ -186,9 +186,23 @@ trait WPCF7_ConfigValidator_Mail {
 			}
 		}
 
+		$this->validate_mail_additional_headers( $template,
+			$components['additional_headers']
+		);
+
+		$this->validate_mail_body( $template, $components['body'] );
+
+		$this->validate_mail_attachments( $template, $components['attachments'] );
+	}
+
+
+	/**
+	 * Runs error detection for the mail additional headers section.
+	 */
+	public function validate_mail_additional_headers( $template, $content ) {
 		$invalid_mail_header_exists = false;
 
-		$additional_headers = explode( "\n", $components['additional_headers'] );
+		$additional_headers = explode( "\n", $content );
 
 		foreach ( $additional_headers as $header ) {
 			$header = trim( $header );
@@ -251,21 +265,17 @@ trait WPCF7_ConfigValidator_Mail {
 				);
 			}
 		}
-
-		$this->validate_mail_body( $template );
-
-		$this->validate_mail_attachments( $template );
 	}
 
 
 	/**
 	 * Runs error detection for the mail body section.
 	 */
-	public function validate_mail_body( $template = 'mail' ) {
+	public function validate_mail_body( $template, $content ) {
 		if ( $this->supports( 'maybe_empty' ) ) {
 			$this->detect_maybe_empty(
 				sprintf( '%s.body', $template ),
-				$components['body']
+				$content
 			);
 		}
 	}
@@ -274,8 +284,8 @@ trait WPCF7_ConfigValidator_Mail {
 	/**
 	 * Runs error detection for the mail attachments section.
 	 */
-	public function validate_mail_attachments( $template = 'mail' ) {
-		if ( '' !== $components['attachments'] ) {
+	public function validate_mail_attachments( $template, $content ) {
+		if ( '' !== $content ) {
 			$attachables = array();
 
 			$tags = $this->contact_form->scan_form_tags(
@@ -285,7 +295,7 @@ trait WPCF7_ConfigValidator_Mail {
 			foreach ( $tags as $tag ) {
 				$name = $tag->name;
 
-				if ( ! str_contains( $components['attachments'], "[{$name}]" ) ) {
+				if ( ! str_contains( $content, "[{$name}]" ) ) {
 					continue;
 				}
 
@@ -301,7 +311,7 @@ trait WPCF7_ConfigValidator_Mail {
 			$has_file_not_found = false;
 			$has_file_not_in_content_dir = false;
 
-			foreach ( explode( "\n", $components['attachments'] ) as $line ) {
+			foreach ( explode( "\n", $content ) as $line ) {
 				$line = trim( $line );
 
 				if ( '' === $line or str_starts_with( $line, '[' ) ) {
