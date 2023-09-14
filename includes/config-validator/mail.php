@@ -140,40 +140,50 @@ trait WPCF7_ConfigValidator_Mail {
 			'attachments' => '',
 		) );
 
-		$this->detect_maybe_empty(
-			sprintf( '%s.subject', $template ),
-			$components['subject']
-		);
+		if ( $this->supports( 'maybe_empty' ) ) {
+			$this->detect_maybe_empty(
+				sprintf( '%s.subject', $template ),
+				$components['subject']
+			);
+		}
 
-		$invalid_mailbox = $this->detect_invalid_mailbox_syntax(
-			sprintf( '%s.sender', $template ),
-			$components['sender']
-		);
+		if ( $this->supports( 'invalid_mailbox_syntax' ) ) {
+			$invalid_mailbox = $this->detect_invalid_mailbox_syntax(
+				sprintf( '%s.sender', $template ),
+				$components['sender']
+			);
+		}
 
-		if ( ! $invalid_mailbox ) {
-			$sender = $this->replace_mail_tags( $components['sender'] );
-			$sender = wpcf7_strip_newline( $sender );
+		if ( $this->supports( 'email_not_in_site_domain' ) ) {
+			if ( empty( $invalid_mailbox ) ) {
+				$sender = $this->replace_mail_tags( $components['sender'] );
+				$sender = wpcf7_strip_newline( $sender );
 
-			if ( ! wpcf7_is_email_in_site_domain( $sender ) ) {
-				$this->add_error( sprintf( '%s.sender', $template ),
-					'email_not_in_site_domain',
-					array(
-						'message' => __( "Sender email address does not belong to the site domain.", 'contact-form-7' ),
-					)
-				);
+				if ( ! wpcf7_is_email_in_site_domain( $sender ) ) {
+					$this->add_error( sprintf( '%s.sender', $template ),
+						'email_not_in_site_domain',
+						array(
+							'message' => __( "Sender email address does not belong to the site domain.", 'contact-form-7' ),
+						)
+					);
+				}
 			}
 		}
 
-		$invalid_mailbox = $this->detect_invalid_mailbox_syntax(
-			sprintf( '%s.recipient', $template ),
-			$components['recipient']
-		);
-
-		if ( ! $invalid_mailbox ) {
-			$this->detect_unsafe_email_without_protection(
+		if ( $this->supports( 'invalid_mailbox_syntax' ) ) {
+			$invalid_mailbox = $this->detect_invalid_mailbox_syntax(
 				sprintf( '%s.recipient', $template ),
 				$components['recipient']
 			);
+		}
+
+		if ( $this->supports( 'unsafe_email_without_protection' ) ) {
+			if ( empty( $invalid_mailbox ) ) {
+				$this->detect_unsafe_email_without_protection(
+					sprintf( '%s.recipient', $template ),
+					$components['recipient']
+				);
+			}
 		}
 
 		$invalid_mail_header_exists = false;
@@ -193,51 +203,61 @@ trait WPCF7_ConfigValidator_Mail {
 				$header_name = $matches[1];
 				$header_value = trim( $matches[2] );
 
-				if (
-					in_array(
-						strtolower( $header_name ),
-						array( 'reply-to', 'cc', 'bcc' )
-					) and
-					'' !== $header_value
-				) {
-					$invalid_mailbox = $this->detect_invalid_mailbox_syntax(
-						sprintf( '%s.additional_headers', $template ),
-						$header_value,
-						array(
-							'message' => __( "Invalid mailbox syntax is used in the %name% field.", 'contact-form-7' ),
-							'params' => array( 'name' => $header_name )
-						)
-					);
+				unset( $invalid_mailbox );
 
+				if ( $this->supports( 'invalid_mailbox_syntax' ) ) {
 					if (
-						! $invalid_mailbox and
+						in_array(
+							strtolower( $header_name ),
+							array( 'reply-to', 'cc', 'bcc' )
+						) and
+						'' !== $header_value
+					) {
+						$invalid_mailbox = $this->detect_invalid_mailbox_syntax(
+							sprintf( '%s.additional_headers', $template ),
+							$header_value,
+							array(
+								'message' => __( "Invalid mailbox syntax is used in the %name% field.", 'contact-form-7' ),
+								'params' => array( 'name' => $header_name )
+							)
+						);
+					}
+				}
+
+				if ( $this->supports( 'unsafe_email_without_protection' ) ) {
+					if (
+						empty( $invalid_mailbox ) and
 						in_array(
 							strtolower( $header_name ),
 							array( 'cc', 'bcc' )
 						)
 					) {
 						$this->detect_unsafe_email_without_protection(
- 							sprintf( '%s.additional_headers', $template ),
- 							$header_value
- 						);
+							sprintf( '%s.additional_headers', $template ),
+							$header_value
+						);
 					}
 				}
 			}
 		}
 
-		if ( $invalid_mail_header_exists ) {
-			$this->add_error( sprintf( '%s.additional_headers', $template ),
-				'invalid_mail_header',
-				array(
-					'message' => __( "There are invalid mail header fields.", 'contact-form-7' ),
-				)
-			);
+		if ( $this->supports( 'invalid_mail_header' ) ) {
+			if ( $invalid_mail_header_exists ) {
+				$this->add_error( sprintf( '%s.additional_headers', $template ),
+					'invalid_mail_header',
+					array(
+						'message' => __( "There are invalid mail header fields.", 'contact-form-7' ),
+					)
+				);
+			}
 		}
 
-		$this->detect_maybe_empty(
-			sprintf( '%s.body', $template ),
-			$components['body']
-		);
+		if ( $this->supports( 'maybe_empty' ) ) {
+			$this->detect_maybe_empty(
+				sprintf( '%s.body', $template ),
+				$components['body']
+			);
+		}
 
 		if ( '' !== $components['attachments'] ) {
 			$attachables = array();
