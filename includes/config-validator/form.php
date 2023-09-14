@@ -8,12 +8,30 @@ trait WPCF7_ConfigValidator_Form {
 	public function validate_form() {
 		$section = 'form.body';
 		$form = $this->contact_form->prop( 'form' );
-		$this->detect_multiple_controls_in_label( $section, $form );
-		$this->detect_unavailable_names( $section, $form );
-		$this->detect_unavailable_html_elements( $section, $form );
-		$this->detect_dots_in_names( $section, $form );
-		$this->detect_colons_in_names( $section, $form );
-		$this->detect_upload_filesize_overlimit( $section, $form );
+
+		if ( $this->supports( 'multiple_controls_in_label' ) ) {
+			$this->detect_multiple_controls_in_label( $section, $form );
+		}
+
+		if ( $this->supports( 'unavailable_names' ) ) {
+			$this->detect_unavailable_names( $section, $form );
+		}
+
+		if ( $this->supports( 'unavailable_html_elements' ) ) {
+			$this->detect_unavailable_html_elements( $section, $form );
+		}
+
+		if ( $this->supports( 'dots_in_names' ) ) {
+			$this->detect_dots_in_names( $section, $form );
+		}
+
+		if ( $this->supports( 'colons_in_names' ) ) {
+			$this->detect_colons_in_names( $section, $form );
+		}
+
+		if ( $this->supports( 'upload_filesize_overlimit' ) ) {
+			$this->detect_upload_filesize_overlimit( $section, $form );
+		}
 	}
 
 

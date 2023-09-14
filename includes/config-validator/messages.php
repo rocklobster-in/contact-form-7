@@ -19,7 +19,10 @@ trait WPCF7_ConfigValidator_Messages {
 
 		foreach ( $messages as $key => $message ) {
 			$section = sprintf( 'messages.%s', $key );
-			$this->detect_html_in_message( $section, $message );
+
+			if ( $this->supports( 'html_in_message' ) ) {
+				$this->detect_html_in_message( $section, $message );
+			}
 		}
 	}
 
