@@ -170,21 +170,7 @@ trait WPCF7_ConfigValidator_Mail {
 			}
 		}
 
-		if ( $this->supports( 'invalid_mailbox_syntax' ) ) {
-			$invalid_mailbox = $this->detect_invalid_mailbox_syntax(
-				sprintf( '%s.recipient', $template ),
-				$components['recipient']
-			);
-		}
-
-		if ( $this->supports( 'unsafe_email_without_protection' ) ) {
-			if ( empty( $invalid_mailbox ) ) {
-				$this->detect_unsafe_email_without_protection(
-					sprintf( '%s.recipient', $template ),
-					$components['recipient']
-				);
-			}
-		}
+		$this->validate_mail_recipient( $template, $components['recipient'] );
 
 		$this->validate_mail_additional_headers( $template,
 			$components['additional_headers']
@@ -193,6 +179,28 @@ trait WPCF7_ConfigValidator_Mail {
 		$this->validate_mail_body( $template, $components['body'] );
 
 		$this->validate_mail_attachments( $template, $components['attachments'] );
+	}
+
+
+	/**
+	 * Runs error detection for the mail recipient section.
+	 */
+	public function validate_mail_recipient( $template, $content ) {
+		if ( $this->supports( 'invalid_mailbox_syntax' ) ) {
+			$invalid_mailbox = $this->detect_invalid_mailbox_syntax(
+				sprintf( '%s.recipient', $template ),
+				$content
+			);
+		}
+
+		if ( $this->supports( 'unsafe_email_without_protection' ) ) {
+			if ( empty( $invalid_mailbox ) ) {
+				$this->detect_unsafe_email_without_protection(
+					sprintf( '%s.recipient', $template ),
+					$content
+				);
+			}
+		}
 	}
 
 
