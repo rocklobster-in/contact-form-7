@@ -252,14 +252,22 @@ trait WPCF7_ConfigValidator_Mail {
 			}
 		}
 
+		$this->validate_mail_body( $template );
+
+		$this->validate_mail_attachments( $template );
+	}
+
+
+	/**
+	 * Runs error detection for the mail body section.
+	 */
+	public function validate_mail_body( $template = 'mail' ) {
 		if ( $this->supports( 'maybe_empty' ) ) {
 			$this->detect_maybe_empty(
 				sprintf( '%s.body', $template ),
 				$components['body']
 			);
 		}
-
-		$this->validate_mail_attachments( $template );
 	}
 
 
