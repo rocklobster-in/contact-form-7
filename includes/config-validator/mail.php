@@ -147,16 +147,36 @@ trait WPCF7_ConfigValidator_Mail {
 			);
 		}
 
+
+
+		$this->validate_mail_sender( $template, $components['sender'] );
+
+		$this->validate_mail_recipient( $template, $components['recipient'] );
+
+		$this->validate_mail_additional_headers( $template,
+			$components['additional_headers']
+		);
+
+		$this->validate_mail_body( $template, $components['body'] );
+
+		$this->validate_mail_attachments( $template, $components['attachments'] );
+	}
+
+
+	/**
+	 * Runs error detection for the mail sender section.
+	 */
+	public function validate_mail_sender( $template, $content ) {
 		if ( $this->supports( 'invalid_mailbox_syntax' ) ) {
 			$invalid_mailbox = $this->detect_invalid_mailbox_syntax(
 				sprintf( '%s.sender', $template ),
-				$components['sender']
+				$content
 			);
 		}
 
 		if ( $this->supports( 'email_not_in_site_domain' ) ) {
 			if ( empty( $invalid_mailbox ) ) {
-				$sender = $this->replace_mail_tags( $components['sender'] );
+				$sender = $this->replace_mail_tags( $content );
 				$sender = wpcf7_strip_newline( $sender );
 
 				if ( ! wpcf7_is_email_in_site_domain( $sender ) ) {
@@ -169,16 +189,6 @@ trait WPCF7_ConfigValidator_Mail {
 				}
 			}
 		}
-
-		$this->validate_mail_recipient( $template, $components['recipient'] );
-
-		$this->validate_mail_additional_headers( $template,
-			$components['additional_headers']
-		);
-
-		$this->validate_mail_body( $template, $components['body'] );
-
-		$this->validate_mail_attachments( $template, $components['attachments'] );
 	}
 
 
