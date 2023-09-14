@@ -259,6 +259,14 @@ trait WPCF7_ConfigValidator_Mail {
 			);
 		}
 
+		$this->validate_mail_attachments( $template );
+	}
+
+
+	/**
+	 * Runs error detection for the mail attachments section.
+	 */
+	public function validate_mail_attachments( $template = 'mail' ) {
 		if ( '' !== $components['attachments'] ) {
 			$attachables = array();
 
