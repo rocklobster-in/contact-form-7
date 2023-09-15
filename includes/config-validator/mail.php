@@ -294,12 +294,13 @@ trait WPCF7_ConfigValidator_Mail {
 
 		if ( $this->supports( 'invalid_mail_header' ) ) {
 			if ( $invalid_mail_header_exists ) {
-				$this->add_error( $section,
-					'invalid_mail_header',
+				$this->add_error( $section, 'invalid_mail_header',
 					array(
 						'message' => __( "There are invalid mail header fields.", 'contact-form-7' ),
 					)
 				);
+			} else {
+				$this->remove_error( $section, 'invalid_mail_header' );
 			}
 		}
 	}
