@@ -248,46 +248,53 @@ trait WPCF7_ConfigValidator_Mail {
 				continue;
 			}
 
-			if ( ! preg_match( '/^([0-9A-Za-z-]+):(.*)$/', $header, $matches ) ) {
+			$is_valid_header = preg_match(
+				'/^([0-9A-Za-z-]+):(.*)$/',
+				$header,
+				$matches
+			);
+
+			if ( ! $is_valid_header ) {
 				$invalid_mail_header_exists = true;
-			} else {
-				$header_name = $matches[1];
-				$header_value = trim( $matches[2] );
+				continue;
+			}
 
-				unset( $invalid_mailbox );
+			$header_name = $matches[1];
+			$header_value = trim( $matches[2] );
 
-				if ( $this->supports( 'invalid_mailbox_syntax' ) ) {
-					if (
-						in_array(
-							strtolower( $header_name ),
-							array( 'reply-to', 'cc', 'bcc' )
-						) and
-						'' !== $header_value
-					) {
-						$invalid_mailbox = $this->detect_invalid_mailbox_syntax(
-							$section,
-							$header_value,
-							array(
-								'message' => __( "Invalid mailbox syntax is used in the %name% field.", 'contact-form-7' ),
-								'params' => array( 'name' => $header_name )
-							)
-						);
-					}
-				}
+			unset( $invalid_mailbox );
 
-				if ( $this->supports( 'unsafe_email_without_protection' ) ) {
-					if (
-						empty( $invalid_mailbox ) and
-						in_array(
-							strtolower( $header_name ),
-							array( 'cc', 'bcc' )
+			if ( $this->supports( 'invalid_mailbox_syntax' ) ) {
+				if (
+					in_array(
+						strtolower( $header_name ),
+						array( 'reply-to', 'cc', 'bcc' )
+					) and
+					'' !== $header_value
+				) {
+					$invalid_mailbox = $this->detect_invalid_mailbox_syntax(
+						$section,
+						$header_value,
+						array(
+							'message' => __( "Invalid mailbox syntax is used in the %name% field.", 'contact-form-7' ),
+							'params' => array( 'name' => $header_name )
 						)
-					) {
-						$this->detect_unsafe_email_without_protection(
-							$section,
-							$header_value
-						);
-					}
+					);
+				}
+			}
+
+			if ( $this->supports( 'unsafe_email_without_protection' ) ) {
+				if (
+					empty( $invalid_mailbox ) and
+					in_array(
+						strtolower( $header_name ),
+						array( 'cc', 'bcc' )
+					)
+				) {
+					$this->detect_unsafe_email_without_protection(
+						$section,
+						$header_value
+					);
 				}
 			}
 		}
