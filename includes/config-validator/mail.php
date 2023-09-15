@@ -207,6 +207,8 @@ trait WPCF7_ConfigValidator_Mail {
 							'message' => __( "Sender email address does not belong to the site domain.", 'contact-form-7' ),
 						)
 					);
+				} else {
+					$this->remove_error( $section, 'email_not_in_site_domain' );
 				}
 			}
 		}
