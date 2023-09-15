@@ -237,11 +237,11 @@ trait WPCF7_ConfigValidator_Mail {
 	 * Runs error detection for the mail additional headers section.
 	 */
 	public function validate_mail_additional_headers( $template, $content ) {
+		$section = sprintf( '%s.additional_headers', $template );
+
 		$invalid_mail_header_exists = false;
 
-		$additional_headers = explode( "\n", $content );
-
-		foreach ( $additional_headers as $header ) {
+		foreach ( explode( "\n", $content ) as $header ) {
 			$header = trim( $header );
 
 			if ( '' === $header ) {
@@ -265,7 +265,7 @@ trait WPCF7_ConfigValidator_Mail {
 						'' !== $header_value
 					) {
 						$invalid_mailbox = $this->detect_invalid_mailbox_syntax(
-							sprintf( '%s.additional_headers', $template ),
+							$section,
 							$header_value,
 							array(
 								'message' => __( "Invalid mailbox syntax is used in the %name% field.", 'contact-form-7' ),
@@ -284,7 +284,7 @@ trait WPCF7_ConfigValidator_Mail {
 						)
 					) {
 						$this->detect_unsafe_email_without_protection(
-							sprintf( '%s.additional_headers', $template ),
+							$section,
 							$header_value
 						);
 					}
@@ -294,7 +294,7 @@ trait WPCF7_ConfigValidator_Mail {
 
 		if ( $this->supports( 'invalid_mail_header' ) ) {
 			if ( $invalid_mail_header_exists ) {
-				$this->add_error( sprintf( '%s.additional_headers', $template ),
+				$this->add_error( $section,
 					'invalid_mail_header',
 					array(
 						'message' => __( "There are invalid mail header fields.", 'contact-form-7' ),
