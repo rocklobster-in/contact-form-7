@@ -230,6 +230,27 @@ class WPCF7_ConfigValidator {
 
 
 	/**
+	 * Returns true if the specified section has the specified error.
+	 *
+	 * @param string $section The section where the error detected.
+	 * @param string $code The unique code of the error.
+	 */
+	public function has_error( $section, $code ) {
+		if ( empty( $this->errors[$section] ) ) {
+			return false;
+		}
+
+		foreach ( (array) $this->errors[$section] as $error ) {
+			if ( isset( $error['code'] ) and $error['code'] === $code ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+
+	/**
 	 * Adds a validation error.
 	 *
 	 * @param string $section The section where the error detected.

@@ -140,19 +140,35 @@ trait WPCF7_ConfigValidator_Mail {
 			'attachments' => '',
 		) );
 
-		$this->validate_mail_subject( $template, $components['subject'] );
+		$this->validate_mail_subject(
+			$template,
+			$components['subject']
+		);
 
-		$this->validate_mail_sender( $template, $components['sender'] );
+		$this->validate_mail_sender(
+			$template,
+			$components['sender']
+		);
 
-		$this->validate_mail_recipient( $template, $components['recipient'] );
+		$this->validate_mail_recipient(
+			$template,
+			$components['recipient']
+		);
 
-		$this->validate_mail_additional_headers( $template,
+		$this->validate_mail_additional_headers(
+			$template,
 			$components['additional_headers']
 		);
 
-		$this->validate_mail_body( $template, $components['body'] );
+		$this->validate_mail_body(
+			$template,
+			$components['body']
+		);
 
-		$this->validate_mail_attachments( $template, $components['attachments'] );
+		$this->validate_mail_attachments(
+			$template,
+			$components['attachments']
+		);
 	}
 
 
@@ -173,20 +189,19 @@ trait WPCF7_ConfigValidator_Mail {
 	 * Runs error detection for the mail sender section.
 	 */
 	public function validate_mail_sender( $template, $content ) {
+		$section = sprintf( '%s.sender', $template );
+
 		if ( $this->supports( 'invalid_mailbox_syntax' ) ) {
-			$invalid_mailbox = $this->detect_invalid_mailbox_syntax(
-				sprintf( '%s.sender', $template ),
-				$content
-			);
+			$this->detect_invalid_mailbox_syntax( $section, $content );
 		}
 
 		if ( $this->supports( 'email_not_in_site_domain' ) ) {
-			if ( empty( $invalid_mailbox ) ) {
+			if ( ! $this->has_error( $section, 'invalid_mailbox_syntax' ) ) {
 				$sender = $this->replace_mail_tags( $content );
 				$sender = wpcf7_strip_newline( $sender );
 
 				if ( ! wpcf7_is_email_in_site_domain( $sender ) ) {
-					$this->add_error( sprintf( '%s.sender', $template ),
+					$this->add_error( $section,
 						'email_not_in_site_domain',
 						array(
 							'message' => __( "Sender email address does not belong to the site domain.", 'contact-form-7' ),
@@ -202,19 +217,15 @@ trait WPCF7_ConfigValidator_Mail {
 	 * Runs error detection for the mail recipient section.
 	 */
 	public function validate_mail_recipient( $template, $content ) {
+		$section = sprintf( '%s.recipient', $template );
+
 		if ( $this->supports( 'invalid_mailbox_syntax' ) ) {
-			$invalid_mailbox = $this->detect_invalid_mailbox_syntax(
-				sprintf( '%s.recipient', $template ),
-				$content
-			);
+			$this->detect_invalid_mailbox_syntax( $section, $content );
 		}
 
 		if ( $this->supports( 'unsafe_email_without_protection' ) ) {
-			if ( empty( $invalid_mailbox ) ) {
-				$this->detect_unsafe_email_without_protection(
-					sprintf( '%s.recipient', $template ),
-					$content
-				);
+			if ( ! $this->has_error( $section, 'invalid_mailbox_syntax' ) ) {
+				$this->detect_unsafe_email_without_protection( $section, $content );
 			}
 		}
 	}
