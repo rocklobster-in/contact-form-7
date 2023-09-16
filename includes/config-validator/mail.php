@@ -239,7 +239,7 @@ trait WPCF7_ConfigValidator_Mail {
 	public function validate_mail_additional_headers( $template, $content ) {
 		$section = sprintf( '%s.additional_headers', $template );
 
-		$invalid_mail_header_exists = false;
+		$invalid_mail_headers = array();
 
 		foreach ( explode( "\n", $content ) as $header ) {
 			$header = trim( $header );
@@ -255,7 +255,7 @@ trait WPCF7_ConfigValidator_Mail {
 			);
 
 			if ( ! $is_valid_header ) {
-				$invalid_mail_header_exists = true;
+				$invalid_mail_headers[] = $header;
 				continue;
 			}
 
@@ -300,7 +300,7 @@ trait WPCF7_ConfigValidator_Mail {
 		}
 
 		if ( $this->supports( 'invalid_mail_header' ) ) {
-			if ( $invalid_mail_header_exists ) {
+			if ( ! empty( $invalid_mail_headers ) ) {
 				$this->add_error( $section, 'invalid_mail_header',
 					array(
 						'message' => __( "There are invalid mail header fields.", 'contact-form-7' ),
