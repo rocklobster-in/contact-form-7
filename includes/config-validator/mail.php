@@ -332,6 +332,8 @@ trait WPCF7_ConfigValidator_Mail {
 	public function validate_mail_attachments( $template, $content ) {
 		$section = sprintf( '%s.attachments', $template );
 
+		$total_size = 0;
+
 		if ( '' !== $content ) {
 			$attachables = array();
 
@@ -378,19 +380,19 @@ trait WPCF7_ConfigValidator_Mail {
 					$total_size += (int) @filesize( $path );
 				}
 			}
+		}
 
-			if ( $this->supports( 'attachments_overweight' ) ) {
-				$max = 25 * MB_IN_BYTES; // 25 MB
+		if ( $this->supports( 'attachments_overweight' ) ) {
+			$max = 25 * MB_IN_BYTES; // 25 MB
 
-				if ( $max < $total_size ) {
-					$this->add_error( $section, 'attachments_overweight',
-						array(
-							'message' => __( "The total size of attachment files is too large.", 'contact-form-7' ),
-						)
-					);
-				} else {
-					$this->remove_error( $section, 'attachments_overweight' );
-				}
+			if ( $max < $total_size ) {
+				$this->add_error( $section, 'attachments_overweight',
+					array(
+						'message' => __( "The total size of attachment files is too large.", 'contact-form-7' ),
+					)
+				);
+			} else {
+				$this->remove_error( $section, 'attachments_overweight' );
 			}
 		}
 	}
