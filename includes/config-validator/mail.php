@@ -333,6 +333,8 @@ trait WPCF7_ConfigValidator_Mail {
 		$section = sprintf( '%s.attachments', $template );
 
 		$total_size = 0;
+		$files_not_found = array();
+		$files_out_of_content = array();
 
 		if ( '' !== $content ) {
 			$attachables = array();
@@ -357,9 +359,6 @@ trait WPCF7_ConfigValidator_Mail {
 
 			$total_size = array_sum( $attachables );
 
-			$has_file_not_found = false;
-			$has_file_not_in_content_dir = false;
-
 			foreach ( explode( "\n", $content ) as $line ) {
 				$line = trim( $line );
 
@@ -367,18 +366,42 @@ trait WPCF7_ConfigValidator_Mail {
 					continue;
 				}
 
-				$has_file_not_found = $this->detect_file_not_found( $section, $line );
+				$path = path_join( WP_CONTENT_DIR, $line );
 
-				if ( ! $has_file_not_found and ! $has_file_not_in_content_dir ) {
-					$has_file_not_in_content_dir = $this->detect_file_not_in_content_dir(
-						$section, $line
-					);
-				}
-
-				if ( ! $has_file_not_found ) {
-					$path = path_join( WP_CONTENT_DIR, $line );
+				if ( ! is_readable( $path ) or ! is_file( $path ) ) {
+					$files_not_found[] = $line;
+				} elseif ( ! wpcf7_is_file_path_in_content_dir( $path ) ) {
+					$files_out_of_content[] = $line;
+				} else {
 					$total_size += (int) @filesize( $path );
 				}
+			}
+		}
+
+		if ( $this->supports( 'file_not_found' ) ) {
+			if ( ! empty( $files_not_found ) ) {
+				foreach ( $files_not_found as $line ) {
+					$this->add_error( $section, 'file_not_found',
+						array(
+							'message' => __( "Attachment file does not exist at %path%.", 'contact-form-7' ),
+							'params' => array( 'path' => $line ),
+						)
+					);
+				}
+			} else {
+				$this->remove_error( $section, 'file_not_found' );
+			}
+		}
+
+		if ( $this->supports( 'file_not_in_content_dir' ) ) {
+			if ( ! empty( $files_out_of_content ) ) {
+				$this->add_error( $section, 'file_not_in_content_dir',
+					array(
+						'message' => __( "It is not allowed to use files outside the wp-content directory.", 'contact-form-7' ),
+					)
+				);
+			} else {
+				$this->remove_error( $section, 'file_not_in_content_dir' );
 			}
 		}
 
