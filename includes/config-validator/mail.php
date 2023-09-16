@@ -330,6 +330,8 @@ trait WPCF7_ConfigValidator_Mail {
 	 * Runs error detection for the mail attachments section.
 	 */
 	public function validate_mail_attachments( $template, $content ) {
+		$section = sprintf( '%s.attachments', $template );
+
 		if ( '' !== $content ) {
 			$attachables = array();
 
@@ -363,13 +365,11 @@ trait WPCF7_ConfigValidator_Mail {
 					continue;
 				}
 
-				$has_file_not_found = $this->detect_file_not_found(
-					sprintf( '%s.attachments', $template ), $line
-				);
+				$has_file_not_found = $this->detect_file_not_found( $section, $line );
 
 				if ( ! $has_file_not_found and ! $has_file_not_in_content_dir ) {
 					$has_file_not_in_content_dir = $this->detect_file_not_in_content_dir(
-						sprintf( '%s.attachments', $template ), $line
+						$section, $line
 					);
 				}
 
@@ -379,15 +379,18 @@ trait WPCF7_ConfigValidator_Mail {
 				}
 			}
 
-			$max = 25 * MB_IN_BYTES; // 25 MB
+			if ( $this->supports( 'attachments_overweight' ) ) {
+				$max = 25 * MB_IN_BYTES; // 25 MB
 
-			if ( $max < $total_size ) {
-				$this->add_error( sprintf( '%s.attachments', $template ),
-					'attachments_overweight',
-					array(
-						'message' => __( "The total size of attachment files is too large.", 'contact-form-7' ),
-					)
-				);
+				if ( $max < $total_size ) {
+					$this->add_error( $section, 'attachments_overweight',
+						array(
+							'message' => __( "The total size of attachment files is too large.", 'contact-form-7' ),
+						)
+					);
+				} else {
+					$this->remove_error( $section, 'attachments_overweight' );
+				}
 			}
 		}
 	}
