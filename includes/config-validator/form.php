@@ -75,7 +75,15 @@ trait WPCF7_ConfigValidator_Form {
 		}
 
 		if ( $this->supports( 'upload_filesize_overlimit' ) ) {
-			$this->detect_upload_filesize_overlimit( $section, $form );
+			if ( $this->detect_upload_filesize_overlimit( $section, $form ) ) {
+				$this->add_error( $section, 'upload_filesize_overlimit',
+					array(
+						'message' => __( "Uploadable file size exceeds PHP’s maximum acceptable size.", 'contact-form-7' ),
+					)
+				);
+			} else {
+				$this->remove_error( $section, 'upload_filesize_overlimit' );
+			}
 		}
 	}
 
@@ -232,7 +240,6 @@ trait WPCF7_ConfigValidator_Form {
 		$upload_max_filesize = ini_get( 'upload_max_filesize' );
 
 		if ( ! $upload_max_filesize ) {
-			$this->remove_error( $section, 'upload_filesize_overlimit' );
 			return false;
 		}
 
@@ -240,7 +247,6 @@ trait WPCF7_ConfigValidator_Form {
 		$upload_max_filesize = trim( $upload_max_filesize );
 
 		if ( ! preg_match( '/^(\d+)([kmg]?)$/', $upload_max_filesize, $matches ) ) {
-			$this->remove_error( $section, 'upload_filesize_overlimit' );
 			return false;
 		}
 
@@ -262,16 +268,10 @@ trait WPCF7_ConfigValidator_Form {
 
 		foreach ( $tags as $tag ) {
 			if ( $upload_max_filesize < $tag->get_limit_option() ) {
-				return $this->add_error( $section,
-					'upload_filesize_overlimit',
-					array(
-						'message' => __( "Uploadable file size exceeds PHP’s maximum acceptable size.", 'contact-form-7' ),
-					)
-				);
+				return true;
 			}
 		}
 
-		$this->remove_error( $section, 'upload_filesize_overlimit' );
 		return false;
 	}
 
