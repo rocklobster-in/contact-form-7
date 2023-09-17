@@ -10,7 +10,15 @@ trait WPCF7_ConfigValidator_Form {
 		$form = $this->contact_form->prop( 'form' );
 
 		if ( $this->supports( 'multiple_controls_in_label' ) ) {
-			$this->detect_multiple_controls_in_label( $section, $form );
+			if ( $this->detect_multiple_controls_in_label( $section, $form ) ) {
+				$this->add_error( $section, 'multiple_controls_in_label',
+					array(
+						'message' => __( "Multiple form controls are in a single label element.", 'contact-form-7' ),
+					)
+				);
+			} else {
+				$this->remove_error( $section, 'multiple_controls_in_label' );
+			}
 		}
 
 		if ( $this->supports( 'unavailable_names' ) ) {
@@ -72,18 +80,12 @@ trait WPCF7_ConfigValidator_Form {
 					}
 
 					if ( 1 < $fields_count ) {
-						return $this->add_error( $section,
-							'multiple_controls_in_label',
-							array(
-								'message' => __( "Multiple form controls are in a single label element.", 'contact-form-7' ),
-							)
-						);
+						return true;
 					}
 				}
 			}
 		}
 
-		$this->remove_error( $section, 'multiple_controls_in_label' );
 		return false;
 	}
 
