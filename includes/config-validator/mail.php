@@ -192,7 +192,15 @@ trait WPCF7_ConfigValidator_Mail {
 		$section = sprintf( '%s.sender', $template );
 
 		if ( $this->supports( 'invalid_mailbox_syntax' ) ) {
-			$this->detect_invalid_mailbox_syntax( $section, $content );
+			if ( $this->detect_invalid_mailbox_syntax( $section, $content ) ) {
+				$this->add_error( $section, 'invalid_mailbox_syntax',
+					array(
+						'message' => __( "Invalid mailbox syntax is used.", 'contact-form-7' ),
+					)
+				);
+			} else {
+				$this->remove_error( $section, 'invalid_mailbox_syntax' );
+			}
 		}
 
 		if ( $this->supports( 'email_not_in_site_domain' ) ) {
@@ -222,7 +230,15 @@ trait WPCF7_ConfigValidator_Mail {
 		$section = sprintf( '%s.recipient', $template );
 
 		if ( $this->supports( 'invalid_mailbox_syntax' ) ) {
-			$this->detect_invalid_mailbox_syntax( $section, $content );
+			if ( $this->detect_invalid_mailbox_syntax( $section, $content ) ) {
+				$this->add_error( $section, 'invalid_mailbox_syntax',
+					array(
+						'message' => __( "Invalid mailbox syntax is used.", 'contact-form-7' ),
+					)
+				);
+			} else {
+				$this->remove_error( $section, 'invalid_mailbox_syntax' );
+			}
 		}
 
 		if ( $this->supports( 'unsafe_email_without_protection' ) ) {
@@ -282,14 +298,20 @@ trait WPCF7_ConfigValidator_Mail {
 					) and
 					'' !== $header_value
 				) {
-					$invalid_mailbox = $this->detect_invalid_mailbox_syntax(
-						$section,
-						$header_value,
-						array(
-							'message' => __( "Invalid mailbox syntax is used in the %name% field.", 'contact-form-7' ),
-							'params' => array( 'name' => $header_name )
-						)
-					);
+					if (
+						$this->detect_invalid_mailbox_syntax( $section, $header_value )
+					) {
+						$invalid_mailbox = true;
+
+						$this->add_error( $section, 'invalid_mailbox_syntax',
+							array(
+								'message' => __( "Invalid mailbox syntax is used in the %name% field.", 'contact-form-7' ),
+								'params' => array( 'name' => $header_name ),
+							)
+						);
+					} else {
+						$this->remove_error( $section, 'invalid_mailbox_syntax' );
+					}
 				}
 			}
 
@@ -445,23 +467,14 @@ trait WPCF7_ConfigValidator_Mail {
 	 *
 	 * @link https://contactform7.com/configuration-errors/invalid-mailbox-syntax/
 	 */
-	public function detect_invalid_mailbox_syntax( $section, $content, $args = '' ) {
-		$args = wp_parse_args( $args, array(
-			'message' => __( "Invalid mailbox syntax is used.", 'contact-form-7' ),
-			'params' => array(),
-		) );
-
+	public function detect_invalid_mailbox_syntax( $section, $content ) {
 		$content = $this->replace_mail_tags( $content );
 		$content = wpcf7_strip_newline( $content );
 
 		if ( ! wpcf7_is_mailbox_list( $content ) ) {
-			return $this->add_error( $section,
-				'invalid_mailbox_syntax',
-				$args
-			);
+			return true;
 		}
 
-		$this->remove_error( $section, 'invalid_mailbox_syntax' );
 		return false;
 	}
 
