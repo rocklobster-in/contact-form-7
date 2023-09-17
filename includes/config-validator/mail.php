@@ -519,16 +519,9 @@ trait WPCF7_ConfigValidator_Mail {
 		$path = path_join( WP_CONTENT_DIR, $content );
 
 		if ( ! is_readable( $path ) or ! is_file( $path ) ) {
-			return $this->add_error( $section,
-				'file_not_found',
-				array(
-					'message' => __( "Attachment file does not exist at %path%.", 'contact-form-7' ),
-					'params' => array( 'path' => $content ),
-				)
-			);
+			return true;
 		}
 
-		$this->remove_error( $section, 'file_not_found' );
 		return false;
 	}
 
@@ -542,15 +535,9 @@ trait WPCF7_ConfigValidator_Mail {
 		$path = path_join( WP_CONTENT_DIR, $content );
 
 		if ( ! wpcf7_is_file_path_in_content_dir( $path ) ) {
-			return $this->add_error( $section,
-				'file_not_in_content_dir',
-				array(
-					'message' => __( "It is not allowed to use files outside the wp-content directory.", 'contact-form-7' ),
-				)
-			);
+			return true;
 		}
 
-		$this->remove_error( $section, 'file_not_in_content_dir' );
 		return false;
 	}
 
