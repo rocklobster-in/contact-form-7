@@ -227,7 +227,17 @@ trait WPCF7_ConfigValidator_Mail {
 
 		if ( $this->supports( 'unsafe_email_without_protection' ) ) {
 			if ( ! $this->has_error( $section, 'invalid_mailbox_syntax' ) ) {
-				$this->detect_unsafe_email_without_protection( $section, $content );
+				if (
+					$this->detect_unsafe_email_without_protection( $section, $content )
+				) {
+					$this->add_error( $section, 'unsafe_email_without_protection',
+						array(
+							'message' => __( "Unsafe email config is used without sufficient protection.", 'contact-form-7' ),
+						)
+					);
+				} else {
+					$this->remove_error( $section, 'unsafe_email_without_protection' );
+				}
 			}
 		}
 	}
@@ -291,10 +301,19 @@ trait WPCF7_ConfigValidator_Mail {
 						array( 'cc', 'bcc' )
 					)
 				) {
-					$this->detect_unsafe_email_without_protection(
-						$section,
-						$header_value
-					);
+					if (
+						$this->detect_unsafe_email_without_protection(
+							$section, $header_value
+						)
+					) {
+						$this->add_error( $section, 'unsafe_email_without_protection',
+							array(
+								'message' => __( "Unsafe email config is used without sufficient protection.", 'contact-form-7' ),
+							)
+						);
+					} else {
+						$this->remove_error( $section, 'unsafe_email_without_protection' );
+					}
 				}
 			}
 		}
@@ -532,7 +551,6 @@ trait WPCF7_ConfigValidator_Mail {
 		}
 
 		if ( $is_recaptcha_active ) {
-			$this->remove_error( $section, 'unsafe_email_without_protection' );
 			return false;
 		}
 
@@ -575,15 +593,9 @@ trait WPCF7_ConfigValidator_Mail {
 		$content = wpcf7_strip_newline( $content );
 
 		if ( str_contains( $content, $example_email ) ) {
-			return $this->add_error( $section,
-				'unsafe_email_without_protection',
-				array(
-					'message' => __( "Unsafe email config is used without sufficient protection.", 'contact-form-7' ),
-				)
-			);
+			return true;
 		}
 
-		$this->remove_error( $section, 'unsafe_email_without_protection' );
 		return false;
 	}
 
