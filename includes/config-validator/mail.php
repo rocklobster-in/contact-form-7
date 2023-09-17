@@ -272,6 +272,8 @@ trait WPCF7_ConfigValidator_Mail {
 		$section = sprintf( '%s.additional_headers', $template );
 
 		$invalid_mail_headers = array();
+		$invalid_mailbox_fields = array();
+		$unsafe_email_fields = array();
 
 		foreach ( explode( "\n", $content ) as $header ) {
 			$header = trim( $header );
@@ -294,55 +296,22 @@ trait WPCF7_ConfigValidator_Mail {
 			$header_name = $matches[1];
 			$header_value = trim( $matches[2] );
 
-			unset( $invalid_mailbox );
-
-			if ( $this->supports( 'invalid_mailbox_syntax' ) ) {
-				if (
-					in_array(
-						strtolower( $header_name ),
-						array( 'reply-to', 'cc', 'bcc' )
-					) and
-					'' !== $header_value
-				) {
-					if (
-						$this->detect_invalid_mailbox_syntax( $section, $header_value )
-					) {
-						$invalid_mailbox = true;
-
-						$this->add_error( $section, 'invalid_mailbox_syntax',
-							array(
-								'message' => __( "Invalid mailbox syntax is used in the %name% field.", 'contact-form-7' ),
-								'params' => array( 'name' => $header_name ),
-							)
-						);
-					} else {
-						$this->remove_error( $section, 'invalid_mailbox_syntax' );
-					}
-				}
+			if (
+				in_array(
+					strtolower( $header_name ), array( 'reply-to', 'cc', 'bcc' )
+				) and
+				'' !== $header_value and
+				$this->detect_invalid_mailbox_syntax( $section, $header_value )
+			) {
+				$invalid_mailbox_fields[] = $header_name;
+				continue;
 			}
 
-			if ( $this->supports( 'unsafe_email_without_protection' ) ) {
-				if (
-					empty( $invalid_mailbox ) and
-					in_array(
-						strtolower( $header_name ),
-						array( 'cc', 'bcc' )
-					)
-				) {
-					if (
-						$this->detect_unsafe_email_without_protection(
-							$section, $header_value
-						)
-					) {
-						$this->add_error( $section, 'unsafe_email_without_protection',
-							array(
-								'message' => __( "Unsafe email config is used without sufficient protection.", 'contact-form-7' ),
-							)
-						);
-					} else {
-						$this->remove_error( $section, 'unsafe_email_without_protection' );
-					}
-				}
+			if (
+				in_array( strtolower( $header_name ), array( 'cc', 'bcc' ) ) and
+				$this->detect_unsafe_email_without_protection( $section, $header_value )
+			) {
+				$unsafe_email_fields[] = $header_name;
 			}
 		}
 
@@ -355,6 +324,33 @@ trait WPCF7_ConfigValidator_Mail {
 				);
 			} else {
 				$this->remove_error( $section, 'invalid_mail_header' );
+			}
+		}
+
+		if ( $this->supports( 'invalid_mailbox_syntax' ) ) {
+			if ( ! empty( $invalid_mailbox_fields ) ) {
+				foreach ( $invalid_mailbox_fields as $header_name ) {
+					$this->add_error( $section, 'invalid_mailbox_syntax',
+						array(
+							'message' => __( "Invalid mailbox syntax is used in the %name% field.", 'contact-form-7' ),
+							'params' => array( 'name' => $header_name ),
+						)
+					);
+				}
+			} else {
+				$this->remove_error( $section, 'invalid_mailbox_syntax' );
+			}
+		}
+
+		if ( $this->supports( 'unsafe_email_without_protection' ) ) {
+			if ( ! empty( $unsafe_email_fields ) ) {
+				$this->add_error( $section, 'unsafe_email_without_protection',
+					array(
+						'message' => __( "Unsafe email config is used without sufficient protection.", 'contact-form-7' ),
+					)
+				);
+			} else {
+				$this->remove_error( $section, 'unsafe_email_without_protection' );
 			}
 		}
 	}
