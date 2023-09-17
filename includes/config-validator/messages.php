@@ -12,8 +12,10 @@ trait WPCF7_ConfigValidator_Messages {
 			return;
 		}
 
-		if ( isset( $messages['captcha_not_match'] )
-		and ! wpcf7_use_really_simple_captcha() ) {
+		if (
+			isset( $messages['captcha_not_match'] ) and
+			! wpcf7_use_really_simple_captcha()
+		) {
 			unset( $messages['captcha_not_match'] );
 		}
 
@@ -21,7 +23,15 @@ trait WPCF7_ConfigValidator_Messages {
 			$section = sprintf( 'messages.%s', $key );
 
 			if ( $this->supports( 'html_in_message' ) ) {
-				$this->detect_html_in_message( $section, $message );
+				if ( $this->detect_html_in_message( $section, $message ) ) {
+					$this->add_error( $section, 'html_in_message',
+						array(
+							'message' => __( "HTML tags are used in a message.", 'contact-form-7' ),
+						)
+					);
+				} else {
+					$this->remove_error( $section, 'html_in_message' );
+				}
 			}
 		}
 	}
@@ -35,16 +45,10 @@ trait WPCF7_ConfigValidator_Messages {
 	public function detect_html_in_message( $section, $content ) {
 		$stripped = wp_strip_all_tags( $content );
 
-		if ( $stripped != $content ) {
-			return $this->add_error( $section,
-				'html_in_message',
-				array(
-					'message' => __( "HTML tags are used in a message.", 'contact-form-7' ),
-				)
-			);
+		if ( $stripped !== $content ) {
+			return true;
 		}
 
-		$this->remove_error( $section, 'html_in_message' );
 		return false;
 	}
 
