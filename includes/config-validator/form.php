@@ -51,7 +51,15 @@ trait WPCF7_ConfigValidator_Form {
 		}
 
 		if ( $this->supports( 'dots_in_names' ) ) {
-			$this->detect_dots_in_names( $section, $form );
+			if ( $this->detect_dots_in_names( $section, $form ) ) {
+				$this->add_error( $section, 'dots_in_names',
+					array(
+						'message' => __( "Dots are used in form-tag names.", 'contact-form-7' ),
+					)
+				);
+			} else {
+				$this->remove_error( $section, 'dots_in_names' );
+			}
 		}
 
 		if ( $this->supports( 'colons_in_names' ) ) {
@@ -177,16 +185,10 @@ trait WPCF7_ConfigValidator_Form {
 
 		foreach ( $tags as $tag ) {
 			if ( str_contains( $tag->raw_name, '.' ) ) {
-				return $this->add_error( $section,
-					'dots_in_names',
-					array(
-						'message' => __( "Dots are used in form-tag names.", 'contact-form-7' ),
-					)
-				);
+				return true;
 			}
 		}
 
-		$this->remove_error( $section, 'dots_in_names' );
 		return false;
 	}
 
