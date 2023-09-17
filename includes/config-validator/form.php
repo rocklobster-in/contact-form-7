@@ -22,7 +22,20 @@ trait WPCF7_ConfigValidator_Form {
 		}
 
 		if ( $this->supports( 'unavailable_names' ) ) {
-			$this->detect_unavailable_names( $section, $form );
+			$ng_names = $this->detect_unavailable_names( $section, $form );
+
+			if ( $ng_names ) {
+				$this->add_error( $section, 'unavailable_names',
+					array(
+						'message' =>
+							/* translators: %names%: a list of form control names */
+							__( "Unavailable names (%names%) are used for form controls.", 'contact-form-7' ),
+						'params' => array( 'names' => implode( ', ', $ng_names ) ),
+					)
+				);
+			} else {
+				$this->remove_error( $section, 'unavailable_names' );
+			}
 		}
 
 		if ( $this->supports( 'unavailable_html_elements' ) ) {
@@ -119,20 +132,9 @@ trait WPCF7_ConfigValidator_Form {
 		}
 
 		if ( $ng_names ) {
-			$ng_names = array_unique( $ng_names );
-
-			return $this->add_error( $section,
-				'unavailable_names',
-				array(
-					'message' =>
-						/* translators: %names%: a list of form control names */
-						__( "Unavailable names (%names%) are used for form controls.", 'contact-form-7' ),
-					'params' => array( 'names' => implode( ', ', $ng_names ) ),
-				)
-			);
+			return array_unique( $ng_names );
 		}
 
-		$this->remove_error( $section, 'unavailable_names' );
 		return false;
 	}
 
