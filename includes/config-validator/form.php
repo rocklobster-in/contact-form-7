@@ -39,7 +39,15 @@ trait WPCF7_ConfigValidator_Form {
 		}
 
 		if ( $this->supports( 'unavailable_html_elements' ) ) {
-			$this->detect_unavailable_html_elements( $section, $form );
+			if ( $this->detect_unavailable_html_elements( $section, $form ) ) {
+				$this->add_error( $section, 'unavailable_html_elements',
+					array(
+						'message' => __( "Unavailable HTML elements are used in the form template.", 'contact-form-7' ),
+					)
+				);
+			} else {
+				$this->remove_error( $section, 'unavailable_html_elements' );
+			}
 		}
 
 		if ( $this->supports( 'dots_in_names' ) ) {
@@ -148,15 +156,9 @@ trait WPCF7_ConfigValidator_Form {
 		$pattern = '%(?:<form[\s\t>]|</form>)%i';
 
 		if ( preg_match( $pattern, $content ) ) {
-			return $this->add_error( $section,
-				'unavailable_html_elements',
-				array(
-					'message' => __( "Unavailable HTML elements are used in the form template.", 'contact-form-7' ),
-				)
-			);
+			return true;
 		}
 
-		$this->remove_error( $section, 'unavailable_html_elements' );
 		return false;
 	}
 
