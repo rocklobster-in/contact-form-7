@@ -176,11 +176,18 @@ trait WPCF7_ConfigValidator_Mail {
 	 * Runs error detection for the mail subject section.
 	 */
 	public function validate_mail_subject( $template, $content ) {
+		$section = sprintf( '%s.subject', $template );
+
 		if ( $this->supports( 'maybe_empty' ) ) {
-			$this->detect_maybe_empty(
-				sprintf( '%s.subject', $template ),
-				$content
-			);
+			if ( $this->detect_maybe_empty( $section, $content ) ) {
+				$this->add_error( $section, 'maybe_empty',
+					array(
+						'message' => __( "There is a possible empty field.", 'contact-form-7' ),
+					)
+				);
+			} else {
+				$this->remove_error( $section, 'maybe_empty' );
+			}
 		}
 	}
 
@@ -358,11 +365,18 @@ trait WPCF7_ConfigValidator_Mail {
 	 * Runs error detection for the mail body section.
 	 */
 	public function validate_mail_body( $template, $content ) {
+		$section = sprintf( '%s.body', $template );
+
 		if ( $this->supports( 'maybe_empty' ) ) {
-			$this->detect_maybe_empty(
-				sprintf( '%s.body', $template ),
-				$content
-			);
+			if ( $this->detect_maybe_empty( $section, $content ) ) {
+				$this->add_error( $section, 'maybe_empty',
+					array(
+						'message' => __( "There is a possible empty field.", 'contact-form-7' ),
+					)
+				);
+			} else {
+				$this->remove_error( $section, 'maybe_empty' );
+			}
 		}
 	}
 
@@ -489,15 +503,9 @@ trait WPCF7_ConfigValidator_Mail {
 		$content = wpcf7_strip_newline( $content );
 
 		if ( '' === $content ) {
-			return $this->add_error( $section,
-				'maybe_empty',
-				array(
-					'message' => __( "There is a possible empty field.", 'contact-form-7' ),
-				)
-			);
+			return true;
 		}
 
-		$this->remove_error( $section, 'maybe_empty' );
 		return false;
 	}
 
