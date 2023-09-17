@@ -63,7 +63,15 @@ trait WPCF7_ConfigValidator_Form {
 		}
 
 		if ( $this->supports( 'colons_in_names' ) ) {
-			$this->detect_colons_in_names( $section, $form );
+			if ( $this->detect_colons_in_names( $section, $form ) ) {
+				$this->add_error( $section, 'colons_in_names',
+					array(
+						'message' => __( "Colons are used in form-tag names.", 'contact-form-7' ),
+					)
+				);
+			} else {
+				$this->remove_error( $section, 'colons_in_names' );
+			}
 		}
 
 		if ( $this->supports( 'upload_filesize_overlimit' ) ) {
@@ -207,16 +215,10 @@ trait WPCF7_ConfigValidator_Form {
 
 		foreach ( $tags as $tag ) {
 			if ( str_contains( $tag->raw_name, ':' ) ) {
-				return $this->add_error( $section,
-					'colons_in_names',
-					array(
-						'message' => __( "Colons are used in form-tag names.", 'contact-form-7' ),
-					)
-				);
+				return true;
 			}
 		}
 
-		$this->remove_error( $section, 'colons_in_names' );
 		return false;
 	}
 
