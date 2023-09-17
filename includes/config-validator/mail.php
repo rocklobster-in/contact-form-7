@@ -211,19 +211,18 @@ trait WPCF7_ConfigValidator_Mail {
 		}
 
 		if ( $this->supports( 'email_not_in_site_domain' ) ) {
+			$this->remove_error( $section, 'email_not_in_site_domain' );
+
 			if ( ! $this->has_error( $section, 'invalid_mailbox_syntax' ) ) {
 				$sender = $this->replace_mail_tags( $content );
 				$sender = wpcf7_strip_newline( $sender );
 
 				if ( ! wpcf7_is_email_in_site_domain( $sender ) ) {
-					$this->add_error( $section,
-						'email_not_in_site_domain',
+					$this->add_error( $section, 'email_not_in_site_domain',
 						array(
 							'message' => __( "Sender email address does not belong to the site domain.", 'contact-form-7' ),
 						)
 					);
-				} else {
-					$this->remove_error( $section, 'email_not_in_site_domain' );
 				}
 			}
 		}
