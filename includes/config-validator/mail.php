@@ -248,6 +248,8 @@ trait WPCF7_ConfigValidator_Mail {
 		}
 
 		if ( $this->supports( 'unsafe_email_without_protection' ) ) {
+			$this->remove_error( $section, 'unsafe_email_without_protection' );
+
 			if ( ! $this->has_error( $section, 'invalid_mailbox_syntax' ) ) {
 				if (
 					$this->detect_unsafe_email_without_protection( $section, $content )
@@ -257,8 +259,6 @@ trait WPCF7_ConfigValidator_Mail {
 							'message' => __( "Unsafe email config is used without sufficient protection.", 'contact-form-7' ),
 						)
 					);
-				} else {
-					$this->remove_error( $section, 'unsafe_email_without_protection' );
 				}
 			}
 		}
