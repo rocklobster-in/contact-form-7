@@ -416,11 +416,9 @@ trait WPCF7_ConfigValidator_Mail {
 					continue;
 				}
 
-				$path = path_join( WP_CONTENT_DIR, $line );
-
-				if ( ! is_readable( $path ) or ! is_file( $path ) ) {
+				if ( $this->detect_file_not_found( $section, $line ) ) {
 					$files_not_found[] = $line;
-				} elseif ( ! wpcf7_is_file_path_in_content_dir( $path ) ) {
+				} elseif ( $this->detect_file_not_in_content_dir( $section, $line ) ) {
 					$files_out_of_content[] = $line;
 				} else {
 					$total_size += (int) @filesize( $path );
