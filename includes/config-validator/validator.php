@@ -14,15 +14,10 @@ require_once path_join( __DIR__, 'actions.php' );
  */
 class WPCF7_ConfigValidator {
 
-	use WPCF7_ConfigValidator_Form;
-	use WPCF7_ConfigValidator_Mail;
-	use WPCF7_ConfigValidator_Messages;
-	use WPCF7_ConfigValidator_AdditionalSettings;
-
 	/**
 	 * The plugin version in which important updates happened last time.
 	 */
-	const last_important_update = '5.6.1';
+	const last_important_update = '5.8.1';
 
 	const error_codes = array(
 		'maybe_empty',
@@ -42,6 +37,11 @@ class WPCF7_ConfigValidator {
 		'upload_filesize_overlimit',
 		'unsafe_email_without_protection',
 	);
+
+	use WPCF7_ConfigValidator_Form;
+	use WPCF7_ConfigValidator_Mail;
+	use WPCF7_ConfigValidator_Messages;
+	use WPCF7_ConfigValidator_AdditionalSettings;
 
 	private $contact_form;
 	private $errors = array();
