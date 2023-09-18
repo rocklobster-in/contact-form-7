@@ -44,6 +44,8 @@ class WPCF7_ConfigValidator {
 
 	private $contact_form;
 	private $errors = array();
+	private $include;
+	private $exclude;
 
 
 	/**
@@ -67,8 +69,21 @@ class WPCF7_ConfigValidator {
 	/**
 	 * Constructor.
 	 */
-	public function __construct( WPCF7_ContactForm $contact_form ) {
+	public function __construct( WPCF7_ContactForm $contact_form, $args = '' ) {
+		$args = wp_parse_args( $args, array(
+			'include' => null,
+			'exclude' => null,
+		) );
+
 		$this->contact_form = $contact_form;
+
+		if ( isset( $args['include'] ) ) {
+			$this->include = (array) $args['include'];
+		}
+
+		if ( isset( $args['exclude'] ) ) {
+			$this->exclude = (array) $args['exclude'];
+		}
 	}
 
 
@@ -85,6 +100,24 @@ class WPCF7_ConfigValidator {
 	 */
 	public function is_valid() {
 		return ! $this->count_errors();
+	}
+
+
+	/**
+	 * Returns true if the given error code is supported by this instance.
+	 */
+	public function supports( $error_code ) {
+		if ( isset( $this->include ) ) {
+			$supported_codes = array_intersect( self::error_codes, $this->include );
+		} else {
+			$supported_codes = self::error_codes;
+		}
+
+		if ( isset( $this->exclude ) ) {
+			$supported_codes = array_diff( $supported_codes, $this->exclude );
+		}
+
+		return in_array( $error_code, $supported_codes, true );
 	}
 
 
@@ -197,6 +230,27 @@ class WPCF7_ConfigValidator {
 
 
 	/**
+	 * Returns true if the specified section has the specified error.
+	 *
+	 * @param string $section The section where the error detected.
+	 * @param string $code The unique code of the error.
+	 */
+	public function has_error( $section, $code ) {
+		if ( empty( $this->errors[$section] ) ) {
+			return false;
+		}
+
+		foreach ( (array) $this->errors[$section] as $error ) {
+			if ( isset( $error['code'] ) and $error['code'] === $code ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+
+	/**
 	 * Adds a validation error.
 	 *
 	 * @param string $section The section where the error detected.
@@ -265,8 +319,6 @@ class WPCF7_ConfigValidator {
 	 * @return bool True if there is no error detected.
 	 */
 	public function validate() {
-		$this->errors = array();
-
 		$this->validate_form();
 		$this->validate_mail( 'mail' );
 		$this->validate_mail( 'mail_2' );

@@ -8,12 +8,83 @@ trait WPCF7_ConfigValidator_Form {
 	public function validate_form() {
 		$section = 'form.body';
 		$form = $this->contact_form->prop( 'form' );
-		$this->detect_multiple_controls_in_label( $section, $form );
-		$this->detect_unavailable_names( $section, $form );
-		$this->detect_unavailable_html_elements( $section, $form );
-		$this->detect_dots_in_names( $section, $form );
-		$this->detect_colons_in_names( $section, $form );
-		$this->detect_upload_filesize_overlimit( $section, $form );
+
+		if ( $this->supports( 'multiple_controls_in_label' ) ) {
+			if ( $this->detect_multiple_controls_in_label( $section, $form ) ) {
+				$this->add_error( $section, 'multiple_controls_in_label',
+					array(
+						'message' => __( "Multiple form controls are in a single label element.", 'contact-form-7' ),
+					)
+				);
+			} else {
+				$this->remove_error( $section, 'multiple_controls_in_label' );
+			}
+		}
+
+		if ( $this->supports( 'unavailable_names' ) ) {
+			$ng_names = $this->detect_unavailable_names( $section, $form );
+
+			if ( $ng_names ) {
+				$this->add_error( $section, 'unavailable_names',
+					array(
+						'message' =>
+							/* translators: %names%: a list of form control names */
+							__( "Unavailable names (%names%) are used for form controls.", 'contact-form-7' ),
+						'params' => array( 'names' => implode( ', ', $ng_names ) ),
+					)
+				);
+			} else {
+				$this->remove_error( $section, 'unavailable_names' );
+			}
+		}
+
+		if ( $this->supports( 'unavailable_html_elements' ) ) {
+			if ( $this->detect_unavailable_html_elements( $section, $form ) ) {
+				$this->add_error( $section, 'unavailable_html_elements',
+					array(
+						'message' => __( "Unavailable HTML elements are used in the form template.", 'contact-form-7' ),
+					)
+				);
+			} else {
+				$this->remove_error( $section, 'unavailable_html_elements' );
+			}
+		}
+
+		if ( $this->supports( 'dots_in_names' ) ) {
+			if ( $this->detect_dots_in_names( $section, $form ) ) {
+				$this->add_error( $section, 'dots_in_names',
+					array(
+						'message' => __( "Dots are used in form-tag names.", 'contact-form-7' ),
+					)
+				);
+			} else {
+				$this->remove_error( $section, 'dots_in_names' );
+			}
+		}
+
+		if ( $this->supports( 'colons_in_names' ) ) {
+			if ( $this->detect_colons_in_names( $section, $form ) ) {
+				$this->add_error( $section, 'colons_in_names',
+					array(
+						'message' => __( "Colons are used in form-tag names.", 'contact-form-7' ),
+					)
+				);
+			} else {
+				$this->remove_error( $section, 'colons_in_names' );
+			}
+		}
+
+		if ( $this->supports( 'upload_filesize_overlimit' ) ) {
+			if ( $this->detect_upload_filesize_overlimit( $section, $form ) ) {
+				$this->add_error( $section, 'upload_filesize_overlimit',
+					array(
+						'message' => __( "Uploadable file size exceeds PHP’s maximum acceptable size.", 'contact-form-7' ),
+					)
+				);
+			} else {
+				$this->remove_error( $section, 'upload_filesize_overlimit' );
+			}
+		}
 	}
 
 
@@ -54,12 +125,7 @@ trait WPCF7_ConfigValidator_Form {
 					}
 
 					if ( 1 < $fields_count ) {
-						return $this->add_error( $section,
-							'multiple_controls_in_label',
-							array(
-								'message' => __( "Multiple form controls are in a single label element.", 'contact-form-7' ),
-							)
-						);
+						return true;
 					}
 				}
 			}
@@ -98,17 +164,7 @@ trait WPCF7_ConfigValidator_Form {
 		}
 
 		if ( $ng_names ) {
-			$ng_names = array_unique( $ng_names );
-
-			return $this->add_error( $section,
-				'unavailable_names',
-				array(
-					'message' =>
-						/* translators: %names%: a list of form control names */
-						__( "Unavailable names (%names%) are used for form controls.", 'contact-form-7' ),
-					'params' => array( 'names' => implode( ', ', $ng_names ) ),
-				)
-			);
+			return array_unique( $ng_names );
 		}
 
 		return false;
@@ -124,12 +180,7 @@ trait WPCF7_ConfigValidator_Form {
 		$pattern = '%(?:<form[\s\t>]|</form>)%i';
 
 		if ( preg_match( $pattern, $content ) ) {
-			return $this->add_error( $section,
-				'unavailable_html_elements',
-				array(
-					'message' => __( "Unavailable HTML elements are used in the form template.", 'contact-form-7' ),
-				)
-			);
+			return true;
 		}
 
 		return false;
@@ -150,12 +201,7 @@ trait WPCF7_ConfigValidator_Form {
 
 		foreach ( $tags as $tag ) {
 			if ( str_contains( $tag->raw_name, '.' ) ) {
-				return $this->add_error( $section,
-					'dots_in_names',
-					array(
-						'message' => __( "Dots are used in form-tag names.", 'contact-form-7' ),
-					)
-				);
+				return true;
 			}
 		}
 
@@ -177,12 +223,7 @@ trait WPCF7_ConfigValidator_Form {
 
 		foreach ( $tags as $tag ) {
 			if ( str_contains( $tag->raw_name, ':' ) ) {
-				return $this->add_error( $section,
-					'colons_in_names',
-					array(
-						'message' => __( "Colons are used in form-tag names.", 'contact-form-7' ),
-					)
-				);
+				return true;
 			}
 		}
 
@@ -227,12 +268,7 @@ trait WPCF7_ConfigValidator_Form {
 
 		foreach ( $tags as $tag ) {
 			if ( $upload_max_filesize < $tag->get_limit_option() ) {
-				return $this->add_error( $section,
-					'upload_filesize_overlimit',
-					array(
-						'message' => __( "Uploadable file size exceeds PHP’s maximum acceptable size.", 'contact-form-7' ),
-					)
-				);
+				return true;
 			}
 		}
 
