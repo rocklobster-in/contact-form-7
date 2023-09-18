@@ -98,7 +98,7 @@ function wpcf7_sendinblue_editor_panels( $panels ) {
 			),
 			wpcf7_link(
 				__( 'https://contactform7.com/sendinblue-integration/', 'contact-form-7' ),
-				__( 'Brevo (formerly Sendinblue) integration', 'contact-form-7' )
+				__( 'Brevo integration', 'contact-form-7' )
 			)
 		);
 
@@ -106,7 +106,7 @@ function wpcf7_sendinblue_editor_panels( $panels ) {
 		$templates = $service->get_templates();
 
 ?>
-<h2><?php echo esc_html( __( 'Brevo (formerly Sendinblue)', 'contact-form-7' ) ); ?></h2>
+<h2><?php echo esc_html( __( 'Brevo', 'contact-form-7' ) ); ?></h2>
 
 <fieldset>
 	<legend><?php echo $description; ?></legend>
