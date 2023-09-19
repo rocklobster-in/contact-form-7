@@ -259,13 +259,15 @@ function wpcf7_is_file_path_in_content_dir( $path ) {
 		return false;
 	}
 
-	if ( str_starts_with( $path, realpath( WP_CONTENT_DIR ) ) ) {
+	if (
+		str_starts_with( $path, trailingslashit( realpath( WP_CONTENT_DIR ) ) )
+	) {
 		return true;
 	}
 
 	if (
 		defined( 'UPLOADS' ) and
-		str_starts_with( $path, realpath( ABSPATH . UPLOADS ) )
+		str_starts_with( $path, trailingslashit( realpath( ABSPATH . UPLOADS ) ) )
 	) {
 		return true;
 	}
