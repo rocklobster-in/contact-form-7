@@ -272,5 +272,12 @@ function wpcf7_is_file_path_in_content_dir( $path ) {
 		return true;
 	}
 
+	if (
+		defined( 'WP_TEMP_DIR' ) and
+		str_starts_with( $path, trailingslashit( realpath( WP_TEMP_DIR ) ) )
+	) {
+		return true;
+	}
+
 	return false;
 }
