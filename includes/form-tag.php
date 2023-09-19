@@ -410,7 +410,7 @@ class WPCF7_FormTag implements ArrayAccess {
 				if ( $contact_form = WPCF7_ContactForm::get_current() ) {
 					$val = $contact_form->shortcode_attr( $this->name );
 
-					if ( strlen( $val ) ) {
+					if ( isset( $val ) and strlen( $val ) ) {
 						if ( $args['multiple'] ) {
 							$values[] = $val;
 						} else {
