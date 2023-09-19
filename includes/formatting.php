@@ -522,7 +522,13 @@ function wpcf7_format_atts( $atts ) {
 		}
 
 		static $boolean_attributes = array(
-			'checked', 'disabled', 'multiple', 'readonly', 'required', 'selected',
+			'checked',
+			'disabled',
+			'inert',
+			'multiple',
+			'readonly',
+			'required',
+			'selected',
 		);
 
 		if ( in_array( $name, $boolean_attributes ) and '' === $value ) {
