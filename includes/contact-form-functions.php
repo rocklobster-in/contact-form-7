@@ -221,7 +221,7 @@ function wpcf7_contact_form_tag_func( $atts, $content = null, $code = '' ) {
 		return '[contact-form-7]';
 	}
 
-	if ( 'contact-form-7' == $code ) {
+	if ( 'contact-form-7' === $code ) {
 		$atts = shortcode_atts(
 			array(
 				'id' => '',
@@ -269,11 +269,15 @@ function wpcf7_contact_form_tag_func( $atts, $content = null, $code = '' ) {
 		return $contact_form->form_html( $atts );
 	};
 
-	return wpcf7_switch_locale(
+	$output = wpcf7_switch_locale(
 		$contact_form->locale(),
 		$callback,
 		$contact_form, $atts
 	);
+
+	do_action( 'wpcf7_shortcode_callback', $contact_form, $atts );
+
+	return $output;
 }
 
 
