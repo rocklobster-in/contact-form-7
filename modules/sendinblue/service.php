@@ -47,7 +47,7 @@ class WPCF7_Sendinblue extends WPCF7_Service {
 
 	public function link() {
 		echo wpcf7_link(
-			'https://get.brevo.com/contact-form-7',
+			'https://www.brevo.com/',
 			'brevo.com'
 		);
 	}
