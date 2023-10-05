@@ -260,21 +260,21 @@ function wpcf7_is_file_path_in_content_dir( $path ) {
 	}
 
 	if (
-		str_starts_with( $path, trailingslashit( realpath( WP_CONTENT_DIR ) ) )
+		str_starts_with( $path, untrailingslashit( realpath( WP_CONTENT_DIR ) ) )
 	) {
 		return true;
 	}
 
 	if (
 		defined( 'UPLOADS' ) and
-		str_starts_with( $path, trailingslashit( realpath( ABSPATH . UPLOADS ) ) )
+		str_starts_with( $path, untrailingslashit( realpath( ABSPATH . UPLOADS ) ) )
 	) {
 		return true;
 	}
 
 	if (
 		defined( 'WP_TEMP_DIR' ) and
-		str_starts_with( $path, trailingslashit( realpath( WP_TEMP_DIR ) ) )
+		str_starts_with( $path, untrailingslashit( realpath( WP_TEMP_DIR ) ) )
 	) {
 		return true;
 	}
