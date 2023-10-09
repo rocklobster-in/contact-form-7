@@ -555,7 +555,7 @@ trait WPCF7_ConfigValidator_Mail {
 			return false;
 		}
 
-		$example_email = 'example@example.com';
+		$example_email = 'user-specified@example.com';
 
 		// Replace mail-tags connected to an email type form-tag first.
 		$content = $this->replace_mail_tags( $content, array(
