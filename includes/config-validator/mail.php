@@ -396,7 +396,7 @@ trait WPCF7_ConfigValidator_Mail {
 			foreach ( $tags as $tag ) {
 				$name = $tag->name;
 
-				if ( ! str_contains( $content, "[{$name}]" ) ) {
+				if ( ! str_contains( $content, "[$name]" ) ) {
 					continue;
 				}
 

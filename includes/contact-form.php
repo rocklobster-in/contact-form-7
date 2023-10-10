@@ -310,7 +310,7 @@ class WPCF7_ContactForm {
 
 		foreach ( $properties as $name => $val ) {
 			$properties[$name] = apply_filters(
-				"wpcf7_contact_form_property_{$name}",
+				"wpcf7_contact_form_property_$name",
 				$val, $this
 			);
 		}

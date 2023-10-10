@@ -443,7 +443,7 @@ class WPCF7_Submission {
 				}
 			}
 
-			$value = apply_filters( "wpcf7_posted_data_{$type}", $value,
+			$value = apply_filters( "wpcf7_posted_data_$type", $value,
 				$value_orig, $tag
 			);
 
@@ -632,7 +632,7 @@ class WPCF7_Submission {
 
 		foreach ( $tags as $tag ) {
 			$type = $tag->type;
-			$result = apply_filters( "wpcf7_validate_{$type}", $result, $tag );
+			$result = apply_filters( "wpcf7_validate_$type", $result, $tag );
 		}
 
 		$result = apply_filters( 'wpcf7_validate', $result, $tags );
@@ -909,7 +909,7 @@ class WPCF7_Submission {
 			}
 
 			$result = apply_filters(
-				"wpcf7_validate_{$tag->type}",
+				"wpcf7_validate_$tag->type",
 				$result, $tag,
 				array(
 					'uploaded_files' => $new_files,
