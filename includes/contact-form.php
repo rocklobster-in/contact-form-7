@@ -653,9 +653,7 @@ class WPCF7_ContactForm {
 		$html .= "\n" . '</div>';
 		$html .= "\n";
 		
-		apply_filters( 'wpcf7_form_html', $html );
-		
-		return $html;
+		return apply_filters( 'wpcf7_form_html', $html );
 	}
 
 
