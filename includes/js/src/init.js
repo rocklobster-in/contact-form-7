@@ -85,4 +85,18 @@ export default function init( form ) {
 			wpcf7.validate( form, { target: event.target } );
 		}
 	} );
+
+	form.addEventListener( 'wpcf7statuschanged', event => {
+		const status = event.detail.status;
+
+		form.querySelectorAll( '.active-on-any' ).forEach( elm => {
+			elm.removeAttribute( 'inert' );
+			elm.classList.remove( 'active-on-any' );
+		} );
+
+		form.querySelectorAll( `.inert-on-${ status }` ).forEach( elm => {
+			elm.setAttribute( 'inert', 'inert' );
+			elm.classList.add( 'active-on-any' );
+		} );
+	} );
 }
