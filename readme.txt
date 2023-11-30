@@ -5,7 +5,7 @@ Tags: contact, form, contact form, feedback, email, ajax, captcha, akismet, mult
 Requires at least: 6.2
 Requires PHP: 7.4
 Tested up to: 6.4
-Stable tag: 5.8.2
+Stable tag: 5.8.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -77,6 +77,10 @@ Do you have questions or issues with Contact Form 7? Use these support channels 
 == Changelog ==
 
 For more information, see [Releases](https://contactform7.com/category/releases/).
+
+= 5.8.4 =
+
+[https://contactform7.com/contact-form-7-584/](https://contactform7.com/contact-form-7-584/)
 
 = 5.8.3 =
 
