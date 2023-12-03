@@ -2,6 +2,7 @@
 
 return array(
 	'dependencies' => array(
+		'react',
 		'wp-api-fetch',
 		'wp-block-editor',
 		'wp-blocks',
