@@ -79,7 +79,7 @@ function wpcf7_enqueue_block_editor_assets() {
 		'contact-form-7-block-editor',
 		sprintf(
 			'window.wpcf7 = {contactForms:%s};',
-			json_encode( $contact_forms )
+			wp_json_encode( $contact_forms )
 		),
 		'before'
 	);
