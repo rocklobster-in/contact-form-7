@@ -53,7 +53,7 @@ function wpcf7_recaptcha_enqueue_scripts() {
 		),
 		array(),
 		'3.0',
-		true
+		array( 'in_footer' => true )
 	);
 
 	$assets = array();
@@ -79,7 +79,7 @@ function wpcf7_recaptcha_enqueue_scripts() {
 			)
 		),
 		$assets['version'],
-		true
+		array( 'in_footer' => true )
 	);
 
 	wp_enqueue_script( 'wpcf7-recaptcha' );

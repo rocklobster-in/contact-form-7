@@ -130,7 +130,8 @@ function wpcf7_admin_enqueue_scripts( $hook_suffix ) {
 	wp_enqueue_script( 'wpcf7-admin',
 		wpcf7_plugin_url( 'admin/js/scripts.js' ),
 		array( 'jquery', 'jquery-ui-tabs' ),
-		WPCF7_VERSION, true
+		WPCF7_VERSION,
+		array( 'in_footer' => true )
 	);
 
 	$args = array(
@@ -176,7 +177,7 @@ function wpcf7_admin_enqueue_scripts( $hook_suffix ) {
 		wpcf7_plugin_url( 'admin/js/tag-generator.js' ),
 		array( 'jquery', 'thickbox', 'wpcf7-admin' ),
 		WPCF7_VERSION,
-		true
+		array( 'in_footer' => true )
 	);
 }
 
