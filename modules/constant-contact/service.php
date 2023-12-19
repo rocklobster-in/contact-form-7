@@ -247,7 +247,7 @@ class WPCF7_ConstantContact extends WPCF7_Service_OAuth2 {
 				'Accept' => 'application/json',
 				'Content-Type' => 'application/json; charset=utf-8',
 			),
-			'body' => json_encode( $properties ),
+			'body' => wp_json_encode( $properties ),
 		);
 
 		$response = $this->remote_request( $endpoint, $request );
