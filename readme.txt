@@ -78,6 +78,10 @@ Do you have questions or issues with Contact Form 7? Use these support channels 
 
 For more information, see [Releases](https://contactform7.com/category/releases/).
 
+= 5.8.5 =
+
+[https://contactform7.com/contact-form-7-585/](https://contactform7.com/contact-form-7-585/)
+
 = 5.8.4 =
 
 [https://contactform7.com/contact-form-7-584/](https://contactform7.com/contact-form-7-584/)
