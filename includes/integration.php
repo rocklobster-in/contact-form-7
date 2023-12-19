@@ -141,6 +141,8 @@ class WPCF7_Integration {
 <h2 class="title"><?php echo esc_html( $service->get_title() ); ?></h2>
 <div class="infobox">
 <?php echo esc_html( implode( ', ', $cats ) ); ?>
+<br />
+<?php $service->link(); ?>
 </div>
 <br class="clear" />
 
