@@ -29,9 +29,7 @@ class WPCF7_SWV_MinItemsRule extends WPCF7_SWV_Rule {
 		}
 
 		if ( count( $input ) < (int) $threshold ) {
-			return new WP_Error( 'wpcf7_invalid_minitems',
-				$this->get_property( 'error' )
-			);
+			return $this->create_error();
 		}
 
 		return true;

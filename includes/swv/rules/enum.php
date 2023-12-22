@@ -31,9 +31,7 @@ class WPCF7_SWV_EnumRule extends WPCF7_SWV_Rule {
 
 		foreach ( $input as $i ) {
 			if ( ! in_array( $i, $acceptable_values, true ) ) {
-				return new WP_Error( 'wpcf7_invalid_enum',
-					$this->get_property( 'error' )
-				);
+				return $this->create_error();
 			}
 		}
 

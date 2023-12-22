@@ -43,17 +43,13 @@ class WPCF7_SWV_FileRule extends WPCF7_SWV_Rule {
 			$last_period_pos = strrpos( $i, '.' );
 
 			if ( false === $last_period_pos ) { // no period
-				return new WP_Error( 'wpcf7_invalid_file',
-					$this->get_property( 'error' )
-				);
+				return $this->create_error();
 			}
 
 			$suffix = strtolower( substr( $i, $last_period_pos ) );
 
 			if ( ! in_array( $suffix, $acceptable_filetypes, true ) ) {
-				return new WP_Error( 'wpcf7_invalid_file',
-					$this->get_property( 'error' )
-				);
+				return $this->create_error();
 			}
 		}
 

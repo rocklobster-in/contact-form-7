@@ -37,9 +37,7 @@ class WPCF7_SWV_MaxLengthRule extends WPCF7_SWV_Rule {
 		if ( $total <= $threshold ) {
 			return true;
 		} else {
-			return new WP_Error( 'wpcf7_invalid_maxlength',
-				$this->get_property( 'error' )
-			);
+			return $this->create_error();
 		}
 	}
 

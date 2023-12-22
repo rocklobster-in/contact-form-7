@@ -21,9 +21,7 @@ class WPCF7_SWV_AllRule extends WPCF7_SWV_CompositeRule {
 					if ( null !== $rule->get_property( 'error' ) ) {
 						return $result;
 					} else {
-						return new WP_Error( 'wpcf7_invalid_all',
-							$this->get_property( 'error' )
-						);
+						return $this->create_error();
 					}
 				}
 			}

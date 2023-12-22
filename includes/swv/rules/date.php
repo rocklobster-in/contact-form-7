@@ -24,9 +24,7 @@ class WPCF7_SWV_DateRule extends WPCF7_SWV_Rule {
 
 		foreach ( $input as $i ) {
 			if ( ! wpcf7_is_date( $i ) ) {
-				return new WP_Error( 'wpcf7_invalid_date',
-					$this->get_property( 'error' )
-				);
+				return $this->create_error();
 			}
 		}
 

@@ -193,6 +193,26 @@ abstract class WPCF7_SWV_Rule {
 		}
 	}
 
+
+	/**
+	 * Creates an error object. Returns false if the error property is omitted.
+	 */
+	protected function create_error() {
+		if ( null === $this->get_property( 'error' ) ) {
+			return false;
+		}
+
+		$rule_name = defined( 'static::rule_name' )
+			? sprintf( 'wpcf7_invalid_%s', static::rule_name )
+			: 'wpcf7_invalid';
+
+		return new WP_Error(
+			$rule_name,
+			$this->get_property( 'error' ),
+			$this->to_array()
+		);
+	}
+
 }
 
 

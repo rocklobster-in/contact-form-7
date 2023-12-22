@@ -29,9 +29,7 @@ class WPCF7_SWV_MaxItemsRule extends WPCF7_SWV_Rule {
 		}
 
 		if ( (int) $threshold < count( $input ) ) {
-			return new WP_Error( 'wpcf7_invalid_maxitems',
-				$this->get_property( 'error' )
-			);
+			return $this->create_error();
 		}
 
 		return true;

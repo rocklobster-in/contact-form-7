@@ -29,9 +29,7 @@ class WPCF7_SWV_MinFileSizeRule extends WPCF7_SWV_Rule {
 		$threshold = $this->get_property( 'threshold' );
 
 		if ( array_sum( $input ) < $threshold ) {
-			return new WP_Error( 'wpcf7_invalid_minfilesize',
-				$this->get_property( 'error' )
-			);
+			return $this->create_error();
 		}
 
 		return true;

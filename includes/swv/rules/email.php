@@ -24,9 +24,7 @@ class WPCF7_SWV_EmailRule extends WPCF7_SWV_Rule {
 
 		foreach ( $input as $i ) {
 			if ( ! wpcf7_is_email( $i ) ) {
-				return new WP_Error( 'wpcf7_invalid_email',
-					$this->get_property( 'error' )
-				);
+				return $this->create_error();
 			}
 		}
 

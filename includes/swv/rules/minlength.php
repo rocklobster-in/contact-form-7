@@ -37,9 +37,7 @@ class WPCF7_SWV_MinLengthRule extends WPCF7_SWV_Rule {
 		if ( $threshold <= $total ) {
 			return true;
 		} else {
-			return new WP_Error( 'wpcf7_invalid_minlength',
-				$this->get_property( 'error' )
-			);
+			return $this->create_error();
 		}
 	}
 

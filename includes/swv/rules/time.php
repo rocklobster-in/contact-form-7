@@ -24,9 +24,7 @@ class WPCF7_SWV_TimeRule extends WPCF7_SWV_Rule {
 
 		foreach ( $input as $i ) {
 			if ( ! wpcf7_is_time( $i ) ) {
-				return new WP_Error( 'wpcf7_invalid_time',
-					$this->get_property( 'error' )
-				);
+				return $this->create_error();
 			}
 		}
 

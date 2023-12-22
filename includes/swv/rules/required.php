@@ -25,9 +25,7 @@ class WPCF7_SWV_RequiredRule extends WPCF7_SWV_Rule {
 		$input = wpcf7_exclude_blank( $input );
 
 		if ( empty( $input ) ) {
-			return new WP_Error( 'wpcf7_invalid_required',
-				$this->get_property( 'error' )
-			);
+			return $this->create_error();
 		}
 
 		return true;

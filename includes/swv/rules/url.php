@@ -24,9 +24,7 @@ class WPCF7_SWV_URLRule extends WPCF7_SWV_Rule {
 
 		foreach ( $input as $i ) {
 			if ( ! wpcf7_is_url( $i ) ) {
-				return new WP_Error( 'wpcf7_invalid_url',
-					$this->get_property( 'error' )
-				);
+				return $this->create_error();
 			}
 		}
 

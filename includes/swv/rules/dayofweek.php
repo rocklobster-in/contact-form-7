@@ -35,9 +35,7 @@ class WPCF7_SWV_DayofweekRule extends WPCF7_SWV_Rule {
 				$dow = (int) $datetime->format( 'N' );
 
 				if ( ! in_array( $dow, $acceptable_values, true ) ) {
-					return new WP_Error( 'wpcf7_invalid_dayofweek',
-						$this->get_property( 'error' )
-					);
+					return $this->create_error();
 				}
 			}
 		}
