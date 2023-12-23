@@ -34,6 +34,7 @@ function wpcf7_swv_available_rules() {
 		'minfilesize' => 'WPCF7_SWV_MinFileSizeRule',
 		'maxfilesize' => 'WPCF7_SWV_MaxFileSizeRule',
 		'all' => 'WPCF7_SWV_AllRule',
+		'any' => 'WPCF7_SWV_AnyRule',
 	);
 
 	return apply_filters( 'wpcf7_swv_available_rules', $rules );
