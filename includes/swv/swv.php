@@ -209,7 +209,7 @@ abstract class WPCF7_SWV_Rule {
 		return new WP_Error(
 			$rule_name,
 			$this->get_property( 'error' ),
-			$this->to_array()
+			$this
 		);
 	}
 
@@ -305,12 +305,33 @@ abstract class WPCF7_SWV_CompositeRule extends WPCF7_SWV_Rule {
  */
 class WPCF7_SWV_Schema extends WPCF7_SWV_CompositeRule {
 
+	/**
+	 * The human-readable version of the schema.
+	 */
 	const version = 'Contact Form 7 SWV Schema 2023-07';
 
+
+	/**
+	 * Constructor.
+	 */
 	public function __construct( $properties = '' ) {
 		$this->properties = wp_parse_args( $properties, array(
 			'version' => self::version,
 		) );
+	}
+
+
+	/**
+	 * Validates with this schema.
+	 *
+	 * @param array $context Context.
+	 */
+	public function validate( $context ) {
+		foreach ( $this->rules() as $rule ) {
+			if ( $rule->matches( $context ) ) {
+				yield $rule->validate( $context );
+			}
+		}
 	}
 
 }
