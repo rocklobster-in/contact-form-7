@@ -83,10 +83,6 @@ export default function validate( form, options = {} ) {
 		}
 	}
 
-	schema.rules = ( schema.rules ?? [] ).filter(
-		( { field } ) => targetFields.includes( field )
-	);
-
 	const prevStatus = form.getAttribute( 'data-status' );
 
 	Promise.resolve( setStatus( form, 'validating' ) )
