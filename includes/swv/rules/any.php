@@ -17,7 +17,7 @@ class WPCF7_SWV_AnyRule extends WPCF7_SWV_CompositeRule {
 			if ( $rule->matches( $context ) ) {
 				$result = $rule->validate( $context );
 
-				if ( $result and ! is_wp_error( $result ) ) {
+				if ( ! is_wp_error( $result ) ) {
 					return true;
 				}
 			}

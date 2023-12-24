@@ -18,11 +18,11 @@ class WPCF7_SWV_AllRule extends WPCF7_SWV_CompositeRule {
 				$result = $rule->validate( $context );
 
 				if ( is_wp_error( $result ) ) {
-					return $result;
-				}
-
-				if ( ! $result ) {
-					return $this->create_error();
+					if ( $result->get_error_message() ) {
+						return $result;
+					} else {
+						return $this->create_error();
+					}
 				}
 			}
 		}
