@@ -69,6 +69,14 @@ class WPCF7_Submission {
 
 
 	/**
+	 * Destructor.
+	 */
+	public function __destruct() {
+		$this->remove_uploaded_files();
+	}
+
+
+	/**
 	 * The main logic of submission.
 	 */
 	private function proceed() {
@@ -124,8 +132,6 @@ class WPCF7_Submission {
 					do_action( 'wpcf7_mail_failed', $contact_form );
 				}
 			}
-
-			$this->remove_uploaded_files();
 		};
 
 		wpcf7_switch_locale( $this->contact_form->locale(), $callback );
