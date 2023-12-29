@@ -6,7 +6,7 @@ add_filter( 'wpcf7_mail_html_body', 'wpcf7_mail_html_body_autop', 10, 1 );
  * Filter callback that applies auto-p to HTML email message body.
  */
 function wpcf7_mail_html_body_autop( $body ) {
-	if ( wpcf7_autop_or_not() ) {
+	if ( wpcf7_autop_or_not( array( 'for' => 'mail' ) ) ) {
 		$body = wpcf7_autop( $body );
 	}
 
