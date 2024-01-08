@@ -102,7 +102,7 @@ function wpcf7_sendinblue_editor_panels( $panels ) {
 			)
 		);
 
-		$lists = $service->get_lists();
+		$lists = wpcf7_sendinblue_get_lists();
 		$templates = $service->get_templates();
 
 ?>
@@ -300,4 +300,40 @@ function wpcf7_sendinblue_editor_panels( $panels ) {
 	);
 
 	return $panels;
+}
+
+
+/**
+ * Retrieves contact lists from Brevo's database.
+ */
+function wpcf7_sendinblue_get_lists() {
+	static $lists = array();
+
+	$service = WPCF7_Sendinblue::get_instance();
+
+	if ( ! empty( $lists ) or ! $service->is_active() ) {
+		return $lists;
+	}
+
+	$limit = 50;
+	$offset = 0;
+
+	while ( count( $lists ) < $limit * 10 ) {
+		$lists_next = (array) $service->get_lists( array(
+			'limit' => $limit,
+			'offset' => $offset,
+		) );
+
+		if ( ! empty( $lists_next ) ) {
+			$lists = array_merge( $lists, $lists_next );
+		}
+
+		if ( count( $lists_next ) < $limit ) {
+			break;
+		}
+
+		$offset += $limit;
+	}
+
+	return $lists;
 }
