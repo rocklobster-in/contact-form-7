@@ -261,7 +261,7 @@ function wpcf7_canonicalize( $text, $args = '' ) {
  * @return string Sanitized unit-tag.
  */
 function wpcf7_sanitize_unit_tag( $tag ) {
-	$tag = preg_replace( '/[^A-Za-z0-9_-]/', '', $tag );
+	$tag = preg_replace( '/[^A-Za-z0-9_-]/', '', (string) $tag );
 	return $tag;
 }
 
