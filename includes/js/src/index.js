@@ -2,6 +2,7 @@ import init from './init';
 import submit from './submit';
 import reset from './reset';
 import validate from './validate';
+import { apiFetch } from './api-fetch';
 
 document.addEventListener( 'DOMContentLoaded', event => {
 
@@ -40,6 +41,7 @@ document.addEventListener( 'DOMContentLoaded', event => {
 		submit,
 		reset,
 		validate,
+		schemas: new Map(),
 		...( wpcf7 ?? {} ),
 	};
 
@@ -49,5 +51,14 @@ document.addEventListener( 'DOMContentLoaded', event => {
 		wpcf7.init( form );
 		form.closest( '.wpcf7' ).classList.replace( 'no-js', 'js' );
 	} );
+
+	for ( const formId of wpcf7.schemas.keys() ) {
+		apiFetch( {
+			endpoint: `contact-forms/${ formId }/feedback/schema`,
+			method: 'GET',
+		} ).then( response => {
+			wpcf7.schemas.set( formId, response );
+		} );
+	}
 
 } );
