@@ -24,6 +24,7 @@ class WPCF7_Mail {
 	private $name = '';
 	private $locale = '';
 	private $template = array();
+	private $component = '';
 	private $use_html = false;
 	private $exclude_blank = false;
 
@@ -33,6 +34,35 @@ class WPCF7_Mail {
 	 */
 	public static function get_current() {
 		return self::$current;
+	}
+
+
+	/**
+	 * Returns the name of the email template currently processed.
+	 *
+	 * Expected output: 'mail' or 'mail_2'
+	 */
+	public static function get_current_template_name() {
+		$current = self::get_current();
+
+		if ( $current instanceof self ) {
+			return $current->get_template_name();
+		}
+	}
+
+
+	/**
+	 * Returns the name of the email template component currently processed.
+	 *
+	 * Expected output: 'recipient', 'sender', 'subject',
+	 *                  'additional_headers', 'body', or 'attachments'
+	 */
+	public static function get_current_component_name() {
+		$current = self::get_current();
+
+		if ( $current instanceof self ) {
+			return $current->get_component_name();
+		}
 	}
 
 
@@ -87,6 +117,22 @@ class WPCF7_Mail {
 
 
 	/**
+	 * Returns the name of the email template. A wrapper method of name().
+	 */
+	public function get_template_name() {
+		return $this->name();
+	}
+
+
+	/**
+	 * Returns the name of the email template component currently processed.
+	 */
+	public function get_component_name() {
+		return $this->component;
+	}
+
+
+	/**
 	 * Retrieves a component from the email template.
 	 *
 	 * @param string $component The name of the component.
@@ -95,8 +141,10 @@ class WPCF7_Mail {
 	 * @return string The text representation of the email component.
 	 */
 	public function get( $component, $replace_tags = false ) {
-		$use_html = ( $this->use_html && 'body' == $component );
-		$exclude_blank = ( $this->exclude_blank && 'body' == $component );
+		$this->component = $component;
+
+		$use_html = ( $this->use_html && 'body' === $component );
+		$exclude_blank = ( $this->exclude_blank && 'body' === $component );
 
 		$template = $this->template;
 		$component = isset( $template[$component] ) ? $template[$component] : '';
@@ -126,6 +174,8 @@ class WPCF7_Mail {
 				}
 			}
 		}
+
+		$this->component = '';
 
 		return $component;
 	}
@@ -514,8 +564,12 @@ class WPCF7_MailTaggedText {
 				$replaced = $this->format( $replaced, $format );
 			}
 
+			$separator = ( 'body' === WPCF7_Mail::get_current_component_name() )
+				? wp_get_list_item_separator()
+				: ', ';
+
 			$replaced = wpcf7_flat_join( $replaced, array(
-				'separator' => wp_get_list_item_separator(),
+				'separator' => $separator,
 			) );
 
 			if ( $html ) {
