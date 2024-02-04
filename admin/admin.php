@@ -694,3 +694,21 @@ function wpcf7_outdated_php_warning( $page, $action, $object ) {
 		esc_html( $message )
 	);
 }
+
+
+add_action( 'wpcf7_admin_warnings', 'wpcf7_ctct_deprecated_warning', 10, 3 );
+
+function wpcf7_ctct_deprecated_warning( $page, $action, $object ) {
+	$service = WPCF7_ConstantContact::get_instance();
+
+	if ( ! $service->is_active() ) {
+		return;
+	}
+
+	$message = __( "The Constant Contact integration is deprecated. It is not recommended to continue using the feature.", 'contact-form-7' );
+
+	echo sprintf(
+		'<div class="notice notice-warning"><p>%s</p></div>',
+		esc_html( $message )
+	);
+}
