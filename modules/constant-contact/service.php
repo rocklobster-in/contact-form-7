@@ -364,6 +364,14 @@ class WPCF7_ConstantContact extends WPCF7_Service_OAuth2 {
 
 	public function display( $action = '' ) {
 		echo sprintf(
+			'<p><strong>%s</strong></p>',
+			wpcf7_link(
+				__( 'https://contactform7.com/2024/02/02/we-end-the-constant-contact-integration/', 'contact-form-7' ),
+				__( "This feature is deprecated. You are not recommended to use it.", 'contact-form-7' )
+			)
+		);
+
+		echo sprintf(
 			'<p>%s</p>',
 			esc_html( __( "The Constant Contact integration module allows you to send contact data collected through your contact forms to the Constant Contact API. You can create reliable email subscription services in a few easy steps.", 'contact-form-7' ) )
 		);
