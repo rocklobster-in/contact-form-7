@@ -113,10 +113,7 @@ class WPCF7_ConstantContact extends WPCF7_Service_OAuth2 {
 	}
 
 	public function link() {
-		echo sprintf( '<a href="%1$s">%2$s</a>',
-			'https://constant-contact.evyy.net/c/1293104/205991/3411',
-			'constantcontact.com'
-		);
+		echo 'constantcontact.com';
 	}
 
 	protected function get_redirect_uri() {
