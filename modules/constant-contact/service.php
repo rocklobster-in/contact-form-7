@@ -364,7 +364,8 @@ class WPCF7_ConstantContact extends WPCF7_Service_OAuth2 {
 
 	public function display( $action = '' ) {
 		echo sprintf(
-			'<p><strong>%s</strong></p>',
+			'<p><strong>%1$s</strong> %2$s</p>',
+			esc_html( __( 'Warning:', 'contact-form-7' ) ),
 			wpcf7_link(
 				__( 'https://contactform7.com/2024/02/02/we-end-the-constant-contact-integration/', 'contact-form-7' ),
 				__( "This feature is deprecated. You are not recommended to use it.", 'contact-form-7' )
