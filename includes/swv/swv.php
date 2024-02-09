@@ -12,29 +12,29 @@ require_once WPCF7_PLUGIN_DIR . '/includes/swv/script-loader.php';
  */
 function wpcf7_swv_available_rules() {
 	$rules = array(
-		'required' => 'WPCF7_SWV_RequiredRule',
-		'requiredfile' => 'WPCF7_SWV_RequiredFileRule',
-		'email' => 'WPCF7_SWV_EmailRule',
-		'url' => 'WPCF7_SWV_URLRule',
-		'tel' => 'WPCF7_SWV_TelRule',
-		'number' => 'WPCF7_SWV_NumberRule',
-		'date' => 'WPCF7_SWV_DateRule',
-		'time' => 'WPCF7_SWV_TimeRule',
-		'file' => 'WPCF7_SWV_FileRule',
-		'enum' => 'WPCF7_SWV_EnumRule',
-		'dayofweek' => 'WPCF7_SWV_DayofweekRule',
-		'minitems' => 'WPCF7_SWV_MinItemsRule',
-		'maxitems' => 'WPCF7_SWV_MaxItemsRule',
-		'minlength' => 'WPCF7_SWV_MinLengthRule',
-		'maxlength' => 'WPCF7_SWV_MaxLengthRule',
-		'minnumber' => 'WPCF7_SWV_MinNumberRule',
-		'maxnumber' => 'WPCF7_SWV_MaxNumberRule',
-		'mindate' => 'WPCF7_SWV_MinDateRule',
-		'maxdate' => 'WPCF7_SWV_MaxDateRule',
-		'minfilesize' => 'WPCF7_SWV_MinFileSizeRule',
-		'maxfilesize' => 'WPCF7_SWV_MaxFileSizeRule',
-		'all' => 'WPCF7_SWV_AllRule',
-		'any' => 'WPCF7_SWV_AnyRule',
+		'required' => 'Contactable\SWV\RequiredRule',
+		'requiredfile' => 'Contactable\SWV\RequiredFileRule',
+		'email' => 'Contactable\SWV\EmailRule',
+		'url' => 'Contactable\SWV\URLRule',
+		'tel' => 'Contactable\SWV\TelRule',
+		'number' => 'Contactable\SWV\NumberRule',
+		'date' => 'Contactable\SWV\DateRule',
+		'time' => 'Contactable\SWV\TimeRule',
+		'file' => 'Contactable\SWV\FileRule',
+		'enum' => 'Contactable\SWV\EnumRule',
+		'dayofweek' => 'Contactable\SWV\DayofweekRule',
+		'minitems' => 'Contactable\SWV\MinItemsRule',
+		'maxitems' => 'Contactable\SWV\MaxItemsRule',
+		'minlength' => 'Contactable\SWV\MinLengthRule',
+		'maxlength' => 'Contactable\SWV\MaxLengthRule',
+		'minnumber' => 'Contactable\SWV\MinNumberRule',
+		'maxnumber' => 'Contactable\SWV\MaxNumberRule',
+		'mindate' => 'Contactable\SWV\MinDateRule',
+		'maxdate' => 'Contactable\SWV\MaxDateRule',
+		'minfilesize' => 'Contactable\SWV\MinFileSizeRule',
+		'maxfilesize' => 'Contactable\SWV\MaxFileSizeRule',
+		'all' => 'Contactable\SWV\AllRule',
+		'any' => 'Contactable\SWV\AnyRule',
 	);
 
 	return apply_filters( 'wpcf7_swv_available_rules', $rules );
@@ -51,7 +51,7 @@ function wpcf7_swv_load_rules() {
 
 	foreach ( array_keys( $rules ) as $rule ) {
 		$file = sprintf( '%s.php', $rule );
-		$path = path_join( WPCF7_PLUGIN_DIR . '/includes/swv/rules', $file );
+		$path = path_join( WPCF7_PLUGIN_DIR . '/includes/swv/php/rules', $file );
 
 		if ( file_exists( $path ) ) {
 			include_once $path;
