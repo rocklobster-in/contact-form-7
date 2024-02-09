@@ -1,6 +1,10 @@
 <?php
 
-class WPCF7_SWV_DateRule extends WPCF7_SWV_Rule {
+namespace Contactable\SWV;
+
+use WPCF7_SWV_Rule as Rule;
+
+class DateRule extends Rule {
 
 	const rule_name = 'date';
 

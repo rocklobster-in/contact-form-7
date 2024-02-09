@@ -1,6 +1,10 @@
 <?php
 
-class WPCF7_SWV_AllRule extends WPCF7_SWV_CompositeRule {
+namespace Contactable\SWV;
+
+use WPCF7_SWV_CompositeRule as CompositeRule;
+
+class AllRule extends CompositeRule {
 
 	const rule_name = 'all';
 

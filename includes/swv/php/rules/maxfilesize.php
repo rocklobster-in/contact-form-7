@@ -1,6 +1,10 @@
 <?php
 
-class WPCF7_SWV_MaxFileSizeRule extends WPCF7_SWV_Rule {
+namespace Contactable\SWV;
+
+use WPCF7_SWV_Rule as Rule;
+
+class MaxFileSizeRule extends Rule {
 
 	const rule_name = 'maxfilesize';
 
