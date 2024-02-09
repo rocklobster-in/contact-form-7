@@ -2,8 +2,6 @@
 
 namespace Contactable\SWV;
 
-use WPCF7_SWV_Rule as Rule;
-
 class MaxDateRule extends Rule {
 
 	const rule_name = 'maxdate';

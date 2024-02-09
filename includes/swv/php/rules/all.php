@@ -2,8 +2,6 @@
 
 namespace Contactable\SWV;
 
-use WPCF7_SWV_CompositeRule as CompositeRule;
-
 class AllRule extends CompositeRule {
 
 	const rule_name = 'all';

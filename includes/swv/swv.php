@@ -5,6 +5,7 @@
 
 require_once WPCF7_PLUGIN_DIR . '/includes/swv/schema-holder.php';
 require_once WPCF7_PLUGIN_DIR . '/includes/swv/script-loader.php';
+require_once WPCF7_PLUGIN_DIR . '/includes/swv/php/abstract-rules.php';
 
 
 /**
@@ -65,7 +66,7 @@ function wpcf7_swv_load_rules() {
  *
  * @param string $rule_name Rule name.
  * @param string|array $properties Optional. Rule properties.
- * @return WPCF7_SWV_Rule|null The rule object, or null if it failed.
+ * @return Rule|null The rule object, or null if it failed.
  */
 function wpcf7_swv_create_rule( $rule_name, $properties = '' ) {
 	$rules = wpcf7_swv_available_rules();
@@ -127,180 +128,9 @@ function wpcf7_swv_get_meta_schema() {
 
 
 /**
- * The base class of SWV rules.
- */
-abstract class WPCF7_SWV_Rule {
-
-	protected $properties = array();
-
-	public function __construct( $properties = '' ) {
-		$this->properties = wp_parse_args( $properties, array() );
-	}
-
-
-	/**
-	 * Returns true if this rule matches the given context.
-	 *
-	 * @param array $context Context.
-	 */
-	public function matches( $context ) {
-		$field = $this->get_property( 'field' );
-
-		if ( ! empty( $context['field'] ) ) {
-			if ( $field and ! in_array( $field, (array) $context['field'], true ) ) {
-				return false;
-			}
-		}
-
-		return true;
-	}
-
-
-	/**
-	 * Validates with this rule's logic.
-	 *
-	 * @param array $context Context.
-	 */
-	public function validate( $context ) {
-		return true;
-	}
-
-
-	/**
-	 * Converts the properties to an array.
-	 *
-	 * @return array Array of properties.
-	 */
-	public function to_array() {
-		$properties = (array) $this->properties;
-
-		if ( defined( 'static::rule_name' ) and static::rule_name ) {
-			$properties = array( 'rule' => static::rule_name ) + $properties;
-		}
-
-		return $properties;
-	}
-
-
-	/**
-	 * Returns the property value specified by the given property name.
-	 *
-	 * @param string $name Property name.
-	 * @return mixed Property value.
-	 */
-	public function get_property( $name ) {
-		if ( isset( $this->properties[$name] ) ) {
-			return $this->properties[$name];
-		}
-	}
-
-
-	/**
-	 * Creates an error object. Returns false if the error property is omitted.
-	 */
-	protected function create_error() {
-		$rule_name = defined( 'static::rule_name' )
-			? sprintf( 'wpcf7_invalid_%s', static::rule_name )
-			: 'wpcf7_invalid';
-
-		return new WP_Error(
-			$rule_name,
-			(string) $this->get_property( 'error' ),
-			$this
-		);
-	}
-
-}
-
-
-/**
- * The base class of SWV composite rules.
- */
-abstract class WPCF7_SWV_CompositeRule extends WPCF7_SWV_Rule {
-
-	protected $rules = array();
-
-
-	/**
-	 * Adds a sub-rule to this composite rule.
-	 *
-	 * @param WPCF7_SWV_Rule $rule Sub-rule to be added.
-	 */
-	public function add_rule( $rule ) {
-		if ( $rule instanceof WPCF7_SWV_Rule ) {
-			$this->rules[] = $rule;
-		}
-	}
-
-
-	/**
-	 * Returns an iterator of sub-rules.
-	 */
-	public function rules() {
-		foreach ( $this->rules as $rule ) {
-			yield $rule;
-		}
-	}
-
-
-	/**
-	 * Returns true if this rule matches the given context.
-	 *
-	 * @param array $context Context.
-	 */
-	public function matches( $context ) {
-		return true;
-	}
-
-
-	/**
-	 * Validates with this rule's logic.
-	 *
-	 * @param array $context Context.
-	 */
-	public function validate( $context ) {
-		foreach ( $this->rules() as $rule ) {
-			if ( $rule->matches( $context ) ) {
-				$result = $rule->validate( $context );
-
-				if ( is_wp_error( $result ) ) {
-					return $result;
-				}
-			}
-		}
-
-		return true;
-	}
-
-
-	/**
-	 * Converts the properties to an array.
-	 *
-	 * @return array Array of properties.
-	 */
-	public function to_array() {
-		$rules_arrays = array_map(
-			static function ( $rule ) {
-				return $rule->to_array();
-			},
-			$this->rules
-		);
-
-		return array_merge(
-			parent::to_array(),
-			array(
-				'rules' => $rules_arrays,
-			)
-		);
-	}
-
-}
-
-
-/**
  * The schema class as a composite rule.
  */
-class WPCF7_SWV_Schema extends WPCF7_SWV_CompositeRule {
+class WPCF7_SWV_Schema extends \Contactable\SWV\CompositeRule {
 
 	/**
 	 * The human-readable version of the schema.
