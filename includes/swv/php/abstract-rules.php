@@ -2,6 +2,8 @@
 
 namespace Contactable\SWV;
 
+use WP_Error;
+
 /**
  * The base class of SWV rules.
  */
@@ -79,7 +81,7 @@ abstract class Rule {
 			? sprintf( 'swv_%s', static::rule_name )
 			: 'swv';
 
-		return new \WP_Error(
+		return new WP_Error(
 			$error_code,
 			(string) $this->get_property( 'error' ),
 			$this
