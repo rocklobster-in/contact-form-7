@@ -74,6 +74,22 @@ abstract class Rule {
 
 
 	/**
+	 * Returns the default user input value from $_POST.
+	 *
+	 * @return mixed Default user input value.
+	 */
+	public function get_default_input() {
+		$field = $this->get_property( 'field' );
+
+		if ( isset( $_POST[$field] ) ) {
+			return $_POST[$field];
+		}
+
+		return '';
+	}
+
+
+	/**
 	 * Creates an error object. Returns false if the error property is omitted.
 	 */
 	protected function create_error() {
