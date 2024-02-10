@@ -82,7 +82,7 @@ abstract class Rule {
 		$field = $this->get_property( 'field' );
 
 		if ( isset( $_POST[$field] ) ) {
-			return $_POST[$field];
+			return wp_unslash( $_POST[$field] );
 		}
 
 		return '';
