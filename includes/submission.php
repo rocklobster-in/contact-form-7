@@ -307,11 +307,9 @@ class WPCF7_Submission {
 
 		$url = $this->get_request_url();
 
-		$unit_tag = isset( $_POST['_wpcf7_unit_tag'] )
-			? wpcf7_sanitize_unit_tag( $_POST['_wpcf7_unit_tag'] ) : '';
+		$unit_tag = wpcf7_sanitize_unit_tag( $_POST['_wpcf7_unit_tag'] ?? '' );
 
-		$container_post_id = isset( $_POST['_wpcf7_container_post'] )
-			? (int) $_POST['_wpcf7_container_post'] : 0;
+		$container_post_id = absint( $_POST['_wpcf7_container_post'] ?? 0 );
 
 		$current_user_id = get_current_user_id();
 
@@ -758,7 +756,7 @@ class WPCF7_Submission {
 			return true;
 		}
 
-		$nonce = isset( $_POST['_wpnonce'] ) ? $_POST['_wpnonce'] : '';
+		$nonce = $_POST['_wpnonce'] ?? '';
 
 		return wpcf7_verify_nonce( $nonce );
 	}
