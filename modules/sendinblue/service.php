@@ -88,9 +88,7 @@ class WPCF7_Sendinblue extends WPCF7_Service {
 				$this->reset_data();
 				$redirect_to = $this->menu_page_url( 'action=setup' );
 			} else {
-				$this->api_key = isset( $_POST['api_key'] )
-					? trim( $_POST['api_key'] )
-					: '';
+				$this->api_key = trim( $_POST['api_key'] ?? '' );
 
 				$confirmed = $this->confirm_key();
 
