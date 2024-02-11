@@ -209,7 +209,7 @@ function wpcf7_load_contact_form_admin() {
 		$action
 	);
 
-	if ( 'save' == $action ) {
+	if ( 'save' === $action ) {
 		$id = $_POST['post_ID'] ?? '-1';
 
 		check_admin_referer( 'wpcf7-save-contact-form_' . $id );
@@ -220,24 +220,21 @@ function wpcf7_load_contact_form_admin() {
 			);
 		}
 
-		$args = $_REQUEST;
-		$args['id'] = $id;
-
-		$args['title'] = $_POST['post_title'] ?? null;
-
-		$args['locale'] = $_POST['wpcf7-locale'] ?? null;
-
-		$args['form'] = $_POST['wpcf7-form'] ?? '';
-
-		$args['mail'] = $_POST['wpcf7-mail'] ?? array();
-
-		$args['mail_2'] = $_POST['wpcf7-mail-2'] ?? array();
-
-		$args['messages'] = $_POST['wpcf7-messages'] ?? array();
-
-		$args['additional_settings'] = $_POST['wpcf7-additional-settings'] ?? '';
-
-		$contact_form = wpcf7_save_contact_form( $args );
+		$contact_form = wpcf7_save_contact_form(
+			array_merge(
+				$_REQUEST,
+				array(
+					'id' => $id,
+					'title' => $_POST['post_title'] ?? null,
+					'locale' => $_POST['wpcf7-locale'] ?? null,
+					'form' => $_POST['wpcf7-form'] ?? '',
+					'mail' => $_POST['wpcf7-mail'] ?? array(),
+					'mail_2' => $_POST['wpcf7-mail-2'] ?? array(),
+					'messages' => $_POST['wpcf7-messages'] ?? array(),
+					'additional_settings' => $_POST['wpcf7-additional-settings'] ?? '',
+				)
+			)
+		);
 
 		if ( $contact_form and wpcf7_validate_configuration() ) {
 			$config_validator = new WPCF7_ConfigValidator( $contact_form );
@@ -263,7 +260,7 @@ function wpcf7_load_contact_form_admin() {
 		exit();
 	}
 
-	if ( 'copy' == $action ) {
+	if ( 'copy' === $action ) {
 		$id = empty( $_POST['post_ID'] )
 			? absint( $_REQUEST['post'] )
 			: absint( $_POST['post_ID'] );
@@ -292,7 +289,7 @@ function wpcf7_load_contact_form_admin() {
 		exit();
 	}
 
-	if ( 'delete' == $action ) {
+	if ( 'delete' === $action ) {
 		if ( ! empty( $_POST['post_ID'] ) ) {
 			check_admin_referer( 'wpcf7-delete-contact-form_' . $_POST['post_ID'] );
 		} elseif ( ! is_array( $_REQUEST['post'] ) ) {
@@ -341,7 +338,7 @@ function wpcf7_load_contact_form_admin() {
 
 	$post = null;
 
-	if ( 'wpcf7-new' == $plugin_page ) {
+	if ( 'wpcf7-new' === $plugin_page ) {
 		$post = WPCF7_ContactForm::get_template( array(
 			'locale' => isset( $_GET['locale'] ) ? $_GET['locale'] : null,
 		) );
