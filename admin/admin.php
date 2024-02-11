@@ -210,7 +210,8 @@ function wpcf7_load_contact_form_admin() {
 	);
 
 	if ( 'save' == $action ) {
-		$id = isset( $_POST['post_ID'] ) ? $_POST['post_ID'] : '-1';
+		$id = $_POST['post_ID'] ?? '-1';
+
 		check_admin_referer( 'wpcf7-save-contact-form_' . $id );
 
 		if ( ! current_user_can( 'wpcf7_edit_contact_form', $id ) ) {
@@ -222,26 +223,19 @@ function wpcf7_load_contact_form_admin() {
 		$args = $_REQUEST;
 		$args['id'] = $id;
 
-		$args['title'] = isset( $_POST['post_title'] )
-			? $_POST['post_title'] : null;
+		$args['title'] = $_POST['post_title'] ?? null;
 
-		$args['locale'] = isset( $_POST['wpcf7-locale'] )
-			? $_POST['wpcf7-locale'] : null;
+		$args['locale'] = $_POST['wpcf7-locale'] ?? null;
 
-		$args['form'] = isset( $_POST['wpcf7-form'] )
-			? $_POST['wpcf7-form'] : '';
+		$args['form'] = $_POST['wpcf7-form'] ?? '';
 
-		$args['mail'] = isset( $_POST['wpcf7-mail'] )
-			? $_POST['wpcf7-mail'] : array();
+		$args['mail'] = $_POST['wpcf7-mail'] ?? array();
 
-		$args['mail_2'] = isset( $_POST['wpcf7-mail-2'] )
-			? $_POST['wpcf7-mail-2'] : array();
+		$args['mail_2'] = $_POST['wpcf7-mail-2'] ?? array();
 
-		$args['messages'] = isset( $_POST['wpcf7-messages'] )
-			? $_POST['wpcf7-messages'] : array();
+		$args['messages'] = $_POST['wpcf7-messages'] ?? array();
 
-		$args['additional_settings'] = isset( $_POST['wpcf7-additional-settings'] )
-			? $_POST['wpcf7-additional-settings'] : '';
+		$args['additional_settings'] = $_POST['wpcf7-additional-settings'] ?? '';
 
 		$contact_form = wpcf7_save_contact_form( $args );
 
@@ -253,8 +247,7 @@ function wpcf7_load_contact_form_admin() {
 
 		$query = array(
 			'post' => $contact_form ? $contact_form->id() : 0,
-			'active-tab' => isset( $_POST['active-tab'] )
-				? (int) $_POST['active-tab'] : 0,
+			'active-tab' => (int) ( $_POST['active-tab'] ?? 0 ),
 		);
 
 		if ( ! $contact_form ) {
