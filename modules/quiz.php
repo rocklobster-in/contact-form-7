@@ -98,7 +98,7 @@ add_filter( 'wpcf7_validate_quiz', 'wpcf7_quiz_validation_filter', 10, 2 );
 function wpcf7_quiz_validation_filter( $result, $tag ) {
 	$name = $tag->name;
 
-	$answer = isset( $_POST[$name] ) ? wp_unslash( $_POST[$name] ) : '';
+	$answer = wp_unslash( $_POST[$name] ?? '' );
 
 	$answer = wpcf7_canonicalize( $answer, array(
 		'strip_separators' => true,
@@ -106,9 +106,7 @@ function wpcf7_quiz_validation_filter( $result, $tag ) {
 
 	$answer_hash = wp_hash( $answer, 'wpcf7_quiz' );
 
-	$expected_hash = isset( $_POST['_wpcf7_quiz_answer_' . $name] )
-		? (string) $_POST['_wpcf7_quiz_answer_' . $name]
-		: '';
+	$expected_hash = (string) ( $_POST['_wpcf7_quiz_answer_' . $name] ?? '' );
 
 	if ( ! hash_equals( $expected_hash, $answer_hash ) ) {
 		$result->invalidate( $tag, wpcf7_get_message( 'quiz_answer_not_correct' ) );
@@ -176,7 +174,7 @@ add_filter( 'wpcf7_mail_tag_replaced_quiz', 'wpcf7_quiz_mail_tag', 10, 4 );
 
 function wpcf7_quiz_mail_tag( $replaced, $submitted, $html, $mail_tag ) {
 	$field_name = $mail_tag->field_name();
-	$submitted = isset( $_POST[$field_name] ) ? $_POST[$field_name] : '';
+	$submitted = $_POST[$field_name] ?? '';
 	$replaced = $submitted;
 
 	if ( $html ) {
