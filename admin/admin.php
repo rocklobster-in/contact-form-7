@@ -145,8 +145,7 @@ function wpcf7_admin_enqueue_scripts( $hook_suffix ) {
 		'saveAlert' => __(
 			"The changes you made will be lost if you navigate away from this page.",
 			'contact-form-7' ),
-		'activeTab' => isset( $_GET['active-tab'] )
-			? (int) $_GET['active-tab'] : 0,
+		'activeTab' => (int) ( $_GET['active-tab'] ?? 0 ),
 		'configValidator' => array(
 			'errors' => array(),
 			'howToCorrect' => __( "How to resolve?", 'contact-form-7' ),
@@ -205,7 +204,7 @@ function wpcf7_load_contact_form_admin() {
 	$action = wpcf7_current_action();
 
 	do_action( 'wpcf7_admin_load',
-		isset( $_GET['page'] ) ? trim( $_GET['page'] ) : '',
+		trim( $_GET['page'] ?? '' ),
 		$action
 	);
 
@@ -340,7 +339,7 @@ function wpcf7_load_contact_form_admin() {
 
 	if ( 'wpcf7-new' === $plugin_page ) {
 		$post = WPCF7_ContactForm::get_template( array(
-			'locale' => isset( $_GET['locale'] ) ? $_GET['locale'] : null,
+			'locale' => $_GET['locale'] ?? null,
 		) );
 	} elseif ( ! empty( $_GET['post'] ) ) {
 		$post = WPCF7_ContactForm::get_instance( $_GET['post'] );
@@ -461,7 +460,7 @@ function wpcf7_admin_add_new_page() {
 
 function wpcf7_load_integration_page() {
 	do_action( 'wpcf7_admin_load',
-		isset( $_GET['page'] ) ? trim( $_GET['page'] ) : '',
+		trim( $_GET['page'] ?? '' ),
 		wpcf7_current_action()
 	);
 
