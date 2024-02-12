@@ -260,9 +260,7 @@ function wpcf7_load_contact_form_admin() {
 	}
 
 	if ( 'copy' === $action ) {
-		$id = empty( $_POST['post_ID'] )
-			? absint( $_REQUEST['post'] )
-			: absint( $_POST['post_ID'] );
+		$id = absint( $_POST['post_ID'] ?? $_REQUEST['post'] ?? '' );
 
 		check_admin_referer( 'wpcf7-copy-contact-form_' . $id );
 
@@ -297,9 +295,7 @@ function wpcf7_load_contact_form_admin() {
 			check_admin_referer( 'bulk-posts' );
 		}
 
-		$posts = empty( $_POST['post_ID'] )
-			? (array) $_REQUEST['post']
-			: (array) $_POST['post_ID'];
+		$posts = (array) ( $_POST['post_ID'] ?? $_REQUEST['post'] ?? array() );
 
 		$deleted = 0;
 
@@ -510,7 +506,7 @@ function wpcf7_admin_integration_page() {
 	);
 
 	if ( $service ) {
-		$message = isset( $_REQUEST['message'] ) ? $_REQUEST['message'] : '';
+		$message = $_REQUEST['message'] ?? '';
 		$service->admin_notice( $message );
 
 		$integration->list_services( array(
@@ -537,11 +533,11 @@ function wpcf7_admin_updated_message( $page, $action, $object ) {
 		return;
 	}
 
-	if ( 'created' == $_REQUEST['message'] ) {
+	if ( 'created' === $_REQUEST['message'] ) {
 		$updated_message = __( "Contact form created.", 'contact-form-7' );
-	} elseif ( 'saved' == $_REQUEST['message'] ) {
+	} elseif ( 'saved' === $_REQUEST['message'] ) {
 		$updated_message = __( "Contact form saved.", 'contact-form-7' );
-	} elseif ( 'deleted' == $_REQUEST['message'] ) {
+	} elseif ( 'deleted' === $_REQUEST['message'] ) {
 		$updated_message = __( "Contact form deleted.", 'contact-form-7' );
 	}
 
@@ -554,7 +550,7 @@ function wpcf7_admin_updated_message( $page, $action, $object ) {
 		return;
 	}
 
-	if ( 'failed' == $_REQUEST['message'] ) {
+	if ( 'failed' === $_REQUEST['message'] ) {
 		$updated_message =
 			__( "There was an error saving the contact form.", 'contact-form-7' );
 
@@ -566,7 +562,7 @@ function wpcf7_admin_updated_message( $page, $action, $object ) {
 		return;
 	}
 
-	if ( 'validated' == $_REQUEST['message'] ) {
+	if ( 'validated' === $_REQUEST['message'] ) {
 		$bulk_validate = WPCF7::get_option( 'bulk_validate', array() );
 		$count_invalid = isset( $bulk_validate['count_invalid'] )
 			? absint( $bulk_validate['count_invalid'] ) : 0;
