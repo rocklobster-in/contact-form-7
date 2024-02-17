@@ -98,3 +98,78 @@ class WPCF7_MailTag {
 	}
 
 }
+
+
+use Contactable\SWV;
+
+class WPCF7_MailTag_OutputCalculator {
+
+	const email = 0b100;
+	const text = 0b010;
+	const blank = 0b001;
+
+	private $contact_form;
+
+	public function __construct( WPCF7_ContactForm $contact_form ) {
+		$this->contact_form = $contact_form;
+	}
+
+	public function calc_output( WPCF7_MailTag $mail_tag ) {
+		return $this->calc_swv_result(
+			$this->contact_form->get_schema(),
+			$mail_tag->field_name()
+		);
+	}
+
+	private function calc_swv_result( SWV\Rule $rule, $target_field ) {
+		$result = self::email | self::text | self::blank;
+
+		if ( $rule instanceof WPCF7_SWV_Schema or $rule instanceof SWV\AllRule ) {
+			foreach ( $rule->rules() as $child_rule ) {
+				$result &= $this->calc_swv_result( $child_rule, $target_field );
+			}
+
+			return $result;
+		}
+
+		if ( $rule instanceof SWV\CompositeRule ) {
+			foreach ( $rule->rules() as $child_rule ) {
+				$result |= $this->calc_swv_result( $child_rule, $target_field );
+			}
+
+			return $result;
+		}
+
+		$field_prop = $rule->get_property( 'field' );
+
+		if ( empty( $field_prop ) or $field_prop !== $target_field ) {
+			return self::email | self::text | self::blank;
+		}
+
+		if ( $rule instanceof SWV\RequiredRule ) {
+			return ~ self::blank;
+		}
+
+		if ( $rule instanceof SWV\EmailRule ) {
+			return self::email | self::blank;
+		}
+
+		if ( $rule instanceof SWV\EnumRule ) {
+			$acceptable_values = (array) $rule->get_property( 'accept' );
+			$acceptable_values = array_map( 'strval', $acceptable_values );
+			$acceptable_values = array_filter( $acceptable_values );
+			$acceptable_values = array_unique( $acceptable_values );
+
+			$email_values = array_filter( $acceptable_values, 'wpcf7_is_email' );
+
+			if ( count( $email_values ) === count( $acceptable_values ) ) {
+				return self::email | self::blank;
+			} else {
+				return self::text | self::blank;
+			}
+		}
+
+		return self::email | self::text | self::blank;
+	}
+
+}
