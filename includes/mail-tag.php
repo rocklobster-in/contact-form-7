@@ -160,7 +160,20 @@ class WPCF7_MailTag_OutputCalculator {
 			$acceptable_values = array_filter( $acceptable_values );
 			$acceptable_values = array_unique( $acceptable_values );
 
-			$email_values = array_filter( $acceptable_values, 'wpcf7_is_email' );
+			if ( ! $mail_tag->get_option( 'do_not_heat' ) ) {
+				$acceptable_values = array_map( static function ( $val ) {
+					$pipes = $this->contact_form->get_pipes(
+						$mail_tag->field_name()
+					);
+
+					return $pipes->do_pipe( $val );
+				}, $acceptable_values );
+			}
+
+			$email_values = array_filter(
+				$acceptable_values,
+				'wpcf7_is_mailbox_list'
+			);
 
 			if ( count( $email_values ) === count( $acceptable_values ) ) {
 				return self::email | self::blank;
