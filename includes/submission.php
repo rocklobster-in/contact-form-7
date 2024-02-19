@@ -374,7 +374,7 @@ class WPCF7_Submission {
 	 */
 	private function setup_posted_data() {
 		$posted_data = array_filter( (array) $_POST, static function ( $key ) {
-			return '_' !== substr( $key, 0, 1 );
+			return ! str_starts_with( $key, '_' );
 		}, ARRAY_FILTER_USE_KEY );
 
 		$posted_data = wp_unslash( $posted_data );
