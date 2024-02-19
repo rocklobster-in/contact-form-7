@@ -130,13 +130,13 @@ class WPCF7_MailTag_OutputCalculator {
 			}
 
 			return $result;
-		}
-
-		if ( $rule instanceof SWV\CompositeRule ) {
+		} elseif ( $rule instanceof SWV\AnyRule ) {
 			foreach ( $rule->rules() as $child_rule ) {
 				$result |= $this->calc_swv_result( $child_rule, $target_field );
 			}
 
+			return $result;
+		} elseif ( $rule instanceof SWV\CompositeRule ) {
 			return $result;
 		}
 
