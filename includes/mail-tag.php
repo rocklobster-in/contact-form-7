@@ -116,23 +116,23 @@ class WPCF7_MailTag_OutputCalculator {
 
 	public function calc_output( WPCF7_MailTag $mail_tag ) {
 		return $this->calc_swv_result(
-			$this->contact_form->get_schema(),
-			$mail_tag->field_name()
+			$mail_tag,
+			$this->contact_form->get_schema()
 		);
 	}
 
-	private function calc_swv_result( SWV\Rule $rule, $target_field ) {
+	private function calc_swv_result( WPCF7_MailTag $mail_tag, SWV\Rule $rule ) {
 		$result = self::email | self::text | self::blank;
 
 		if ( $rule instanceof WPCF7_SWV_Schema or $rule instanceof SWV\AllRule ) {
 			foreach ( $rule->rules() as $child_rule ) {
-				$result &= $this->calc_swv_result( $child_rule, $target_field );
+				$result &= $this->calc_swv_result( $mail_tag, $child_rule );
 			}
 
 			return $result;
 		} elseif ( $rule instanceof SWV\AnyRule ) {
 			foreach ( $rule->rules() as $child_rule ) {
-				$result |= $this->calc_swv_result( $child_rule, $target_field );
+				$result |= $this->calc_swv_result( $mail_tag, $child_rule );
 			}
 
 			return $result;
@@ -142,7 +142,7 @@ class WPCF7_MailTag_OutputCalculator {
 
 		$field_prop = $rule->get_property( 'field' );
 
-		if ( empty( $field_prop ) or $field_prop !== $target_field ) {
+		if ( empty( $field_prop ) or $field_prop !== $mail_tag->field_name() ) {
 			return self::email | self::text | self::blank;
 		}
 
