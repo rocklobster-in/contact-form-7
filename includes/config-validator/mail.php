@@ -65,8 +65,14 @@ trait WPCF7_ConfigValidator_Mail {
 
 		}
 
-		$opcalc = new WPCF7_MailTag_OutputCalculator( $this->contact_form );
+		static $opcalcset = array();
 
+		if ( ! isset( $opcalcset[$this->contact_form->id()] ) ) {
+			$opcalcset[$this->contact_form->id()] =
+				new WPCF7_MailTag_OutputCalculator( $this->contact_form );
+		}
+
+		$opcalc = $opcalcset[$this->contact_form->id()];
 		$op = $opcalc->calc_output( $mail_tag );
 
 		if ( WPCF7_MailTag_OutputCalculator::email === $op ) {
@@ -76,8 +82,6 @@ trait WPCF7_ConfigValidator_Mail {
 		} else {
 			return $example_blank;
 		}
-
-		return $tag;
 	}
 
 
