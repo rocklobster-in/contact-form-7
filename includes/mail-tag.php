@@ -161,13 +161,16 @@ class WPCF7_MailTag_OutputCalculator {
 			$acceptable_values = array_unique( $acceptable_values );
 
 			if ( ! $mail_tag->get_option( 'do_not_heat' ) ) {
-				$acceptable_values = array_map( static function ( $val ) {
-					$pipes = $this->contact_form->get_pipes(
-						$mail_tag->field_name()
-					);
+				$pipes = $this->contact_form->get_pipes(
+					$mail_tag->field_name()
+				);
 
-					return $pipes->do_pipe( $val );
-				}, $acceptable_values );
+				$acceptable_values = array_map(
+					static function ( $val ) use ( $pipes ) {
+						return $pipes->do_pipe( $val );
+					},
+					$acceptable_values
+				);
 			}
 
 			$email_values = array_filter(

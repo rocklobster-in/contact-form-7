@@ -47,8 +47,8 @@ class WPCF7_Pipes {
 		$this->pipes[] = $pipe;
 	}
 
-	public function merge( self $another_pipes ) {
-		$this->pipes = array_merge( $this->pipes, $another_pipes );
+	public function merge( self $another ) {
+		$this->pipes = array_merge( $this->pipes, $another->pipes );
 	}
 
 	public function do_pipe( $input ) {
