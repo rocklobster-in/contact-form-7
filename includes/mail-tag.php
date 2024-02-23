@@ -102,6 +102,9 @@ class WPCF7_MailTag {
 
 use Contactable\SWV;
 
+/**
+ * Mail-tag output calculator.
+ */
 class WPCF7_MailTag_OutputCalculator {
 
 	const email = 0b100;
