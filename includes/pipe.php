@@ -115,6 +115,9 @@ class WPCF7_Pipes {
 }
 
 
+/**
+ * Trait for classes that hold cross-tag WPCF7_Pipes object.
+ */
 trait WPCF7_PipesHolder {
 
 	protected $pipes;
