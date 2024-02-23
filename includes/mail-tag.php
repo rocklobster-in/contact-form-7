@@ -122,21 +122,24 @@ class WPCF7_MailTag_OutputCalculator {
 	}
 
 	private function calc_swv_result( WPCF7_MailTag $mail_tag, SWV\Rule $rule ) {
-		$result = self::email | self::text | self::blank;
 
-		if ( $rule instanceof WPCF7_SWV_Schema or $rule instanceof SWV\AllRule ) {
-			foreach ( $rule->rules() as $child_rule ) {
-				$result &= $this->calc_swv_result( $mail_tag, $child_rule );
-			}
+		if ( $rule instanceof SWV\AnyRule ) {
+			$result = 0b000;
 
-			return $result;
-		} elseif ( $rule instanceof SWV\AnyRule ) {
 			foreach ( $rule->rules() as $child_rule ) {
 				$result |= $this->calc_swv_result( $mail_tag, $child_rule );
 			}
 
 			return $result;
-		} elseif ( $rule instanceof SWV\CompositeRule ) {
+		}
+
+		if ( $rule instanceof SWV\CompositeRule ) {
+			$result = 0b111;
+
+			foreach ( $rule->rules() as $child_rule ) {
+				$result &= $this->calc_swv_result( $mail_tag, $child_rule );
+			}
+
 			return $result;
 		}
 
@@ -181,7 +184,7 @@ class WPCF7_MailTag_OutputCalculator {
 			if ( count( $email_values ) === count( $acceptable_values ) ) {
 				return self::email | self::blank;
 			} else {
-				return self::text | self::blank;
+				return self::email | self::text | self::blank;
 			}
 		}
 
