@@ -295,34 +295,16 @@ class WPCF7_Submission {
 	 * Collects meta information about this submission.
 	 */
 	private function setup_meta_data() {
-		$timestamp = time();
-
-		$remote_ip = $this->get_remote_ip_addr();
-
-		$remote_port = $_SERVER['REMOTE_PORT'] ?? '';
-
-		$user_agent = substr( $_SERVER['HTTP_USER_AGENT'] ?? '', 0, 254 );
-
-		$url = $this->get_request_url();
-
-		$unit_tag = wpcf7_sanitize_unit_tag( $_POST['_wpcf7_unit_tag'] ?? '' );
-
-		$container_post_id = absint( $_POST['_wpcf7_container_post'] ?? 0 );
-
-		$current_user_id = get_current_user_id();
-
-		$do_not_store = $this->contact_form->is_true( 'do_not_store' );
-
 		$this->meta = array(
-			'timestamp' => $timestamp,
-			'remote_ip' => $remote_ip,
-			'remote_port' => $remote_port,
-			'user_agent' => $user_agent,
-			'url' => $url,
-			'unit_tag' => $unit_tag,
-			'container_post_id' => $container_post_id,
-			'current_user_id' => $current_user_id,
-			'do_not_store' => $do_not_store,
+			'timestamp' => time(),
+			'remote_ip' => $this->get_remote_ip_addr(),
+			'remote_port' => $_SERVER['REMOTE_PORT'] ?? '',
+			'user_agent' => substr( $_SERVER['HTTP_USER_AGENT'] ?? '', 0, 254 ),
+			'url' => $this->get_request_url(),
+			'unit_tag' => wpcf7_sanitize_unit_tag( $_POST['_wpcf7_unit_tag'] ?? '' ),
+			'container_post_id' => absint( $_POST['_wpcf7_container_post'] ?? 0 ),
+			'current_user_id' => get_current_user_id(),
+			'do_not_store' => $this->contact_form->is_true( 'do_not_store' ),
 		);
 
 		return $this->meta;
