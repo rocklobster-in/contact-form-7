@@ -320,11 +320,7 @@ class WPCF7_Submission {
 	 */
 	public function get_posted_data( $name = '' ) {
 		if ( ! empty( $name ) ) {
-			if ( isset( $this->posted_data[$name] ) ) {
-				return $this->posted_data[$name];
-			} else {
-				return null;
-			}
+			return $this->posted_data[$name] ?? null;
 		}
 
 		return $this->posted_data;
