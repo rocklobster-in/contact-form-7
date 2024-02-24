@@ -281,9 +281,7 @@ class WPCF7_Submission {
 	 *                     null otherwise.
 	 */
 	public function get_meta( $name ) {
-		if ( isset( $this->meta[$name] ) ) {
-			return $this->meta[$name];
-		}
+		return $this->meta[$name] ?? null;
 	}
 
 
