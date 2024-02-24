@@ -259,11 +259,7 @@ class WPCF7_Submission {
 	 *                    or false when no invalid field.
 	 */
 	public function get_invalid_field( $name ) {
-		if ( isset( $this->invalid_fields[$name] ) ) {
-			return $this->invalid_fields[$name];
-		} else {
-			return false;
-		}
+		return $this->invalid_fields[$name] ?? false;
 	}
 
 
