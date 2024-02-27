@@ -345,86 +345,55 @@ class WPCF7_Submission {
 	 * Constructs posted data property based on user input values.
 	 */
 	private function setup_posted_data() {
-		$posted_data = array_filter( (array) $_POST, static function ( $key ) {
-			return ! str_starts_with( $key, '_' );
-		}, ARRAY_FILTER_USE_KEY );
+		$posted_data = array_filter(
+			(array) $_POST,
+			static function ( $key ) {
+				return ! str_starts_with( $key, '_' );
+			},
+			ARRAY_FILTER_USE_KEY
+		);
 
 		$posted_data = wp_unslash( $posted_data );
 		$posted_data = $this->sanitize_posted_data( $posted_data );
 
-		$tags = $this->contact_form->scan_form_tags();
+		foreach ( $posted_data as $pd_key => $pd_value ) {
+			$pd_value_orig = $pd_value;
 
-		foreach ( (array) $tags as $tag ) {
-			if ( empty( $tag->name ) ) {
+			$tags = $this->contact_form->scan_form_tags( array(
+				'name' => $pd_key,
+				'feature' => array(
+					'name-attr',
+					'! not-for-mail',
+				),
+			) );
+
+			if ( empty( $tags ) ) {
 				continue;
 			}
 
-			$type = $tag->type;
-			$name = $tag->name;
-			$pipes = $tag->pipes;
+			$tag = reset( $tags );
 
-			$value_orig = $value = '';
+			if ( wpcf7_form_tag_supports( $tag->type, 'selectable-values' ) ) {
+				$pd_value = (array) $pd_value;
 
-			if ( isset( $posted_data[$name] ) ) {
-				$value_orig = $value = $posted_data[$name];
-			}
+				if ( WPCF7_USE_PIPE ) {
+					$pipes = $this->contact_form->get_pipes( $tag->name );
 
-			if ( WPCF7_USE_PIPE
-			and $pipes instanceof WPCF7_Pipes
-			and ! $pipes->zero() ) {
-				if ( is_array( $value_orig ) ) {
-					$value = array();
-
-					foreach ( $value_orig as $v ) {
-						$value[] = $pipes->do_pipe( $v );
-					}
-				} else {
-					$value = $pipes->do_pipe( $value_orig );
+					$pd_value = array_map( static function ( $value ) use ( $pipes ) {
+						return $pipes->do_pipe( $value );
+					}, $pd_value );
 				}
 			}
 
-			if ( wpcf7_form_tag_supports( $type, 'selectable-values' ) ) {
-				$value = (array) $value;
-
-				if ( $tag->has_option( 'free_text' )
-				and isset( $posted_data[$name . '_free_text'] ) ) {
-					$last_val = array_pop( $value );
-
-					list( $tied_item ) = array_slice(
-						WPCF7_USE_PIPE ? $tag->pipes->collect_afters() : $tag->values,
-						-1, 1
-					);
-
-					list( $last_val, $tied_item ) = array_map(
-						static function ( $item ) {
-							return wpcf7_canonicalize( $item, array(
-								'strto' => 'as-is',
-							) );
-						},
-						array( $last_val, $tied_item )
-					);
-
-					if ( $last_val === $tied_item ) {
-						$value[] = sprintf( '%s %s',
-							$last_val,
-							$posted_data[$name . '_free_text']
-						);
-					} else {
-						$value[] = $last_val;
-					}
-
-					unset( $posted_data[$name . '_free_text'] );
-				}
-			}
-
-			$value = apply_filters( "wpcf7_posted_data_{$type}", $value,
-				$value_orig, $tag
+			$pd_value = apply_filters( "wpcf7_posted_data_{$tag->type}",
+				$pd_value,
+				$pd_value_orig,
+				$tag
 			);
 
-			$posted_data[$name] = $value;
+			$posted_data[$pd_key] = $pd_value;
 
-			if ( $tag->has_option( 'consent_for:storage' )
-			and empty( $posted_data[$name] ) ) {
+			if ( $tag->has_option( 'consent_for:storage' ) and empty( $pd_value ) ) {
 				$this->meta['do_not_store'] = true;
 			}
 		}
