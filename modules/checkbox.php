@@ -279,6 +279,39 @@ function wpcf7_swv_add_checkbox_enum_rules( $schema, $contact_form ) {
 }
 
 
+add_filter( 'wpcf7_posted_data_checkbox',
+	'wpcf7_posted_data_checkbox',
+	10, 3
+);
+
+add_filter( 'wpcf7_posted_data_checkbox*',
+	'wpcf7_posted_data_checkbox',
+	10, 3
+);
+
+add_filter( 'wpcf7_posted_data_radio',
+	'wpcf7_posted_data_checkbox',
+	10, 3
+);
+
+function wpcf7_posted_data_checkbox( $value, $value_orig, $form_tag ) {
+	if ( $form_tag->has_option( 'free_text' ) ) {
+		$value = (array) $value;
+		$free_text = $_POST[$form_tag->name . '_free_text'] ?? '';
+		$last_val = array_pop( $value );
+
+		if ( $free_text and isset( $last_val ) ) {
+			$last_val = sprintf( '%s %s', $last_val, $free_text );
+			$last_val = trim( $last_val );
+		}
+
+		array_push( $value, $last_val );
+	}
+
+	return $value;
+}
+
+
 /* Tag generator */
 
 add_action( 'wpcf7_admin_init',
