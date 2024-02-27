@@ -151,7 +151,7 @@ function wpcf7_checkbox_form_tag_handler( $tag ) {
 			$class .= ' last';
 
 			if ( $free_text ) {
-				$free_text_name = $tag->name . '_free_text';
+				$free_text_name = sprintf( '_free_text_%s', $tag->name );
 
 				$free_text_atts = array(
 					'name' => $free_text_name,
@@ -297,7 +297,10 @@ add_filter( 'wpcf7_posted_data_radio',
 function wpcf7_posted_data_checkbox( $value, $value_orig, $form_tag ) {
 	if ( $form_tag->has_option( 'free_text' ) ) {
 		$value = (array) $value;
-		$free_text = $_POST[$form_tag->name . '_free_text'] ?? '';
+
+		$free_text_name = sprintf( '_free_text_%s', $form_tag->name );
+		$free_text = $_POST[$free_text_name] ?? '';
+
 		$last_val = array_pop( $value );
 
 		if ( $free_text and isset( $last_val ) ) {
