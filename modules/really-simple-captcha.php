@@ -167,8 +167,8 @@ function wpcf7_captcha_validation_filter( $result, $tag ) {
 
 	$captchac = '_wpcf7_captcha_challenge_' . $name;
 
-	$prefix = isset( $_POST[$captchac] ) ? (string) $_POST[$captchac] : '';
-	$response = isset( $_POST[$name] ) ? (string) $_POST[$name] : '';
+	$prefix = (string) ( $_POST[$captchac] ?? '' );
+	$response = (string) ( $_POST[$name] ?? '' );
 	$response = wpcf7_canonicalize( $response );
 
 	if ( 0 === strlen( $prefix )

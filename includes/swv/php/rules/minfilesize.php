@@ -1,8 +1,10 @@
 <?php
 
-class WPCF7_SWV_RequiredFileRule extends WPCF7_SWV_Rule {
+namespace Contactable\SWV;
 
-	const rule_name = 'requiredfile';
+class MinFileSizeRule extends Rule {
+
+	const rule_name = 'minfilesize';
 
 	public function matches( $context ) {
 		if ( false === parent::matches( $context ) ) {
@@ -18,17 +20,18 @@ class WPCF7_SWV_RequiredFileRule extends WPCF7_SWV_Rule {
 
 	public function validate( $context ) {
 		$field = $this->get_property( 'field' );
-
-		$input = isset( $_FILES[$field]['tmp_name'] )
-			? $_FILES[$field]['tmp_name'] : '';
-
+		$input = isset( $_FILES[$field]['size'] ) ? $_FILES[$field]['size'] : '';
 		$input = wpcf7_array_flatten( $input );
 		$input = wpcf7_exclude_blank( $input );
 
 		if ( empty( $input ) ) {
-			return new WP_Error( 'wpcf7_invalid_requiredfile',
-				$this->get_property( 'error' )
-			);
+			return true;
+		}
+
+		$threshold = $this->get_property( 'threshold' );
+
+		if ( array_sum( $input ) < $threshold ) {
+			return $this->create_error();
 		}
 
 		return true;

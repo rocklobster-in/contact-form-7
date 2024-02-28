@@ -3,6 +3,7 @@
 class WPCF7_ContactForm {
 
 	use WPCF7_SWV_SchemaHolder;
+	use WPCF7_PipesHolder;
 
 	const post_type = 'wpcf7_contact_form';
 

@@ -1,8 +1,10 @@
 <?php
 
-class WPCF7_SWV_MaxNumberRule extends WPCF7_SWV_Rule {
+namespace Contactable\SWV;
 
-	const rule_name = 'maxnumber';
+class MaxDateRule extends Rule {
+
+	const rule_name = 'maxdate';
 
 	public function matches( $context ) {
 		if ( false === parent::matches( $context ) ) {
@@ -17,22 +19,19 @@ class WPCF7_SWV_MaxNumberRule extends WPCF7_SWV_Rule {
 	}
 
 	public function validate( $context ) {
-		$field = $this->get_property( 'field' );
-		$input = isset( $_POST[$field] ) ? $_POST[$field] : '';
+		$input = $this->get_default_input();
 		$input = wpcf7_array_flatten( $input );
 		$input = wpcf7_exclude_blank( $input );
 
 		$threshold = $this->get_property( 'threshold' );
 
-		if ( ! wpcf7_is_number( $threshold ) ) {
+		if ( ! wpcf7_is_date( $threshold ) ) {
 			return true;
 		}
 
 		foreach ( $input as $i ) {
-			if ( wpcf7_is_number( $i ) and (float) $threshold < (float) $i ) {
-				return new WP_Error( 'wpcf7_invalid_maxnumber',
-					$this->get_property( 'error' )
-				);
+			if ( wpcf7_is_date( $i ) and $threshold < $i ) {
+				return $this->create_error();
 			}
 		}
 

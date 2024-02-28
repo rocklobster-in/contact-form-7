@@ -39,74 +39,49 @@ trait WPCF7_ConfigValidator_Mail {
 		$example_text = 'example';
 		$example_blank = '';
 
-		$form_tags = $this->contact_form->scan_form_tags(
-			array( 'name' => $field_name )
-		);
+		// for back-compat
+		$field_name = preg_replace( '/^wpcf7\./', '_', $field_name );
 
-		if ( $form_tags ) {
-			$form_tag = new WPCF7_FormTag( $form_tags[0] );
+		if ( '_site_admin_email' === $field_name ) {
+			return get_bloginfo( 'admin_email', 'raw' );
 
-			$is_required = $form_tag->is_required() || 'radio' === $form_tag->type;
+		} elseif ( '_user_agent' === $field_name ) {
+			return $example_text;
 
-			if ( ! $is_required ) {
-				return $example_blank;
-			}
+		} elseif ( '_user_email' === $field_name ) {
+			return $this->contact_form->is_true( 'subscribers_only' )
+				? $example_email
+				: $example_blank;
 
-			if ( wpcf7_form_tag_supports( $form_tag->type, 'selectable-values' ) ) {
-				if ( $form_tag->pipes instanceof WPCF7_Pipes ) {
-					if ( $mail_tag->get_option( 'do_not_heat' ) ) {
-						$before_pipes = $form_tag->pipes->collect_befores();
-						$last_item = array_pop( $before_pipes );
-					} else {
-						$after_pipes = $form_tag->pipes->collect_afters();
-						$last_item = array_pop( $after_pipes );
-					}
-				} else {
-					$last_item = array_pop( $form_tag->values );
-				}
+		} elseif ( str_starts_with( $field_name, '_user_' ) ) {
+			return $this->contact_form->is_true( 'subscribers_only' )
+				? $example_text
+				: $example_blank;
 
-				if ( $last_item and wpcf7_is_mailbox_list( $last_item ) ) {
-					return $example_email;
-				} else {
-					return $example_text;
-				}
-			}
+		} elseif ( str_starts_with( $field_name, '_' ) ) {
+			return str_ends_with( $field_name, '_email' )
+				? $example_email
+				: $example_text;
 
-			if ( 'email' === $form_tag->basetype ) {
-				return $example_email;
-			} else {
-				return $example_text;
-			}
-
-		} else { // maybe special mail tag
-			// for back-compat
-			$field_name = preg_replace( '/^wpcf7\./', '_', $field_name );
-
-			if ( '_site_admin_email' === $field_name ) {
-				return get_bloginfo( 'admin_email', 'raw' );
-
-			} elseif ( '_user_agent' === $field_name ) {
-				return $example_text;
-
-			} elseif ( '_user_email' === $field_name ) {
-				return $this->contact_form->is_true( 'subscribers_only' )
-					? $example_email
-					: $example_blank;
-
-			} elseif ( str_starts_with( $field_name, '_user_' ) ) {
-				return $this->contact_form->is_true( 'subscribers_only' )
-					? $example_text
-					: $example_blank;
-
-			} elseif ( str_starts_with( $field_name, '_' ) ) {
-				return str_ends_with( $field_name, '_email' )
-					? $example_email
-					: $example_text;
-
-			}
 		}
 
-		return $tag;
+		static $opcalcset = array();
+
+		if ( ! isset( $opcalcset[$this->contact_form->id()] ) ) {
+			$opcalcset[$this->contact_form->id()] =
+				new WPCF7_MailTag_OutputCalculator( $this->contact_form );
+		}
+
+		$opcalc = $opcalcset[$this->contact_form->id()];
+		$op = $opcalc->calc_output( $mail_tag );
+
+		if ( WPCF7_MailTag_OutputCalculator::email === $op ) {
+			return $example_email;
+		} elseif ( ! ( WPCF7_MailTag_OutputCalculator::blank & $op ) ) {
+			return $example_text;
+		} else {
+			return $example_blank;
+		}
 	}
 
 

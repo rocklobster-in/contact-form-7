@@ -1,8 +1,10 @@
 <?php
 
-class WPCF7_SWV_MinFileSizeRule extends WPCF7_SWV_Rule {
+namespace Contactable\SWV;
 
-	const rule_name = 'minfilesize';
+class MaxFileSizeRule extends Rule {
+
+	const rule_name = 'maxfilesize';
 
 	public function matches( $context ) {
 		if ( false === parent::matches( $context ) ) {
@@ -28,10 +30,8 @@ class WPCF7_SWV_MinFileSizeRule extends WPCF7_SWV_Rule {
 
 		$threshold = $this->get_property( 'threshold' );
 
-		if ( array_sum( $input ) < $threshold ) {
-			return new WP_Error( 'wpcf7_invalid_minfilesize',
-				$this->get_property( 'error' )
-			);
+		if ( $threshold < array_sum( $input ) ) {
+			return $this->create_error();
 		}
 
 		return true;

@@ -1,8 +1,10 @@
 <?php
 
-class WPCF7_SWV_MaxFileSizeRule extends WPCF7_SWV_Rule {
+namespace Contactable\SWV;
 
-	const rule_name = 'maxfilesize';
+class RequiredFileRule extends Rule {
+
+	const rule_name = 'requiredfile';
 
 	public function matches( $context ) {
 		if ( false === parent::matches( $context ) ) {
@@ -18,20 +20,15 @@ class WPCF7_SWV_MaxFileSizeRule extends WPCF7_SWV_Rule {
 
 	public function validate( $context ) {
 		$field = $this->get_property( 'field' );
-		$input = isset( $_FILES[$field]['size'] ) ? $_FILES[$field]['size'] : '';
+
+		$input = isset( $_FILES[$field]['tmp_name'] )
+			? $_FILES[$field]['tmp_name'] : '';
+
 		$input = wpcf7_array_flatten( $input );
 		$input = wpcf7_exclude_blank( $input );
 
 		if ( empty( $input ) ) {
-			return true;
-		}
-
-		$threshold = $this->get_property( 'threshold' );
-
-		if ( $threshold < array_sum( $input ) ) {
-			return new WP_Error( 'wpcf7_invalid_maxfilesize',
-				$this->get_property( 'error' )
-			);
+			return $this->create_error();
 		}
 
 		return true;

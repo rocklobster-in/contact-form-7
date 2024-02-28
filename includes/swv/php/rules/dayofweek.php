@@ -1,6 +1,8 @@
 <?php
 
-class WPCF7_SWV_DayofweekRule extends WPCF7_SWV_Rule {
+namespace Contactable\SWV;
+
+class DayofweekRule extends Rule {
 
 	const rule_name = 'dayofweek';
 
@@ -17,10 +19,7 @@ class WPCF7_SWV_DayofweekRule extends WPCF7_SWV_Rule {
 	}
 
 	public function validate( $context ) {
-		$field = $this->get_property( 'field' );
-
-		$input = isset( $_POST[$field] ) ? $_POST[$field] : '';
-
+		$input = $this->get_default_input();
 		$input = wpcf7_array_flatten( $input );
 		$input = wpcf7_exclude_blank( $input );
 
@@ -35,9 +34,7 @@ class WPCF7_SWV_DayofweekRule extends WPCF7_SWV_Rule {
 				$dow = (int) $datetime->format( 'N' );
 
 				if ( ! in_array( $dow, $acceptable_values, true ) ) {
-					return new WP_Error( 'wpcf7_invalid_dayofweek',
-						$this->get_property( 'error' )
-					);
+					return $this->create_error();
 				}
 			}
 		}
