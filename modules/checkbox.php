@@ -303,12 +303,10 @@ function wpcf7_posted_data_checkbox( $value, $value_orig, $form_tag ) {
 
 		$last_val = array_pop( $value );
 
-		if ( $free_text and isset( $last_val ) ) {
+		if ( isset( $last_val ) ) {
 			$last_val = sprintf( '%s %s', $last_val, $free_text );
-			$last_val = trim( $last_val );
+			$value[] = trim( $last_val );
 		}
-
-		array_push( $value, $last_val );
 	}
 
 	return $value;
