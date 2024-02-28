@@ -135,7 +135,7 @@ class WPCF7_SWV_Schema extends \Contactable\SWV\CompositeRule {
 	/**
 	 * The human-readable version of the schema.
 	 */
-	const version = 'Contact Form 7 SWV Schema 2023-07';
+	const version = 'Contact Form 7 SWV Schema 2024-02';
 
 
 	/**
