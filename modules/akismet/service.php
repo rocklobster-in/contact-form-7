@@ -39,7 +39,7 @@ class WPCF7_Akismet extends WPCF7_Service {
 
 	public function link() {
 		echo wpcf7_link(
-			'https://jetpack.com/features/security/?aff=12674&cid=2428010',
+			'https://akismet.com/',
 			'akismet.com'
 		);
 	}
