@@ -1,7 +1,7 @@
 === Contact Form 7 ===
 Contributors: takayukister
 Donate link: https://contactform7.com/donate/
-Tags: contact, form, contact form, feedback, email, ajax, captcha, akismet, multilingual
+Tags: contact form
 Requires at least: 6.3
 Requires PHP: 7.4
 Tested up to: 6.4
