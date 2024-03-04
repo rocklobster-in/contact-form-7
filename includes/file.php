@@ -34,13 +34,15 @@ function wpcf7_unship_uploaded_file( $file, $args = '' ) {
 	}
 
 	if ( isset( $args['schema'] ) and isset( $args['name'] ) ) {
-		$result = $args['schema']->validate( array(
+		$context = array(
 			'file' => true,
 			'field' => $args['name'],
-		) );
+		);
 
-		if ( is_wp_error( $result ) ) {
-			return $result;
+		foreach ( $args['schema']->validate( $context ) as $result ) {
+			if ( is_wp_error( $result ) ) {
+				return $result;
+			}
 		}
 	}
 
