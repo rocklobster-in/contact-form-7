@@ -65,8 +65,6 @@ class WPCF7_RECAPTCHA extends WPCF7_Service {
 			$sitekey = WPCF7_RECAPTCHA_SITEKEY;
 		}
 
-		$sitekey = apply_filters( 'wpcf7_recaptcha_sitekey', $sitekey );
-
 		return $sitekey;
 	}
 
@@ -82,40 +80,41 @@ class WPCF7_RECAPTCHA extends WPCF7_Service {
 			$secret = WPCF7_RECAPTCHA_SECRET;
 		}
 
-		$secret = apply_filters( 'wpcf7_recaptcha_secret', $secret );
-
 		return $secret;
 	}
 
 
 	public function get_sitekey() {
+		$sitekey = false;
+
 		if ( $this->get_global_sitekey() and $this->get_global_secret() ) {
-			return $this->get_global_sitekey();
-		}
-
-		if ( empty( $this->sitekeys )
+			$sitekey = $this->get_global_sitekey();
+		} elseif ( empty( $this->sitekeys )
 		or ! is_array( $this->sitekeys ) ) {
-			return false;
+			$sitekey = false;
+		} else {
+			$sitekeys = array_keys( $this->sitekeys );
+			$sitekey = $sitekeys[0];
 		}
-
-		$sitekeys = array_keys( $this->sitekeys );
-
-		return $sitekeys[0];
+		
+		$sitekey = apply_filters( 'wpcf7_recaptcha_sitekey', $sitekey );
+		return $sitekey;
 	}
 
 
 	public function get_secret( $sitekey ) {
-		if ( $this->get_global_sitekey() and $this->get_global_secret() ) {
-			return $this->get_global_secret();
-		}
-
+		$secret = false;
 		$sitekeys = (array) $this->sitekeys;
 
-		if ( isset( $sitekeys[$sitekey] ) ) {
-			return $sitekeys[$sitekey];
+		if ( $this->get_global_sitekey() and $this->get_global_secret() ) {
+			$secret = $this->get_global_secret();
+		} elseif ( isset( $sitekeys[$sitekey] ) ) {
+			$secret = $sitekeys[$sitekey];
 		} else {
-			return false;
+			$secret = false;
 		}
+
+		return apply_filters( 'wpcf7_recaptcha_secret', $secret );
 	}
 
 
