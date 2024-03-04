@@ -20,7 +20,7 @@ class FileRule extends Rule {
 
 	public function validate( $context ) {
 		$field = $this->get_property( 'field' );
-		$input = isset( $_FILES[$field]['name'] ) ? $_FILES[$field]['name'] : '';
+		$input = $_FILES[$field]['name'] ?? '';
 		$input = wpcf7_array_flatten( $input );
 		$input = wpcf7_exclude_blank( $input );
 

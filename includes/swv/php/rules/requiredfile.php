@@ -20,10 +20,7 @@ class RequiredFileRule extends Rule {
 
 	public function validate( $context ) {
 		$field = $this->get_property( 'field' );
-
-		$input = isset( $_FILES[$field]['tmp_name'] )
-			? $_FILES[$field]['tmp_name'] : '';
-
+		$input = $_FILES[$field]['tmp_name'] ?? '';
 		$input = wpcf7_array_flatten( $input );
 		$input = wpcf7_exclude_blank( $input );
 
