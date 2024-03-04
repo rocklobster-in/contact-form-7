@@ -356,44 +356,45 @@ class WPCF7_Submission {
 		$posted_data = wp_unslash( $posted_data );
 		$posted_data = $this->sanitize_posted_data( $posted_data );
 
-		foreach ( $posted_data as $pd_key => $pd_value ) {
-			$pd_value_orig = $pd_value;
+		$tags = $this->contact_form->scan_form_tags( array(
+			'feature' => array(
+				'name-attr',
+				'! not-for-mail',
+			),
+		) );
 
-			$tags = $this->contact_form->scan_form_tags( array(
-				'name' => $pd_key,
-				'feature' => array(
-					'name-attr',
-					'! not-for-mail',
-				),
-			) );
-
-			if ( empty( $tags ) ) {
-				continue;
+		$tags = array_reduce( $tags, static function ( $carry, $tag ) {
+			if ( $tag->name and ! isset( $carry[$tag->name] ) ) {
+				$carry[$tag->name] = $tag;
 			}
 
-			$tag = reset( $tags );
+			return $carry;
+		}, array() );
+
+		foreach ( $tags as $tag ) {
+			$value_orig = $value = $posted_data[$tag->name] ?? '';
 
 			if ( wpcf7_form_tag_supports( $tag->type, 'selectable-values' ) ) {
-				$pd_value = (array) $pd_value;
+				$value = (array) $value;
 
 				if ( WPCF7_USE_PIPE ) {
 					$pipes = $this->contact_form->get_pipes( $tag->name );
 
-					$pd_value = array_map( static function ( $value ) use ( $pipes ) {
+					$value = array_map( static function ( $value ) use ( $pipes ) {
 						return $pipes->do_pipe( $value );
-					}, $pd_value );
+					}, $value );
 				}
 			}
 
-			$pd_value = apply_filters( "wpcf7_posted_data_{$tag->type}",
-				$pd_value,
-				$pd_value_orig,
+			$value = apply_filters( "wpcf7_posted_data_{$tag->type}",
+				$value,
+				$value_orig,
 				$tag
 			);
 
-			$posted_data[$pd_key] = $pd_value;
+			$posted_data[$tag->name] = $value;
 
-			if ( $tag->has_option( 'consent_for:storage' ) and empty( $pd_value ) ) {
+			if ( $tag->has_option( 'consent_for:storage' ) and empty( $value ) ) {
 				$this->meta['do_not_store'] = true;
 			}
 		}
