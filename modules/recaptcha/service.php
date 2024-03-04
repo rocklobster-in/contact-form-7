@@ -97,8 +97,7 @@ class WPCF7_RECAPTCHA extends WPCF7_Service {
 			$sitekey = $sitekeys[0];
 		}
 		
-		$sitekey = apply_filters( 'wpcf7_recaptcha_sitekey', $sitekey );
-		return $sitekey;
+		return apply_filters( 'wpcf7_recaptcha_sitekey', $sitekey );
 	}
 
 
