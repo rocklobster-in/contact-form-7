@@ -25,8 +25,13 @@ class EnumRule extends Rule {
 
 		$acceptable_values = (array) $this->get_property( 'accept' );
 		$acceptable_values = array_map( 'strval', $acceptable_values );
-		$acceptable_values = array_filter( $acceptable_values );
 		$acceptable_values = array_unique( $acceptable_values );
+
+		$acceptable_values = array_filter( $acceptable_values,
+			static function ( $val ) {
+				return '' !== $val;
+			}
+		);
 
 		foreach ( $input as $i ) {
 			if ( ! in_array( $i, $acceptable_values, true ) ) {
