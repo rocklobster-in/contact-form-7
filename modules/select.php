@@ -191,10 +191,21 @@ function wpcf7_swv_add_select_enum_rules( $schema, $contact_form ) {
 	);
 
 	foreach ( $values as $field => $field_values ) {
+		$field_values = array_map(
+			static function ( $value ) {
+				return html_entity_decode(
+					(string) $value,
+					ENT_QUOTES | ENT_HTML5,
+					'UTF-8'
+				);
+			},
+			$field_values
+		);
+
 		$field_values = array_filter(
 			array_unique( $field_values ),
-			function ( $value ) {
-				return is_string( $value ) && '' !== $value;
+			static function ( $value ) {
+				return '' !== $value;
 			}
 		);
 
