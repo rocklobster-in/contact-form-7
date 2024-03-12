@@ -78,9 +78,9 @@ Do you have questions or issues with Contact Form 7? Use these support channels 
 
 For more information, see [Releases](https://contactform7.com/category/releases/).
 
-= 5.9.1 =
+= 5.9.2 =
 
-[https://contactform7.com/contact-form-7-591/](https://contactform7.com/contact-form-7-591/)
+[https://contactform7.com/contact-form-7-592/](https://contactform7.com/contact-form-7-592/)
 
 = 5.9 =
 
