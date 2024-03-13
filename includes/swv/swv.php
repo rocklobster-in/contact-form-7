@@ -66,7 +66,7 @@ function wpcf7_swv_load_rules() {
  *
  * @param string $rule_name Rule name.
  * @param string|array $properties Optional. Rule properties.
- * @return Rule|null The rule object, or null if it failed.
+ * @return \Contactable\SWV\Rule|null The rule object, or null if it failed.
  */
 function wpcf7_swv_create_rule( $rule_name, $properties = '' ) {
 	$rules = wpcf7_swv_available_rules();
