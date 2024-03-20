@@ -375,7 +375,7 @@ class WPCF7_Submission {
 			$value_orig = $value = $posted_data[$tag->name] ?? '';
 
 			if ( wpcf7_form_tag_supports( $tag->type, 'selectable-values' ) ) {
-				$value = (array) $value;
+				$value = ( '' === $value ) ? array() : (array) $value;
 
 				if ( WPCF7_USE_PIPE ) {
 					$pipes = $this->contact_form->get_pipes( $tag->name );
