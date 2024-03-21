@@ -168,24 +168,6 @@ function wpcf7_quiz_ajax_refill( $items ) {
 }
 
 
-/* Mail-tag replacement */
-
-add_filter( 'wpcf7_mail_tag_replaced_quiz', 'wpcf7_quiz_mail_tag', 10, 4 );
-
-function wpcf7_quiz_mail_tag( $replaced, $submitted, $html, $mail_tag ) {
-	$field_name = $mail_tag->field_name();
-	$submitted = $_POST[$field_name] ?? '';
-	$replaced = $submitted;
-
-	if ( $html ) {
-		$replaced = esc_html( $replaced );
-		$replaced = wptexturize( $replaced );
-	}
-
-	return $replaced;
-}
-
-
 /* Messages */
 
 add_filter( 'wpcf7_messages', 'wpcf7_quiz_messages', 10, 1 );
