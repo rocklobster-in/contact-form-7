@@ -19,6 +19,7 @@ function wpcf7_init_block_editor_assets() {
 
 	$assets = wp_parse_args( $assets, array(
 		'dependencies' => array(
+			'react',
 			'wp-api-fetch',
 			'wp-block-editor',
 			'wp-blocks',
@@ -45,42 +46,7 @@ function wpcf7_init_block_editor_assets() {
 	register_block_type(
 		wpcf7_plugin_path( 'includes/block-editor' ),
 		array(
-			'editor_script' => 'contact-form-7-block-editor',
+			'editor_script_handles' => 'contact-form-7-block-editor',
 		)
-	);
-}
-
-
-add_action(
-	'enqueue_block_editor_assets',
-	'wpcf7_enqueue_block_editor_assets',
-	10, 0
-);
-
-function wpcf7_enqueue_block_editor_assets() {
-	$contact_forms = array_map(
-		static function ( $contact_form ) {
-			return array(
-				'id' => $contact_form->id(),
-				'hash' => $contact_form->hash(),
-				'slug' => $contact_form->name(),
-				'title' => $contact_form->title(),
-				'locale' => $contact_form->locale(),
-			);
-		},
-		WPCF7_ContactForm::find( array(
-			'posts_per_page' => 20,
-			'orderby' => 'modified',
-			'order' => 'DESC',
-		) )
-	);
-
-	wp_add_inline_script(
-		'contact-form-7-block-editor',
-		sprintf(
-			'window.wpcf7 = {contactForms:%s};',
-			wp_json_encode( $contact_forms )
-		),
-		'before'
 	);
 }
