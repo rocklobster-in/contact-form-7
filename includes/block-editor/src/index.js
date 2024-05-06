@@ -2,10 +2,6 @@ import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
 import { useBlockProps } from '@wordpress/block-editor';
 
-window.wpcf7 = window.wpcf7 ?? {
-	contactForms: [],
-};
-
 import icon from './icon';
 import edit from './edit';
 import transforms from './transforms';
