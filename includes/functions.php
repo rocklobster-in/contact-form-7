@@ -271,6 +271,7 @@ function wpcf7_get_request_uri() {
 
 	if ( empty( $request_uri ) ) {
 		$request_uri = add_query_arg( array() );
+		$request_uri = '/' . ltrim( $request_uri, '/' );
 	}
 
 	return sanitize_url( $request_uri );
