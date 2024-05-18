@@ -555,6 +555,28 @@ class WPCF7_ContactForm {
 
 		$this->unit_tag = self::generate_unit_tag( $this->id );
 
+		$action_url = wpcf7_get_request_uri();
+
+		if ( $frag = strstr( $action_url, '#' ) ) {
+			$action_url = substr( $action_url, 0, -strlen( $frag ) );
+		}
+
+		$action_url .= '#' . $this->unit_tag();
+
+		$action_url = apply_filters( 'wpcf7_form_action_url', $action_url );
+
+		if (
+			str_starts_with( $action_url, '//' ) or
+			! str_starts_with( $action_url, '/' ) and
+			! str_starts_with( $action_url, home_url() )
+		) {
+			return sprintf(
+				'<p class="wpcf7-invalid-action-url"><strong>%1$s</strong> %2$s</p>',
+				esc_html( __( 'Error:', 'contact-form-7' ) ),
+				esc_html( __( "Invalid action URL is detected.", 'contact-form-7' ) )
+			);
+		}
+
 		$lang_tag = str_replace( '_', '-', $this->locale );
 
 		if ( preg_match( '/^([a-z]+-[a-z]+)-/i', $lang_tag, $matches ) ) {
@@ -572,16 +594,6 @@ class WPCF7_ContactForm {
 		);
 
 		$html .= "\n" . $this->screen_reader_response() . "\n";
-
-		$url = wpcf7_get_request_uri();
-
-		if ( $frag = strstr( $url, '#' ) ) {
-			$url = substr( $url, 0, -strlen( $frag ) );
-		}
-
-		$url .= '#' . $this->unit_tag();
-
-		$url = apply_filters( 'wpcf7_form_action_url', $url );
 
 		$id_attr = apply_filters( 'wpcf7_form_id_attr',
 			preg_replace( '/[^A-Za-z0-9:._-]/', '', $args['html_id'] )
@@ -627,7 +639,7 @@ class WPCF7_ContactForm {
 		$autocomplete = apply_filters( 'wpcf7_form_autocomplete', '' );
 
 		$atts = array(
-			'action' => esc_url( $url ),
+			'action' => esc_url( $action_url ),
 			'method' => 'post',
 			'class' => ( '' !== $class ) ? $class : null,
 			'id' => ( '' !== $id_attr ) ? $id_attr : null,
