@@ -693,3 +693,17 @@ function wpcf7_anonymize_ip_addr( $ip_addr ) {
 
 	return inet_ntop( $packed & inet_pton( $mask ) );
 }
+
+
+/**
+ * Checks if a string starts with a given substring
+ * 
+ * @param string $haystack - The string to search in.
+ * @param string $needle - The substring to search for in the haystack.
+ * @return bool - True if the haystack starts with the needle, false otherwise.
+ */
+if (!function_exists('str_starts_with')) {
+    function str_starts_with(string $haystack, string $needle): bool {
+        return substr($haystack, 0, strlen($needle)) === $needle;
+    }
+}
