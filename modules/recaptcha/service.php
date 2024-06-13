@@ -133,6 +133,10 @@ class WPCF7_RECAPTCHA extends WPCF7_Service {
 
 		$endpoint = 'https://www.google.com/recaptcha/api/siteverify';
 
+		if ( apply_filters( 'wpcf7_use_recaptcha_net', false ) ) {
+			$endpoint = 'https://www.recaptcha.net/recaptcha/api/siteverify';
+		}
+
 		$sitekey = $this->get_sitekey();
 		$secret = $this->get_secret( $sitekey );
 
