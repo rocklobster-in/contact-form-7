@@ -30,7 +30,7 @@ function wpcf7_textarea_form_tag_handler( $tag ) {
 
 	$atts['cols'] = $tag->get_cols_option( '40' );
 	$atts['rows'] = $tag->get_rows_option( '10' );
-	$atts['maxlength'] = $tag->get_maxlength_option();
+	$atts['maxlength'] = $tag->get_maxlength_option( '400' );
 	$atts['minlength'] = $tag->get_minlength_option();
 
 	if ( $atts['maxlength'] and $atts['minlength']
@@ -119,7 +119,7 @@ function wpcf7_swv_add_textarea_rules( $schema, $contact_form ) {
 			);
 		}
 
-		if ( $maxlength = $tag->get_maxlength_option() ) {
+		if ( $maxlength = $tag->get_maxlength_option( '400' ) ) {
 			$schema->add_rule(
 				wpcf7_swv_create_rule( 'maxlength', array(
 					'field' => $tag->name,
