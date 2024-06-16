@@ -147,11 +147,11 @@ function wpcf7_exclude_blank( $input ) {
  * Creates a comma-separated list from a multi-dimensional array.
  *
  * @param mixed $input Array or item of array.
- * @param string|array $args Optional. Output options.
+ * @param string|array $options Optional. Output options.
  * @return string Comma-separated list.
  */
-function wpcf7_flat_join( $input, $args = '' ) {
-	$args = wp_parse_args( $args, array(
+function wpcf7_flat_join( $input, $options = '' ) {
+	$options = wp_parse_args( $options, array(
 		'separator' => ', ',
 	) );
 
@@ -164,7 +164,7 @@ function wpcf7_flat_join( $input, $args = '' ) {
 		}
 	}
 
-	return implode( $args['separator'], $output );
+	return implode( $options['separator'], $output );
 }
 
 
@@ -242,16 +242,16 @@ function wpcf7_load_css() {
  *
  * @param string $url Link URL.
  * @param string $anchor_text Anchor label text.
- * @param string|array $args Optional. Link options.
+ * @param string|array $atts Optional. HTML attributes.
  * @return string Formatted anchor element.
  */
-function wpcf7_link( $url, $anchor_text, $args = '' ) {
-	$args = wp_parse_args( $args, array(
+function wpcf7_link( $url, $anchor_text, $atts = '' ) {
+	$atts = wp_parse_args( $atts, array(
 		'id' => null,
 		'class' => null,
 	) );
 
-	$atts = array_merge( $args, array(
+	$atts = array_merge( $atts, array(
 		'href' => esc_url( $url ),
 	) );
 
@@ -294,22 +294,20 @@ function wpcf7_register_post_types() {
 /**
  * Returns the version string of this plugin.
  *
- * @param string|array $args Optional. Output options.
+ * @param string|array $options Optional. Output options.
  * @return string Version string.
  */
-function wpcf7_version( $args = '' ) {
-	$defaults = array(
+function wpcf7_version( $options = '' ) {
+	$options = wp_parse_args( $options, array(
 		'limit' => -1,
 		'only_major' => false,
-	);
+	) );
 
-	$args = wp_parse_args( $args, $defaults );
-
-	if ( $args['only_major'] ) {
-		$args['limit'] = 2;
+	if ( $options['only_major'] ) {
+		$options['limit'] = 2;
 	}
 
-	$args['limit'] = (int) $args['limit'];
+	$options['limit'] = (int) $options['limit'];
 
 	$ver = WPCF7_VERSION;
 	$ver = strtr( $ver, '_-+', '...' );
@@ -318,8 +316,8 @@ function wpcf7_version( $args = '' ) {
 	$ver = trim( $ver, '.' );
 	$ver = explode( '.', $ver );
 
-	if ( -1 < $args['limit'] ) {
-		$ver = array_slice( $ver, 0, $args['limit'] );
+	if ( -1 < $options['limit'] ) {
+		$ver = array_slice( $ver, 0, $options['limit'] );
 	}
 
 	$ver = implode( '.', $ver );
@@ -433,15 +431,15 @@ function wpcf7_rmdir_p( $dir ) {
  *
  * @link https://developer.wordpress.org/reference/functions/_http_build_query/
  *
- * @param array $args URL query parameters.
+ * @param array $data URL query parameters.
  * @param string $key Optional. If specified, used to prefix key name.
  * @return string Query string.
  */
-function wpcf7_build_query( $args, $key = '' ) {
+function wpcf7_build_query( $data, $key = '' ) {
 	$sep = '&';
 	$ret = array();
 
-	foreach ( (array) $args as $k => $v ) {
+	foreach ( (array) $data as $k => $v ) {
 		$k = urlencode( $k );
 
 		if ( ! empty( $key ) ) {
