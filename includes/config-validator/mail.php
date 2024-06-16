@@ -5,14 +5,14 @@ trait WPCF7_ConfigValidator_Mail {
 	/**
 	 * Replaces all mail-tags in the given content.
 	 */
-	public function replace_mail_tags( $content, $args = '' ) {
-		$args = wp_parse_args( $args, array(
+	public function replace_mail_tags( $content, $options = '' ) {
+		$options = wp_parse_args( $options, array(
 			'html' => false,
 			'callback' =>
 				array( $this, 'replace_mail_tags_with_minimum_input_callback' ),
 		) );
 
-		$content = new WPCF7_MailTaggedText( $content, $args );
+		$content = new WPCF7_MailTaggedText( $content, $options );
 
 		return $content->replace_tags();
 	}
