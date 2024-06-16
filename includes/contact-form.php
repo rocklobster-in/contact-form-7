@@ -105,23 +105,23 @@ class WPCF7_ContactForm {
 	/**
 	 * Returns a contact form data filled by default template contents.
 	 *
-	 * @param string|array $args Optional. Contact form options.
+	 * @param string|array $options Optional. Contact form options.
 	 * @return WPCF7_ContactForm A new contact form object.
 	 */
-	public static function get_template( $args = '' ) {
-		$args = wp_parse_args( $args, array(
+	public static function get_template( $options = '' ) {
+		$options = wp_parse_args( $options, array(
 			'locale' => null,
 			'title' => __( 'Untitled', 'contact-form-7' ),
 		) );
 
-		if ( ! isset( $args['locale'] ) ) {
-			$args['locale'] = determine_locale();
+		if ( ! isset( $options['locale'] ) ) {
+			$options['locale'] = determine_locale();
 		}
 
-		$callback = static function ( $args ) {
+		$callback = static function ( $options ) {
 			$contact_form = new self;
-			$contact_form->title = $args['title'];
-			$contact_form->locale = $args['locale'];
+			$contact_form->title = $options['title'];
+			$contact_form->locale = $options['locale'];
 
 			$properties = $contact_form->get_properties();
 
@@ -139,13 +139,13 @@ class WPCF7_ContactForm {
 		};
 
 		$contact_form = wpcf7_switch_locale(
-			$args['locale'],
+			$options['locale'],
 			$callback,
-			$args
+			$options
 		);
 
 		self::$current = apply_filters( 'wpcf7_contact_form_default_pack',
-			$contact_form, $args
+			$contact_form, $options
 		);
 
 		return self::$current;
