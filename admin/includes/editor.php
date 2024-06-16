@@ -91,17 +91,17 @@ function wpcf7_editor_panel_mail( $post ) {
 	) );
 }
 
-function wpcf7_editor_box_mail( $post, $args = '' ) {
-	$args = wp_parse_args( $args, array(
+function wpcf7_editor_box_mail( $post, $options = '' ) {
+	$options = wp_parse_args( $options, array(
 		'id' => 'wpcf7-mail',
 		'name' => 'mail',
 		'title' => __( 'Mail', 'contact-form-7' ),
 		'use' => null,
 	) );
 
-	$id = esc_attr( $args['id'] );
+	$id = esc_attr( $options['id'] );
 
-	$mail = wp_parse_args( $post->prop( $args['name'] ), array(
+	$mail = wp_parse_args( $post->prop( $options['name'] ), array(
 		'active' => false,
 		'recipient' => '',
 		'sender' => '',
@@ -115,12 +115,12 @@ function wpcf7_editor_box_mail( $post, $args = '' ) {
 
 ?>
 <div class="contact-form-editor-box-mail" id="<?php echo $id; ?>">
-<h2><?php echo esc_html( $args['title'] ); ?></h2>
+<h2><?php echo esc_html( $options['title'] ); ?></h2>
 
 <?php
-	if ( ! empty( $args['use'] ) ) :
+	if ( ! empty( $options['use'] ) ) :
 ?>
-<label for="<?php echo $id; ?>-active"><input type="checkbox" id="<?php echo $id; ?>-active" name="<?php echo $id; ?>[active]" data-config-field="" class="toggle-form-table" value="1"<?php echo ( $mail['active'] ) ? ' checked="checked"' : ''; ?> /> <?php echo esc_html( $args['use'] ); ?></label>
+<label for="<?php echo $id; ?>-active"><input type="checkbox" id="<?php echo $id; ?>-active" name="<?php echo $id; ?>[active]" data-config-field="" class="toggle-form-table" value="1"<?php echo ( $mail['active'] ) ? ' checked="checked"' : ''; ?> /> <?php echo esc_html( $options['use'] ); ?></label>
 <p class="description"><?php echo esc_html( __( "Mail (2) is an additional mail template often used as an autoresponder.", 'contact-form-7' ) ); ?></p>
 <?php
 	endif;
@@ -140,7 +140,7 @@ function wpcf7_editor_box_mail( $post, $args = '' ) {
 	echo esc_html( __( "In the following fields, you can use these mail-tags:",
 		'contact-form-7' ) );
 	echo '<br />';
-	$post->suggest_mail_tags( $args['name'] );
+	$post->suggest_mail_tags( $options['name'] );
 ?>
 </legend>
 <table class="form-table">
@@ -150,7 +150,7 @@ function wpcf7_editor_box_mail( $post, $args = '' ) {
 		<label for="<?php echo $id; ?>-recipient"><?php echo esc_html( __( 'To', 'contact-form-7' ) ); ?></label>
 	</th>
 	<td>
-		<input type="text" id="<?php echo $id; ?>-recipient" name="<?php echo $id; ?>[recipient]" class="large-text code" size="70" value="<?php echo esc_attr( $mail['recipient'] ); ?>" data-config-field="<?php echo sprintf( '%s.recipient', esc_attr( $args['name'] ) ); ?>" />
+		<input type="text" id="<?php echo $id; ?>-recipient" name="<?php echo $id; ?>[recipient]" class="large-text code" size="70" value="<?php echo esc_attr( $mail['recipient'] ); ?>" data-config-field="<?php echo sprintf( '%s.recipient', esc_attr( $options['name'] ) ); ?>" />
 	</td>
 	</tr>
 
@@ -159,7 +159,7 @@ function wpcf7_editor_box_mail( $post, $args = '' ) {
 		<label for="<?php echo $id; ?>-sender"><?php echo esc_html( __( 'From', 'contact-form-7' ) ); ?></label>
 	</th>
 	<td>
-		<input type="text" id="<?php echo $id; ?>-sender" name="<?php echo $id; ?>[sender]" class="large-text code" size="70" value="<?php echo esc_attr( $mail['sender'] ); ?>" data-config-field="<?php echo sprintf( '%s.sender', esc_attr( $args['name'] ) ); ?>" />
+		<input type="text" id="<?php echo $id; ?>-sender" name="<?php echo $id; ?>[sender]" class="large-text code" size="70" value="<?php echo esc_attr( $mail['sender'] ); ?>" data-config-field="<?php echo sprintf( '%s.sender', esc_attr( $options['name'] ) ); ?>" />
 	</td>
 	</tr>
 
@@ -168,7 +168,7 @@ function wpcf7_editor_box_mail( $post, $args = '' ) {
 		<label for="<?php echo $id; ?>-subject"><?php echo esc_html( __( 'Subject', 'contact-form-7' ) ); ?></label>
 	</th>
 	<td>
-		<input type="text" id="<?php echo $id; ?>-subject" name="<?php echo $id; ?>[subject]" class="large-text code" size="70" value="<?php echo esc_attr( $mail['subject'] ); ?>" data-config-field="<?php echo sprintf( '%s.subject', esc_attr( $args['name'] ) ); ?>" />
+		<input type="text" id="<?php echo $id; ?>-subject" name="<?php echo $id; ?>[subject]" class="large-text code" size="70" value="<?php echo esc_attr( $mail['subject'] ); ?>" data-config-field="<?php echo sprintf( '%s.subject', esc_attr( $options['name'] ) ); ?>" />
 	</td>
 	</tr>
 
@@ -177,7 +177,7 @@ function wpcf7_editor_box_mail( $post, $args = '' ) {
 		<label for="<?php echo $id; ?>-additional-headers"><?php echo esc_html( __( 'Additional headers', 'contact-form-7' ) ); ?></label>
 	</th>
 	<td>
-		<textarea id="<?php echo $id; ?>-additional-headers" name="<?php echo $id; ?>[additional_headers]" cols="100" rows="4" class="large-text code" data-config-field="<?php echo sprintf( '%s.additional_headers', esc_attr( $args['name'] ) ); ?>"><?php echo esc_textarea( $mail['additional_headers'] ); ?></textarea>
+		<textarea id="<?php echo $id; ?>-additional-headers" name="<?php echo $id; ?>[additional_headers]" cols="100" rows="4" class="large-text code" data-config-field="<?php echo sprintf( '%s.additional_headers', esc_attr( $options['name'] ) ); ?>"><?php echo esc_textarea( $mail['additional_headers'] ); ?></textarea>
 	</td>
 	</tr>
 
@@ -186,7 +186,7 @@ function wpcf7_editor_box_mail( $post, $args = '' ) {
 		<label for="<?php echo $id; ?>-body"><?php echo esc_html( __( 'Message body', 'contact-form-7' ) ); ?></label>
 	</th>
 	<td>
-		<textarea id="<?php echo $id; ?>-body" name="<?php echo $id; ?>[body]" cols="100" rows="18" class="large-text code" data-config-field="<?php echo sprintf( '%s.body', esc_attr( $args['name'] ) ); ?>"><?php echo esc_textarea( $mail['body'] ); ?></textarea>
+		<textarea id="<?php echo $id; ?>-body" name="<?php echo $id; ?>[body]" cols="100" rows="18" class="large-text code" data-config-field="<?php echo sprintf( '%s.body', esc_attr( $options['name'] ) ); ?>"><?php echo esc_textarea( $mail['body'] ); ?></textarea>
 
 		<p><label for="<?php echo $id; ?>-exclude-blank"><input type="checkbox" id="<?php echo $id; ?>-exclude-blank" name="<?php echo $id; ?>[exclude_blank]" value="1"<?php echo ( ! empty( $mail['exclude_blank'] ) ) ? ' checked="checked"' : ''; ?> /> <?php echo esc_html( __( 'Exclude lines with blank mail-tags from output', 'contact-form-7' ) ); ?></label></p>
 
@@ -199,7 +199,7 @@ function wpcf7_editor_box_mail( $post, $args = '' ) {
 		<label for="<?php echo $id; ?>-attachments"><?php echo esc_html( __( 'File attachments', 'contact-form-7' ) ); ?></label>
 	</th>
 	<td>
-		<textarea id="<?php echo $id; ?>-attachments" name="<?php echo $id; ?>[attachments]" cols="100" rows="4" class="large-text code" data-config-field="<?php echo sprintf( '%s.attachments', esc_attr( $args['name'] ) ); ?>"><?php echo esc_textarea( $mail['attachments'] ); ?></textarea>
+		<textarea id="<?php echo $id; ?>-attachments" name="<?php echo $id; ?>[attachments]" cols="100" rows="4" class="large-text code" data-config-field="<?php echo sprintf( '%s.attachments', esc_attr( $options['name'] ) ); ?>"><?php echo esc_textarea( $mail['attachments'] ); ?></textarea>
 	</td>
 	</tr>
 </tbody>

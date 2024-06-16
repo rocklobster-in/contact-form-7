@@ -134,7 +134,7 @@ function wpcf7_admin_enqueue_scripts( $hook_suffix ) {
 		array( 'in_footer' => true )
 	);
 
-	$args = array(
+	$l10n = array(
 		'apiSettings' => array(
 			'root' => sanitize_url( rest_url( 'contact-form-7/v1' ) ),
 			'namespace' => 'contact-form-7/v1',
@@ -164,11 +164,11 @@ function wpcf7_admin_enqueue_scripts( $hook_suffix ) {
 	and wpcf7_validate_configuration() ) {
 		$config_validator = new WPCF7_ConfigValidator( $post );
 		$config_validator->restore();
-		$args['configValidator']['errors'] =
+		$l10n['configValidator']['errors'] =
 			$config_validator->collect_error_messages();
 	}
 
-	wp_localize_script( 'wpcf7-admin', 'wpcf7', $args );
+	wp_localize_script( 'wpcf7-admin', 'wpcf7', $l10n );
 
 	add_thickbox();
 

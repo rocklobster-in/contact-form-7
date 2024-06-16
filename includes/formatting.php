@@ -191,19 +191,19 @@ function wpcf7_strip_newline( $text ) {
  * Canonicalizes text.
  *
  * @param string $text Input text.
- * @param string|array|object $args Options.
+ * @param string|array|object $options Options.
  * @return string Canonicalized text.
  */
-function wpcf7_canonicalize( $text, $args = '' ) {
+function wpcf7_canonicalize( $text, $options = '' ) {
 	// for back-compat
-	if ( is_string( $args ) and '' !== $args
-	and false === strpos( $args, '=' ) ) {
-		$args = array(
-			'strto' => $args,
+	if ( is_string( $options ) and '' !== $options
+	and false === strpos( $options, '=' ) ) {
+		$options = array(
+			'strto' => $options,
 		);
 	}
 
-	$args = wp_parse_args( $args, array(
+	$options = wp_parse_args( $options, array(
 		'strto' => 'lower',
 		'strip_separators' => false,
 	) );
@@ -229,19 +229,19 @@ function wpcf7_canonicalize( $text, $args = '' ) {
 		$text = mb_convert_kana( $text, 'asKV', $charset );
 	}
 
-	if ( $args['strip_separators'] ) {
+	if ( $options['strip_separators'] ) {
 		$text = preg_replace( '/[\r\n\t ]+/', '', $text );
 	} else {
 		$text = preg_replace( '/[\r\n\t ]+/', ' ', $text );
 	}
 
-	if ( 'lower' == $args['strto'] ) {
+	if ( 'lower' == $options['strto'] ) {
 		if ( function_exists( 'mb_strtolower' ) ) {
 			$text = mb_strtolower( $text, $charset );
 		} else {
 			$text = strtolower( $text );
 		}
-	} elseif ( 'upper' == $args['strto'] ) {
+	} elseif ( 'upper' == $options['strto'] ) {
 		if ( function_exists( 'mb_strtoupper' ) ) {
 			$text = mb_strtoupper( $text, $charset );
 		} else {
