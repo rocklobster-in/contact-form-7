@@ -28,10 +28,10 @@ class WPCF7_Submission {
 	/**
 	 * Returns the singleton instance of this class.
 	 */
-	public static function get_instance( $contact_form = null, $args = '' ) {
+	public static function get_instance( $contact_form = null, $options = '' ) {
 		if ( $contact_form instanceof WPCF7_ContactForm ) {
 			if ( empty( self::$instance ) ) {
-				self::$instance = new self( $contact_form, $args );
+				self::$instance = new self( $contact_form, $options );
 				self::$instance->proceed();
 				return self::$instance;
 			} else {
@@ -58,13 +58,13 @@ class WPCF7_Submission {
 	/**
 	 * Constructor.
 	 */
-	private function __construct( WPCF7_ContactForm $contact_form, $args = '' ) {
-		$args = wp_parse_args( $args, array(
+	private function __construct( WPCF7_ContactForm $contact_form, $options = '' ) {
+		$options = wp_parse_args( $options, array(
 			'skip_mail' => false,
 		) );
 
 		$this->contact_form = $contact_form;
-		$this->skip_mail = (bool) $args['skip_mail'];
+		$this->skip_mail = (bool) $options['skip_mail'];
 	}
 
 
@@ -208,15 +208,15 @@ class WPCF7_Submission {
 	/**
 	 * Adds items to the array of submission result properties.
 	 *
-	 * @param string|array|object $args Value to add to result properties.
+	 * @param string|array|object $data Value to add to result properties.
 	 * @return array Added result properties.
 	 */
-	public function add_result_props( $args = '' ) {
-		$args = wp_parse_args( $args, array() );
+	public function add_result_props( $data = '' ) {
+		$data = wp_parse_args( $data, array() );
 
-		$this->result_props = array_merge( $this->result_props, $args );
+		$this->result_props = array_merge( $this->result_props, $data );
 
-		return $args;
+		return $data;
 	}
 
 
@@ -667,13 +667,13 @@ class WPCF7_Submission {
 	 *
 	 * @link https://contactform7.com/2019/05/31/why-is-this-message-marked-spam/
 	 */
-	public function add_spam_log( $args = '' ) {
-		$args = wp_parse_args( $args, array(
+	public function add_spam_log( $data = '' ) {
+		$data = wp_parse_args( $data, array(
 			'agent' => '',
 			'reason' => '',
 		) );
 
-		$this->spam_log[] = $args;
+		$this->spam_log[] = $data;
 	}
 
 
@@ -834,7 +834,7 @@ class WPCF7_Submission {
 
 			$file = $_FILES[$tag->name];
 
-			$args = array(
+			$options = array(
 				'tag' => $tag,
 				'name' => $tag->name,
 				'required' => $tag->is_required(),
@@ -843,7 +843,7 @@ class WPCF7_Submission {
 				'schema' => $this->contact_form->get_schema(),
 			);
 
-			$new_files = wpcf7_unship_uploaded_file( $file, $args );
+			$new_files = wpcf7_unship_uploaded_file( $file, $options );
 
 			if ( is_wp_error( $new_files ) ) {
 				$result->invalidate( $tag, $new_files );
