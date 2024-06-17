@@ -7,12 +7,12 @@
  * Author URI: https://ideasilo.wordpress.com/
  * License: GPL v2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
- * Version: 5.9.5
+ * Version: 5.9.6
  * Requires at least: 6.3
  * Requires PHP: 7.4
  */
 
-define( 'WPCF7_VERSION', '5.9.5' );
+define( 'WPCF7_VERSION', '5.9.6' );
 
 define( 'WPCF7_REQUIRED_WP_VERSION', '6.3' );
 
