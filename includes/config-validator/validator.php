@@ -70,20 +70,20 @@ class WPCF7_ConfigValidator {
 	/**
 	 * Constructor.
 	 */
-	public function __construct( WPCF7_ContactForm $contact_form, $args = '' ) {
-		$args = wp_parse_args( $args, array(
+	public function __construct( WPCF7_ContactForm $contact_form, $options = '' ) {
+		$options = wp_parse_args( $options, array(
 			'include' => null,
 			'exclude' => null,
 		) );
 
 		$this->contact_form = $contact_form;
 
-		if ( isset( $args['include'] ) ) {
-			$this->include = (array) $args['include'];
+		if ( isset( $options['include'] ) ) {
+			$this->include = (array) $options['include'];
 		}
 
-		if ( isset( $args['exclude'] ) ) {
-			$this->exclude = (array) $args['exclude'];
+		if ( isset( $options['exclude'] ) ) {
+			$this->exclude = (array) $options['exclude'];
 		}
 	}
 
@@ -125,8 +125,8 @@ class WPCF7_ConfigValidator {
 	/**
 	 * Counts detected errors.
 	 */
-	public function count_errors( $args = '' ) {
-		$args = wp_parse_args( $args, array(
+	public function count_errors( $options = '' ) {
+		$options = wp_parse_args( $options, array(
 			'section' => '',
 			'code' => '',
 		) );
@@ -138,9 +138,9 @@ class WPCF7_ConfigValidator {
 				$key = sprintf( 'mail.%s', $matches[1] );
 			}
 
-			if ( $args['section']
-			and $key !== $args['section']
-			and preg_replace( '/\..*$/', '', $key, 1 ) !== $args['section'] ) {
+			if ( $options['section']
+			and $key !== $options['section']
+			and preg_replace( '/\..*$/', '', $key, 1 ) !== $options['section'] ) {
 				continue;
 			}
 
@@ -149,7 +149,7 @@ class WPCF7_ConfigValidator {
 					continue;
 				}
 
-				if ( $args['code'] and $error['code'] !== $args['code'] ) {
+				if ( $options['code'] and $error['code'] !== $options['code'] ) {
 					continue;
 				}
 
