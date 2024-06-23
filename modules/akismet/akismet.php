@@ -52,8 +52,7 @@ function wpcf7_akismet( $spam, $submission ) {
 		'blog_charset' => get_option( 'blog_charset' ),
 		'user_ip' => $submission->get_meta( 'remote_ip' ),
 		'user_agent' => $submission->get_meta( 'user_agent' ),
-		'referrer' => isset( $_SERVER['HTTP_REFERER'] )
-			? $_SERVER['HTTP_REFERER'] : '',
+		'referrer' => $_SERVER['HTTP_REFERER'] ?? '',
 	);
 
 	$datetime = date_create_immutable(

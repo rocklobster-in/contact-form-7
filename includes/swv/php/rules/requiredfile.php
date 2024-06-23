@@ -1,6 +1,8 @@
 <?php
 
-class WPCF7_SWV_RequiredFileRule extends WPCF7_SWV_Rule {
+namespace Contactable\SWV;
+
+class RequiredFileRule extends Rule {
 
 	const rule_name = 'requiredfile';
 
@@ -18,17 +20,12 @@ class WPCF7_SWV_RequiredFileRule extends WPCF7_SWV_Rule {
 
 	public function validate( $context ) {
 		$field = $this->get_property( 'field' );
-
-		$input = isset( $_FILES[$field]['tmp_name'] )
-			? $_FILES[$field]['tmp_name'] : '';
-
+		$input = $_FILES[$field]['tmp_name'] ?? '';
 		$input = wpcf7_array_flatten( $input );
 		$input = wpcf7_exclude_blank( $input );
 
 		if ( empty( $input ) ) {
-			return new WP_Error( 'wpcf7_invalid_requiredfile',
-				$this->get_property( 'error' )
-			);
+			return $this->create_error();
 		}
 
 		return true;

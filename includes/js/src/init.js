@@ -1,6 +1,5 @@
 import { absInt } from './utils';
 import { resetCaptcha, resetQuiz } from './reset';
-import { apiFetch } from './api-fetch';
 
 import {
 	exclusiveCheckboxHelper,
@@ -21,8 +20,12 @@ export default function init( form ) {
 		unitTag: formData.get( '_wpcf7_unit_tag' ),
 		containerPost: absInt( formData.get( '_wpcf7_container_post' ) ),
 		parent: form.closest( '.wpcf7' ),
-		schema: undefined,
+		get schema() {
+			return wpcf7.schemas.get( this.id );
+		},
 	};
+
+	wpcf7.schemas.set( form.wpcf7.id, undefined );
 
 	form.querySelectorAll( '.has-spinner' ).forEach( element => {
 		element.insertAdjacentHTML(
@@ -73,16 +76,23 @@ export default function init( form ) {
 		}
 	} );
 
-	apiFetch( {
-		endpoint: `contact-forms/${ form.wpcf7.id }/feedback/schema`,
-		method: 'GET',
-	} ).then( response => {
-		form.wpcf7.schema = response;
-	} );
-
 	form.addEventListener( 'change', event => {
 		if ( event.target.closest( '.wpcf7-form-control' ) ) {
 			wpcf7.validate( form, { target: event.target } );
 		}
+	} );
+
+	form.addEventListener( 'wpcf7statuschanged', event => {
+		const status = event.detail.status;
+
+		form.querySelectorAll( '.active-on-any' ).forEach( elm => {
+			elm.removeAttribute( 'inert' );
+			elm.classList.remove( 'active-on-any' );
+		} );
+
+		form.querySelectorAll( `.inert-on-${ status }` ).forEach( elm => {
+			elm.setAttribute( 'inert', 'inert' );
+			elm.classList.add( 'active-on-any' );
+		} );
 	} );
 }

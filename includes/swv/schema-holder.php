@@ -29,29 +29,18 @@ trait WPCF7_SWV_SchemaHolder {
 	 * Validates form inputs based on the schema and given context.
 	 */
 	public function validate_schema( $context, WPCF7_Validation $validity ) {
-		$callback = static function ( $rule ) use ( &$callback, $context, $validity ) {
-			if ( ! $rule->matches( $context ) ) {
-				return;
-			}
+		$schema = $this->get_schema();
 
-			if ( $rule instanceof WPCF7_SWV_CompositeRule ) {
-				foreach ( $rule->rules() as $child_rule ) {
-					call_user_func( $callback, $child_rule );
-				}
-			} else {
+		foreach ( $schema->validate( $context ) as $result ) {
+			if ( is_wp_error( $result ) ) {
+				$rule = $result->get_error_data();
 				$field = $rule->get_property( 'field' );
 
-				if ( $validity->is_valid( $field ) ) {
-					$result = $rule->validate( $context );
-
-					if ( is_wp_error( $result ) ) {
-						$validity->invalidate( $field, $result );
-					}
+				if ( isset( $field ) and $validity->is_valid( $field ) ) {
+					$validity->invalidate( $field, $result );
 				}
 			}
-		};
-
-		call_user_func( $callback, $this->get_schema() );
+		}
 	}
 
 }

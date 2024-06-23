@@ -72,11 +72,14 @@ function wpcf7_checkbox_form_tag_handler( $tag ) {
 			$tag->values = array_merge(
 				array_slice( $tag->values, 0, -1 ),
 				array_values( $data ),
-				array_slice( $tag->values, -1 ) );
+				array_slice( $tag->values, -1 )
+			);
+
 			$tag->labels = array_merge(
 				array_slice( $tag->labels, 0, -1 ),
 				array_values( $data ),
-				array_slice( $tag->labels, -1 ) );
+				array_slice( $tag->labels, -1 )
+			);
 		} else {
 			$tag->values = array_merge( $tag->values, array_values( $data ) );
 			$tag->labels = array_merge( $tag->labels, array_values( $data ) );
@@ -148,7 +151,7 @@ function wpcf7_checkbox_form_tag_handler( $tag ) {
 			$class .= ' last';
 
 			if ( $free_text ) {
-				$free_text_name = $tag->name . '_free_text';
+				$free_text_name = sprintf( '_wpcf7_free_text_%s', $tag->name );
 
 				$free_text_atts = array(
 					'name' => $free_text_name,
@@ -204,6 +207,120 @@ function wpcf7_swv_add_checkbox_rules( $schema, $contact_form ) {
 			) )
 		);
 	}
+}
+
+
+add_action(
+	'wpcf7_swv_create_schema',
+	'wpcf7_swv_add_checkbox_enum_rules',
+	20, 2
+);
+
+function wpcf7_swv_add_checkbox_enum_rules( $schema, $contact_form ) {
+	$tags = $contact_form->scan_form_tags( array(
+		'basetype' => array( 'checkbox', 'radio' ),
+	) );
+
+	$values = array_reduce(
+		$tags,
+		function ( $values, $tag ) {
+			if ( $tag->has_option( 'free_text' ) ) {
+				$values[$tag->name] = 'free_text';
+			}
+
+			if (
+				isset( $values[$tag->name] ) and
+				! is_array( $values[$tag->name] ) // Maybe 'free_text'
+			) {
+				return $values;
+			}
+
+			if ( ! isset( $values[$tag->name] ) ) {
+				$values[$tag->name] = array();
+			}
+
+			$tag_values = array_merge(
+				(array) $tag->values,
+				(array) $tag->get_data_option()
+			);
+
+			$values[$tag->name] = array_merge(
+				$values[$tag->name],
+				$tag_values
+			);
+
+			return $values;
+		},
+		array()
+	);
+
+	foreach ( $values as $field => $field_values ) {
+		if ( ! is_array( $field_values ) ) { // Maybe 'free_text'
+			continue;
+		}
+
+		$field_values = array_map(
+			static function ( $value ) {
+				return html_entity_decode(
+					(string) $value,
+					ENT_QUOTES | ENT_HTML5,
+					'UTF-8'
+				);
+			},
+			$field_values
+		);
+
+		$field_values = array_filter(
+			array_unique( $field_values ),
+			static function ( $value ) {
+				return '' !== $value;
+			}
+		);
+
+		$schema->add_rule(
+			wpcf7_swv_create_rule( 'enum', array(
+				'field' => $field,
+				'accept' => array_values( $field_values ),
+				'error' => $contact_form->filter_message(
+					__( "Undefined value was submitted through this field.", 'contact-form-7' )
+				),
+			) )
+		);
+	}
+}
+
+
+add_filter( 'wpcf7_posted_data_checkbox',
+	'wpcf7_posted_data_checkbox',
+	10, 3
+);
+
+add_filter( 'wpcf7_posted_data_checkbox*',
+	'wpcf7_posted_data_checkbox',
+	10, 3
+);
+
+add_filter( 'wpcf7_posted_data_radio',
+	'wpcf7_posted_data_checkbox',
+	10, 3
+);
+
+function wpcf7_posted_data_checkbox( $value, $value_orig, $form_tag ) {
+	if ( $form_tag->has_option( 'free_text' ) ) {
+		$value = (array) $value;
+
+		$free_text_name = sprintf( '_wpcf7_free_text_%s', $form_tag->name );
+		$free_text = wp_unslash( $_POST[$free_text_name] ?? '' );
+
+		$last_val = array_pop( $value );
+
+		if ( isset( $last_val ) ) {
+			$last_val = sprintf( '%s %s', $last_val, $free_text );
+			$value[] = trim( $last_val );
+		}
+	}
+
+	return $value;
 }
 
 

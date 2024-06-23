@@ -1,8 +1,10 @@
 <?php
 
-class WPCF7_SWV_MaxLengthRule extends WPCF7_SWV_Rule {
+namespace Contactable\SWV;
 
-	const rule_name = 'maxlength';
+class MinLengthRule extends Rule {
+
+	const rule_name = 'minlength';
 
 	public function matches( $context ) {
 		if ( false === parent::matches( $context ) ) {
@@ -17,8 +19,7 @@ class WPCF7_SWV_MaxLengthRule extends WPCF7_SWV_Rule {
 	}
 
 	public function validate( $context ) {
-		$field = $this->get_property( 'field' );
-		$input = isset( $_POST[$field] ) ? $_POST[$field] : '';
+		$input = $this->get_default_input();
 		$input = wpcf7_array_flatten( $input );
 		$input = wpcf7_exclude_blank( $input );
 
@@ -34,12 +35,10 @@ class WPCF7_SWV_MaxLengthRule extends WPCF7_SWV_Rule {
 
 		$threshold = (int) $this->get_property( 'threshold' );
 
-		if ( $total <= $threshold ) {
+		if ( $threshold <= $total ) {
 			return true;
 		} else {
-			return new WP_Error( 'wpcf7_invalid_maxlength',
-				$this->get_property( 'error' )
-			);
+			return $this->create_error();
 		}
 	}
 

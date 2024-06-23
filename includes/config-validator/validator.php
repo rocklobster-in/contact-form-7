@@ -4,6 +4,7 @@ require_once path_join( __DIR__, 'form.php' );
 require_once path_join( __DIR__, 'mail.php' );
 require_once path_join( __DIR__, 'messages.php' );
 require_once path_join( __DIR__, 'additional-settings.php' );
+require_once path_join( __DIR__, 'actions.php' );
 
 
 /**
@@ -13,15 +14,10 @@ require_once path_join( __DIR__, 'additional-settings.php' );
  */
 class WPCF7_ConfigValidator {
 
-	use WPCF7_ConfigValidator_Form;
-	use WPCF7_ConfigValidator_Mail;
-	use WPCF7_ConfigValidator_Messages;
-	use WPCF7_ConfigValidator_AdditionalSettings;
-
 	/**
 	 * The plugin version in which important updates happened last time.
 	 */
-	const last_important_update = '5.6.1';
+	const last_important_update = '5.8.1';
 
 	const error_codes = array(
 		'maybe_empty',
@@ -39,10 +35,18 @@ class WPCF7_ConfigValidator {
 		'dots_in_names',
 		'colons_in_names',
 		'upload_filesize_overlimit',
+		'unsafe_email_without_protection',
 	);
+
+	use WPCF7_ConfigValidator_Form;
+	use WPCF7_ConfigValidator_Mail;
+	use WPCF7_ConfigValidator_Messages;
+	use WPCF7_ConfigValidator_AdditionalSettings;
 
 	private $contact_form;
 	private $errors = array();
+	private $include;
+	private $exclude;
 
 
 	/**
@@ -66,8 +70,21 @@ class WPCF7_ConfigValidator {
 	/**
 	 * Constructor.
 	 */
-	public function __construct( WPCF7_ContactForm $contact_form ) {
+	public function __construct( WPCF7_ContactForm $contact_form, $options = '' ) {
+		$options = wp_parse_args( $options, array(
+			'include' => null,
+			'exclude' => null,
+		) );
+
 		$this->contact_form = $contact_form;
+
+		if ( isset( $options['include'] ) ) {
+			$this->include = (array) $options['include'];
+		}
+
+		if ( isset( $options['exclude'] ) ) {
+			$this->exclude = (array) $options['exclude'];
+		}
 	}
 
 
@@ -88,10 +105,28 @@ class WPCF7_ConfigValidator {
 
 
 	/**
+	 * Returns true if the given error code is supported by this instance.
+	 */
+	public function supports( $error_code ) {
+		if ( isset( $this->include ) ) {
+			$supported_codes = array_intersect( self::error_codes, $this->include );
+		} else {
+			$supported_codes = self::error_codes;
+		}
+
+		if ( isset( $this->exclude ) ) {
+			$supported_codes = array_diff( $supported_codes, $this->exclude );
+		}
+
+		return in_array( $error_code, $supported_codes, true );
+	}
+
+
+	/**
 	 * Counts detected errors.
 	 */
-	public function count_errors( $args = '' ) {
-		$args = wp_parse_args( $args, array(
+	public function count_errors( $options = '' ) {
+		$options = wp_parse_args( $options, array(
 			'section' => '',
 			'code' => '',
 		) );
@@ -103,9 +138,9 @@ class WPCF7_ConfigValidator {
 				$key = sprintf( 'mail.%s', $matches[1] );
 			}
 
-			if ( $args['section']
-			and $key !== $args['section']
-			and preg_replace( '/\..*$/', '', $key, 1 ) !== $args['section'] ) {
+			if ( $options['section']
+			and $key !== $options['section']
+			and preg_replace( '/\..*$/', '', $key, 1 ) !== $options['section'] ) {
 				continue;
 			}
 
@@ -114,7 +149,7 @@ class WPCF7_ConfigValidator {
 					continue;
 				}
 
-				if ( $args['code'] and $error['code'] !== $args['code'] ) {
+				if ( $options['code'] and $error['code'] !== $options['code'] ) {
 					continue;
 				}
 
@@ -196,6 +231,27 @@ class WPCF7_ConfigValidator {
 
 
 	/**
+	 * Returns true if the specified section has the specified error.
+	 *
+	 * @param string $section The section where the error detected.
+	 * @param string $code The unique code of the error.
+	 */
+	public function has_error( $section, $code ) {
+		if ( empty( $this->errors[$section] ) ) {
+			return false;
+		}
+
+		foreach ( (array) $this->errors[$section] as $error ) {
+			if ( isset( $error['code'] ) and $error['code'] === $code ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+
+	/**
 	 * Adds a validation error.
 	 *
 	 * @param string $section The section where the error detected.
@@ -264,8 +320,6 @@ class WPCF7_ConfigValidator {
 	 * @return bool True if there is no error detected.
 	 */
 	public function validate() {
-		$this->errors = array();
-
 		$this->validate_form();
 		$this->validate_mail( 'mail' );
 		$this->validate_mail( 'mail_2' );

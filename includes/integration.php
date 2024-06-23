@@ -141,6 +141,8 @@ class WPCF7_Integration {
 <h2 class="title"><?php echo esc_html( $service->get_title() ); ?></h2>
 <div class="infobox">
 <?php echo esc_html( implode( ', ', $cats ) ); ?>
+<br />
+<?php $service->link(); ?>
 </div>
 <br class="clear" />
 
@@ -247,8 +249,8 @@ class WPCF7_Service_OAuth2 extends WPCF7_Service {
 
 
 	public function load( $action = '' ) {
-		if ( 'auth_redirect' == $action ) {
-			$code = isset( $_GET['code'] ) ? $_GET['code'] : '';
+		if ( 'auth_redirect' === $action ) {
+			$code = $_GET['code'] ?? '';
 
 			if ( $code ) {
 				$this->request_token( $code );

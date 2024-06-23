@@ -1,6 +1,6 @@
 <?php
 /**
- * Brevo (formerly Sendinblue) module main file
+ * Brevo module main file
  *
  * @link https://contactform7.com/sendinblue-integration/
  */
@@ -218,6 +218,18 @@ function wpcf7_sendinblue_collect_parameters() {
 			);
 		}
 	}
+
+	$params = array_map(
+		function ( $param ) {
+			if ( is_array( $param ) ) {
+				$param = wpcf7_array_flatten( $param );
+				$param = reset( $param );
+			}
+
+			return $param;
+		},
+		$params
+	);
 
 	$params = apply_filters(
 		'wpcf7_sendinblue_collect_parameters',

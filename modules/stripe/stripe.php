@@ -80,7 +80,7 @@ function wpcf7_stripe_enqueue_scripts() {
 			)
 		),
 		$assets['version'],
-		true
+		array( 'in_footer' => true )
 	);
 
 	$api_keys = $service->get_api_keys();

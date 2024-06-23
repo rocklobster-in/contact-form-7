@@ -1,6 +1,8 @@
 <?php
 
-class WPCF7_SWV_FileRule extends WPCF7_SWV_Rule {
+namespace Contactable\SWV;
+
+class FileRule extends Rule {
 
 	const rule_name = 'file';
 
@@ -18,14 +20,14 @@ class WPCF7_SWV_FileRule extends WPCF7_SWV_Rule {
 
 	public function validate( $context ) {
 		$field = $this->get_property( 'field' );
-		$input = isset( $_FILES[$field]['name'] ) ? $_FILES[$field]['name'] : '';
+		$input = $_FILES[$field]['name'] ?? '';
 		$input = wpcf7_array_flatten( $input );
 		$input = wpcf7_exclude_blank( $input );
 
 		$acceptable_filetypes = array();
 
 		foreach ( (array) $this->get_property( 'accept' ) as $accept ) {
-			if ( false === strpos( $accept, '/' ) ) {
+			if ( preg_match( '/^\.[a-z0-9]+$/i', $accept ) ) {
 				$acceptable_filetypes[] = strtolower( $accept );
 			} else {
 				foreach ( wpcf7_convert_mime_to_ext( $accept ) as $ext ) {
@@ -43,17 +45,13 @@ class WPCF7_SWV_FileRule extends WPCF7_SWV_Rule {
 			$last_period_pos = strrpos( $i, '.' );
 
 			if ( false === $last_period_pos ) { // no period
-				return new WP_Error( 'wpcf7_invalid_file',
-					$this->get_property( 'error' )
-				);
+				return $this->create_error();
 			}
 
 			$suffix = strtolower( substr( $i, $last_period_pos ) );
 
 			if ( ! in_array( $suffix, $acceptable_filetypes, true ) ) {
-				return new WP_Error( 'wpcf7_invalid_file',
-					$this->get_property( 'error' )
-				);
+				return $this->create_error();
 			}
 		}
 

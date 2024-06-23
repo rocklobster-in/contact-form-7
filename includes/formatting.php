@@ -191,19 +191,19 @@ function wpcf7_strip_newline( $text ) {
  * Canonicalizes text.
  *
  * @param string $text Input text.
- * @param string|array|object $args Options.
+ * @param string|array|object $options Options.
  * @return string Canonicalized text.
  */
-function wpcf7_canonicalize( $text, $args = '' ) {
+function wpcf7_canonicalize( $text, $options = '' ) {
 	// for back-compat
-	if ( is_string( $args ) and '' !== $args
-	and false === strpos( $args, '=' ) ) {
-		$args = array(
-			'strto' => $args,
+	if ( is_string( $options ) and '' !== $options
+	and false === strpos( $options, '=' ) ) {
+		$options = array(
+			'strto' => $options,
 		);
 	}
 
-	$args = wp_parse_args( $args, array(
+	$options = wp_parse_args( $options, array(
 		'strto' => 'lower',
 		'strip_separators' => false,
 	) );
@@ -229,19 +229,19 @@ function wpcf7_canonicalize( $text, $args = '' ) {
 		$text = mb_convert_kana( $text, 'asKV', $charset );
 	}
 
-	if ( $args['strip_separators'] ) {
+	if ( $options['strip_separators'] ) {
 		$text = preg_replace( '/[\r\n\t ]+/', '', $text );
 	} else {
 		$text = preg_replace( '/[\r\n\t ]+/', ' ', $text );
 	}
 
-	if ( 'lower' == $args['strto'] ) {
+	if ( 'lower' == $options['strto'] ) {
 		if ( function_exists( 'mb_strtolower' ) ) {
 			$text = mb_strtolower( $text, $charset );
 		} else {
 			$text = strtolower( $text );
 		}
-	} elseif ( 'upper' == $args['strto'] ) {
+	} elseif ( 'upper' == $options['strto'] ) {
 		if ( function_exists( 'mb_strtoupper' ) ) {
 			$text = mb_strtoupper( $text, $charset );
 		} else {
@@ -261,7 +261,7 @@ function wpcf7_canonicalize( $text, $args = '' ) {
  * @return string Sanitized unit-tag.
  */
 function wpcf7_sanitize_unit_tag( $tag ) {
-	$tag = preg_replace( '/[^A-Za-z0-9_-]/', '', $tag );
+	$tag = preg_replace( '/[^A-Za-z0-9_-]/', '', (string) $tag );
 	return $tag;
 }
 
@@ -274,6 +274,17 @@ function wpcf7_sanitize_unit_tag( $tag ) {
  */
 function wpcf7_antiscript_file_name( $filename ) {
 	$filename = wp_basename( $filename );
+
+	// Apply part of protection logic from sanitize_file_name().
+	$filename = str_replace(
+		array(
+			'?', '[', ']', '/', '\\', '=', '<', '>', ':', ';', ',', "'", '"',
+			'&', '$', '#', '*', '(', ')', '|', '~', '`', '!', '{', '}',
+			'%', '+', '’', '«', '»', '”', '“', chr( 0 )
+		),
+		'',
+		$filename
+	);
 
 	$filename = preg_replace( '/[\r\n\t -]+/', '-', $filename );
 	$filename = preg_replace( '/[\pC\pZ]+/iu', '', $filename );
@@ -522,7 +533,13 @@ function wpcf7_format_atts( $atts ) {
 		}
 
 		static $boolean_attributes = array(
-			'checked', 'disabled', 'multiple', 'readonly', 'required', 'selected',
+			'checked',
+			'disabled',
+			'inert',
+			'multiple',
+			'readonly',
+			'required',
+			'selected',
 		);
 
 		if ( in_array( $name, $boolean_attributes ) and '' === $value ) {

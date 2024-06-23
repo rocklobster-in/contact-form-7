@@ -27,7 +27,7 @@ class WPCF7_Sendinblue extends WPCF7_Service {
 	}
 
 	public function get_title() {
-		return __( 'Brevo (formerly Sendinblue)', 'contact-form-7' );
+		return __( 'Brevo', 'contact-form-7' );
 	}
 
 	public function is_active() {
@@ -47,7 +47,7 @@ class WPCF7_Sendinblue extends WPCF7_Service {
 
 	public function link() {
 		echo wpcf7_link(
-			'https://www.brevo.com/?tap_a=30591-fb13f0&tap_s=1031580-b1bb1d',
+			'https://get.brevo.com/wpcf7-integration',
 			'brevo.com'
 		);
 	}
@@ -88,9 +88,7 @@ class WPCF7_Sendinblue extends WPCF7_Service {
 				$this->reset_data();
 				$redirect_to = $this->menu_page_url( 'action=setup' );
 			} else {
-				$this->api_key = isset( $_POST['api_key'] )
-					? trim( $_POST['api_key'] )
-					: '';
+				$this->api_key = trim( $_POST['api_key'] ?? '' );
 
 				$confirmed = $this->confirm_key();
 
@@ -153,7 +151,7 @@ class WPCF7_Sendinblue extends WPCF7_Service {
 			'<p><strong>%s</strong></p>',
 			wpcf7_link(
 				__( 'https://contactform7.com/sendinblue-integration/', 'contact-form-7' ),
-				__( 'Brevo (formerly Sendinblue) integration', 'contact-form-7' )
+				__( 'Brevo integration', 'contact-form-7' )
 			)
 		);
 
@@ -252,12 +250,14 @@ trait WPCF7_Sendinblue_API {
 	}
 
 
-	public function get_lists() {
+	public function get_lists( $options = '' ) {
+		$options = wp_parse_args( $options, array(
+			'limit' => 50,
+			'offset' => 0,
+		) );
+
 		$endpoint = add_query_arg(
-			array(
-				'limit' => 50,
-				'offset' => 0,
-			),
+			$options,
 			'https://api.sendinblue.com/v3/contacts/lists'
 		);
 
@@ -336,7 +336,7 @@ trait WPCF7_Sendinblue_API {
 				'Content-Type' => 'application/json; charset=utf-8',
 				'API-Key' => $this->get_api_key(),
 			),
-			'body' => json_encode( $properties ),
+			'body' => wp_json_encode( $properties ),
 		);
 
 		$response = wp_remote_post( $endpoint, $request );
@@ -364,7 +364,7 @@ trait WPCF7_Sendinblue_API {
 				'Content-Type' => 'application/json; charset=utf-8',
 				'API-Key' => $this->get_api_key(),
 			),
-			'body' => json_encode( $properties ),
+			'body' => wp_json_encode( $properties ),
 		);
 
 		$response = wp_remote_post( $endpoint, $request );

@@ -36,8 +36,8 @@ class WPCF7_Pipes {
 
 	private $pipes = array();
 
-	public function __construct( array $texts ) {
-		foreach ( $texts as $text ) {
+	public function __construct( array $texts = null ) {
+		foreach ( (array) $texts as $text ) {
 			$this->add_pipe( $text );
 		}
 	}
@@ -45,6 +45,10 @@ class WPCF7_Pipes {
 	private function add_pipe( $text ) {
 		$pipe = new WPCF7_Pipe( $text );
 		$this->pipes[] = $pipe;
+	}
+
+	public function merge( self $another ) {
+		$this->pipes = array_merge( $this->pipes, $another->pipes );
 	}
 
 	public function do_pipe( $input ) {
@@ -108,4 +112,38 @@ class WPCF7_Pipes {
 			$this->pipes
 		);
 	}
+}
+
+
+/**
+ * Trait for classes that hold cross-tag WPCF7_Pipes object.
+ */
+trait WPCF7_PipesHolder {
+
+	protected $pipes;
+
+	public function get_pipes( $field_name ) {
+		if ( isset( $this->pipes[$field_name] ) ) {
+			return $this->pipes[$field_name];
+		}
+
+		$result = new WPCF7_Pipes;
+
+		$tags = $this->scan_form_tags( array(
+			'name' => $field_name,
+		) );
+
+		foreach ( $tags as $tag ) {
+			if ( $tag->pipes instanceof WPCF7_Pipes ) {
+				$result->merge( $tag->pipes );
+			}
+		}
+
+		return $this->pipes[$field_name] = $result;
+	}
+
+	public function scan_form_tags() {
+		return array();
+	}
+
 }

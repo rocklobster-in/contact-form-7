@@ -253,18 +253,46 @@ function wpcf7_is_email_in_site_domain( $email ) {
  *              false otherwise.
  */
 function wpcf7_is_file_path_in_content_dir( $path ) {
-	if ( $real_path = realpath( $path ) ) {
-		$path = $real_path;
-	} else {
+	if ( ! is_string( $path ) or '' === $path ) {
 		return false;
 	}
 
-	if ( 0 === strpos( $path, realpath( WP_CONTENT_DIR ) ) ) {
+	$callback = static function ( $path, $dir ) {
+		if ( $real_path = realpath( $path ) ) {
+			$path = $real_path;
+		} else {
+			return false;
+		}
+
+		if ( $real_dir = realpath( $dir ) ) {
+			$dir = trailingslashit( $real_dir );
+		} else {
+			return false;
+		}
+
+		return str_starts_with(
+			wp_normalize_path( $path ),
+			wp_normalize_path( $dir )
+		);
+	};
+
+	if (
+		call_user_func( $callback, $path, WP_CONTENT_DIR )
+	) {
 		return true;
 	}
 
-	if ( defined( 'UPLOADS' )
-	and 0 === strpos( $path, realpath( ABSPATH . UPLOADS ) ) ) {
+	if (
+		defined( 'UPLOADS' ) and
+		call_user_func( $callback, $path, ABSPATH . UPLOADS )
+	) {
+		return true;
+	}
+
+	if (
+		defined( 'WP_TEMP_DIR' ) and
+		call_user_func( $callback, $path, WP_TEMP_DIR )
+	) {
 		return true;
 	}
 

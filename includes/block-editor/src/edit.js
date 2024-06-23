@@ -1,5 +1,5 @@
 import { __ } from '@wordpress/i18n';
-import { useState } from '@wordpress/element';
+import { useState, useEffect } from '@wordpress/element';
 import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
 
 import {
@@ -31,8 +31,14 @@ export default function ContactFormSelectorEdit( { attributes, setAttributes } )
 	};
 
 	const [ contactForms, setContactForms ] = useState(
-		() => createMap( window.wpcf7.contactForms ?? [] )
+		() => createMap( [] )
 	);
+
+	useEffect( () => {
+		fetchContactForms().then( response => {
+			setContactForms( createMap( response ) );
+		} );
+	}, [] );
 
 	const blockProps = {
 		className: 'components-placeholder',

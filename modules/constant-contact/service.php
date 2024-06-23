@@ -113,10 +113,7 @@ class WPCF7_ConstantContact extends WPCF7_Service_OAuth2 {
 	}
 
 	public function link() {
-		echo sprintf( '<a href="%1$s">%2$s</a>',
-			'https://constant-contact.evyy.net/c/1293104/205991/3411',
-			'constantcontact.com'
-		);
+		echo 'constantcontact.com';
 	}
 
 	protected function get_redirect_uri() {
@@ -247,7 +244,7 @@ class WPCF7_ConstantContact extends WPCF7_Service_OAuth2 {
 				'Accept' => 'application/json',
 				'Content-Type' => 'application/json; charset=utf-8',
 			),
-			'body' => json_encode( $properties ),
+			'body' => wp_json_encode( $properties ),
 		);
 
 		$response = $this->remote_request( $endpoint, $request );
@@ -366,6 +363,15 @@ class WPCF7_ConstantContact extends WPCF7_Service_OAuth2 {
 	}
 
 	public function display( $action = '' ) {
+		echo sprintf(
+			'<p><strong>%1$s</strong> %2$s</p>',
+			esc_html( __( 'Warning:', 'contact-form-7' ) ),
+			wpcf7_link(
+				__( 'https://contactform7.com/2024/02/02/we-end-the-constant-contact-integration/', 'contact-form-7' ),
+				__( "This feature is deprecated. You are not recommended to use it.", 'contact-form-7' )
+			)
+		);
+
 		echo sprintf(
 			'<p>%s</p>',
 			esc_html( __( "The Constant Contact integration module allows you to send contact data collected through your contact forms to the Constant Contact API. You can create reliable email subscription services in a few easy steps.", 'contact-form-7' ) )

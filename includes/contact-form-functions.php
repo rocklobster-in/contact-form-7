@@ -221,7 +221,7 @@ function wpcf7_contact_form_tag_func( $atts, $content = null, $code = '' ) {
 		return '[contact-form-7]';
 	}
 
-	if ( 'contact-form-7' == $code ) {
+	if ( 'contact-form-7' === $code ) {
 		$atts = shortcode_atts(
 			array(
 				'id' => '',
@@ -269,19 +269,23 @@ function wpcf7_contact_form_tag_func( $atts, $content = null, $code = '' ) {
 		return $contact_form->form_html( $atts );
 	};
 
-	return wpcf7_switch_locale(
+	$output = wpcf7_switch_locale(
 		$contact_form->locale(),
 		$callback,
 		$contact_form, $atts
 	);
+
+	do_action( 'wpcf7_shortcode_callback', $contact_form, $atts );
+
+	return $output;
 }
 
 
 /**
  * Saves the contact form data.
  */
-function wpcf7_save_contact_form( $args = '', $context = 'save' ) {
-	$args = wp_parse_args( $args, array(
+function wpcf7_save_contact_form( $data = '', $context = 'save' ) {
+	$data = wp_parse_args( $data, array(
 		'id' => -1,
 		'title' => null,
 		'locale' => null,
@@ -292,56 +296,56 @@ function wpcf7_save_contact_form( $args = '', $context = 'save' ) {
 		'additional_settings' => null,
 	) );
 
-	$args = wp_unslash( $args );
+	$data = wp_unslash( $data );
 
-	$args['id'] = (int) $args['id'];
+	$data['id'] = (int) $data['id'];
 
-	if ( -1 == $args['id'] ) {
+	if ( -1 == $data['id'] ) {
 		$contact_form = WPCF7_ContactForm::get_template();
 	} else {
-		$contact_form = wpcf7_contact_form( $args['id'] );
+		$contact_form = wpcf7_contact_form( $data['id'] );
 	}
 
 	if ( empty( $contact_form ) ) {
 		return false;
 	}
 
-	if ( null !== $args['title'] ) {
-		$contact_form->set_title( $args['title'] );
+	if ( null !== $data['title'] ) {
+		$contact_form->set_title( $data['title'] );
 	}
 
-	if ( null !== $args['locale'] ) {
-		$contact_form->set_locale( $args['locale'] );
+	if ( null !== $data['locale'] ) {
+		$contact_form->set_locale( $data['locale'] );
 	}
 
 	$properties = array();
 
-	if ( null !== $args['form'] ) {
-		$properties['form'] = wpcf7_sanitize_form( $args['form'] );
+	if ( null !== $data['form'] ) {
+		$properties['form'] = wpcf7_sanitize_form( $data['form'] );
 	}
 
-	if ( null !== $args['mail'] ) {
-		$properties['mail'] = wpcf7_sanitize_mail( $args['mail'] );
+	if ( null !== $data['mail'] ) {
+		$properties['mail'] = wpcf7_sanitize_mail( $data['mail'] );
 		$properties['mail']['active'] = true;
 	}
 
-	if ( null !== $args['mail_2'] ) {
-		$properties['mail_2'] = wpcf7_sanitize_mail( $args['mail_2'] );
+	if ( null !== $data['mail_2'] ) {
+		$properties['mail_2'] = wpcf7_sanitize_mail( $data['mail_2'] );
 	}
 
-	if ( null !== $args['messages'] ) {
-		$properties['messages'] = wpcf7_sanitize_messages( $args['messages'] );
+	if ( null !== $data['messages'] ) {
+		$properties['messages'] = wpcf7_sanitize_messages( $data['messages'] );
 	}
 
-	if ( null !== $args['additional_settings'] ) {
+	if ( null !== $data['additional_settings'] ) {
 		$properties['additional_settings'] = wpcf7_sanitize_additional_settings(
-			$args['additional_settings']
+			$data['additional_settings']
 		);
 	}
 
 	$contact_form->set_properties( $properties );
 
-	do_action( 'wpcf7_save_contact_form', $contact_form, $args, $context );
+	do_action( 'wpcf7_save_contact_form', $contact_form, $data, $context );
 
 	if ( 'save' == $context ) {
 		$contact_form->save();

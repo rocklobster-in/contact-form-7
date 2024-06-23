@@ -61,7 +61,7 @@ class WPCF7_Stripe_API {
 		$headers = array(
 			'Authorization' => sprintf( 'Bearer %s', $this->secret ),
 			'Stripe-Version' => self::api_version,
-			'X-Stripe-Client-User-Agent' => json_encode( $ua ),
+			'X-Stripe-Client-User-Agent' => wp_json_encode( $ua ),
 			'User-Agent' => sprintf(
 				'%1$s/%2$s (%3$s)',
 				self::app_name,

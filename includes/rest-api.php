@@ -355,6 +355,13 @@ class WPCF7_REST_Controller {
 			$request->get_param( '_wpcf7_unit_tag' )
 		);
 
+		if ( empty( $unit_tag ) ) {
+			return new WP_Error( 'wpcf7_unit_tag_not_found',
+				__( "There is no valid unit tag.", 'contact-form-7' ),
+				array( 'status' => 400 )
+			);
+		}
+
 		$result = $item->submit();
 
 		$response = array_merge( $result, array(

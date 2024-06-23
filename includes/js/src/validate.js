@@ -29,13 +29,11 @@ export default function validate( form, options = {} ) {
 		}
 	}
 
-	const formData = new FormData();
+	const wrapList = scope.querySelectorAll( '.wpcf7-form-control-wrap' );
 
-	const targetFields = [];
-
-	for ( const wrap of scope.querySelectorAll( '.wpcf7-form-control-wrap' ) ) {
+	const formData = Array.from( wrapList ).reduce( ( formData, wrap ) => {
 		if ( wrap.closest( '.novalidate' ) ) {
-			continue;
+			return formData;
 		}
 
 		wrap.querySelectorAll(
@@ -72,20 +70,8 @@ export default function validate( form, options = {} ) {
 			}
 		} );
 
-		if ( wrap.dataset.name ) {
-			targetFields.push( wrap.dataset.name );
-
-			wrap.setAttribute( 'data-under-validation', '1' );
-
-			if ( wrap.contains( target ) ) {
-				break;
-			}
-		}
-	}
-
-	schema.rules = ( schema.rules ?? [] ).filter(
-		( { field } ) => targetFields.includes( field )
-	);
+		return formData;
+	}, new FormData() );
 
 	const prevStatus = form.getAttribute( 'data-status' );
 
@@ -94,25 +80,33 @@ export default function validate( form, options = {} ) {
 			if ( undefined !== swv ) {
 				const result = swv.validate( schema, formData, options );
 
-				for ( const [ field, { error, validInputs } ] of result ) {
-					removeValidationError( form, field );
-
-					if ( undefined !== error ) {
-						setValidationError( form, field, error, { scope } );
+				for ( const wrap of wrapList ) {
+					if ( undefined === wrap.dataset.name ) {
+						continue;
 					}
 
-					updateReflection( form, field, validInputs ?? [] );
+					const field = wrap.dataset.name;
+
+					if ( result.has( field ) ) {
+						const { error, validInputs } = result.get( field );
+
+						removeValidationError( form, field );
+
+						if ( undefined !== error ) {
+							setValidationError( form, field, error, { scope } );
+						}
+
+						updateReflection( form, field, validInputs ?? [] );
+					}
+
+					if ( wrap.contains( target ) ) {
+						break;
+					}
 				}
 			}
 		} )
 		.finally( () => {
 			setStatus( form, prevStatus );
-
-			form.querySelectorAll(
-				'.wpcf7-form-control-wrap[data-under-validation]'
-			).forEach( wrap => {
-				wrap.removeAttribute( 'data-under-validation' );
-			} );
 		} );
 }
 
@@ -156,13 +150,6 @@ export const setValidationError = ( form, fieldName, message, options ) => {
 		scope.querySelectorAll(
 			`.wpcf7-form-control-wrap[data-name="${ fieldName }"]`
 		).forEach( wrap => {
-			if (
-				'validating' === form.getAttribute( 'data-status' ) &&
-				! wrap.dataset.underValidation
-			) {
-				return;
-			}
-
 			const tip = document.createElement( 'span' );
 			tip.classList.add( 'wpcf7-not-valid-tip' );
 			tip.setAttribute( 'aria-hidden', 'true' );
