@@ -1,3 +1,5 @@
+import { __ } from '@wordpress/i18n';
+
 import init from './init';
 import submit from './submit';
 import reset from './reset';
@@ -44,6 +46,21 @@ document.addEventListener( 'DOMContentLoaded', event => {
 		schemas: new Map(),
 		...( wpcf7 ?? {} ),
 	};
+
+	document.querySelectorAll(
+		'form .wpcf7' // form-in-form situation
+	).forEach( div => {
+		const error = document.createElement( 'p' );
+		error.setAttribute( 'class', 'wpcf7-form-in-wrong-place' );
+
+		const label = document.createElement( 'strong' );
+		label.append( __( 'Error:', 'contact-form-7' ) );
+
+		const message = __( 'This contact form is placed in the wrong place.', 'contact-form-7' );
+
+		error.append( label, ' ', message );
+		div.replaceWith( error );
+	} );
 
 	document.querySelectorAll(
 		'.wpcf7 > form'
