@@ -4,8 +4,8 @@ Donate link: https://contactform7.com/donate/
 Tags: contact form, schema-woven validation
 Requires at least: 6.3
 Requires PHP: 7.4
-Tested up to: 6.5
-Stable tag: 5.9.5
+Tested up to: 6.6
+Stable tag: 5.9.6
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -36,7 +36,7 @@ If you activate certain features in this plugin, the contact form submitter's pe
 
 * reCAPTCHA ([Google](https://policies.google.com/?hl=en))
 * Akismet ([Automattic](https://automattic.com/privacy/))
-* Constant Contact ([Endurance International Group](https://www.endurance.com/privacy))
+* [Constant Contact](https://www.constantcontact.com/legal/privacy-center)
 * [Brevo](https://www.brevo.com/legal/privacypolicy/)
 * [Stripe](https://stripe.com/privacy)
 
@@ -77,6 +77,10 @@ Do you have questions or issues with Contact Form 7? Use these support channels 
 == Changelog ==
 
 For more information, see [Releases](https://contactform7.com/category/releases/).
+
+= 5.9.7 =
+
+[https://contactform7.com/contact-form-7-597/](https://contactform7.com/contact-form-7-597/)
 
 = 5.9.6 =
 
