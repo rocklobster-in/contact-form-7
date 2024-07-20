@@ -574,35 +574,31 @@ function wpcf7_format_atts( $atts ) {
  *
  * @link https://contactform7.com/2024/07/13/consistent-handling-policy-of-surrounding-whitespaces/
  *
- * @param string $input Input text.
- * @param string|array $options Options.
- * @return string Output text.
+ * @param string|array $input Input text.
+ * @return string|array Output text.
  */
-function wpcf7_strip_whitespaces( $input, $options = '' ) {
-	$options = wp_parse_args( $options, array(
-		'strip_leading' => true,
-		'strip_trailing' => true,
-	) );
+function wpcf7_strip_whitespaces( $input ) {
+	if ( is_array( $input ) ) {
+		return array_map( 'wpcf7_strip_whitespaces', $input );
+	}
 
 	// https://www.unicode.org/Public/UCD/latest/ucd/PropList.txt
 	// https://tc39.es/ecma262/multipage/ecmascript-language-lexical-grammar.html
 	$whitespaces = '\x09-\x0D\x20\x85\xA0\x{1680}\x{2000}-\x{200A}\x{2028}\x{2029}\x{202F}\x{205F}\x{3000}\x{FEFF}';
 
-	if ( $options['strip_leading'] ) {
-		$input = preg_replace(
-			sprintf( '/^[%s]+/u', $whitespaces ),
-			'',
-			$input
-		);
-	}
+	// Strip leading whitespaces
+	$input = preg_replace(
+		sprintf( '/^[%s]+/u', $whitespaces ),
+		'',
+		$input
+	);
 
-	if ( $options['strip_trailing'] ) {
-		$input = preg_replace(
-			sprintf( '/[%s]+$/u', $whitespaces ),
-			'',
-			$input
-		);
-	}
+	// Strip trailing whitespaces
+	$input = preg_replace(
+		sprintf( '/[%s]+$/u', $whitespaces ),
+		'',
+		$input
+	);
 
 	return $input;
 }
