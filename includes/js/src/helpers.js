@@ -100,8 +100,8 @@ export const initCharacterCount = form => {
 		const minimum = absInt( counter.getAttribute( 'data-minimum-value' ) );
 
 		const count = counter.classList.contains( 'down' )
-			? starting - target.value.length
-			: target.value.length;
+			? starting - target.value.trim().length
+			: target.value.trim().length;
 
 		counter.setAttribute( 'data-current-value', count );
 		counter.innerText = count;

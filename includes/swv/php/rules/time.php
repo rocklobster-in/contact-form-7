@@ -21,6 +21,7 @@ class TimeRule extends Rule {
 	public function validate( $context ) {
 		$input = $this->get_default_input();
 		$input = wpcf7_array_flatten( $input );
+		$input = wpcf7_strip_whitespaces( $input );
 		$input = wpcf7_exclude_blank( $input );
 
 		foreach ( $input as $i ) {

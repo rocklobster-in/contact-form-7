@@ -416,6 +416,7 @@ class WPCF7_Submission {
 		} elseif ( is_string( $value ) ) {
 			$value = wp_check_invalid_utf8( $value );
 			$value = wp_kses_no_null( $value );
+			$value = wpcf7_strip_whitespaces( $value );
 		}
 
 		return $value;
