@@ -100,8 +100,8 @@ export const initCharacterCount = form => {
 		const minimum = absInt( counter.getAttribute( 'data-minimum-value' ) );
 
 		const count = counter.classList.contains( 'down' )
-			? starting - target.value.length
-			: target.value.length;
+			? starting - target.value.trim().length
+			: target.value.trim().length;
 
 		counter.setAttribute( 'data-current-value', count );
 		counter.innerText = count;
@@ -149,5 +149,15 @@ export const initCharacterCount = form => {
 
 	form.addEventListener( 'wpcf7reset', event => {
 		bulkUpdate();
+	} );
+};
+
+export const initTrimStart = form => {
+	form.querySelectorAll(
+		'[maxlength], [minlength]'
+	).forEach( elm => {
+		elm.addEventListener( 'keyup', event => {
+			elm.value = elm.value.trimStart();
+		} );
 	} );
 };
