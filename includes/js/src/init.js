@@ -7,7 +7,6 @@ import {
 	urlInputHelper,
 	initSubmitButton,
 	initCharacterCount,
-	initTrimStart,
 } from './helpers';
 
 export default function init( form ) {
@@ -41,7 +40,6 @@ export default function init( form ) {
 
 	initSubmitButton( form );
 	initCharacterCount( form );
-	initTrimStart( form );
 
 	window.addEventListener( 'load', event => {
 		if ( wpcf7.cached ) {

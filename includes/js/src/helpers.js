@@ -151,13 +151,3 @@ export const initCharacterCount = form => {
 		bulkUpdate();
 	} );
 };
-
-export const initTrimStart = form => {
-	form.querySelectorAll(
-		'[maxlength], [minlength]'
-	).forEach( elm => {
-		elm.addEventListener( 'keyup', event => {
-			elm.value = elm.value.trimStart();
-		} );
-	} );
-};
