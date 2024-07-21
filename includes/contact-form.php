@@ -1325,10 +1325,12 @@ class WPCF7_ContactForm {
 
 	/**
 	 * Deletes this contact form.
+	 *
+	 * @return bool True if deletion succeeded, false otherwise.
 	 */
 	public function delete() {
 		if ( $this->initial() ) {
-			return;
+			return false;
 		}
 
 		if ( wp_delete_post( $this->id, true ) ) {
