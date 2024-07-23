@@ -22,6 +22,7 @@ function wpcf7_swv_available_rules() {
 		'date' => 'Contactable\SWV\DateRule',
 		'time' => 'Contactable\SWV\TimeRule',
 		'file' => 'Contactable\SWV\FileRule',
+		'stepnumber' => 'Contactable\SWV\StepNumberRule',
 		'enum' => 'Contactable\SWV\EnumRule',
 		'dayofweek' => 'Contactable\SWV\DayofweekRule',
 		'minitems' => 'Contactable\SWV\MinItemsRule',
