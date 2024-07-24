@@ -116,6 +116,13 @@ function wpcf7_swv_get_meta_schema() {
 								'type' => 'string',
 							),
 						),
+						'base' => array(
+							'type' => 'string',
+						),
+						'interval' => array(
+							'type' => 'number',
+							'minimum' => 0,
+						),
 						'threshold' => array(
 							'type' => 'string',
 						),
