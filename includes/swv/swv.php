@@ -34,6 +34,7 @@ function wpcf7_swv_available_rules() {
 		'maxdate' => 'Contactable\SWV\MaxDateRule',
 		'minfilesize' => 'Contactable\SWV\MinFileSizeRule',
 		'maxfilesize' => 'Contactable\SWV\MaxFileSizeRule',
+		'stepnumber' => 'Contactable\SWV\StepNumberRule',
 		'all' => 'Contactable\SWV\AllRule',
 		'any' => 'Contactable\SWV\AnyRule',
 	);
@@ -114,6 +115,13 @@ function wpcf7_swv_get_meta_schema() {
 							'items' => array(
 								'type' => 'string',
 							),
+						),
+						'base' => array(
+							'type' => 'string',
+						),
+						'interval' => array(
+							'type' => 'number',
+							'minimum' => 0,
 						),
 						'threshold' => array(
 							'type' => 'string',
