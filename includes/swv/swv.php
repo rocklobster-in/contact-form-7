@@ -22,7 +22,6 @@ function wpcf7_swv_available_rules() {
 		'date' => 'Contactable\SWV\DateRule',
 		'time' => 'Contactable\SWV\TimeRule',
 		'file' => 'Contactable\SWV\FileRule',
-		'stepnumber' => 'Contactable\SWV\StepNumberRule',
 		'enum' => 'Contactable\SWV\EnumRule',
 		'dayofweek' => 'Contactable\SWV\DayofweekRule',
 		'minitems' => 'Contactable\SWV\MinItemsRule',
@@ -35,6 +34,7 @@ function wpcf7_swv_available_rules() {
 		'maxdate' => 'Contactable\SWV\MaxDateRule',
 		'minfilesize' => 'Contactable\SWV\MinFileSizeRule',
 		'maxfilesize' => 'Contactable\SWV\MaxFileSizeRule',
+		'stepnumber' => 'Contactable\SWV\StepNumberRule',
 		'all' => 'Contactable\SWV\AllRule',
 		'any' => 'Contactable\SWV\AnyRule',
 	);
