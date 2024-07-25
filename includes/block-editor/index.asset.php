@@ -2,7 +2,7 @@
 
 return array(
 	'dependencies' => array(
-		'react-jsx-runtime',
+		'react',
 		'wp-api-fetch',
 		'wp-block-editor',
 		'wp-blocks',
