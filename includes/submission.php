@@ -51,7 +51,7 @@ class WPCF7_Submission {
 	 * Returns true if this submission is created via WP REST API.
 	 */
 	public static function is_restful() {
-		return defined( 'REST_REQUEST' ) && REST_REQUEST;
+		return wp_is_serving_rest_request();
 	}
 
 
