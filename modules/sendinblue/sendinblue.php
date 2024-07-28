@@ -187,15 +187,22 @@ function wpcf7_sendinblue_collect_parameters() {
 	}
 
 	if ( isset( $params['SMS'] ) ) {
-		$sms = implode( ' ', (array) $params['SMS'] );
-		$sms = trim( $sms );
+		$sms = trim( implode( ' ', (array) $params['SMS'] ) );
+		$sms = preg_replace( '/[#*].*$/', '', $sms ); // Remove extension
 
-		$plus = '+' == substr( $sms, 0, 1 ) ? '+' : '';
+		$is_international = false ||
+			str_starts_with( $sms, '+' ) ||
+			str_starts_with( $sms, '00' );
+
+		if ( $is_international ) {
+			$sms = preg_replace( '/^[+0]+/', '', $sms );
+		}
+
 		$sms = preg_replace( '/[^0-9]/', '', $sms );
 
-		if ( 6 < strlen( $sms ) and strlen( $sms ) < 18 ) {
-			$params['SMS'] = $plus . $sms;
-		} else { // Invalid phone number
+		if ( 6 < strlen( $sms ) and strlen( $sms ) < 16 ) {
+			$params['SMS'] = ( $is_international ? '+' : '' ) . $sms;
+		} else { // Invalid telephone number
 			unset( $params['SMS'] );
 		}
 	}
