@@ -262,8 +262,5 @@ function wpcf7_admin_warnings_recaptcha_v2_v3( $page, $action, $object ) {
 		)
 	);
 
-	echo sprintf(
-		'<div class="notice notice-warning"><p>%s</p></div>',
-		$message
-	);
+	wp_admin_notice( $message, 'type=warning' );
 }
