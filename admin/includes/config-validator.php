@@ -47,10 +47,13 @@ function wpcf7_admin_warnings_bulk_cv( $page, $action, $object ) {
 
 	$message = __( "Misconfiguration leads to mail delivery failure or other troubles. Validate your contact forms now.", 'contact-form-7' );
 
-	echo sprintf(
-		'<div class="notice notice-warning"><p>%1$s &raquo; %2$s</p></div>',
-		esc_html( $message ),
-		$link
+	wp_admin_notice(
+		sprintf(
+			'%1$s &raquo; %2$s',
+			esc_html( $message ),
+			$link
+		),
+		'type=warning'
 	);
 }
 
