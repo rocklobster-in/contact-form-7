@@ -631,7 +631,7 @@ function wpcf7_not_allowed_to_edit( $page, $action, $object ) {
 		return;
 	}
 
-	if ( current_user_can( 'wpcf7_edit_contact_form', $contact_form->id() ) ) {
+	if ( ! current_user_can( 'wpcf7_edit_contact_form', $contact_form->id() ) ) {
 		$message = __( "You are not allowed to edit this contact form.", 'contact-form-7' );
 
 		wp_admin_notice( esc_html( $message ), 'type=warning' );

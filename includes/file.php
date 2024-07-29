@@ -418,9 +418,6 @@ function wpcf7_file_display_warning_message( $page, $action, $object ) {
 			$uploads_dir
 		);
 
-		echo sprintf(
-			'<div class="notice notice-warning"><p>%s</p></div>',
-			esc_html( $message )
-		);
+		wp_admin_notice( esc_html( $message ), 'type=warning' );
 	}
 }
