@@ -367,18 +367,19 @@ function wpcf7_captcha_display_warning_message( $page, $action, $object ) {
 	$uploads_dir = wpcf7_captcha_tmp_dir();
 	wpcf7_init_captcha();
 
-	if ( ! is_dir( $uploads_dir )
-	or ! wp_is_writable( $uploads_dir ) ) {
+	if ( ! is_dir( $uploads_dir ) or ! wp_is_writable( $uploads_dir ) ) {
 		$message = sprintf( __( 'This contact form contains CAPTCHA fields, but the temporary folder for the files (%s) does not exist or is not writable. You can create the folder or change its permission manually.', 'contact-form-7' ), $uploads_dir );
 
-		echo '<div class="notice notice-warning"><p>' . esc_html( $message ) . '</p></div>';
+		wp_admin_notice( esc_html( $message ), 'type=warning' );
 	}
 
-	if ( ! function_exists( 'imagecreatetruecolor' )
-	or ! function_exists( 'imagettftext' ) ) {
+	if (
+		! function_exists( 'imagecreatetruecolor' ) or
+		! function_exists( 'imagettftext' )
+	) {
 		$message = __( "This contact form contains CAPTCHA fields, but the necessary libraries (GD and FreeType) are not available on your server.", 'contact-form-7' );
 
-		echo '<div class="notice notice-warning"><p>' . esc_html( $message ) . '</p></div>';
+		wp_admin_notice( esc_html( $message ), 'type=warning' );
 	}
 }
 

@@ -341,23 +341,29 @@ class WPCF7_ConstantContact extends WPCF7_Service_OAuth2 {
 	public function admin_notice( $message = '' ) {
 		switch ( $message ) {
 			case 'success':
-				echo sprintf(
-					'<div class="notice notice-success"><p>%s</p></div>',
-					esc_html( __( "Connection established.", 'contact-form-7' ) )
+				wp_admin_notice(
+					esc_html( __( "Connection established.", 'contact-form-7' ) ),
+					'type=success'
 				);
+
 				break;
 			case 'failed':
-				echo sprintf(
-					'<div class="notice notice-error"><p><strong>%1$s</strong>: %2$s</p></div>',
-					esc_html( __( "Error", 'contact-form-7' ) ),
-					esc_html( __( "Failed to establish connection. Please double-check your configuration.", 'contact-form-7' ) )
+				wp_admin_notice(
+					sprintf(
+						'<strong>%1$s</strong>: %2$s',
+						esc_html( __( "Error", 'contact-form-7' ) ),
+						esc_html( __( "Failed to establish connection. Please double-check your configuration.", 'contact-form-7' ) )
+					),
+					'type=error'
 				);
+
 				break;
 			case 'updated':
-				echo sprintf(
-					'<div class="notice notice-success"><p>%s</p></div>',
-					esc_html( __( "Configuration updated.", 'contact-form-7' ) )
+				wp_admin_notice(
+					esc_html( __( "Configuration updated.", 'contact-form-7' ) ),
+					'type=success'
 				);
+
 				break;
 		}
 	}
