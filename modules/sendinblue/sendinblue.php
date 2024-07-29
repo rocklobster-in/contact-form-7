@@ -200,8 +200,8 @@ function wpcf7_sendinblue_collect_parameters() {
 
 		$sms = preg_replace( '/[^0-9]/', '', $sms );
 
-		if ( 6 < strlen( $sms ) and strlen( $sms ) < 16 ) {
-			$params['SMS'] = ( $is_international ? '+' : '' ) . $sms;
+		if ( $is_international and 6 < strlen( $sms ) and strlen( $sms ) < 16 ) {
+			$params['SMS'] = '+' . $sms;
 		} else { // Invalid telephone number
 			unset( $params['SMS'] );
 		}
