@@ -267,7 +267,7 @@ class WPCF7_RECAPTCHA extends WPCF7_Service {
 
 		if ( 'success' === $message ) {
 			wp_admin_notice(
-				esc_html( __( 'Settings saved.', 'contact-form-7' ) ),
+				esc_html( __( "Settings saved.", 'contact-form-7' ) ),
 				'type=success'
 			);
 		}
