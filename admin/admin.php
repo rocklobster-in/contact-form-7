@@ -534,41 +534,32 @@ function wpcf7_admin_updated_message( $page, $action, $object ) {
 	}
 
 	if ( 'created' === $_REQUEST['message'] ) {
-		$updated_message = __( "Contact form created.", 'contact-form-7' );
+		$message = __( "Contact form created.", 'contact-form-7' );
 	} elseif ( 'saved' === $_REQUEST['message'] ) {
-		$updated_message = __( "Contact form saved.", 'contact-form-7' );
+		$message = __( "Contact form saved.", 'contact-form-7' );
 	} elseif ( 'deleted' === $_REQUEST['message'] ) {
-		$updated_message = __( "Contact form deleted.", 'contact-form-7' );
+		$message = __( "Contact form deleted.", 'contact-form-7' );
 	}
 
-	if ( ! empty( $updated_message ) ) {
-		echo sprintf(
-			'<div id="message" class="notice notice-success"><p>%s</p></div>',
-			esc_html( $updated_message )
-		);
-
+	if ( ! empty( $message ) ) {
+		wp_admin_notice( esc_html( $message ), 'type=success' );
 		return;
 	}
 
 	if ( 'failed' === $_REQUEST['message'] ) {
-		$updated_message =
+		$message =
 			__( "There was an error saving the contact form.", 'contact-form-7' );
 
-		echo sprintf(
-			'<div id="message" class="notice notice-error"><p>%s</p></div>',
-			esc_html( $updated_message )
-		);
-
+		wp_admin_notice( esc_html( $message ), 'type=error' );
 		return;
 	}
 
 	if ( 'validated' === $_REQUEST['message'] ) {
 		$bulk_validate = WPCF7::get_option( 'bulk_validate', array() );
-		$count_invalid = isset( $bulk_validate['count_invalid'] )
-			? absint( $bulk_validate['count_invalid'] ) : 0;
+		$count_invalid = absint( $bulk_validate['count_invalid'] ?? 0 );
 
 		if ( $count_invalid ) {
-			$updated_message = sprintf(
+			$message = sprintf(
 				_n(
 					/* translators: %s: number of contact forms */
 					"Configuration validation completed. %s invalid contact form was found.",
@@ -578,17 +569,11 @@ function wpcf7_admin_updated_message( $page, $action, $object ) {
 				number_format_i18n( $count_invalid )
 			);
 
-			echo sprintf(
-				'<div id="message" class="notice notice-warning"><p>%s</p></div>',
-				esc_html( $updated_message )
-			);
+			wp_admin_notice( esc_html( $message ), 'type=warning' );
 		} else {
-			$updated_message = __( "Configuration validation completed. No invalid contact form was found.", 'contact-form-7' );
+			$message = __( "Configuration validation completed. No invalid contact form was found.", 'contact-form-7' );
 
-			echo sprintf(
-				'<div id="message" class="notice notice-success"><p>%s</p></div>',
-				esc_html( $updated_message )
-			);
+			wp_admin_notice( esc_html( $message ), 'type=success' );
 		}
 
 		return;
@@ -623,23 +608,17 @@ add_action( 'wpcf7_admin_warnings', 'wpcf7_old_wp_version_error', 10, 3 );
 function wpcf7_old_wp_version_error( $page, $action, $object ) {
 	$wp_version = get_bloginfo( 'version' );
 
-	if ( ! version_compare( $wp_version, WPCF7_REQUIRED_WP_VERSION, '<' ) ) {
-		return;
-	}
+	if ( version_compare( $wp_version, WPCF7_REQUIRED_WP_VERSION, '<' ) ) {
+		$message = sprintf(
+			/* translators: 1: version of Contact Form 7, 2: version of WordPress, 3: URL */
+			__( '<strong>Contact Form 7 %1$s requires WordPress %2$s or higher.</strong> Please <a href="%3$s">update WordPress</a> first.', 'contact-form-7' ),
+			WPCF7_VERSION,
+			WPCF7_REQUIRED_WP_VERSION,
+			admin_url( 'update-core.php' )
+		);
 
-?>
-<div class="notice notice-warning">
-<p><?php
-	echo sprintf(
-		/* translators: 1: version of Contact Form 7, 2: version of WordPress, 3: URL */
-		__( '<strong>Contact Form 7 %1$s requires WordPress %2$s or higher.</strong> Please <a href="%3$s">update WordPress</a> first.', 'contact-form-7' ),
-		WPCF7_VERSION,
-		WPCF7_REQUIRED_WP_VERSION,
-		admin_url( 'update-core.php' )
-	);
-?></p>
-</div>
-<?php
+		wp_admin_notice( $message, 'type=warning' );
+	}
 }
 
 
@@ -653,31 +632,21 @@ function wpcf7_not_allowed_to_edit( $page, $action, $object ) {
 	}
 
 	if ( current_user_can( 'wpcf7_edit_contact_form', $contact_form->id() ) ) {
-		return;
+		$message = __( "You are not allowed to edit this contact form.", 'contact-form-7' );
+
+		wp_admin_notice( esc_html( $message ), 'type=warning' );
 	}
-
-	$message = __( "You are not allowed to edit this contact form.", 'contact-form-7' );
-
-	echo sprintf(
-		'<div class="notice notice-warning"><p>%s</p></div>',
-		esc_html( $message )
-	);
 }
 
 
 add_action( 'wpcf7_admin_warnings', 'wpcf7_outdated_php_warning', 10, 3 );
 
 function wpcf7_outdated_php_warning( $page, $action, $object ) {
-	if ( ! version_compare( PHP_VERSION, '7.4', '<' ) ) {
-		return;
+	if ( version_compare( PHP_VERSION, '7.4', '<' ) ) {
+		$message = __( "The next major release of Contact Form 7 will discontinue support for outdated PHP versions. If you don't upgrade PHP, you will not be able to upgrade the plugin.", 'contact-form-7' );
+
+		wp_admin_notice( esc_html( $message ), 'type=warning' );
 	}
-
-	$message = __( "The next major release of Contact Form 7 will discontinue support for outdated PHP versions. If you don't upgrade PHP, you will not be able to upgrade the plugin.", 'contact-form-7' );
-
-	echo sprintf(
-		'<div class="notice notice-warning"><p>%s</p></div>',
-		esc_html( $message )
-	);
 }
 
 
@@ -686,14 +655,9 @@ add_action( 'wpcf7_admin_warnings', 'wpcf7_ctct_deprecated_warning', 10, 3 );
 function wpcf7_ctct_deprecated_warning( $page, $action, $object ) {
 	$service = WPCF7_ConstantContact::get_instance();
 
-	if ( ! $service->is_active() ) {
-		return;
+	if ( $service->is_active() ) {
+		$message = __( "The Constant Contact integration is deprecated. It is not recommended to continue using the feature.", 'contact-form-7' );
+
+		wp_admin_notice( esc_html( $message ), 'type=warning' );
 	}
-
-	$message = __( "The Constant Contact integration is deprecated. It is not recommended to continue using the feature.", 'contact-form-7' );
-
-	echo sprintf(
-		'<div class="notice notice-warning"><p>%s</p></div>',
-		esc_html( $message )
-	);
 }
