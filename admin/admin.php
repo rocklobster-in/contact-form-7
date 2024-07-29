@@ -543,7 +543,6 @@ function wpcf7_admin_updated_message( $page, $action, $object ) {
 
 	if ( ! empty( $message ) ) {
 		wp_admin_notice( esc_html( $message ), 'type=success' );
-		return;
 	}
 
 	if ( 'failed' === $_REQUEST['message'] ) {
@@ -551,7 +550,6 @@ function wpcf7_admin_updated_message( $page, $action, $object ) {
 			__( "There was an error saving the contact form.", 'contact-form-7' );
 
 		wp_admin_notice( esc_html( $message ), 'type=error' );
-		return;
 	}
 
 	if ( 'validated' === $_REQUEST['message'] ) {
@@ -575,8 +573,6 @@ function wpcf7_admin_updated_message( $page, $action, $object ) {
 
 			wp_admin_notice( esc_html( $message ), 'type=success' );
 		}
-
-		return;
 	}
 }
 
