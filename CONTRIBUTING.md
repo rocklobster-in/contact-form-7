@@ -7,13 +7,15 @@ Thank you for considering contributing to Contact Form 7. This document explains
 Contributing by reporting issues
 --------------------------------
 
-If you find a bug, please report it to our GitHub repository by creating an issue. For minor issues like correction of a typo, you can start by creating a pull request instead of an issue.
+If you find a bug, please report it to our GitHub repository unless it is about a security vulnerability. Creating an issue is always recommended, but for minor issues like correction of a typo, you can create a pull request instead of an issue.
 
-If you can fix an issue, create a pull request that links to the target issue. We have our own [coding standards](https://contactform7.com/coding-standards/) for the plugin's development, and we ask that you respect the standards in your coding, too.
+If you can fix an issue, create a pull request that links to the target issue. For WordPress plugin development, we have our own [coding standards](https://contactform7.com/coding-standards/). We ask you to respect the standards in your coding as well.
 
-Security issues should not be discussed publicly, so when an issue is about a security vulnerability, please use the [contact form](https://contactform7.com/contact/) to inform the developers privately.
+Security issues should not be discussed publicly, so please don't publish it through GitHub or other channels when the issue is about a security vulnerability. For security vulnerabilities, it is recommended you use the [Wordfence vulnerability submission form](https://www.wordfence.com/threat-intel/vulnerabilities/submit).
 
-In any case, before reporting an issue, please double-check if the issue was caused purely due to a bug seen in the latest version of Contact Form 7. Reporting issues that have little to do with this plugin negatively impacts the motivation of the developers. If you are uncertain, posting it to the [support forum](https://wordpress.org/support/plugin/contact-form-7/) is advised.
+In any case, prior to reporting an issue, please double-check if the issue is caused purely due to a bug of the plugin's latest version. Confirm that the problem occurs even in a vanilla environment where only the WordPress core, the default theme, and the plugin itself are activated.
+
+Receiving reports of issues that have little to do with the plugin negatively impacts the motivation of the developers. If you are uncertain, posting to the [support forum](https://wordpress.org/support/plugin/contact-form-7/) is advised.
 
 
 Contributing by helping other users
