@@ -178,6 +178,30 @@ function wpcf7_admin_enqueue_scripts( $hook_suffix ) {
 		WPCF7_VERSION,
 		array( 'in_footer' => true )
 	);
+
+
+
+	$assets = array();
+	$asset_file = wpcf7_plugin_path( 'admin/includes/js/index.asset.php' );
+
+	if ( file_exists( $asset_file ) ) {
+		$assets = include( $asset_file );
+	}
+
+	$assets = wp_parse_args( $assets, array(
+		'dependencies' => array(),
+		'version' => WPCF7_VERSION,
+	) );
+
+	wp_enqueue_script( 'wpcf7-admin-revised',
+		wpcf7_plugin_url( 'admin/includes/js/index.js' ),
+		array_merge(
+			$assets['dependencies'],
+			array()
+		),
+		$assets['version'],
+		array( 'in_footer' => true )
+	);
 }
 
 
