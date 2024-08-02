@@ -193,7 +193,7 @@ ul.config-error li {
 /*
  * Form Tab
  */
-#tag-generator-list a.button {
+#tag-generator-list button {
 	font-size: 12px;
 	height: 26px;
 	line-height: 24px;

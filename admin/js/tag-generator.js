@@ -28,7 +28,6 @@
 		var $form = $( this ).closest( 'form.tag-generator-panel' );
 		var tag = $form.find( 'input.tag' ).val();
 		wpcf7.taggen.insert( tag );
-		tb_remove(); // close thickbox
 		return false;
 	} );
 

@@ -170,16 +170,12 @@ function wpcf7_admin_enqueue_scripts( $hook_suffix ) {
 
 	wp_localize_script( 'wpcf7-admin', 'wpcf7', $l10n );
 
-	add_thickbox();
-
 	wp_enqueue_script( 'wpcf7-admin-taggenerator',
 		wpcf7_plugin_url( 'admin/js/tag-generator.js' ),
-		array( 'jquery', 'thickbox', 'wpcf7-admin' ),
+		array( 'jquery', 'wpcf7-admin' ),
 		WPCF7_VERSION,
 		array( 'in_footer' => true )
 	);
-
-
 
 	$assets = array();
 	$asset_file = wpcf7_plugin_path( 'admin/includes/js/index.asset.php' );

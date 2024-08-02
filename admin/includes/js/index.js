@@ -1,0 +1,1 @@
+document.querySelectorAll("#tag-generator-list button").forEach((e=>{e.addEventListener("click",(t=>{document.querySelector(`#${e.dataset.target}`).showModal()}))})),document.querySelectorAll("dialog button.close-modal").forEach((e=>{e.addEventListener("click",(t=>{e.closest("dialog").close()}))}));

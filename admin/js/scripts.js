@@ -121,6 +121,8 @@
 							changed = true;
 						}
 					} );
+				} else if ( $( this ).is( 'button' ) ) { // Tag generator buttons
+					// Do nothing
 				} else {
 					if ( this.defaultValue != $( this ).val() ) {
 						changed = true;
