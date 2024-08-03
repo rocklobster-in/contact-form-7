@@ -1,11 +1,11 @@
-import './tag-generator';
+import { generateTag } from './tag-generator';
 
 document.querySelectorAll(
 	'#tag-generator-list button'
 ).forEach( button => {
 	button.addEventListener( 'click', event => {
-		const modal = document.querySelector( `#${ button.dataset.target }` );
-		modal?.showModal();
+		const dialog = document.querySelector( `#${ button.dataset.target }` );
+		dialog?.showModal();
 	} );
 } );
 
@@ -14,9 +14,18 @@ document.querySelectorAll(
 ).forEach( dialog => {
 
 	dialog.querySelectorAll(
-		'button.close-modal'
+		'.close-modal'
 	).forEach( button => {
 		button.addEventListener( 'click', event => dialog.close() );
+	} );
+
+	dialog.querySelectorAll(
+		'.insert-tag'
+	).forEach( button => {
+		button.addEventListener( 'click', event => {
+			const tagField = dialog.querySelector( '.tag' );
+			dialog.close( tagField?.value );
+		} );
 	} );
 
 	dialog.addEventListener( 'close', event => {
