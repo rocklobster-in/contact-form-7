@@ -66,7 +66,10 @@ class WPCF7_TagGenerator {
 
 			if ( is_callable( $callback ) ) {
 				echo "\n";
-				echo sprintf( '<dialog id="%s">', esc_attr( $options['content'] ) );
+				echo sprintf(
+					'<dialog id="%s" class="tag-generator-dialog">',
+					esc_attr( $options['content'] )
+				);
 				echo '<button class="close-modal">close</button>';
 				echo "\n";
 				echo sprintf(
