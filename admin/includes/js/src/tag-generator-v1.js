@@ -54,8 +54,12 @@ const normalize = field => {
 
 
 const compose = ( basetype, form ) => {
-	const name = form.querySelector( '[name="name"]' )?.value ?? '';
 	const scope = form.querySelector( `.scope.${ basetype }` ) ?? form;
+
+	const type = basetype +
+		( form.querySelector( '[name="required"]:checked' ) ? '*' : '' );
+
+	const name = form.querySelector( '[name="name"]' )?.value ?? '';
 
 	const options = [];
 
@@ -91,12 +95,18 @@ const compose = ( basetype, form ) => {
 		options.push( 'default:1' );
 	}
 
-	const type = basetype +
-		( form.querySelector( '[name="required"]:checked' ) ? '*' : '' );
+	const values = scope.querySelector( '[name="values"]' )?.value.split( "\n" )
+		.map( line => line.trim() ).filter( line => '' !== line )
+		.map( line => `"${ line.replace( /["]/g, '&quot;' ) }"` ) ?? [];
 
-	const composed = type + ' ' + name + ' ' + options.join( ' ' );
+	const composed = [
+		type,
+		name,
+		options.join( ' ' ),
+		values.join( ' ' ),
+	].map( item => item.trim() ).filter( item => '' !== item );
 
-	return `[${ composed.trim() }]`;
+	return `[${ composed.join( ' ' ) }]`;
 };
 
 
