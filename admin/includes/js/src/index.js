@@ -1,11 +1,20 @@
-import './tag-generator-v1';
+import { init as v1Init } from './tag-generator-v1';
 
 document.querySelectorAll(
 	'#tag-generator-list button'
 ).forEach( button => {
 	button.addEventListener( 'click', event => {
 		const dialog = document.querySelector( `#${ button.dataset.target }` );
-		dialog?.showModal();
+
+		if ( dialog ) {
+			const form = dialog.querySelector( 'form.tag-generator-panel' );
+
+			if ( form && '1' === form.dataset.version ) {
+				v1Init();
+			}
+
+			dialog.showModal();
+		}
 	} );
 } );
 
