@@ -19,7 +19,11 @@ class WPCF7_TagGenerator {
 	public function add( $id, $title, $callback, $options = array() ) {
 		$id = trim( $id );
 
-		if ( '' === $id or ! wpcf7_is_name( $id ) ) {
+		if (
+			'' === $id or
+			! wpcf7_is_name( $id ) or
+			! is_callable( $callback )
+		) {
 			return false;
 		}
 
@@ -75,8 +79,13 @@ class WPCF7_TagGenerator {
 				echo '<button class="close-modal">close</button>';
 				echo "\n";
 				echo sprintf(
-					'<form method="dialog" class="tag-generator-panel" data-id="%s">',
-					$options['id']
+					'<form %s>',
+					wpcf7_format_atts( array(
+						'method' => 'dialog',
+						'class' => 'tag-generator-panel',
+						'data-id' => $options['id'],
+						'data-version' => $options['version'],
+					) )
 				);
 				echo "\n";
 				call_user_func( $callback, $contact_form, $options );
