@@ -16,7 +16,7 @@ document.querySelectorAll(
 	dialog.querySelectorAll(
 		'.close-modal'
 	).forEach( button => {
-		button.addEventListener( 'click', event => dialog.close() );
+		button.addEventListener( 'click', event => dialog.close( '' ) );
 	} );
 
 	dialog.querySelectorAll(
@@ -32,6 +32,10 @@ document.querySelectorAll(
 		const textarea = document.querySelector( 'textarea#wpcf7-form' );
 
 		if ( null === textarea ) {
+			return;
+		}
+
+		if ( '' === dialog.returnValue ) {
 			return;
 		}
 

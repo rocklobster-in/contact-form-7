@@ -19,10 +19,13 @@ class WPCF7_TagGenerator {
 	public function add( $id, $title, $callback, $options = array() ) {
 		$id = trim( $id );
 
-		if ( '' === $id
-		or ! wpcf7_is_name( $id ) ) {
+		if ( '' === $id or ! wpcf7_is_name( $id ) ) {
 			return false;
 		}
+
+		$options = wp_parse_args( $options, array(
+			'version' => '1',
+		) );
 
 		$this->panels[$id] = array(
 			'title' => $title,
@@ -57,8 +60,7 @@ class WPCF7_TagGenerator {
 		foreach ( (array) $this->panels as $id => $panel ) {
 			$callback = $panel['callback'];
 
-			$options = wp_parse_args( $panel['options'], array() );
-			$options = array_merge( $options, array(
+			$options = array_merge( $panel['options'], array(
 				'id' => $id,
 				'title' => $panel['title'],
 				'content' => $panel['content'],
