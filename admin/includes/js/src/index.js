@@ -1,4 +1,4 @@
-import { generateTag } from './tag-generator';
+import './tag-generator-v1';
 
 document.querySelectorAll(
 	'#tag-generator-list button'
