@@ -26,14 +26,12 @@ const update = form => {
 	form.querySelectorAll(
 		'.tag'
 	).forEach( tag => {
-		let tagType = form.querySelector( '[name="tagtype"]' )?.value ||
-			tag.getAttribute( 'name' );
+		const basetype = form.querySelector( '[name="tagtype"]' )?.value ||
+			tag.name;
 
-		if ( tagType && form.querySelector( '[name="required"]:checked' ) ) {
-			tagType += '*';
+		if ( basetype ) {
+			tag.value = compose( basetype, form );
 		}
-
-		tag.value = compose( tagType, form );
 	} );
 
 	form.querySelectorAll(
@@ -55,10 +53,48 @@ const normalize = field => {
 };
 
 
-const compose = ( tagType, form ) => {
+const compose = ( basetype, form ) => {
 	const name = form.querySelector( '[name="name"]' )?.value ?? '';
+	const scope = form.querySelector( `.scope.${ basetype }` ) ?? form;
 
-	let composed = tagType + ' ' + name;
+	const options = [];
+
+	scope.querySelectorAll(
+		'.option'
+	).forEach( input => {
+		if ( 'checkbox' === input.type ) {
+			if ( input.checked ) {
+				options.push( input.name );
+			}
+		} else if ( 'radio' === input.type ) {
+			if ( input.checked && ! input.classList.contains( 'default' ) ) {
+				options.push( `${ input.name }:${ input.value }` );
+			}
+		} else if ( '' !== input.value ) {
+			if ( input.classList.contains( 'filetype' ) ) {
+				options.push(
+					`${ input.name }:${ input.value.split( /[,|\s]+/ ).join( '|' ) }`
+				);
+			} else if ( input.classList.contains( 'color' ) ) {
+				options.push( `${ input.name }:#${ input.value }` );
+			} else if ( 'class' === input.name ) {
+				input.value.split( ' ' ).forEach( term => {
+					options.push( `class:${ term }` );
+				} );
+			} else {
+				options.push( `${ input.name }:${ input.value }` );
+			}
+		}
+	} );
+
+	if ( 'radio' === basetype ) {
+		options.push( 'default:1' );
+	}
+
+	const type = basetype +
+		( form.querySelector( '[name="required"]:checked' ) ? '*' : '' );
+
+	const composed = type + ' ' + name + ' ' + options.join( ' ' );
 
 	return `[${ composed.trim() }]`;
 };
