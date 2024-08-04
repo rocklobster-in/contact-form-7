@@ -10,7 +10,7 @@ document.querySelectorAll(
 			const form = dialog.querySelector( 'form.tag-generator-panel' );
 
 			if ( form && '1' === form.dataset.version ) {
-				v1Init();
+				v1Init( form );
 			}
 
 			dialog.showModal();
