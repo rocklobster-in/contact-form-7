@@ -76,7 +76,11 @@ class WPCF7_TagGenerator {
 					'<dialog id="%s" class="tag-generator-dialog">',
 					esc_attr( $options['content'] )
 				);
-				echo '<button class="close-modal">close</button>';
+				echo "\n";
+				echo sprintf(
+					'<header><button class="close-modal">%s</button></header>',
+					esc_html( __( 'Close', 'contact-form-7' ) )
+				);
 				echo "\n";
 				echo sprintf(
 					'<form %s>',
