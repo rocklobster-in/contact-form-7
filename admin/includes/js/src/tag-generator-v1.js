@@ -106,7 +106,13 @@ const compose = ( basetype, form ) => {
 		values.join( ' ' ),
 	].map( item => item.trim() ).filter( item => '' !== item );
 
-	return `[${ composed.join( ' ' ) }]`;
+	const content = scope.querySelector( '[name="content"]' )?.value.trim();
+
+	if ( content ) {
+		return `[${ composed.join( ' ' ) }] ${ content } [/${ type }]`;
+	} else {
+		return `[${ composed.join( ' ' ) }]`;
+	}
 };
 
 
