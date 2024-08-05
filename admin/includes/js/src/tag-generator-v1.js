@@ -48,8 +48,48 @@ const update = form => {
 };
 
 
-const normalize = field => {
+const normalize = input => {
+	if ( 'name' === input.name ) {
+		input.value = input.value
+			.replace( /[^0-9a-zA-Z:._-]/g, '' )
+			.replace( /^[^a-zA-Z]+/, '' );
+	}
 
+	if ( input.classList.contains( 'numeric' ) ) {
+		input.value = input.value.replace( /[^0-9.-]/g, '' );
+	}
+
+	if ( input.classList.contains( 'idvalue' ) ) {
+		input.value = input.value.replace( /[^-0-9a-zA-Z_]/g, '' );
+	}
+
+	if ( input.classList.contains( 'classvalue' ) ) {
+		input.value = input.value.split( ' ' )
+			.map( term => term.replace( /[^-0-9a-zA-Z_]/g, '' ) )
+			.join( ' ' ).replace( /\s+/g, ' ' ).trim();
+	}
+
+	if ( input.classList.contains( 'color' ) ) {
+		input.value = input.value.replace( /[^0-9a-fA-F]/g, '' );
+	}
+
+	if ( input.classList.contains( 'filesize' ) ) {
+		input.value = input.value.replace( /[^0-9kKmMbB]/g, '' );
+	}
+
+	if ( input.classList.contains( 'filetype' ) ) {
+		input.value = input.value.replace( /[^0-9a-zA-Z.,|\s]/g, '' );
+	}
+
+	if ( input.classList.contains( 'date' ) ) {
+		if ( ! input.value.match( /^\d{4}-\d{2}-\d{2}$/ ) ) {
+			input.value = '';
+		}
+	}
+
+	if ( 'values' === input.name ) {
+		input.value = input.value.trim();
+	}
 };
 
 
