@@ -48,7 +48,7 @@ document.addEventListener( 'DOMContentLoaded', event => {
 	};
 
 	document.querySelectorAll(
-		'form .wpcf7' // form-in-form situation
+		'form form.wpcf7' // form-in-form situation
 	).forEach( div => {
 		const error = document.createElement( 'p' );
 		error.setAttribute( 'class', 'wpcf7-form-in-wrong-place' );
