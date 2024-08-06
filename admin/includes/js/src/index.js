@@ -1,4 +1,5 @@
 import { init as v1Init } from './tag-generator-v1';
+import { init as v2Init } from './tag-generator-v2';
 
 document.querySelectorAll(
 	'#tag-generator-list button'
@@ -9,8 +10,12 @@ document.querySelectorAll(
 		if ( dialog ) {
 			const form = dialog.querySelector( 'form.tag-generator-panel' );
 
-			if ( form && '1' === form.dataset.version ) {
-				v1Init( form );
+			if ( form ) {
+				if ( '1' === form.dataset.version ) {
+					v1Init( form );
+				} else if ( '2' === form.dataset.version ) {
+					v2Init( form );
+				}
 			}
 
 			dialog.showModal();
