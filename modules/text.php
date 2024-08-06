@@ -207,14 +207,20 @@ add_action( 'wpcf7_admin_init', 'wpcf7_add_tag_generator_text', 15, 0 );
 
 function wpcf7_add_tag_generator_text() {
 	$tag_generator = WPCF7_TagGenerator::get_instance();
-	$tag_generator->add( 'text', __( 'text', 'contact-form-7' ),
-		'wpcf7_tag_generator_text' );
-	$tag_generator->add( 'email', __( 'email', 'contact-form-7' ),
-		'wpcf7_tag_generator_text' );
-	$tag_generator->add( 'url', __( 'URL', 'contact-form-7' ),
-		'wpcf7_tag_generator_text' );
-	$tag_generator->add( 'tel', __( 'tel', 'contact-form-7' ),
-		'wpcf7_tag_generator_text' );
+
+	$basetypes = array(
+		'text' => __( 'text', 'contact-form-7' ),
+		'email' => __( 'email', 'contact-form-7' ),
+		'url' => __( 'URL', 'contact-form-7' ),
+		'tel' => __( 'tel', 'contact-form-7' ),
+	);
+
+	foreach ( $basetypes as $id => $title ) {
+		$tag_generator->add( $id, $title,
+			'wpcf7_tag_generator_text',
+			array( 'version' => '1' )
+		);
+	}
 }
 
 function wpcf7_tag_generator_text( $contact_form, $args = '' ) {

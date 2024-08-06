@@ -192,8 +192,11 @@ add_action( 'wpcf7_admin_init', 'wpcf7_add_tag_generator_quiz', 40, 0 );
 
 function wpcf7_add_tag_generator_quiz() {
 	$tag_generator = WPCF7_TagGenerator::get_instance();
+
 	$tag_generator->add( 'quiz', __( 'quiz', 'contact-form-7' ),
-		'wpcf7_tag_generator_quiz' );
+		'wpcf7_tag_generator_quiz',
+	 	array( 'version' => '1' )
+	);
 }
 
 function wpcf7_tag_generator_quiz( $contact_form, $args = '' ) {

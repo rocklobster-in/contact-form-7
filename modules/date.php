@@ -181,8 +181,11 @@ add_action( 'wpcf7_admin_init', 'wpcf7_add_tag_generator_date', 19, 0 );
 
 function wpcf7_add_tag_generator_date() {
 	$tag_generator = WPCF7_TagGenerator::get_instance();
+
 	$tag_generator->add( 'date', __( 'date', 'contact-form-7' ),
-		'wpcf7_tag_generator_date' );
+		'wpcf7_tag_generator_date',
+	 	array( 'version' => '1' )
+	);
 }
 
 function wpcf7_tag_generator_date( $contact_form, $args = '' ) {

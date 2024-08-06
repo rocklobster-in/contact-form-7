@@ -254,9 +254,12 @@ function wpcf7_add_tag_generator_captcha() {
 	}
 
 	$tag_generator = WPCF7_TagGenerator::get_instance();
+
 	$tag_generator->add( 'captcha',
 		__( 'CAPTCHA (Really Simple CAPTCHA)', 'contact-form-7' ),
-		'wpcf7_tag_generator_captcha' );
+		'wpcf7_tag_generator_captcha',
+	 	array( 'version' => '1' )
+	);
 }
 
 function wpcf7_tag_generator_captcha( $contact_form, $args = '' ) {

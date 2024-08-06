@@ -138,8 +138,11 @@ add_action( 'wpcf7_admin_init', 'wpcf7_add_tag_generator_file', 50, 0 );
 
 function wpcf7_add_tag_generator_file() {
 	$tag_generator = WPCF7_TagGenerator::get_instance();
+
 	$tag_generator->add( 'file', __( 'file', 'contact-form-7' ),
-		'wpcf7_tag_generator_file' );
+		'wpcf7_tag_generator_file',
+	 	array( 'version' => '1' )
+	);
 }
 
 function wpcf7_tag_generator_file( $contact_form, $args = '' ) {

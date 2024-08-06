@@ -345,10 +345,18 @@ add_action( 'wpcf7_admin_init',
 
 function wpcf7_add_tag_generator_checkbox_and_radio() {
 	$tag_generator = WPCF7_TagGenerator::get_instance();
-	$tag_generator->add( 'checkbox', __( 'checkboxes', 'contact-form-7' ),
-		'wpcf7_tag_generator_checkbox' );
-	$tag_generator->add( 'radio', __( 'radio buttons', 'contact-form-7' ),
-		'wpcf7_tag_generator_checkbox' );
+
+	$basetypes = array(
+		'checkbox' => __( 'checkboxes', 'contact-form-7' ),
+		'radio' => __( 'radio buttons', 'contact-form-7' ),
+	);
+
+	foreach ( $basetypes as $id => $title ) {
+		$tag_generator->add( $id, $title,
+			'wpcf7_tag_generator_checkbox',
+			array( 'version' => '1' )
+		);
+	}
 }
 
 function wpcf7_tag_generator_checkbox( $contact_form, $args = '' ) {

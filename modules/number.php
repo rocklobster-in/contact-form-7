@@ -200,8 +200,11 @@ add_action( 'wpcf7_admin_init', 'wpcf7_add_tag_generator_number', 18, 0 );
 
 function wpcf7_add_tag_generator_number() {
 	$tag_generator = WPCF7_TagGenerator::get_instance();
+
 	$tag_generator->add( 'number', __( 'number', 'contact-form-7' ),
-		'wpcf7_tag_generator_number' );
+		'wpcf7_tag_generator_number',
+	 	array( 'version' => '1' )
+	);
 }
 
 function wpcf7_tag_generator_number( $contact_form, $args = '' ) {

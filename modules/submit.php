@@ -43,8 +43,11 @@ add_action( 'wpcf7_admin_init', 'wpcf7_add_tag_generator_submit', 55, 0 );
 
 function wpcf7_add_tag_generator_submit() {
 	$tag_generator = WPCF7_TagGenerator::get_instance();
+
 	$tag_generator->add( 'submit', __( 'submit', 'contact-form-7' ),
-		'wpcf7_tag_generator_submit', array( 'nameless' => 1 ) );
+		'wpcf7_tag_generator_submit',
+		array( 'version' => '1' )
+	);
 }
 
 function wpcf7_tag_generator_submit( $contact_form, $args = '' ) {
