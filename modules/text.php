@@ -267,7 +267,7 @@ function wpcf7_tag_generator_text( $contact_form, $options ) {
 
 	<tr>
 	<th scope="row"><label for="<?php echo esc_attr( $tg_key . '-name' ); ?>"><?php echo esc_html( __( 'Name', 'contact-form-7' ) ); ?></label></th>
-	<td><input type="text" name="name" class="tg-name oneline" id="<?php echo esc_attr( $tg_key . '-name' ); ?>" data-tag-part="name" /></td>
+	<td><input type="text" name="name" class="tg-name oneline" id="<?php echo esc_attr( $tg_key . '-name' ); ?>" data-tag-part="name" pattern="[A-Za-z][A-Za-z0-9_\-]*" /></td>
 	</tr>
 
 	<tr>
@@ -307,12 +307,12 @@ function wpcf7_tag_generator_text( $contact_form, $options ) {
 
 	<tr>
 	<th scope="row"><label for="<?php echo esc_attr( $tg_key . '-id' ); ?>"><?php echo esc_html( __( 'Id attribute', 'contact-form-7' ) ); ?></label></th>
-	<td><input type="text" name="id" class="idvalue oneline option" id="<?php echo esc_attr( $tg_key . '-id' ); ?>" data-tag-part="option" data-tag-option="id:" /></td>
+	<td><input type="text" name="id" class="idvalue oneline option" id="<?php echo esc_attr( $tg_key . '-id' ); ?>" data-tag-part="option" data-tag-option="id:" pattern="[A-Za-z][A-Za-z0-9_\-]*" /></td>
 	</tr>
 
 	<tr>
 	<th scope="row"><label for="<?php echo esc_attr( $tg_key . '-class' ); ?>"><?php echo esc_html( __( 'Class attribute', 'contact-form-7' ) ); ?></label></th>
-	<td><input type="text" name="class" class="classvalue oneline option" id="<?php echo esc_attr( $tg_key . '-class' ); ?>" data-tag-part="option" data-tag-option="class:" /></td>
+	<td><input type="text" name="class" class="classvalue oneline option" id="<?php echo esc_attr( $tg_key . '-class' ); ?>" data-tag-part="option" data-tag-option="class:" pattern="[A-Za-z0-9_\-\s]*" /></td>
 	</tr>
 
 </tbody>

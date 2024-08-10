@@ -230,6 +230,10 @@ ul.config-error li {
 	flex-grow: 1;
 }
 
+.tag-generator-panel .control-box :invalid {
+	border-color: red;
+}
+
 .tag-generator-panel .control-box > fieldset > legend {
 	border: 1px solid #dfdfdf;
 	border-left: 4px solid #00a0d2;
