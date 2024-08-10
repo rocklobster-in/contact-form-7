@@ -223,102 +223,104 @@ ul.config-error li {
 	flex-direction: column;
 }
 
-.tag-generator-panel .control-box {
-	padding: 0;
-	margin: 0;
-	overflow: auto;
-	flex-grow: 1;
-}
+form.tag-generator-panel[data-version="1"] {
+	.control-box {
+		padding: 0;
+		margin: 0;
+		overflow: auto;
+		flex-grow: 1;
+	}
 
-.tag-generator-panel .control-box :invalid {
-	border-color: red;
-}
+	.control-box :invalid {
+		border-color: red;
+	}
 
-.tag-generator-panel .control-box > fieldset > legend {
-	border: 1px solid #dfdfdf;
-	border-left: 4px solid #00a0d2;
-	background: #f7fcfe;
-	padding: 4px 12px;
-	margin: 4px 0;
-	line-height: 1.4em;
-	width: 100%;
-	box-sizing: border-box;
-}
+	.control-box > fieldset > legend {
+		border: 1px solid #dfdfdf;
+		border-left: 4px solid #00a0d2;
+		background: #f7fcfe;
+		padding: 4px 12px;
+		margin: 4px 0;
+		line-height: 1.4em;
+		width: 100%;
+		box-sizing: border-box;
+	}
 
-.tag-generator-panel table {
-	width: 100%;
-}
+	table {
+		width: 100%;
+	}
 
-.tag-generator-panel table.form-table th {
-	width: 120px;
-	padding: 4px 10px 4px 0;
-	font-size: 13px;
-}
+	table.form-table th {
+		width: 120px;
+		padding: 4px 10px 4px 0;
+		font-size: 13px;
+	}
 
-.tag-generator-panel table.form-table td {
-	padding: 4px 10px;
-	font-size: 13px;
-}
+	table.form-table td {
+		padding: 4px 10px;
+		font-size: 13px;
+	}
 
-.tag-generator-panel .control-box input.oneline {
-	width: 200px;
-}
+	.control-box input.oneline {
+		width: 200px;
+	}
 
-.tag-generator-panel .control-box input.large-text {
-	width: 400px;
-}
+	.control-box input.large-text {
+		width: 400px;
+	}
 
-.tag-generator-panel .control-box textarea.values {
-	width: 200px;
-	height: 6em;
-}
+	.control-box textarea.values {
+		width: 200px;
+		height: 6em;
+	}
 
-.tag-generator-panel .control-box input[type="number"],
-.tag-generator-panel .control-box input[type="date"] {
-	width: 88px;
-}
+	.control-box input[type="number"],
+	.control-box input[type="date"] {
+		width: 88px;
+	}
 
-.tag-generator-panel .control-box table caption {
-	text-align: left;
-	font-size: 110%;
-	font-weight: bold;
-	color: #777;
-	margin: 10px 0 5px;
-}
+	.control-box table caption {
+		text-align: left;
+		font-size: 110%;
+		font-weight: bold;
+		color: #777;
+		margin: 10px 0 5px;
+	}
 
-.tag-generator-panel .control-box table.form-table td label {
-	line-height: 1.1em;
-}
+	.control-box table.form-table td label {
+		line-height: 1.1em;
+	}
 
-.tag-generator-panel .control-box table.form-table td label .description {
-	line-height: 1.4em;
-}
+	.control-box table.form-table td label .description {
+		line-height: 1.4em;
+	}
 
-.tag-generator-panel .insert-box {
-	margin: 0 -15px -15px;
-	padding: 8px 16px;
-	background-color: #fcfcfc;
-	border-top: 1px solid #dfdfdf;
-	overflow: auto;
-}
+	.insert-box {
+		margin: 0 -15px -15px;
+		padding: 8px 16px;
+		background-color: #fcfcfc;
+		border-top: 1px solid #dfdfdf;
+		overflow: auto;
+	}
 
-.tag-generator-panel .insert-box input.tag {
-	width: 510px;
-	float: left;
-	background-color: transparent;
-	box-shadow: none;
-}
+	.insert-box input.tag {
+		width: 510px;
+		float: left;
+		background-color: transparent;
+		box-shadow: none;
+	}
 
-.tag-generator-panel .insert-box .submitbox {
-	padding: 0;
-}
+	.insert-box .submitbox {
+		padding: 0;
+	}
 
-.tag-generator-panel .insert-box .submitbox input[type="button"] {
-	float: right;
-}
+	.insert-box .submitbox input[type="button"] {
+		float: right;
+	}
 
-.tag-generator-panel .insert-box .description label {
-	cursor: text;
+	.insert-box .description label {
+		cursor: text;
+	}
 }
 
 /*
