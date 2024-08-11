@@ -20,16 +20,14 @@ const update = form => {
 };
 
 
-const compose = form => {
-	const basetype = form.querySelector(
+const compose = scope => {
+	const basetype = scope.querySelector(
 		'[data-tag-part="basetype"]'
 	)?.value.trim();
 
 	if ( ! basetype ) {
 		return;
 	}
-
-	const scope = form;
 
 	let type = basetype;
 
