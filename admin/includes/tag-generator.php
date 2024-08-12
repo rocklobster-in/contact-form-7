@@ -46,13 +46,17 @@ class WPCF7_TagGenerator {
 
 		foreach ( (array) $this->panels as $panel ) {
 			echo sprintf(
-				'<button type="button" data-target="%1$s" title="%2$s">%3$s</button>',
-				esc_attr( $panel['content'] ),
-				esc_attr( sprintf(
-					/* translators: %s: title of form-tag like 'email' or 'checkboxes' */
-					__( 'Form-tag Generator: %s', 'contact-form-7' ),
-					$panel['title'] )
-				),
+				'<button %1$s>%2$s</button>',
+				wpcf7_format_atts( array(
+					'type' => 'button',
+					'data-taggen' => 'open-dialog',
+					'data-target' => $panel['content'],
+					'title' => sprintf(
+						/* translators: %s: title of form-tag */
+						__( 'Form-tag Generator: %s', 'contact-form-7' ),
+						$panel['title']
+					),
+				) ),
 				esc_html( $panel['title'] )
 			);
 		}
@@ -78,7 +82,7 @@ class WPCF7_TagGenerator {
 				);
 				echo "\n";
 				echo sprintf(
-					'<header><button class="close-modal">%s</button></header>',
+					'<div class="close-button-container"><button data-taggen="close-dialog">%s</button></div>',
 					esc_html( __( 'Close', 'contact-form-7' ) )
 				);
 				echo "\n";

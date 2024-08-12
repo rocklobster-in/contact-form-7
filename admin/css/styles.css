@@ -212,7 +212,7 @@ ul.config-error li {
 	background: rgb( 0 0 0 / 50% );
 }
 
-.tag-generator-dialog header {
+.tag-generator-dialog .close-button-container {
 	text-align: end;
 	min-height: 24px;
 }

@@ -2,7 +2,7 @@ import { init as v1Init } from './tag-generator-v1';
 import { init as v2Init } from './tag-generator-v2';
 
 document.querySelectorAll(
-	'#tag-generator-list button'
+	'[data-taggen="open-dialog"]'
 ).forEach( button => {
 	button.addEventListener( 'click', event => {
 		const dialog = document.querySelector( `#${ button.dataset.target }` );
@@ -28,16 +28,16 @@ document.querySelectorAll(
 ).forEach( dialog => {
 
 	dialog.querySelectorAll(
-		'.close-modal'
+		'[data-taggen="close-dialog"]'
 	).forEach( button => {
 		button.addEventListener( 'click', event => dialog.close( '' ) );
 	} );
 
 	dialog.querySelectorAll(
-		'.insert-tag'
+		'[data-taggen="insert-tag"], .insert-tag'
 	).forEach( button => {
 		button.addEventListener( 'click', event => {
-			const tagField = dialog.querySelector( '.tag' );
+			const tagField = dialog.querySelector( '[data-tag-part="tag"], .tag' );
 			dialog.close( tagField?.value );
 		} );
 	} );
