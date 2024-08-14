@@ -202,8 +202,7 @@ ul.config-error li {
 }
 
 .tag-generator-dialog {
-	width: 900px;
-	max-height: 75%;
+	padding: 12px;
 	border: 1px solid #c3c4c7;
 	box-shadow: 0 1px 1px rgba( 0, 0, 0, 0.04 );
 }
@@ -212,10 +211,14 @@ ul.config-error li {
 	background: rgb( 0 0 0 / 50% );
 }
 
-form.tag-generator-panel[data-version="2"] {
+form.tag-generator-panel {
 	display: flex;
 	flex-direction: column;
+	height: 540px;
+	width: 720px;
+}
 
+form.tag-generator-panel[data-version="2"] {
 	.close-button-container {
 		box-sizing: border-box;
 		flex: none;
@@ -242,8 +245,12 @@ form.tag-generator-panel[data-version="2"] {
 	.insert-box {
 		box-sizing: border-box;
 		flex: none;
-		padding-block: 20px 10px;
+		margin-block-end: -12px;
+		margin-inline: -12px;
+		padding-block: 24px 12px;
+		padding-inline: 12px;
 		background-color: #fcfcfc;
+		border-top: 1px solid #dfdfdf;
 	}
 
 	.insert-box .flex-container {
@@ -257,9 +264,6 @@ form.tag-generator-panel[data-version="2"] {
 }
 
 form.tag-generator-panel[data-version="1"] {
-	display: flex;
-	flex-direction: column;
-
 	.close-button-container {
 		box-sizing: border-box;
 		flex: none;
