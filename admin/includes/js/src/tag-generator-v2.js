@@ -13,7 +13,7 @@ const init = form => {
 
 const update = form => {
 	form.querySelectorAll(
-		'.tag'
+		'[data-tag-part="tag"]'
 	).forEach( tag => {
 		tag.value = compose( form );
 	} );

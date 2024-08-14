@@ -212,18 +212,60 @@ ul.config-error li {
 	background: rgb( 0 0 0 / 50% );
 }
 
-.tag-generator-dialog .close-button-container {
-	text-align: end;
-	min-height: 24px;
-}
-
-.tag-generator-panel {
-	height: 495px;
+form.tag-generator-panel[data-version="2"] {
 	display: flex;
 	flex-direction: column;
+
+	.close-button-container {
+		box-sizing: border-box;
+		flex: none;
+		text-align: end;
+	}
+
+	.control-box {
+		box-sizing: border-box;
+		flex: auto;
+		overflow: scroll;
+	}
+
+	.control-box fieldset {
+		margin-block: 8px;
+		margin-inline-start: 10em;
+	}
+
+	.control-box fieldset legend {
+		font-weight: bolder;
+		margin-block: 8px;
+		margin-inline-start: -10em;
+	}
+
+	.insert-box {
+		box-sizing: border-box;
+		flex: none;
+		padding-block: 20px 10px;
+		background-color: #fcfcfc;
+	}
+
+	.insert-box .flex-container {
+		display: flex;
+	}
+
+	.insert-box .flex-container > [data-tag-part="tag"] {
+		flex: auto;
+		margin-inline-end: 8px;
+	}
 }
 
 form.tag-generator-panel[data-version="1"] {
+	display: flex;
+	flex-direction: column;
+
+	.close-button-container {
+		box-sizing: border-box;
+		flex: none;
+		text-align: end;
+	}
+
 	.control-box {
 		padding: 0;
 		margin: 0;
