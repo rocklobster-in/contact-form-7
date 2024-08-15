@@ -258,13 +258,15 @@ function wpcf7_tag_generator_text( $contact_form, $options ) {
 	);
 
 ?>
-<section class="control-box">
+<header class="description-box">
 	<h3><?php
 		echo esc_html( 'Text field form-tag generator' );
 	?></h3>
 
 	<p><?php echo sprintf( esc_html( $description ), $desc_link ); ?></p>
+</header>
 
+<div class="control-box">
 	<?php $tgg->print( 'field_type' ); ?>
 
 	<?php $tgg->print( 'field_name' ); ?>
@@ -274,8 +276,10 @@ function wpcf7_tag_generator_text( $contact_form, $options ) {
 	<?php $tgg->print( 'id_attr' ); ?>
 
 	<?php $tgg->print( 'class_attr' ); ?>
-</section>
+</div>
 
-<?php $tgg->print( 'insert_box' ); ?>
+<footer class="insert-box">
+	<?php $tgg->print( 'insert_box_content' ); ?>
+</footer>
 <?php
 }

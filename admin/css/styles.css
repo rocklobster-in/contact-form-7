@@ -225,6 +225,14 @@ form.tag-generator-panel[data-version="2"] {
 		text-align: end;
 	}
 
+	.description-box {
+		box-sizing: border-box;
+		flex: none;
+		margin-inline: -12px;
+		padding-inline: 12px;
+		border-bottom: 1px solid #dfdfdf;
+	}
+
 	.control-box {
 		box-sizing: border-box;
 		flex: auto;

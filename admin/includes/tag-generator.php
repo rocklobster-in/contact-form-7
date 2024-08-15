@@ -209,14 +209,12 @@ class WPCF7_TagGeneratorGenerator {
 <?php
 	}
 
-	private function insert_box( $options = '' ) {
+	private function insert_box_content( $options = '' ) {
 ?>
-<footer class="insert-box">
-	<div class="flex-container">
-		<input type="text" class="code" readonly="readonly" onfocus="this.select();" data-tag-part="tag" />
-		<button type="button" class="button button-primary" data-taggen="insert-tag"><?php echo esc_html( __( 'Insert Tag', 'contact-form-7' ) ); ?></button>
-	</div>
-</footer>
+<div class="flex-container">
+	<input type="text" class="code" readonly="readonly" onfocus="this.select();" data-tag-part="tag" />
+	<button type="button" class="button button-primary" data-taggen="insert-tag"><?php echo esc_html( __( 'Insert Tag', 'contact-form-7' ) ); ?></button>
+</div>
 <?php
 	}
 }
