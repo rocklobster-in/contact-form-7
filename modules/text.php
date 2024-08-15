@@ -227,9 +227,20 @@ function wpcf7_tag_generator_text( $contact_form, $options ) {
 	$basetype = $options['id'];
 	$tg_key = $options['content'];
 
-	if ( ! in_array( $basetype, array( 'email', 'url', 'tel' ) ) ) {
+	$field_types = array(
+		'text' => __( 'Text field', 'contact-form-7' ),
+		'email' => __( 'Email address field', 'contact-form-7' ),
+		'url' => __( 'URL field', 'contact-form-7' ),
+		'tel' => __( 'Telephone number field', 'contact-form-7' ),
+	);
+
+	if ( ! in_array( $basetype, array_keys( $field_types ) ) ) {
 		$basetype = 'text';
 	}
+
+	$tgg = new WPCF7_TagGeneratorGenerator( $tg_key, $basetype, array(
+		'title' => $field_types[$basetype] ?? '',
+	) );
 
 	if ( 'text' === $basetype ) {
 		$description = __( "Generate a form-tag for a single-line plain text input field. For more details, see %s.", 'contact-form-7' );
@@ -254,23 +265,9 @@ function wpcf7_tag_generator_text( $contact_form, $options ) {
 
 	<p><?php echo sprintf( esc_html( $description ), $desc_link ); ?></p>
 
-	<fieldset>
-		<legend><?php
-			echo esc_html( __( 'Field type', 'contact-form-7' ) );
-		?></legend>
-		<input type="hidden" data-tag-part="basetype" value="<?php echo esc_attr( $basetype ); ?>" />
-		<label>
-			<input type="checkbox" data-tag-part="type-suffix" value="*" />
-			<?php echo esc_html( __( 'Required field', 'contact-form-7' ) ); ?>
-		</label>
-	</fieldset>
+	<?php $tgg->print( 'field_type' ); ?>
 
-	<fieldset>
-		<legend id="<?php echo esc_attr( $tg_key . '-name-legend' ); ?>"><?php
-			echo esc_html( __( 'Field name', 'contact-form-7' ) );
-		?></legend>
-		<input type="text" data-tag-part="name" pattern="[A-Za-z][A-Za-z0-9_\-]*" aria-labelledby="<?php echo esc_attr( $tg_key . '-name-legend' ); ?>" />
-	</fieldset>
+	<?php $tgg->print( 'field_name' ); ?>
 
 	<fieldset>
 		<legend id="<?php echo esc_attr( $tg_key . '-value-legend' ); ?>"><?php

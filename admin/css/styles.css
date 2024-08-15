@@ -234,6 +234,7 @@ form.tag-generator-panel[data-version="2"] {
 	.control-box fieldset {
 		margin-block: 8px;
 		margin-inline-start: 10em;
+		line-height: 1.75;
 	}
 
 	.control-box fieldset legend {

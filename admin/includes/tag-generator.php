@@ -16,7 +16,7 @@ class WPCF7_TagGenerator {
 		return self::$instance;
 	}
 
-	public function add( $id, $title, $callback, $options = array() ) {
+	public function add( $id, $title, $callback, $options = '' ) {
 		$id = trim( $id );
 
 		if (
@@ -106,4 +106,63 @@ class WPCF7_TagGenerator {
 		}
 	}
 
+}
+
+
+class WPCF7_TagGeneratorGenerator {
+
+	private $key = '';
+	private $basetype = '';
+	private $options = array();
+
+	public function __construct( $key, $basetype, $options = '' ) {
+		$this->key = $key;
+		$this->basetype = $basetype;
+
+		$this->options = wp_parse_args( $options, array(
+			'title' => ucfirst( $this->basetype ),
+		) );
+	}
+
+	public function print( $part, $options = '' ) {
+		if ( is_callable( array( $this, $part ) ) ) {
+			call_user_func( array( $this, $part ), $options );
+		}
+	}
+
+	private function field_type( $options = '' ) {
+		$options = wp_parse_args( $options, array(
+			'with_required' => true,
+		) );
+
+?>
+<fieldset>
+	<legend><?php
+		echo esc_html( __( 'Field type', 'contact-form-7' ) );
+	?></legend>
+	<?php echo esc_html( $this->options['title'] ?? '' ); ?>
+	<br />
+	<input type="hidden" data-tag-part="basetype" value="<?php echo esc_attr( $this->basetype ); ?>" />
+	<?php if ( $options['with_required'] ) { ?>
+	<label>
+		<input type="checkbox" data-tag-part="type-suffix" value="*" />
+		<?php echo esc_html( __( "This is a required field.", 'contact-form-7' ) ); ?>
+	</label>
+	<?php } ?>
+</fieldset>
+<?php
+	}
+
+	private function field_name( $options = '' ) {
+		$id = sprintf( '%s-name-legend', $this->key );
+
+?>
+<fieldset>
+	<legend id="<?php echo esc_attr( $id ); ?>"><?php
+		echo esc_html( __( 'Field name', 'contact-form-7' ) );
+	?></legend>
+	<input type="text" data-tag-part="name" pattern="[A-Za-z][A-Za-z0-9_\-]*" aria-labelledby="<?php echo esc_attr( $id ); ?>" />
+</fieldset>
+<?php
+	}
 }
