@@ -269,40 +269,13 @@ function wpcf7_tag_generator_text( $contact_form, $options ) {
 
 	<?php $tgg->print( 'field_name' ); ?>
 
-	<fieldset>
-		<legend id="<?php echo esc_attr( $tg_key . '-value-legend' ); ?>"><?php
-			echo esc_html( __( 'Default value', 'contact-form-7' ) );
-		?></legend>
-		<input type="text" data-tag-part="value" aria-labelledby="<?php echo esc_attr( $tg_key . '-value-legend' ); ?>" />
-		<br />
-		<label>
-			<input type="checkbox" data-tag-part="option" data-tag-option="placeholder" />
-			<?php
-				echo esc_html( __( 'Use this text as the placeholder of the field', 'contact-form-7' ) );
-			?>
-		</label>
-	</fieldset>
+	<?php $tgg->print( 'default_value' ); ?>
 
-	<fieldset>
-		<legend id="<?php echo esc_attr( $tg_key . '-id-legend' ); ?>"><?php
-			echo esc_html( __( 'ID attribute', 'contact-form-7' ) );
-		?></legend>
-		<input type="text" data-tag-part="option" data-tag-option="id:" pattern="[A-Za-z][A-Za-z0-9_\-]*" aria-labelledby="<?php echo esc_attr( $tg_key . '-id-legend' ); ?>" />
-	</fieldset>
+	<?php $tgg->print( 'id_attr' ); ?>
 
-	<fieldset>
-		<legend id="<?php echo esc_attr( $tg_key . '-class-legend' ); ?>"><?php
-			echo esc_html( __( 'Class attribute', 'contact-form-7' ) );
-		?></legend>
-		<input type="text" data-tag-part="option" data-tag-option="class:" pattern="[A-Za-z0-9_\-\s]*" aria-labelledby="<?php echo esc_attr( $tg_key . '-class-legend' ); ?>" />
-	</fieldset>
+	<?php $tgg->print( 'class_attr' ); ?>
 </section>
 
-<footer class="insert-box">
-	<div class="flex-container">
-		<input type="text" class="code" readonly="readonly" onfocus="this.select();" data-tag-part="tag" />
-		<button type="button" class="button button-primary" data-taggen="insert-tag"><?php echo esc_html( __( 'Insert Tag', 'contact-form-7' ) ); ?></button>
-	</div>
-</footer>
+<?php $tgg->print( 'insert_box' ); ?>
 <?php
 }

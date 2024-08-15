@@ -165,4 +165,58 @@ class WPCF7_TagGeneratorGenerator {
 </fieldset>
 <?php
 	}
+
+	private function default_value( $options = '' ) {
+		$id = sprintf( '%s-value-legend', $this->key );
+
+?>
+<fieldset>
+	<legend id="<?php echo esc_attr( $id ); ?>"><?php
+		echo esc_html( __( 'Default value', 'contact-form-7' ) );
+	?></legend>
+	<input type="text" data-tag-part="value" aria-labelledby="<?php echo esc_attr( $id ); ?>" />
+	<br />
+	<label>
+		<input type="checkbox" data-tag-part="option" data-tag-option="placeholder" /> <?php echo esc_html( __( "Use this text as the placeholder.", 'contact-form-7' ) ); ?>
+	</label>
+</fieldset>
+<?php
+	}
+
+	private function id_attr( $options = '' ) {
+		$id = sprintf( '%s-id-legend', $this->key );
+
+?>
+<fieldset>
+	<legend id="<?php echo esc_attr( $id ); ?>"><?php
+		echo esc_html( __( 'ID attribute', 'contact-form-7' ) );
+	?></legend>
+	<input type="text" data-tag-part="option" data-tag-option="id:" pattern="[A-Za-z][A-Za-z0-9_\-]*" aria-labelledby="<?php echo esc_attr( $id ); ?>" />
+</fieldset>
+<?php
+	}
+
+	private function class_attr( $options = '' ) {
+		$id = sprintf( '%s-class-legend', $this->key );
+
+?>
+<fieldset>
+	<legend id="<?php echo esc_attr( $id ); ?>"><?php
+		echo esc_html( __( 'Class attribute', 'contact-form-7' ) );
+	?></legend>
+	<input type="text" data-tag-part="option" data-tag-option="class:" pattern="[A-Za-z0-9_\-\s]*" aria-labelledby="<?php echo esc_attr( $id ); ?>" />
+</fieldset>
+<?php
+	}
+
+	private function insert_box( $options = '' ) {
+?>
+<footer class="insert-box">
+	<div class="flex-container">
+		<input type="text" class="code" readonly="readonly" onfocus="this.select();" data-tag-part="tag" />
+		<button type="button" class="button button-primary" data-taggen="insert-tag"><?php echo esc_html( __( 'Insert Tag', 'contact-form-7' ) ); ?></button>
+	</div>
+</footer>
+<?php
+	}
 }
