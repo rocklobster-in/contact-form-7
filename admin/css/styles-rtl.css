@@ -12,6 +12,11 @@
 	text-align: right;
 }
 
+.tag-generator-dialog > .close-button {
+	right: auto;
+	left: 8px;
+}
+
 form.tag-generator-panel[data-version="1"] {
 	.control-box > fieldset > legend {
 		border: 1px solid #dfdfdf;

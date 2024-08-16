@@ -211,6 +211,12 @@ ul.config-error li {
 	background: rgb( 0 0 0 / 50% );
 }
 
+.tag-generator-dialog > .close-button {
+	position: absolute;
+	top: 8px;
+	right: 8px;
+}
+
 form.tag-generator-panel {
 	display: flex;
 	flex-direction: column;
@@ -219,12 +225,6 @@ form.tag-generator-panel {
 }
 
 form.tag-generator-panel[data-version="2"] {
-	.close-button-container {
-		box-sizing: border-box;
-		flex: none;
-		text-align: end;
-	}
-
 	.description-box {
 		box-sizing: border-box;
 		flex: none;
@@ -273,12 +273,6 @@ form.tag-generator-panel[data-version="2"] {
 }
 
 form.tag-generator-panel[data-version="1"] {
-	.close-button-container {
-		box-sizing: border-box;
-		flex: none;
-		text-align: end;
-	}
-
 	.control-box {
 		padding: 0;
 		margin: 0;

@@ -92,6 +92,11 @@ class WPCF7_TagGenerator {
 				);
 				echo "\n";
 				echo sprintf(
+					'<button class="close-button" data-taggen="close-dialog">%s</button>',
+					esc_html( __( 'Close', 'contact-form-7' ) )
+				);
+				echo "\n";
+				echo sprintf(
 					'<form %s>',
 					wpcf7_format_atts( array(
 						'method' => 'dialog',
@@ -99,11 +104,6 @@ class WPCF7_TagGenerator {
 						'data-id' => $options['id'],
 						'data-version' => $options['version'],
 					) )
-				);
-				echo "\n";
-				echo sprintf(
-					'<div class="close-button-container"><button data-taggen="close-dialog">%s</button></div>',
-					esc_html( __( 'Close', 'contact-form-7' ) )
 				);
 				echo "\n";
 				call_user_func( $callback, $contact_form, $options );
