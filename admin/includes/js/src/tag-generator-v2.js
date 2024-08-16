@@ -7,6 +7,14 @@ const init = form => {
 		box.addEventListener( 'change', event => {
 			update( form );
 		} );
+
+		box.addEventListener( 'keyup', event => {
+			const inputType = event.target.type ?? '';
+
+			if ( 'text' === inputType ) {
+				update( form );
+			}
+		} );
 	} );
 };
 
