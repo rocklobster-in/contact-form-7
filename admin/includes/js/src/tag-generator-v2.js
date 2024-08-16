@@ -1,5 +1,5 @@
 const init = form => {
-	update( form );
+	form.reset() ?? update( form );
 
 	form.querySelectorAll(
 		'.control-box'
