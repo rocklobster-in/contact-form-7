@@ -38,6 +38,16 @@ class WPCF7_TagGenerator {
 			'callback' => $callback,
 		);
 
+		if ( version_compare( $options['version'], '2', '<' ) ) {
+			$message = sprintf(
+				__( 'Use of tag generator instances older than version 2 is deprecated. Version %1$s instance (%2$s) detected.', 'contact-form-7' ),
+				$options['version'],
+				$title
+			);
+
+			wp_trigger_error( __METHOD__, $message, E_USER_DEPRECATED );
+		}
+
 		return true;
 	}
 
