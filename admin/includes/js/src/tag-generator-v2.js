@@ -25,6 +25,16 @@ const update = form => {
 	).forEach( tag => {
 		tag.value = compose( form );
 	} );
+
+	form.querySelectorAll(
+		'[data-tag-part="mail-tag"]'
+	).forEach( tag => {
+		const nameField = form.querySelector( '[data-tag-part="name"]' );
+
+		if ( nameField ) {
+			tag.innerText = `[${ nameField.value.trim() }]`;
+		}
+	} );
 };
 
 

@@ -40,6 +40,7 @@ class WPCF7_TagGenerator {
 
 		if ( version_compare( $options['version'], '2', '<' ) ) {
 			$message = sprintf(
+				/* translators: 1: version, 2: tag generator title */
 				__( 'Use of tag generator instances older than version 2 is deprecated. Version %1$s instance (%2$s) detected.', 'contact-form-7' ),
 				$options['version'],
 				$title
@@ -225,6 +226,18 @@ class WPCF7_TagGeneratorGenerator {
 	<input type="text" class="code" readonly="readonly" onfocus="this.select();" data-tag-part="tag" />
 	<button type="button" class="button button-primary" data-taggen="insert-tag"><?php echo esc_html( __( 'Insert Tag', 'contact-form-7' ) ); ?></button>
 </div>
+<?php
+	}
+
+	private function mail_tag_tip( $options = '' ) {
+		$tip = sprintf(
+			/* translators: %s: mail-tag corresponding to the form-tag */
+			esc_html( __( 'To use the user input in the email, insert the corresponding mail-tag %s into the email template.', 'contact-form-7' ) ),
+			'<strong data-tag-part="mail-tag"></strong>'
+		);
+
+?>
+<p class="mail-tag-tip"><?php echo $tip; ?></p>
 <?php
 	}
 }

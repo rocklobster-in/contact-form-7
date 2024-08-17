@@ -280,6 +280,8 @@ function wpcf7_tag_generator_text( $contact_form, $options ) {
 
 <footer class="insert-box">
 	<?php $tgg->print( 'insert_box_content' ); ?>
+
+	<?php $tgg->print( 'mail_tag_tip' ); ?>
 </footer>
 <?php
 }
