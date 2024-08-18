@@ -228,10 +228,22 @@ function wpcf7_tag_generator_text( $contact_form, $options ) {
 	$tg_key = $options['content'];
 
 	$field_types = array(
-		'text' => __( 'Text field', 'contact-form-7' ),
-		'email' => __( 'Email address field', 'contact-form-7' ),
-		'url' => __( 'URL field', 'contact-form-7' ),
-		'tel' => __( 'Telephone number field', 'contact-form-7' ),
+		'text' => array(
+			'title' => __( 'Text field', 'contact-form-7' ),
+			'description' => __( "Generate a form-tag for a single-line plain text input field. For more details, see %s.", 'contact-form-7' ),
+		),
+		'email' => array(
+			'title' => __( 'Email address field', 'contact-form-7' ),
+			'description' => __( "Generate a form-tag for a single-line email address input field. For more details, see %s.", 'contact-form-7' ),
+		),
+		'url' => array(
+			'title' => __( 'URL field', 'contact-form-7' ),
+			'description' => __( "Generate a form-tag for a single-line URL input field. For more details, see %s.", 'contact-form-7' ),
+		),
+		'tel' => array(
+			'title' => __( 'Telephone number field', 'contact-form-7' ),
+			'description' => __( "Generate a form-tag for a single-line telephone number input field. For more details, see %s.", 'contact-form-7' ),
+		),
 	);
 
 	if ( ! in_array( $basetype, array_keys( $field_types ) ) ) {
@@ -239,23 +251,8 @@ function wpcf7_tag_generator_text( $contact_form, $options ) {
 	}
 
 	$tgg = new WPCF7_TagGeneratorGenerator( $tg_key, $basetype, array(
-		'title' => $field_types[$basetype] ?? '',
+		'title' => $field_types[$basetype]['title'] ?? '',
 	) );
-
-	if ( 'text' === $basetype ) {
-		$description = __( "Generate a form-tag for a single-line plain text input field. For more details, see %s.", 'contact-form-7' );
-	} elseif ( 'email' === $basetype ) {
-		$description = __( "Generate a form-tag for a single-line email address input field. For more details, see %s.", 'contact-form-7' );
-	} elseif ( 'url' === $basetype ) {
-		$description = __( "Generate a form-tag for a single-line URL input field. For more details, see %s.", 'contact-form-7' );
-	} elseif ( 'tel' === $basetype ) {
-		$description = __( "Generate a form-tag for a single-line telephone number input field. For more details, see %s.", 'contact-form-7' );
-	}
-
-	$desc_link = wpcf7_link(
-		__( 'https://contactform7.com/text-fields/', 'contact-form-7' ),
-		__( 'Text fields', 'contact-form-7' )
-	);
 
 ?>
 <header class="description-box">
@@ -263,7 +260,15 @@ function wpcf7_tag_generator_text( $contact_form, $options ) {
 		echo esc_html( 'Text field form-tag generator' );
 	?></h3>
 
-	<p><?php echo sprintf( esc_html( $description ), $desc_link ); ?></p>
+	<p><?php
+		echo sprintf(
+			esc_html( $field_types[$basetype]['description'] ),
+			wpcf7_link(
+				__( 'https://contactform7.com/text-fields/', 'contact-form-7' ),
+				__( 'Text fields', 'contact-form-7' )
+			)
+		);
+	?></p>
 </header>
 
 <div class="control-box">
