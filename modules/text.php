@@ -229,19 +229,23 @@ function wpcf7_tag_generator_text( $contact_form, $options ) {
 
 	$field_types = array(
 		'text' => array(
-			'title' => __( 'Text field', 'contact-form-7' ),
+			'display_name' => __( 'Text field', 'contact-form-7' ),
+			'heading' => __( 'Text field form-tag generator', 'contact-form-7' ),
 			'description' => __( "Generate a form-tag for a single-line plain text input field. For more details, see %s.", 'contact-form-7' ),
 		),
 		'email' => array(
-			'title' => __( 'Email address field', 'contact-form-7' ),
+			'display_name' => __( 'Email address field', 'contact-form-7' ),
+			'heading' => __( 'Email address field form-tag generator', 'contact-form-7' ),
 			'description' => __( "Generate a form-tag for a single-line email address input field. For more details, see %s.", 'contact-form-7' ),
 		),
 		'url' => array(
-			'title' => __( 'URL field', 'contact-form-7' ),
+			'display_name' => __( 'URL field', 'contact-form-7' ),
+			'heading' => __( 'URL field form-tag generator', 'contact-form-7' ),
 			'description' => __( "Generate a form-tag for a single-line URL input field. For more details, see %s.", 'contact-form-7' ),
 		),
 		'tel' => array(
-			'title' => __( 'Telephone number field', 'contact-form-7' ),
+			'display_name' => __( 'Telephone number field', 'contact-form-7' ),
+			'heading' => __( 'Telephone number field form-tag generator', 'contact-form-7' ),
 			'description' => __( "Generate a form-tag for a single-line telephone number input field. For more details, see %s.", 'contact-form-7' ),
 		),
 	);
@@ -251,13 +255,13 @@ function wpcf7_tag_generator_text( $contact_form, $options ) {
 	}
 
 	$tgg = new WPCF7_TagGeneratorGenerator( $tg_key, $basetype, array(
-		'title' => $field_types[$basetype]['title'] ?? '',
+		'title' => $field_types[$basetype]['display_name'] ?? '',
 	) );
 
 ?>
 <header class="description-box">
 	<h3><?php
-		echo esc_html( 'Text field form-tag generator' );
+		echo esc_html( $field_types[$basetype]['heading'] );
 	?></h3>
 
 	<p><?php
