@@ -289,11 +289,13 @@ function wpcf7_tag_generator_text( $contact_form, $options ) {
 		'ask_if' => $field_types[$basetype]['maybe_purpose']
 	) ); ?>
 
-	<?php $tgg->print( 'default_value' ); ?>
-
 	<?php $tgg->print( 'id_attr' ); ?>
 
 	<?php $tgg->print( 'class_attr' ); ?>
+
+	<?php $tgg->print( 'min_max_length' ); ?>
+
+	<?php $tgg->print( 'default_value' ); ?>
 </div>
 
 <footer class="insert-box">

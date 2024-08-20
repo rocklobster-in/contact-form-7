@@ -267,6 +267,25 @@ class WPCF7_TagGeneratorGenerator {
 <?php
 	}
 
+	private function min_max_length( $options = '' ) {
+?>
+<fieldset>
+	<legend><?php
+		echo esc_html( __( 'Length', 'contact-form-7' ) );
+	?></legend>
+	<label>
+		<?php echo esc_html( __( 'Min', 'contact-form-7' ) ); ?>
+		<input type="number" data-tag-part="option" data-tag-option="minlength:" min="0" />
+	</label>
+	&#8660;
+	<label>
+		<?php echo esc_html( __( 'Max', 'contact-form-7' ) ); ?>
+		<input type="number" data-tag-part="option" data-tag-option="maxlength:" min="0" />
+	</label>
+</fieldset>
+<?php
+	}
+
 	private function insert_box_content( $options = '' ) {
 ?>
 <div class="flex-container">

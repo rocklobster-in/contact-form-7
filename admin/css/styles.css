@@ -252,6 +252,14 @@ form.tag-generator-panel[data-version="2"] {
 		margin-inline-start: -10em;
 	}
 
+	.control-box input[type="text"] {
+		width: 20rem;
+	}
+
+	.control-box input[type="number"] {
+		width: 8rem;
+	}
+
 	.insert-box {
 		box-sizing: border-box;
 		flex: none;
