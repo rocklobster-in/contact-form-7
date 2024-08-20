@@ -232,21 +232,25 @@ function wpcf7_tag_generator_text( $contact_form, $options ) {
 			'display_name' => __( 'Text field', 'contact-form-7' ),
 			'heading' => __( 'Text field form-tag generator', 'contact-form-7' ),
 			'description' => __( 'Generates a form-tag for a <a href="https://contactform7.com/text-fields/">single-line plain text input field</a>.', 'contact-form-7' ),
+			'maybe_purpose' => 'author_name',
 		),
 		'email' => array(
 			'display_name' => __( 'Email address field', 'contact-form-7' ),
 			'heading' => __( 'Email address field form-tag generator', 'contact-form-7' ),
 			'description' => __( 'Generates a form-tag for an <a href="https://contactform7.com/text-fields/">email address input field</a>.', 'contact-form-7' ),
+			'maybe_purpose' => 'author_email',
 		),
 		'url' => array(
 			'display_name' => __( 'URL field', 'contact-form-7' ),
 			'heading' => __( 'URL field form-tag generator', 'contact-form-7' ),
 			'description' => __( 'Generates a form-tag for a <a href="https://contactform7.com/text-fields/">URL input field</a>.', 'contact-form-7' ),
+			'maybe_purpose' => 'author_url',
 		),
 		'tel' => array(
 			'display_name' => __( 'Telephone number field', 'contact-form-7' ),
 			'heading' => __( 'Telephone number field form-tag generator', 'contact-form-7' ),
 			'description' => __( 'Generates a form-tag for a <a href="https://contactform7.com/text-fields/">telephone number input field</a>.', 'contact-form-7' ),
+			'maybe_purpose' => 'author_tel',
 		),
 	);
 
@@ -281,7 +285,9 @@ function wpcf7_tag_generator_text( $contact_form, $options ) {
 <div class="control-box">
 	<?php $tgg->print( 'field_type' ); ?>
 
-	<?php $tgg->print( 'field_name' ); ?>
+	<?php $tgg->print( 'field_name', array(
+		'ask_if' => $field_types[$basetype]['maybe_purpose']
+	) ); ?>
 
 	<?php $tgg->print( 'default_value' ); ?>
 

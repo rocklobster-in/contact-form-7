@@ -165,6 +165,10 @@ class WPCF7_TagGeneratorGenerator {
 	}
 
 	private function field_name( $options = '' ) {
+		$options = wp_parse_args( $options, array(
+			'ask_if' => '',
+		) );
+
 		$id = sprintf( '%s-name-legend', $this->key );
 
 ?>
@@ -173,6 +177,49 @@ class WPCF7_TagGeneratorGenerator {
 		echo esc_html( __( 'Field name', 'contact-form-7' ) );
 	?></legend>
 	<input type="text" data-tag-part="name" pattern="[A-Za-z][A-Za-z0-9_\-]*" aria-labelledby="<?php echo esc_attr( $id ); ?>" />
+
+<?php
+		$tag_option = $label = '';
+
+		if ( 'author_name' === $options['ask_if'] ) {
+			$tag_option = 'autocomplete:name';
+
+			if ( wpcf7_akismet_is_available() ) {
+				$tag_option .= ' akismet:author';
+			}
+
+			$label = __( "This is a field for the submitter name.", 'contact-form-7' );
+		} elseif ( 'author_email' === $options['ask_if'] ) {
+			$tag_option = 'autocomplete:email';
+
+			if ( wpcf7_akismet_is_available() ) {
+				$tag_option .= ' akismet:author_email';
+			}
+
+			$label = __( "This is a field for the submitter email.", 'contact-form-7' );
+		} elseif ( 'author_url' === $options['ask_if'] ) {
+			$tag_option = 'autocomplete:url';
+
+			if ( wpcf7_akismet_is_available() ) {
+				$tag_option .= ' akismet:author_url';
+			}
+
+			$label = __( "This is a field for the submitter URL.", 'contact-form-7' );
+		} elseif ( 'author_tel' === $options['ask_if'] ) {
+			$tag_option = 'autocomplete:tel';
+			$label = __( "This is a field for the submitter telephone number.", 'contact-form-7' );
+		}
+
+		if ( $tag_option ) {
+?>
+	<br />
+	<label>
+		<input type="checkbox" data-tag-part="option" data-tag-option="<?php echo esc_attr( $tag_option ); ?>" />
+		<?php echo esc_html( $label ); ?>
+	</label>
+<?php
+		}
+?>
 </fieldset>
 <?php
 	}

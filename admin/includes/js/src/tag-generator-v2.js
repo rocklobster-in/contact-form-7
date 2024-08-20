@@ -85,23 +85,17 @@ const compose = scope => {
 			return;
 		}
 
-		if ( 'class:' === tagOption ) {
-			field.value?.split( ' ' ).forEach( classTerm => {
-				classTerm = classTerm.trim();
-
-				if ( classTerm ) {
-					options.push( tagOption + classTerm );
-				}
-			} );
-		} else if ( tagOption.endsWith( ':' ) ) {
-			let val = field.value?.trim();
-
-			if ( val ) {
-				options.push( tagOption + val );
+		tagOption.split( ' ' ).forEach( opt => {
+			if ( opt.endsWith( ':' ) ) {
+				field.value?.split( ' ' ).forEach( val => {
+					if ( val = val.trim() ) {
+						options.push( opt + val );
+					}
+				} );
+			} else {
+				options.push( opt );
 			}
-		} else {
-			options.push( tagOption );
-		}
+		} );
 	} );
 
 	const values = scope.querySelector( '[data-tag-part="value"]' )?.value
