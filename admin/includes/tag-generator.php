@@ -188,7 +188,7 @@ class WPCF7_TagGeneratorGenerator {
 				$tag_option .= ' akismet:author';
 			}
 
-			$label = __( "This is a field for the submitter name.", 'contact-form-7' );
+			$label = __( "This field expects the submitter name.", 'contact-form-7' );
 		} elseif ( 'author_email' === $options['ask_if'] ) {
 			$tag_option = 'autocomplete:email';
 
@@ -196,7 +196,7 @@ class WPCF7_TagGeneratorGenerator {
 				$tag_option .= ' akismet:author_email';
 			}
 
-			$label = __( "This is a field for the submitter email.", 'contact-form-7' );
+			$label = __( "This field expects the submitter email.", 'contact-form-7' );
 		} elseif ( 'author_url' === $options['ask_if'] ) {
 			$tag_option = 'autocomplete:url';
 
@@ -204,10 +204,10 @@ class WPCF7_TagGeneratorGenerator {
 				$tag_option .= ' akismet:author_url';
 			}
 
-			$label = __( "This is a field for the submitter URL.", 'contact-form-7' );
+			$label = __( "This field expects the submitter URL.", 'contact-form-7' );
 		} elseif ( 'author_tel' === $options['ask_if'] ) {
 			$tag_option = 'autocomplete:tel';
-			$label = __( "This is a field for the submitter telephone number.", 'contact-form-7' );
+			$label = __( "This field expects the submitter telephone number.", 'contact-form-7' );
 		}
 
 		if ( $tag_option ) {
