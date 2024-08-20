@@ -231,22 +231,22 @@ function wpcf7_tag_generator_text( $contact_form, $options ) {
 		'text' => array(
 			'display_name' => __( 'Text field', 'contact-form-7' ),
 			'heading' => __( 'Text field form-tag generator', 'contact-form-7' ),
-			'description' => __( "Generate a form-tag for a single-line plain text input field. For more details, see %s.", 'contact-form-7' ),
+			'description' => __( 'Generates a form-tag for a <a href="https://contactform7.com/text-fields/">single-line plain text input field</a>.', 'contact-form-7' ),
 		),
 		'email' => array(
 			'display_name' => __( 'Email address field', 'contact-form-7' ),
 			'heading' => __( 'Email address field form-tag generator', 'contact-form-7' ),
-			'description' => __( "Generate a form-tag for a single-line email address input field. For more details, see %s.", 'contact-form-7' ),
+			'description' => __( 'Generates a form-tag for an <a href="https://contactform7.com/text-fields/">email address input field</a>.', 'contact-form-7' ),
 		),
 		'url' => array(
 			'display_name' => __( 'URL field', 'contact-form-7' ),
 			'heading' => __( 'URL field form-tag generator', 'contact-form-7' ),
-			'description' => __( "Generate a form-tag for a single-line URL input field. For more details, see %s.", 'contact-form-7' ),
+			'description' => __( 'Generates a form-tag for a <a href="https://contactform7.com/text-fields/">URL input field</a>.', 'contact-form-7' ),
 		),
 		'tel' => array(
 			'display_name' => __( 'Telephone number field', 'contact-form-7' ),
 			'heading' => __( 'Telephone number field form-tag generator', 'contact-form-7' ),
-			'description' => __( "Generate a form-tag for a single-line telephone number input field. For more details, see %s.", 'contact-form-7' ),
+			'description' => __( 'Generates a form-tag for a <a href="https://contactform7.com/text-fields/">telephone number input field</a>.', 'contact-form-7' ),
 		),
 	);
 
@@ -265,13 +265,16 @@ function wpcf7_tag_generator_text( $contact_form, $options ) {
 	?></h3>
 
 	<p><?php
-		echo sprintf(
-			esc_html( $field_types[$basetype]['description'] ),
-			wpcf7_link(
-				__( 'https://contactform7.com/text-fields/', 'contact-form-7' ),
-				__( 'Text fields', 'contact-form-7' )
-			)
+		$description = wp_kses(
+			$field_types[$basetype]['description'],
+			array(
+				'a' => array( 'href' => true ),
+				'strong' => array(),
+			),
+			array( 'http', 'https' )
 		);
+
+		echo $description;
 	?></p>
 </header>
 
