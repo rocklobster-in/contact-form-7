@@ -144,17 +144,33 @@ class WPCF7_TagGeneratorGenerator {
 	private function field_type( $options = '' ) {
 		$options = wp_parse_args( $options, array(
 			'with_required' => true,
+			'select_options' => '',
 		) );
 
+		$select_options = wp_parse_args( $options['select_options'], array(
+			$this->basetype => $this->options['title'],
+		) );
 ?>
 <fieldset>
 	<legend><?php
 		echo esc_html( __( 'Field type', 'contact-form-7' ) );
 	?></legend>
-	<?php echo esc_html( $this->options['title'] ?? '' ); ?>
-	<br />
-	<input type="hidden" data-tag-part="basetype" value="<?php echo esc_attr( $this->basetype ); ?>" />
+
+	<select data-tag-part="basetype"><?php
+		foreach ( $select_options as $basetype => $title ) {
+			echo sprintf(
+				'<option %1$s>%2$s</option>',
+				wpcf7_format_atts( array(
+					'value' => $basetype,
+					'selected' => $basetype === $this->basetype,
+				) ),
+				esc_html( $title )
+			);
+		}
+	?></select>
+
 	<?php if ( $options['with_required'] ) { ?>
+	<br />
 	<label>
 		<input type="checkbox" data-tag-part="type-suffix" value="*" />
 		<?php echo esc_html( __( "This is a required field.", 'contact-form-7' ) ); ?>
