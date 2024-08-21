@@ -283,23 +283,27 @@ function wpcf7_tag_generator_text( $contact_form, $options ) {
 </header>
 
 <div class="control-box">
-	<?php $tgg->print( 'field_type' ); ?>
+	<?php
+		$tgg->print( 'field_type' );
 
-	<?php $tgg->print( 'field_name', array(
-		'ask_if' => $field_types[$basetype]['maybe_purpose']
-	) ); ?>
+		$tgg->print( 'field_name', array(
+			'ask_if' => $field_types[$basetype]['maybe_purpose']
+		) );
 
-	<?php $tgg->print( 'class_attr' ); ?>
+		$tgg->print( 'class_attr' );
 
-	<?php $tgg->print( 'min_max_length' ); ?>
+		$tgg->print( 'min_max_length' );
 
-	<?php $tgg->print( 'default_value' ); ?>
+		$tgg->print( 'default_value' );
+	?>
 </div>
 
 <footer class="insert-box">
-	<?php $tgg->print( 'insert_box_content' ); ?>
+	<?php
+		$tgg->print( 'insert_box_content' );
 
-	<?php $tgg->print( 'mail_tag_tip' ); ?>
+		$tgg->print( 'mail_tag_tip' );
+	?>
 </footer>
 <?php
 }
