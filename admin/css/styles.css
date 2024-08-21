@@ -222,6 +222,8 @@ form.tag-generator-panel {
 	flex-direction: column;
 	height: 540px;
 	width: 720px;
+	max-height: 100%;
+	max-width: 100%;
 	margin-block-end: 0;
 }
 
@@ -254,10 +256,12 @@ form.tag-generator-panel[data-version="2"] {
 
 	.control-box input[type="text"] {
 		width: 20rem;
+		max-width: 88%;
 	}
 
 	.control-box input[type="number"] {
 		width: 8rem;
+		max-width: 44%;
 	}
 
 	.control-box input:invalid,
