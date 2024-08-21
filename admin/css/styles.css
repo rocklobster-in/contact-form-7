@@ -262,7 +262,7 @@ form.tag-generator-panel[data-version="2"] {
 
 	.control-box input:invalid,
 	.control-box textarea:invalid {
-		background-color: #ffb7a7;
+		background-color: #ffe9de;
 	}
 
 	.insert-box {

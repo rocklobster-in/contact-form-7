@@ -23,7 +23,7 @@ const update = form => {
 	form.querySelectorAll(
 		'[data-tag-part="tag"]'
 	).forEach( tag => {
-		tag.value = compose( form );
+		tag.value = compose( form ) ?? '';
 	} );
 
 	form.querySelectorAll(
@@ -44,6 +44,10 @@ const compose = scope => {
 	)?.value.trim();
 
 	if ( ! basetype ) {
+		return;
+	}
+
+	if ( scope.querySelector( ':invalid' ) ) {
 		return;
 	}
 
