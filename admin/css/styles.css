@@ -260,6 +260,11 @@ form.tag-generator-panel[data-version="2"] {
 		width: 8rem;
 	}
 
+	.control-box input:invalid,
+	.control-box textarea:invalid {
+		background-color: #ffb7a7;
+	}
+
 	.insert-box {
 		box-sizing: border-box;
 		flex: none;
@@ -295,10 +300,6 @@ form.tag-generator-panel[data-version="1"] {
 		margin: 0;
 		overflow: auto;
 		flex-grow: 1;
-	}
-
-	.control-box :invalid {
-		border-color: red;
 	}
 
 	.control-box > fieldset > legend {
