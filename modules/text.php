@@ -224,9 +224,6 @@ function wpcf7_add_tag_generator_text() {
 }
 
 function wpcf7_tag_generator_text( $contact_form, $options ) {
-	$basetype = $options['id'];
-	$tg_key = $options['content'];
-
 	$field_types = array(
 		'text' => array(
 			'display_name' => __( 'Text field', 'contact-form-7' ),
@@ -254,13 +251,14 @@ function wpcf7_tag_generator_text( $contact_form, $options ) {
 		),
 	);
 
+	$tg_key = $options['content'];
+	$basetype = $options['id'];
+
 	if ( ! in_array( $basetype, array_keys( $field_types ) ) ) {
 		$basetype = 'text';
 	}
 
-	$tgg = new WPCF7_TagGeneratorGenerator( $tg_key, $basetype, array(
-		'title' => $field_types[$basetype]['display_name'] ?? '',
-	) );
+	$tgg = new WPCF7_TagGeneratorGenerator( $tg_key );
 
 ?>
 <header class="description-box">
@@ -284,7 +282,12 @@ function wpcf7_tag_generator_text( $contact_form, $options ) {
 
 <div class="control-box">
 	<?php
-		$tgg->print( 'field_type' );
+		$tgg->print( 'field_type', array(
+			'with_required' => true,
+			'select_options' => array(
+				$basetype => $field_types[$basetype]['display_name'],
+			),
+		) );
 
 		$tgg->print( 'field_name', array(
 			'ask_if' => $field_types[$basetype]['maybe_purpose']

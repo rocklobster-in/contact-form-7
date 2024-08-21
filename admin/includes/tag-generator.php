@@ -123,16 +123,9 @@ class WPCF7_TagGenerator {
 class WPCF7_TagGeneratorGenerator {
 
 	private $key = '';
-	private $basetype = '';
-	private $options = array();
 
-	public function __construct( $key, $basetype, $options = '' ) {
+	public function __construct( $key ) {
 		$this->key = $key;
-		$this->basetype = $basetype;
-
-		$this->options = wp_parse_args( $options, array(
-			'title' => ucfirst( $this->basetype ),
-		) );
 	}
 
 	public function print( $part, $options = '' ) {
@@ -143,13 +136,10 @@ class WPCF7_TagGeneratorGenerator {
 
 	private function field_type( $options = '' ) {
 		$options = wp_parse_args( $options, array(
-			'with_required' => true,
-			'select_options' => '',
+			'with_required' => false,
+			'select_options' => array(),
 		) );
 
-		$select_options = wp_parse_args( $options['select_options'], array(
-			$this->basetype => $this->options['title'],
-		) );
 ?>
 <fieldset>
 	<legend><?php
@@ -157,12 +147,11 @@ class WPCF7_TagGeneratorGenerator {
 	?></legend>
 
 	<select data-tag-part="basetype"><?php
-		foreach ( $select_options as $basetype => $title ) {
+		foreach ( (array) $options['select_options'] as $basetype => $title ) {
 			echo sprintf(
 				'<option %1$s>%2$s</option>',
 				wpcf7_format_atts( array(
 					'value' => $basetype,
-					'selected' => $basetype === $this->basetype,
 				) ),
 				esc_html( $title )
 			);
