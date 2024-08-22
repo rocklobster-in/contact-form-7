@@ -264,6 +264,11 @@ form.tag-generator-panel[data-version="2"] {
 		max-width: 44%;
 	}
 
+	.control-box select {
+		width: 20rem;
+		max-width: 88%;
+	}
+
 	.control-box input:invalid,
 	.control-box textarea:invalid {
 		background-color: #ffe9de;

@@ -305,7 +305,19 @@ class WPCF7_TagGeneratorGenerator {
 	private function insert_box_content( $options = '' ) {
 ?>
 <div class="flex-container">
-	<input type="text" class="code" readonly="readonly" onfocus="this.select();" data-tag-part="tag" />
+	<?php
+		echo sprintf(
+			'<input %s />',
+			wpcf7_format_atts( array(
+				'type' => 'text',
+				'class' => 'code',
+				'readonly' => true,
+				'onfocus' => 'this.select();',
+				'data-tag-part' => 'tag',
+				'aria-label' => __( "The form-tag to be inserted into the form template", 'contact-form-7' ),
+			) )
+		);
+	?>
 	<button type="button" class="button button-primary" data-taggen="insert-tag"><?php echo esc_html( __( 'Insert Tag', 'contact-form-7' ) ); ?></button>
 </div>
 <?php
