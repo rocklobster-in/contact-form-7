@@ -251,14 +251,13 @@ function wpcf7_tag_generator_text( $contact_form, $options ) {
 		),
 	);
 
-	$tg_key = $options['content'];
 	$basetype = $options['id'];
 
 	if ( ! in_array( $basetype, array_keys( $field_types ) ) ) {
 		$basetype = 'text';
 	}
 
-	$tgg = new WPCF7_TagGeneratorGenerator( $tg_key );
+	$tgg = new WPCF7_TagGeneratorGenerator( $options['content'] );
 
 ?>
 <header class="description-box">
@@ -295,7 +294,12 @@ function wpcf7_tag_generator_text( $contact_form, $options ) {
 
 		$tgg->print( 'class_attr' );
 
-		$tgg->print( 'min_max_length' );
+		$tgg->print( 'min_max', array(
+			'title' => __( 'Length', 'contact-form-7' ),
+			'min_option' => 'minlength:',
+			'max_option' => 'maxlength:',
+			'minus_available' => false,
+		) );
 
 		$tgg->print( 'default_value' );
 	?>

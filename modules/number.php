@@ -203,11 +203,80 @@ function wpcf7_add_tag_generator_number() {
 
 	$tag_generator->add( 'number', __( 'number', 'contact-form-7' ),
 		'wpcf7_tag_generator_number',
-	 	array( 'version' => '1' )
+	 	array( 'version' => '2' )
 	);
 }
 
-function wpcf7_tag_generator_number( $contact_form, $args = '' ) {
+function wpcf7_tag_generator_number( $contact_form, $options ) {
+	$field_types = array(
+		'number' => array(
+			'display_name' => __( 'Number field', 'contact-form-7' ),
+			'heading' => __( 'Number field form-tag generator', 'contact-form-7' ),
+			'description' => __( 'Generates a form-tag for a <a href="https://contactform7.com/number-fields/">number input field</a>.', 'contact-form-7' ),
+		),
+	);
+
+	$tgg = new WPCF7_TagGeneratorGenerator( $options['content'] );
+
+?>
+<header class="description-box">
+	<h3><?php
+		echo esc_html( $field_types['number']['heading'] );
+	?></h3>
+
+	<p><?php
+		$description = wp_kses(
+			$field_types['number']['description'],
+			array(
+				'a' => array( 'href' => true ),
+				'strong' => array(),
+			),
+			array( 'http', 'https' )
+		);
+
+		echo $description;
+	?></p>
+</header>
+
+<div class="control-box">
+	<?php
+		$tgg->print( 'field_type', array(
+			'with_required' => true,
+			'select_options' => array(
+				'number' => __( 'Spinbox', 'contact-form-7' ),
+				'range' => __( 'Slider', 'contact-form-7' ),
+			),
+		) );
+
+		$tgg->print( 'field_name' );
+
+		$tgg->print( 'class_attr' );
+
+		$tgg->print( 'min_max', array(
+			'title' => __( 'Range', 'contact-form-7' ),
+			'min_option' => 'min:',
+			'max_option' => 'max:',
+			'minus_available' => true,
+		) );
+
+		//$tgg->print( 'default_value' );
+	?>
+</div>
+
+<footer class="insert-box">
+	<?php
+		$tgg->print( 'insert_box_content' );
+
+		$tgg->print( 'mail_tag_tip' );
+	?>
+</footer>
+<?php
+}
+
+
+
+return;
+function wpcf7_tag_generator_number_old( $contact_form, $args = '' ) {
 	$args = wp_parse_args( $args, array() );
 	$type = 'number';
 

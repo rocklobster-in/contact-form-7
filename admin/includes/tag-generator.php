@@ -283,21 +283,46 @@ class WPCF7_TagGeneratorGenerator {
 <?php
 	}
 
-	private function min_max_length( $options = '' ) {
+	private function min_max( $options = '' ) {
+		$options = wp_parse_args( $options, array(
+			'title' => __( 'Length', 'contact-form-7' ),
+			'min_option' => 'minlength:',
+			'max_option' => 'maxlength:',
+			'minus_available' => false,
+		) );
+
 ?>
 <fieldset>
 	<legend><?php
-		echo esc_html( __( 'Length', 'contact-form-7' ) );
+		echo esc_html( $options['title'] );
 	?></legend>
-	<label>
-		<?php echo esc_html( __( 'Min', 'contact-form-7' ) ); ?>
-		<input type="number" data-tag-part="option" data-tag-option="minlength:" min="0" />
-	</label>
+	<label><?php
+		echo esc_html( __( 'Min', 'contact-form-7' ) ) . "\n";
+
+		echo sprintf(
+			'<input %s />',
+			wpcf7_format_atts( array(
+				'type' => 'number',
+				'data-tag-part' => 'option',
+				'data-tag-option' => $options['min_option'],
+				'min' => $options['minus_available'] ? null : 0,
+			) )
+		);
+	?></label>
 	&#8660;
-	<label>
-		<?php echo esc_html( __( 'Max', 'contact-form-7' ) ); ?>
-		<input type="number" data-tag-part="option" data-tag-option="maxlength:" min="0" />
-	</label>
+	<label><?php
+		echo esc_html( __( 'Max', 'contact-form-7' ) ) . "\n";
+
+		echo sprintf(
+			'<input %s />',
+			wpcf7_format_atts( array(
+				'type' => 'number',
+				'data-tag-part' => 'option',
+				'data-tag-option' => $options['max_option'],
+				'min' => $options['minus_available'] ? null : 0,
+			) )
+		);
+	?></label>
 </fieldset>
 <?php
 	}
