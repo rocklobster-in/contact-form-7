@@ -128,6 +128,15 @@ class WPCF7_TagGeneratorGenerator {
 		$this->key = $key;
 	}
 
+	public function ref( $suffix = '' ) {
+		$ref = sprintf( '%s-%s', $this->key, $suffix );
+		$ref = strtolower( $ref );
+		$ref = preg_replace( '/[^0-9a-z-]/', '', $ref );
+		$ref = preg_replace( '/[-]+/', '-', $ref );
+		$ref = trim( $ref, '-' );
+		return $ref;
+	}
+
 	public function print( $part, $options = '' ) {
 		if ( is_callable( array( $this, $part ) ) ) {
 			call_user_func( array( $this, $part ), $options );
@@ -140,13 +149,15 @@ class WPCF7_TagGeneratorGenerator {
 			'select_options' => array(),
 		) );
 
+		$id = $this->ref( 'type-legend' );
+
 ?>
 <fieldset>
-	<legend><?php
+	<legend id="<?php echo esc_attr( $id ); ?>"><?php
 		echo esc_html( __( 'Field type', 'contact-form-7' ) );
 	?></legend>
 
-	<select data-tag-part="basetype"><?php
+	<select data-tag-part="basetype" aria-labelledby="<?php echo esc_attr( $id ); ?>"><?php
 		foreach ( (array) $options['select_options'] as $basetype => $title ) {
 			echo sprintf(
 				'<option %1$s>%2$s</option>',
@@ -174,7 +185,7 @@ class WPCF7_TagGeneratorGenerator {
 			'ask_if' => '',
 		) );
 
-		$id = sprintf( '%s-name-legend', $this->key );
+		$id = $this->ref( 'name-legend' );
 
 ?>
 <fieldset>
@@ -230,7 +241,7 @@ class WPCF7_TagGeneratorGenerator {
 	}
 
 	private function default_value( $options = '' ) {
-		$id = sprintf( '%s-value-legend', $this->key );
+		$id = $this->ref( 'value-legend' );
 
 ?>
 <fieldset>
@@ -247,7 +258,7 @@ class WPCF7_TagGeneratorGenerator {
 	}
 
 	private function id_attr( $options = '' ) {
-		$id = sprintf( '%s-id-legend', $this->key );
+		$id = $this->ref( 'id-legend' );
 
 ?>
 <fieldset>
@@ -260,7 +271,7 @@ class WPCF7_TagGeneratorGenerator {
 	}
 
 	private function class_attr( $options = '' ) {
-		$id = sprintf( '%s-class-legend', $this->key );
+		$id = $this->ref( 'class-legend' );
 
 ?>
 <fieldset>
