@@ -259,7 +259,10 @@ function wpcf7_tag_generator_number( $contact_form, $options ) {
 			'minus_available' => true,
 		) );
 
-		//$tgg->print( 'default_value' );
+		$tgg->print( 'default_value', array(
+			'type' => 'number',
+			'with_placeholder' => false,
+		) );
 	?>
 </div>
 

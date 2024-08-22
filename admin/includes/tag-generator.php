@@ -240,23 +240,6 @@ class WPCF7_TagGeneratorGenerator {
 <?php
 	}
 
-	private function default_value( $options = '' ) {
-		$id = $this->ref( 'value-legend' );
-
-?>
-<fieldset>
-	<legend id="<?php echo esc_attr( $id ); ?>"><?php
-		echo esc_html( __( 'Default value', 'contact-form-7' ) );
-	?></legend>
-	<input type="text" data-tag-part="value" aria-labelledby="<?php echo esc_attr( $id ); ?>" />
-	<br />
-	<label>
-		<input type="checkbox" data-tag-part="option" data-tag-option="placeholder" /> <?php echo esc_html( __( "Use this text as the placeholder.", 'contact-form-7' ) ); ?>
-	</label>
-</fieldset>
-<?php
-	}
-
 	private function id_attr( $options = '' ) {
 		$id = $this->ref( 'id-legend' );
 
@@ -323,6 +306,41 @@ class WPCF7_TagGeneratorGenerator {
 			) )
 		);
 	?></label>
+</fieldset>
+<?php
+	}
+
+	private function default_value( $options = '' ) {
+		$options = wp_parse_args( $options, array(
+			'type' => 'text',
+			'with_placeholder' => false,
+		) );
+
+		$id = $this->ref( 'value-legend' );
+
+?>
+<fieldset>
+	<legend id="<?php echo esc_attr( $id ); ?>"><?php
+		echo esc_html( __( 'Default value', 'contact-form-7' ) );
+	?></legend>
+	<?php
+		echo sprintf(
+			'<input %s />',
+			wpcf7_format_atts( array(
+				'type' => $options['type'],
+				'data-tag-part' => 'value',
+				'aria-labelledby' => $id,
+			) )
+		);
+	?>
+
+	<?php if ( $options['with_placeholder'] ) { ?>
+	<br />
+	<label>
+		<input type="checkbox" data-tag-part="option" data-tag-option="placeholder" /> <?php echo esc_html( __( "Use this text as the placeholder.", 'contact-form-7' ) ); ?>
+	</label>
+	<?php } ?>
+
 </fieldset>
 <?php
 	}

@@ -301,7 +301,9 @@ function wpcf7_tag_generator_text( $contact_form, $options ) {
 			'minus_available' => false,
 		) );
 
-		$tgg->print( 'default_value' );
+		$tgg->print( 'default_value', array(
+			'with_placeholder' => true,
+		) );
 	?>
 </div>
 
