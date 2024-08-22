@@ -268,6 +268,7 @@ class WPCF7_TagGeneratorGenerator {
 
 	private function min_max( $options = '' ) {
 		$options = wp_parse_args( $options, array(
+			'type' => 'number',
 			'title' => __( 'Length', 'contact-form-7' ),
 			'min_option' => 'minlength:',
 			'max_option' => 'maxlength:',
@@ -285,7 +286,7 @@ class WPCF7_TagGeneratorGenerator {
 		echo sprintf(
 			'<input %s />',
 			wpcf7_format_atts( array(
-				'type' => 'number',
+				'type' => $options['type'],
 				'data-tag-part' => 'option',
 				'data-tag-option' => $options['min_option'],
 				'min' => $options['minus_available'] ? null : 0,
@@ -299,7 +300,7 @@ class WPCF7_TagGeneratorGenerator {
 		echo sprintf(
 			'<input %s />',
 			wpcf7_format_atts( array(
-				'type' => 'number',
+				'type' => $options['type'],
 				'data-tag-part' => 'option',
 				'data-tag-option' => $options['max_option'],
 				'min' => $options['minus_available'] ? null : 0,
