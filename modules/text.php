@@ -298,7 +298,6 @@ function wpcf7_tag_generator_text( $contact_form, $options ) {
 			'title' => __( 'Length', 'contact-form-7' ),
 			'min_option' => 'minlength:',
 			'max_option' => 'maxlength:',
-			'minus_available' => false,
 		) );
 
 		$tgg->print( 'default_value', array(

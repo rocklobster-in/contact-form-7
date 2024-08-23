@@ -256,7 +256,6 @@ function wpcf7_tag_generator_number( $contact_form, $options ) {
 			'title' => __( 'Range', 'contact-form-7' ),
 			'min_option' => 'min:',
 			'max_option' => 'max:',
-			'minus_available' => true,
 		) );
 
 		$tgg->print( 'default_value', array(

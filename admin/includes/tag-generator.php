@@ -272,7 +272,7 @@ class WPCF7_TagGeneratorGenerator {
 			'title' => __( 'Length', 'contact-form-7' ),
 			'min_option' => 'minlength:',
 			'max_option' => 'maxlength:',
-			'minus_available' => false,
+			'accepts_minus' => false,
 		) );
 
 ?>
@@ -289,7 +289,7 @@ class WPCF7_TagGeneratorGenerator {
 				'type' => $options['type'],
 				'data-tag-part' => 'option',
 				'data-tag-option' => $options['min_option'],
-				'min' => $options['minus_available'] ? null : 0,
+				'min' => $options['accepts_minus'] ? null : 0,
 			) )
 		);
 	?></label>
@@ -303,7 +303,7 @@ class WPCF7_TagGeneratorGenerator {
 				'type' => $options['type'],
 				'data-tag-part' => 'option',
 				'data-tag-option' => $options['max_option'],
-				'min' => $options['minus_available'] ? null : 0,
+				'min' => $options['accepts_minus'] ? null : 0,
 			) )
 		);
 	?></label>
