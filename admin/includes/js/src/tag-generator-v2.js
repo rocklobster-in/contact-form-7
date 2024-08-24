@@ -113,7 +113,15 @@ const compose = scope => {
 		values.join( ' ' ),
 	].map( item => item.trim() ).filter( item => '' !== item );
 
-	return `[${ composed.join( ' ' ) }]`;
+	const content = scope.querySelector(
+		'[data-tag-part="content"]'
+	)?.value.trim();
+
+	if ( content ) {
+		return `[${ composed.join( ' ' ) }] ${ content } [/${ type }]`;
+	} else {
+		return `[${ composed.join( ' ' ) }]`;
+	}
 };
 
 

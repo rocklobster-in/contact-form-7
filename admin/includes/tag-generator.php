@@ -272,7 +272,7 @@ class WPCF7_TagGeneratorGenerator {
 			'title' => __( 'Length', 'contact-form-7' ),
 			'min_option' => 'minlength:',
 			'max_option' => 'maxlength:',
-			'accepts_minus' => false,
+			'accept_minus' => false,
 		) );
 
 ?>
@@ -289,7 +289,7 @@ class WPCF7_TagGeneratorGenerator {
 				'type' => $options['type'],
 				'data-tag-part' => 'option',
 				'data-tag-option' => $options['min_option'],
-				'min' => $options['accepts_minus'] ? null : 0,
+				'min' => $options['accept_minus'] ? null : 0,
 			) )
 		);
 	?></label>
@@ -303,7 +303,7 @@ class WPCF7_TagGeneratorGenerator {
 				'type' => $options['type'],
 				'data-tag-part' => 'option',
 				'data-tag-option' => $options['max_option'],
-				'min' => $options['accepts_minus'] ? null : 0,
+				'min' => $options['accept_minus'] ? null : 0,
 			) )
 		);
 	?></label>
@@ -315,6 +315,7 @@ class WPCF7_TagGeneratorGenerator {
 		$options = wp_parse_args( $options, array(
 			'type' => 'text',
 			'with_placeholder' => false,
+			'use_content' => false,
 		) );
 
 		$id = $this->ref( 'value-legend' );
@@ -329,7 +330,7 @@ class WPCF7_TagGeneratorGenerator {
 			'<input %s />',
 			wpcf7_format_atts( array(
 				'type' => $options['type'],
-				'data-tag-part' => 'value',
+				'data-tag-part' => $options['use_content'] ? 'content' : 'value',
 				'aria-labelledby' => $id,
 			) )
 		);
