@@ -9,9 +9,10 @@ const init = form => {
 		} );
 
 		box.addEventListener( 'keyup', event => {
-			const inputType = event.target.type ?? '';
-
-			if ( 'text' === inputType ) {
+			if (
+				'text' === ( event.target.type ?? '' ) ||
+				'textarea' === event.target.tagName?.toLowerCase()
+			) {
 				update( form );
 			}
 		} );

@@ -347,6 +347,50 @@ class WPCF7_TagGeneratorGenerator {
 <?php
 	}
 
+	private function selectable_values( $options = '' ) {
+		$options = wp_parse_args( $options, array(
+			'ask_if_first_as_label' => false,
+		) );
+
+		$id = $this->ref( 'selectable-values-legend' );
+
+?>
+<fieldset>
+	<legend id="<?php echo esc_attr( $id ); ?>"><?php
+		echo esc_html( __( 'Selectable values', 'contact-form-7' ) );
+	?></legend>
+	<?php
+		echo sprintf(
+			'<span %1$s>%2$s</span>',
+			wpcf7_format_atts( array(
+				'id' => $this->ref( 'selectable-values-description' ),
+			) ),
+			esc_html( __( "One item per line.", 'contact-form-7' ) )
+		);
+	?>
+	<br />
+	<?php
+		echo sprintf(
+			'<textarea %s></textarea>',
+			wpcf7_format_atts( array(
+				'data-tag-part' => 'value',
+				'aria-labelledby' => $id,
+				'aria-describedby' => $this->ref( 'selectable-values-description' ),
+			) )
+		);
+	?>
+
+	<?php if ( $options['ask_if_first_as_label'] ) { ?>
+	<br />
+	<label>
+		<input type="checkbox" data-tag-part="option" data-tag-option="first_as_label" /> <?php echo esc_html( __( "Use the first item as a label.", 'contact-form-7' ) ); ?>
+	</label>
+	<?php } ?>
+
+</fieldset>
+<?php
+	}
+
 	private function insert_box_content( $options = '' ) {
 ?>
 <div class="flex-container">

@@ -248,7 +248,7 @@ form.tag-generator-panel[data-version="2"] {
 		line-height: 2.25;
 	}
 
-	.control-box > fieldset legend {
+	.control-box > fieldset > legend {
 		font-weight: bolder;
 		margin-block: 8px;
 		margin-inline-start: -10em;
@@ -262,6 +262,12 @@ form.tag-generator-panel[data-version="2"] {
 	.control-box input[type="number"] {
 		width: 8rem;
 		max-width: 44%;
+	}
+
+	.control-box textarea {
+		height: 12ex;
+		width: 20rem;
+		max-width: 88%;
 	}
 
 	.control-box select {
