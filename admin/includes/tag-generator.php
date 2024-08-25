@@ -149,15 +149,13 @@ class WPCF7_TagGeneratorGenerator {
 			'select_options' => array(),
 		) );
 
-		$id = $this->ref( 'type-legend' );
-
 ?>
 <fieldset>
-	<legend id="<?php echo esc_attr( $id ); ?>"><?php
+	<legend id="<?php echo esc_attr( $this->ref( 'type-legend' ) ); ?>"><?php
 		echo esc_html( __( 'Field type', 'contact-form-7' ) );
 	?></legend>
 
-	<select data-tag-part="basetype" aria-labelledby="<?php echo esc_attr( $id ); ?>"><?php
+	<select data-tag-part="basetype" aria-labelledby="<?php echo esc_attr( $this->ref( 'type-legend' ) ); ?>"><?php
 		foreach ( (array) $options['select_options'] as $basetype => $title ) {
 			echo sprintf(
 				'<option %1$s>%2$s</option>',
@@ -185,14 +183,12 @@ class WPCF7_TagGeneratorGenerator {
 			'ask_if' => '',
 		) );
 
-		$id = $this->ref( 'name-legend' );
-
 ?>
 <fieldset>
-	<legend id="<?php echo esc_attr( $id ); ?>"><?php
+	<legend id="<?php echo esc_attr( $this->ref( 'name-legend' ) ); ?>"><?php
 		echo esc_html( __( 'Field name', 'contact-form-7' ) );
 	?></legend>
-	<input type="text" data-tag-part="name" pattern="[A-Za-z][A-Za-z0-9_\-]*" aria-labelledby="<?php echo esc_attr( $id ); ?>" />
+	<input type="text" data-tag-part="name" pattern="[A-Za-z][A-Za-z0-9_\-]*" aria-labelledby="<?php echo esc_attr( $this->ref( 'name-legend' ) ); ?>" />
 
 <?php
 		$tag_option = $label = '';
@@ -241,27 +237,23 @@ class WPCF7_TagGeneratorGenerator {
 	}
 
 	private function id_attr( $options = '' ) {
-		$id = $this->ref( 'id-legend' );
-
 ?>
 <fieldset>
-	<legend id="<?php echo esc_attr( $id ); ?>"><?php
+	<legend id="<?php echo esc_attr( $this->ref( 'id-legend' ) ); ?>"><?php
 		echo esc_html( __( 'ID attribute', 'contact-form-7' ) );
 	?></legend>
-	<input type="text" data-tag-part="option" data-tag-option="id:" pattern="[A-Za-z][A-Za-z0-9_\-]*" aria-labelledby="<?php echo esc_attr( $id ); ?>" />
+	<input type="text" data-tag-part="option" data-tag-option="id:" pattern="[A-Za-z][A-Za-z0-9_\-]*" aria-labelledby="<?php echo esc_attr( $this->ref( 'id-legend' ) ); ?>" />
 </fieldset>
 <?php
 	}
 
 	private function class_attr( $options = '' ) {
-		$id = $this->ref( 'class-legend' );
-
 ?>
 <fieldset>
-	<legend id="<?php echo esc_attr( $id ); ?>"><?php
+	<legend id="<?php echo esc_attr( $this->ref( 'class-legend' ) ); ?>"><?php
 		echo esc_html( __( 'Class attribute', 'contact-form-7' ) );
 	?></legend>
-	<input type="text" data-tag-part="option" data-tag-option="class:" pattern="[A-Za-z0-9_\-\s]*" aria-labelledby="<?php echo esc_attr( $id ); ?>" />
+	<input type="text" data-tag-part="option" data-tag-option="class:" pattern="[A-Za-z0-9_\-\s]*" aria-labelledby="<?php echo esc_attr( $this->ref( 'class-legend' ) ); ?>" />
 </fieldset>
 <?php
 	}
@@ -318,11 +310,9 @@ class WPCF7_TagGeneratorGenerator {
 			'use_content' => false,
 		) );
 
-		$id = $this->ref( 'value-legend' );
-
 ?>
 <fieldset>
-	<legend id="<?php echo esc_attr( $id ); ?>"><?php
+	<legend id="<?php echo esc_attr( $this->ref( 'value-legend' ) ); ?>"><?php
 		echo esc_html( __( 'Default value', 'contact-form-7' ) );
 	?></legend>
 	<?php
@@ -331,7 +321,7 @@ class WPCF7_TagGeneratorGenerator {
 			wpcf7_format_atts( array(
 				'type' => $options['type'],
 				'data-tag-part' => $options['use_content'] ? 'content' : 'value',
-				'aria-labelledby' => $id,
+				'aria-labelledby' => $this->ref( 'value-legend' ),
 			) )
 		);
 	?>
@@ -352,11 +342,9 @@ class WPCF7_TagGeneratorGenerator {
 			'ask_if_first_as_label' => false,
 		) );
 
-		$id = $this->ref( 'selectable-values-legend' );
-
 ?>
 <fieldset>
-	<legend id="<?php echo esc_attr( $id ); ?>"><?php
+	<legend id="<?php echo esc_attr( $this->ref( 'selectable-values-legend' ) ); ?>"><?php
 		echo esc_html( __( 'Selectable values', 'contact-form-7' ) );
 	?></legend>
 	<?php
@@ -374,7 +362,7 @@ class WPCF7_TagGeneratorGenerator {
 			'<textarea %s></textarea>',
 			wpcf7_format_atts( array(
 				'data-tag-part' => 'value',
-				'aria-labelledby' => $id,
+				'aria-labelledby' => $this->ref( 'selectable-values-legend' ),
 				'aria-describedby' => $this->ref( 'selectable-values-description' ),
 			) )
 		);
