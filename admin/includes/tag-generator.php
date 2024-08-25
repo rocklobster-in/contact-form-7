@@ -339,7 +339,7 @@ class WPCF7_TagGeneratorGenerator {
 
 	private function selectable_values( $options = '' ) {
 		$options = wp_parse_args( $options, array(
-			'ask_if_first_as_label' => false,
+			'first_as_label' => false,
 		) );
 
 ?>
@@ -368,11 +368,20 @@ class WPCF7_TagGeneratorGenerator {
 		);
 	?>
 
-	<?php if ( $options['ask_if_first_as_label'] ) { ?>
+	<?php if ( $options['first_as_label'] ) { ?>
 	<br />
-	<label>
-		<input type="checkbox" data-tag-part="option" data-tag-option="first_as_label" /> <?php echo esc_html( __( "Use the first item as a label.", 'contact-form-7' ) ); ?>
-	</label>
+	<?php
+		echo sprintf(
+			'<label><input %1$s /> %2$s</label>',
+			wpcf7_format_atts( array(
+				'type' => 'checkbox',
+				'checked' => 'checked' === $options['first_as_label'],
+				'data-tag-part' => 'option',
+				'data-tag-option' => 'first_as_label',
+			) ),
+			esc_html( __( "Use the first item as a label.", 'contact-form-7' ) )
+		);
+	?>
 	<?php } ?>
 
 </fieldset>

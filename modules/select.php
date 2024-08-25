@@ -280,7 +280,7 @@ function wpcf7_tag_generator_menu( $contact_form, $options ) {
 		$tgg->print( 'class_attr' );
 
 		$tgg->print( 'selectable_values', array(
-			'ask_if_first_as_label' => true,
+			'first_as_label' => true,
 		) );
 	?>
 </div>
