@@ -220,7 +220,7 @@ ul.config-error li {
 form.tag-generator-panel {
 	display: flex;
 	flex-direction: column;
-	height: 540px;
+	height: 720px;
 	width: 720px;
 	max-height: 100%;
 	max-width: 100%;

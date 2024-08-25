@@ -362,6 +362,7 @@ class WPCF7_TagGeneratorGenerator {
 		echo sprintf(
 			'<textarea %s></textarea>',
 			wpcf7_format_atts( array(
+				'required' => true,
 				'data-tag-part' => 'value',
 				'aria-labelledby' => $this->ref( 'selectable-values-legend' ),
 				'aria-describedby' => $this->ref( 'selectable-values-description' ),

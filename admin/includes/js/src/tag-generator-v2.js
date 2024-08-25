@@ -21,21 +21,55 @@ const init = form => {
 
 
 const update = form => {
-	form.querySelectorAll(
-		'[data-tag-part="tag"]'
-	).forEach( tag => {
-		tag.value = compose( form ) ?? '';
-	} );
+	const composed = compose( form );
 
-	form.querySelectorAll(
-		'[data-tag-part="mail-tag"]'
-	).forEach( tag => {
-		const nameField = form.querySelector( '[data-tag-part="name"]' );
+	if ( composed ) {
+		form.querySelectorAll(
+			'[data-tag-part="tag"]'
+		).forEach( tag => {
+			tag.value = composed;
+		} );
 
-		if ( nameField ) {
-			tag.innerText = `[${ nameField.value.trim() }]`;
-		}
-	} );
+		form.querySelectorAll(
+			'[data-taggen="insert-tag"]'
+		).forEach( tag => {
+			tag.disabled = false;
+		} );
+
+		form.querySelectorAll(
+			'[data-tag-part="mail-tag"]'
+		).forEach( tag => {
+			const nameField = form.querySelector( '[data-tag-part="name"]' );
+
+			if ( nameField ) {
+				tag.innerText = `[${ nameField.value.trim() }]`;
+			}
+		} );
+
+		form.querySelectorAll(
+			'.mail-tag-tip'
+		).forEach( p => {
+			p.style.removeProperty( 'display' );
+		} );
+	} else {
+		form.querySelectorAll(
+			'[data-tag-part="tag"]'
+		).forEach( tag => {
+			tag.value = '';
+		} );
+
+		form.querySelectorAll(
+			'[data-taggen="insert-tag"]'
+		).forEach( tag => {
+			tag.disabled = true;
+		} );
+
+		form.querySelectorAll(
+			'.mail-tag-tip'
+		).forEach( p => {
+			p.style.setProperty( 'display', 'none' );
+		} );
+	}
 };
 
 
