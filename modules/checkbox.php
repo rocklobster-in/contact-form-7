@@ -415,6 +415,7 @@ function wpcf7_tag_generator_checkbox( $contact_form, $options ) {
 		$tgg->print( 'class_attr' );
 
 		$tgg->print( 'selectable_values', array(
+			'use_label_element' => 'checked',
 		) );
 	?>
 </div>

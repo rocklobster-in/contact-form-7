@@ -340,6 +340,7 @@ class WPCF7_TagGeneratorGenerator {
 	private function selectable_values( $options = '' ) {
 		$options = wp_parse_args( $options, array(
 			'first_as_label' => false,
+			'use_label_element' => false,
 		) );
 
 ?>
@@ -380,6 +381,22 @@ class WPCF7_TagGeneratorGenerator {
 				'data-tag-option' => 'first_as_label',
 			) ),
 			esc_html( __( "Use the first item as a label.", 'contact-form-7' ) )
+		);
+	?>
+	<?php } ?>
+
+	<?php if ( $options['use_label_element'] ) { ?>
+	<br />
+	<?php
+		echo sprintf(
+			'<label><input %1$s /> %2$s</label>',
+			wpcf7_format_atts( array(
+				'type' => 'checkbox',
+				'checked' => 'checked' === $options['use_label_element'],
+				'data-tag-part' => 'option',
+				'data-tag-option' => 'use_label_element',
+			) ),
+			esc_html( __( "Wrap each item with a label element.", 'contact-form-7' ) )
 		);
 	?>
 	<?php } ?>
