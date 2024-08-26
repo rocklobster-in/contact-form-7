@@ -360,13 +360,14 @@ class WPCF7_TagGeneratorGenerator {
 	<br />
 	<?php
 		echo sprintf(
-			'<textarea %s></textarea>',
+			'<textarea %1$s>%2$s</textarea>',
 			wpcf7_format_atts( array(
 				'required' => true,
 				'data-tag-part' => 'value',
 				'aria-labelledby' => $this->ref( 'selectable-values-legend' ),
 				'aria-describedby' => $this->ref( 'selectable-values-description' ),
-			) )
+			) ),
+			esc_html( __( "Option 1\nOption 2\nOption 3", 'contact-form-7' ) )
 		);
 	?>
 
