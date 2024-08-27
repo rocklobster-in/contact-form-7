@@ -306,6 +306,7 @@ class WPCF7_TagGeneratorGenerator {
 	private function default_value( $options = '' ) {
 		$options = wp_parse_args( $options, array(
 			'type' => 'text',
+			'title' => __( 'Default value', 'contact-form-7' ),
 			'with_placeholder' => false,
 			'use_content' => false,
 		) );
@@ -313,7 +314,7 @@ class WPCF7_TagGeneratorGenerator {
 ?>
 <fieldset>
 	<legend id="<?php echo esc_attr( $this->ref( 'value-legend' ) ); ?>"><?php
-		echo esc_html( __( 'Default value', 'contact-form-7' ) );
+		echo esc_html( $options['title'] );
 	?></legend>
 	<?php
 		echo sprintf(
