@@ -228,6 +228,10 @@ form.tag-generator-panel {
 }
 
 form.tag-generator-panel[data-version="2"] {
+	&:invalid .mail-tag-tip {
+		display: none;
+	}
+
 	.description-box {
 		box-sizing: border-box;
 		flex: none;

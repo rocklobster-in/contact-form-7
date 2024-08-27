@@ -45,12 +45,6 @@ const update = form => {
 				tag.innerText = `[${ nameField.value.trim() }]`;
 			}
 		} );
-
-		form.querySelectorAll(
-			'.mail-tag-tip'
-		).forEach( p => {
-			p.style.removeProperty( 'display' );
-		} );
 	} else {
 		form.querySelectorAll(
 			'[data-tag-part="tag"]'
@@ -62,12 +56,6 @@ const update = form => {
 			'[data-taggen="insert-tag"]'
 		).forEach( tag => {
 			tag.disabled = true;
-		} );
-
-		form.querySelectorAll(
-			'.mail-tag-tip'
-		).forEach( p => {
-			p.style.setProperty( 'display', 'none' );
 		} );
 	}
 };
