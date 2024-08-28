@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * The base class for form-tag generators management.
+ */
 class WPCF7_TagGenerator {
 
 	private static $instance;
@@ -8,6 +11,10 @@ class WPCF7_TagGenerator {
 
 	private function __construct() {}
 
+
+	/**
+	 * Returns the singleton instance of this class.
+	 */
 	public static function get_instance() {
 		if ( empty( self::$instance ) ) {
 			self::$instance = new self;
@@ -16,6 +23,10 @@ class WPCF7_TagGenerator {
 		return self::$instance;
 	}
 
+
+	/**
+	 * Adds a form-tag generator instance.
+	 */
 	public function add( $id, $title, $callback, $options = '' ) {
 		$id = trim( $id );
 
@@ -52,6 +63,10 @@ class WPCF7_TagGenerator {
 		return true;
 	}
 
+
+	/**
+	 * Renders form-tag generator calling buttons.
+	 */
 	public function print_buttons() {
 		echo '<span id="tag-generator-list">';
 
@@ -75,6 +90,10 @@ class WPCF7_TagGenerator {
 		echo '</span>';
 	}
 
+
+	/**
+	 * Renders form-tag generator dialog panels (hidden until called).
+	 */
 	public function print_panels( WPCF7_ContactForm $contact_form ) {
 		foreach ( (array) $this->panels as $id => $panel ) {
 			$callback = $panel['callback'];
@@ -120,14 +139,25 @@ class WPCF7_TagGenerator {
 }
 
 
+/**
+ * Class helps to implement a form-tag generator content.
+ */
 class WPCF7_TagGeneratorGenerator {
 
 	private $key = '';
 
+
+	/**
+	 * The constructor.
+	 */
 	public function __construct( $key ) {
 		$this->key = $key;
 	}
 
+
+	/**
+	 * Returns a unique reference ID.
+	 */
 	public function ref( $suffix = '' ) {
 		$ref = sprintf( '%s-%s', $this->key, $suffix );
 		$ref = strtolower( $ref );
@@ -137,12 +167,20 @@ class WPCF7_TagGeneratorGenerator {
 		return $ref;
 	}
 
+
+	/**
+	 * Calls one of the template methods.
+	 */
 	public function print( $part, $options = '' ) {
 		if ( is_callable( array( $this, $part ) ) ) {
 			call_user_func( array( $this, $part ), $options );
 		}
 	}
 
+
+	/**
+	 * Template method for field type field.
+	 */
 	private function field_type( $options = '' ) {
 		$options = wp_parse_args( $options, array(
 			'with_required' => false,
@@ -178,6 +216,10 @@ class WPCF7_TagGeneratorGenerator {
 <?php
 	}
 
+
+	/**
+	 * Template method for field name field.
+	 */
 	private function field_name( $options = '' ) {
 		$options = wp_parse_args( $options, array(
 			'ask_if' => '',
@@ -236,6 +278,10 @@ class WPCF7_TagGeneratorGenerator {
 <?php
 	}
 
+
+	/**
+	 * Template method for ID attribute option field.
+	 */
 	private function id_attr( $options = '' ) {
 ?>
 <fieldset>
@@ -247,6 +293,10 @@ class WPCF7_TagGeneratorGenerator {
 <?php
 	}
 
+
+	/**
+	 * Template method for class attribute option field.
+	 */
 	private function class_attr( $options = '' ) {
 ?>
 <fieldset>
@@ -258,6 +308,10 @@ class WPCF7_TagGeneratorGenerator {
 <?php
 	}
 
+
+	/**
+	 * Template method for min/max options.
+	 */
 	private function min_max( $options = '' ) {
 		$options = wp_parse_args( $options, array(
 			'type' => 'number',
@@ -303,6 +357,10 @@ class WPCF7_TagGeneratorGenerator {
 <?php
 	}
 
+
+	/**
+	 * Template method for default value field.
+	 */
 	private function default_value( $options = '' ) {
 		$options = wp_parse_args( $options, array(
 			'type' => 'text',
@@ -338,6 +396,10 @@ class WPCF7_TagGeneratorGenerator {
 <?php
 	}
 
+
+	/**
+	 * Template method for selectable values useful for checkboxes or a menu.
+	 */
 	private function selectable_values( $options = '' ) {
 		$options = wp_parse_args( $options, array(
 			'first_as_label' => false,
@@ -408,6 +470,10 @@ class WPCF7_TagGeneratorGenerator {
 <?php
 	}
 
+
+	/**
+	 * Template method for insert-box content including the result form-tag.
+	 */
 	private function insert_box_content( $options = '' ) {
 ?>
 <div class="flex-container">
@@ -429,6 +495,10 @@ class WPCF7_TagGeneratorGenerator {
 <?php
 	}
 
+
+	/**
+	 * Template method for a tip message about mail-tag.
+	 */
 	private function mail_tag_tip( $options = '' ) {
 		$tip = sprintf(
 			/* translators: %s: mail-tag corresponding to the form-tag */
@@ -440,4 +510,5 @@ class WPCF7_TagGeneratorGenerator {
 <p class="mail-tag-tip"><?php echo $tip; ?></p>
 <?php
 	}
+
 }
