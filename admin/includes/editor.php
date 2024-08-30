@@ -23,22 +23,40 @@ class WPCF7_Editor {
 			return;
 		}
 
+		$init_panel_id = array_key_first( $this->panels );
+
+		echo '<nav>';
 		echo '<ul id="contact-form-editor-tabs">';
 
 		foreach ( $this->panels as $panel_id => $panel ) {
+			$active = $panel_id === $init_panel_id;
+
 			echo sprintf(
-				'<li id="%1$s-tab"><a href="#%1$s">%2$s</a></li>',
-				esc_attr( $panel_id ),
+				'<li %1$s><a %2$s>%3$s</a></li>',
+				wpcf7_format_atts( array(
+					'id' => sprintf( '%s-tab', $panel_id ),
+					'class' => $active ? 'active' : null,
+					'data-panel' => $panel_id,
+				) ),
+				wpcf7_format_atts( array(
+					'href' => sprintf( '#%s', $panel_id ),
+				) ),
 				esc_html( $panel['title'] )
 			);
 		}
 
 		echo '</ul>';
+		echo '</nav>';
 
 		foreach ( $this->panels as $panel_id => $panel ) {
+			$active = $panel_id === $init_panel_id;
+
 			echo sprintf(
-				'<div class="contact-form-editor-panel" id="%1$s">',
-				esc_attr( $panel_id )
+				'<section %s>',
+				wpcf7_format_atts( array(
+					'id' => $panel_id,
+					'class' => 'contact-form-editor-panel' . ( $active ? ' active' : '' ),
+				) )
 			);
 
 			if ( is_callable( $panel['callback'] ) ) {
@@ -46,7 +64,7 @@ class WPCF7_Editor {
 				call_user_func( $panel['callback'], $this->contact_form );
 			}
 
-			echo '</div>';
+			echo '</section>';
 		}
 	}
 

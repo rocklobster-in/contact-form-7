@@ -85,7 +85,7 @@ if ( $post ) :
 <input type="hidden" id="post_ID" name="post_ID" value="<?php echo (int) $post_id; ?>" />
 <input type="hidden" id="wpcf7-locale" name="wpcf7-locale" value="<?php echo esc_attr( $post->locale() ); ?>" />
 <input type="hidden" id="hiddenaction" name="action" value="save" />
-<input type="hidden" id="active-tab" name="active-tab" value="<?php echo (int) ( $_GET['active-tab'] ?? '0' ); ?>" />
+<input type="hidden" id="active-tab" name="active-tab" value="<?php echo esc_attr( $_GET['active-tab'] ?? '' ); ?>" />
 
 <div id="poststuff">
 <div id="post-body" class="metabox-holder columns-2">
@@ -211,7 +211,7 @@ if ( $post ) :
 </div><!-- #postbox-container-1 -->
 
 <div id="postbox-container-2" class="postbox-container">
-<div id="contact-form-editor">
+<div id="contact-form-editor" data-active-tab="form-panel">
 <div class="keyboard-interaction"><?php
 	echo sprintf(
 		/* translators: 1: ◀ ▶ dashicon, 2: screen reader text for the dashicon */

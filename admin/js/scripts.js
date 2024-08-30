@@ -35,13 +35,6 @@
 			}
 		} );
 
-		$( '#contact-form-editor' ).tabs( {
-			active: wpcf7.activeTab,
-			activate: function( event, ui ) {
-				$( '#active-tab' ).val( ui.newTab.index() );
-			}
-		} );
-
 		$( '#contact-form-editor-tabs' ).focusin( function( event ) {
 			$( '#contact-form-editor .keyboard-interaction' ).css(
 				'visibility', 'visible' );

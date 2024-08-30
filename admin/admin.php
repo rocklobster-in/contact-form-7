@@ -129,7 +129,7 @@ function wpcf7_admin_enqueue_scripts( $hook_suffix ) {
 
 	wp_enqueue_script( 'wpcf7-admin',
 		wpcf7_plugin_url( 'admin/js/scripts.js' ),
-		array( 'jquery', 'jquery-ui-tabs' ),
+		array( 'jquery' ),
 		WPCF7_VERSION,
 		array( 'in_footer' => true )
 	);
@@ -145,7 +145,6 @@ function wpcf7_admin_enqueue_scripts( $hook_suffix ) {
 		'saveAlert' => __(
 			"The changes you made will be lost if you navigate away from this page.",
 			'contact-form-7' ),
-		'activeTab' => (int) ( $_GET['active-tab'] ?? 0 ),
 		'configValidator' => array(
 			'errors' => array(),
 			'howToCorrect' => __( "How to resolve?", 'contact-form-7' ),
@@ -253,7 +252,7 @@ function wpcf7_load_contact_form_admin() {
 
 		$query = array(
 			'post' => $contact_form ? $contact_form->id() : 0,
-			'active-tab' => (int) ( $_POST['active-tab'] ?? 0 ),
+			'active-tab' => $_POST['active-tab'] ?? '',
 		);
 
 		if ( ! $contact_form ) {

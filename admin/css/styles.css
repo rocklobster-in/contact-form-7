@@ -130,8 +130,8 @@ ul.config-error li {
 	background-color: #fff;
 }
 
-#contact-form-editor-tabs li.ui-tabs-active,
-#contact-form-editor-tabs li.ui-tabs-active:hover {
+#contact-form-editor-tabs li.active,
+#contact-form-editor-tabs li.active:hover {
 	border-top: 1px solid #aaa;
 	border-right: 1px solid #aaa;
 	border-left: 1px solid #aaa;
@@ -148,7 +148,7 @@ ul.config-error li {
 	text-decoration: none;
 }
 
-#contact-form-editor-tabs li.ui-tabs-active a {
+#contact-form-editor-tabs li.active a {
 	color: #000;
 	font-size: 14px;
 	font-weight: bold;
@@ -162,7 +162,7 @@ ul.config-error li {
 	margin-bottom: 1.4em;
 }
 
-#contact-form-editor-tabs li.ui-tabs-active a .icon-in-circle {
+#contact-form-editor-tabs li.active a .icon-in-circle {
 	display: none;
 }
 
