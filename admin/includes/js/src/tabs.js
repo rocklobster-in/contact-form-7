@@ -46,8 +46,10 @@ const switchTab = id => {
 	).forEach( tab => {
 		if ( tab.dataset?.panel === id ) {
 			tab.classList.add( 'active' );
+			tab.setAttribute( 'tabindex', '0' );
 		} else {
 			tab.classList.remove( 'active' );
+			tab.setAttribute( 'tabindex', '-1' );
 		}
 	} );
 

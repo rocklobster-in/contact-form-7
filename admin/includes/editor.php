@@ -40,6 +40,7 @@ class WPCF7_Editor {
 				wpcf7_format_atts( array(
 					'id' => sprintf( '%s-tab', $panel_id ),
 					'class' => $active ? 'active' : null,
+					'tabindex' => $active ? '0' : '-1',
 					'data-panel' => $panel_id,
 				) ),
 				wpcf7_format_atts( array(
