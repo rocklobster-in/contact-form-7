@@ -68,7 +68,7 @@ class WPCF7_TagGenerator {
 	 * Renders form-tag generator calling buttons.
 	 */
 	public function print_buttons() {
-		echo '<span id="tag-generator-list">';
+		echo '<span id="tag-generator-list" class="hide-if-no-js">';
 
 		foreach ( (array) $this->panels as $panel ) {
 			echo sprintf(
