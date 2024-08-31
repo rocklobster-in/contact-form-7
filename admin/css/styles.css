@@ -62,11 +62,6 @@ span.shortcode input {
 	border-bottom: 1px solid transparent;
 }
 
-.keyboard-interaction {
-	visibility: hidden;
-	color: #23282d; /* Dark Gray 800 */
-}
-
 div.config-error, span.config-error, ul.config-error {
 	color: #444;
 	font-style: normal;
@@ -126,12 +121,7 @@ ul.config-error li {
 	background-color: #e4e4e4;
 }
 
-#contact-form-editor-tabs li:hover {
-	background-color: #fff;
-}
-
-#contact-form-editor-tabs li.active,
-#contact-form-editor-tabs li.active:hover {
+#contact-form-editor-tabs li.active {
 	border-top: 1px solid #aaa;
 	border-right: 1px solid #aaa;
 	border-left: 1px solid #aaa;

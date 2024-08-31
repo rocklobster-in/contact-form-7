@@ -212,18 +212,6 @@ if ( $post ) :
 
 <div id="postbox-container-2" class="postbox-container">
 <div id="contact-form-editor" data-active-tab="">
-<div class="keyboard-interaction"><?php
-	echo sprintf(
-		/* translators: 1: ◀ ▶ dashicon, 2: screen reader text for the dashicon */
-		esc_html( __( '%1$s %2$s keys switch panels', 'contact-form-7' ) ),
-		'<span class="dashicons dashicons-leftright" aria-hidden="true"></span>',
-		sprintf(
-			'<span class="screen-reader-text">%s</span>',
-			/* translators: screen reader text */
-			esc_html( __( '(left and right arrow)', 'contact-form-7' ) )
-		)
-	);
-?></div>
 
 <?php
 

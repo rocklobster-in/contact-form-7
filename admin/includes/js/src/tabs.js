@@ -6,6 +6,24 @@ const init = () => {
 			switchTab( tab.dataset?.panel );
 			event.preventDefault();
 		} );
+
+		tab.addEventListener( 'keyup', event => {
+			if ( [ 'ArrowDown', 'ArrowRight' ].includes( event.key ) ) {
+				const nextTab = tab.nextElementSibling;
+
+				if ( nextTab ) {
+					switchTab( nextTab.dataset?.panel );
+				}
+			}
+
+			if ( [ 'ArrowUp', 'ArrowLeft' ].includes( event.key ) ) {
+				const prevTab = tab.previousElementSibling;
+
+				if ( prevTab ) {
+					switchTab( prevTab.dataset?.panel );
+				}
+			}
+		} );
 	} );
 
 	document.querySelectorAll(
@@ -47,6 +65,7 @@ const switchTab = id => {
 		if ( tab.dataset?.panel === id ) {
 			tab.classList.add( 'active' );
 			tab.setAttribute( 'tabindex', '0' );
+			tab.focus();
 		} else {
 			tab.classList.remove( 'active' );
 			tab.setAttribute( 'tabindex', '-1' );

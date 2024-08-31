@@ -35,14 +35,6 @@
 			}
 		} );
 
-		$( '#contact-form-editor-tabs' ).focusin( function( event ) {
-			$( '#contact-form-editor .keyboard-interaction' ).css(
-				'visibility', 'visible' );
-		} ).focusout( function( event ) {
-			$( '#contact-form-editor .keyboard-interaction' ).css(
-				'visibility', 'hidden' );
-		} );
-
 		wpcf7.toggleMail2( 'input:checkbox.toggle-form-table' );
 
 		$( 'input:checkbox.toggle-form-table' ).click( function( event ) {
