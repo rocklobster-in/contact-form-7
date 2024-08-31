@@ -19,8 +19,6 @@ const init = () => {
 			panel.style.setProperty( 'display', 'none' );
 		}
 	} );
-
-	switchTab( document.querySelector( 'input[name="active-tab"]' )?.value );
 };
 
 

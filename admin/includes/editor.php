@@ -23,13 +23,17 @@ class WPCF7_Editor {
 			return;
 		}
 
-		$init_panel_id = array_key_first( $this->panels );
+		$active_panel_id = trim( $_GET['active-tab'] ?? '' );
+
+		if ( ! array_key_exists( $active_panel_id, $this->panels ) ) {
+			$active_panel_id = array_key_first( $this->panels );
+		}
 
 		echo '<nav>';
 		echo '<ul id="contact-form-editor-tabs">';
 
 		foreach ( $this->panels as $panel_id => $panel ) {
-			$active = $panel_id === $init_panel_id;
+			$active = $panel_id === $active_panel_id;
 
 			echo sprintf(
 				'<li %1$s><a %2$s>%3$s</a></li>',
@@ -49,7 +53,7 @@ class WPCF7_Editor {
 		echo '</nav>';
 
 		foreach ( $this->panels as $panel_id => $panel ) {
-			$active = $panel_id === $init_panel_id;
+			$active = $panel_id === $active_panel_id;
 
 			echo sprintf(
 				'<section %s>',
