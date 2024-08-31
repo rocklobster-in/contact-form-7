@@ -15,7 +15,11 @@ document.addEventListener( 'DOMContentLoaded', event => {
 	document.querySelectorAll(
 		'.contact-form-editor-panel'
 	).forEach( panel => {
-		if ( ! panel.classList.contains( 'active' ) ) {
+		if ( panel.classList.contains( 'active' ) ) {
+			document.querySelector(
+				'#contact-form-editor'
+			)?.setAttribute( 'data-active-tab', panel.id );
+		} else {
 			panel.style.setProperty( 'display', 'none' );
 		}
 	} );

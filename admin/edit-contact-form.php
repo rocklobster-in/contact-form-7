@@ -211,7 +211,7 @@ if ( $post ) :
 </div><!-- #postbox-container-1 -->
 
 <div id="postbox-container-2" class="postbox-container">
-<div id="contact-form-editor" data-active-tab="form-panel">
+<div id="contact-form-editor" data-active-tab="">
 <div class="keyboard-interaction"><?php
 	echo sprintf(
 		/* translators: 1: ◀ ▶ dashicon, 2: screen reader text for the dashicon */
