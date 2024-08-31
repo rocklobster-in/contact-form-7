@@ -1,30 +1,9 @@
-import { switchTab } from './tabs';
+import { init as initTabs, switchTab } from './tabs';
 import { init as v1Init } from './tag-generator-v1';
 import { init as v2Init } from './tag-generator-v2';
 
 document.addEventListener( 'DOMContentLoaded', event => {
-	document.querySelectorAll(
-		'#contact-form-editor-tabs li'
-	).forEach( tab => {
-		tab.addEventListener( 'click', event => {
-			switchTab( tab.dataset?.panel );
-			event.preventDefault();
-		} );
-	} );
-
-	document.querySelectorAll(
-		'.contact-form-editor-panel'
-	).forEach( panel => {
-		if ( panel.classList.contains( 'active' ) ) {
-			document.querySelector(
-				'#contact-form-editor'
-			)?.setAttribute( 'data-active-tab', panel.id );
-		} else {
-			panel.style.setProperty( 'display', 'none' );
-		}
-	} );
-
-	switchTab( document.querySelector( 'input[name="active-tab"]' )?.value );
+	initTabs();
 
 	document.querySelectorAll(
 		'[data-taggen="open-dialog"]'

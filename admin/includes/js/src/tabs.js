@@ -1,3 +1,29 @@
+const init = () => {
+	document.querySelectorAll(
+		'#contact-form-editor-tabs li'
+	).forEach( tab => {
+		tab.addEventListener( 'click', event => {
+			switchTab( tab.dataset?.panel );
+			event.preventDefault();
+		} );
+	} );
+
+	document.querySelectorAll(
+		'.contact-form-editor-panel'
+	).forEach( panel => {
+		if ( panel.classList.contains( 'active' ) ) {
+			document.querySelector(
+				'#contact-form-editor'
+			)?.setAttribute( 'data-active-tab', panel.id );
+		} else {
+			panel.style.setProperty( 'display', 'none' );
+		}
+	} );
+
+	switchTab( document.querySelector( 'input[name="active-tab"]' )?.value );
+};
+
+
 const switchTab = id => {
 	if ( ! id ) {
 		return;
@@ -42,5 +68,6 @@ const switchTab = id => {
 
 
 export {
-	switchTab
+	init,
+	switchTab,
 };
