@@ -92,20 +92,23 @@ if ( $post ) :
 <div id="post-body-content">
 <div id="titlediv">
 <div id="titlewrap">
-	<label class="screen-reader-text" id="title-prompt-text" for="title"><?php echo esc_html( __( 'Enter title here', 'contact-form-7' ) ); ?></label>
 <?php
-	$posttitle_atts = array(
-		'type' => 'text',
-		'name' => 'post_title',
-		'size' => 30,
-		'value' => $post->initial() ? '' : $post->title(),
-		'id' => 'title',
-		'spellcheck' => 'true',
-		'autocomplete' => 'off',
-		'disabled' => ! current_user_can( 'wpcf7_edit_contact_form', $post_id ),
+
+	echo sprintf(
+		'<input %s />',
+		wpcf7_format_atts( array(
+			'type' => 'text',
+			'name' => 'post_title',
+			'value' => $post->initial() ? '' : $post->title(),
+			'id' => 'title',
+			'spellcheck' => 'true',
+			'autocomplete' => 'off',
+			'disabled' => ! current_user_can( 'wpcf7_edit_contact_form', $post_id ),
+			'placeholder' => __( 'Enter title here', 'contact-form-7' ),
+			'aria-label' => __( 'Enter title here', 'contact-form-7' ),
+		) )
 	);
 
-	echo sprintf( '<input %s />', wpcf7_format_atts( $posttitle_atts ) );
 ?>
 </div><!-- #titlewrap -->
 

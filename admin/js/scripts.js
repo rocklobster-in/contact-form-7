@@ -17,8 +17,6 @@
 			$( '#title' ).focus();
 		}
 
-		wpcf7.titleHint();
-
 		$( '.contact-form-editor-box-mail span.mailtag' ).click( function( event ) {
 			var range = document.createRange();
 			range.selectNodeContents( this );
@@ -230,34 +228,6 @@
 
 			$( '#misc-publishing-actions' ).append( $warning );
 		}
-	};
-
-	/**
-	 * Copied from wptitlehint() in wp-admin/js/post.js
-	 */
-	wpcf7.titleHint = function() {
-		var $title = $( '#title' );
-		var $titleprompt = $( '#title-prompt-text' );
-
-		if ( '' === $title.val() ) {
-			$titleprompt.removeClass( 'screen-reader-text' );
-		}
-
-		$titleprompt.click( function() {
-			$( this ).addClass( 'screen-reader-text' );
-			$title.focus();
-		} );
-
-		$title.blur( function() {
-			if ( '' === $(this).val() ) {
-				$titleprompt.removeClass( 'screen-reader-text' );
-			}
-		} ).focus( function() {
-			$titleprompt.addClass( 'screen-reader-text' );
-		} ).keydown( function( e ) {
-			$titleprompt.addClass( 'screen-reader-text' );
-			$( this ).unbind( e );
-		} );
 	};
 
 	wpcf7.iconInCircle = function( icon ) {
