@@ -88,5 +88,4 @@ const switchTab = id => {
 
 export {
 	init,
-	switchTab,
 };
