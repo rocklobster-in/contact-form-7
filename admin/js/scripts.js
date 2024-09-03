@@ -126,7 +126,7 @@
 	wpcf7.updateConfigErrors = function() {
 		var errors = wpcf7.configValidator.errors;
 		var errorCount = { total: 0 };
-
+/*
 		$( '[data-config-field]' ).each( function() {
 			$( this ).removeAttr( 'aria-invalid' );
 			$( this ).next( 'ul.config-error' ).remove();
@@ -173,7 +173,7 @@
 				$( this ).after( $list ).attr( { 'aria-invalid': 'true' } );
 			}
 		} );
-
+*/
 		$( '#contact-form-editor-tabs > li' ).each( function() {
 			var $item = $( this );
 			$item.find( '.icon-in-circle' ).remove();

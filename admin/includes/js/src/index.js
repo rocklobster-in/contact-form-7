@@ -1,10 +1,12 @@
 import { init as initTabs } from './tabs';
+import { init as initConfigFields } from './config-errors';
 import { init as initWelcomePanel } from './welcome-panel';
 import { init as v1Init } from './tag-generator-v1';
 import { init as v2Init } from './tag-generator-v2';
 
 document.addEventListener( 'DOMContentLoaded', event => {
 	initTabs();
+	initConfigFields();
 	initWelcomePanel();
 
 	document.querySelectorAll(
