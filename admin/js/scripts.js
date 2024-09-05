@@ -24,7 +24,7 @@
 		} );
 
 		wpcf7.updateConfigErrors();
-
+/*
 		$( '[data-config-field]' ).change( function() {
 			var postId = $( '#post_ID' ).val();
 
@@ -61,7 +61,7 @@
 				wpcf7.updateConfigErrors();
 			} );
 		} );
-
+*/
 		$( window ).on( 'beforeunload', function( event ) {
 			var changed = false;
 

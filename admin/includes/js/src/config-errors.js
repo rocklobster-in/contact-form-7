@@ -1,3 +1,5 @@
+import apiFetch from '@wordpress/api-fetch';
+
 import { iconInCircle } from './utils';
 
 
@@ -6,7 +8,11 @@ const init = () => {
 		'#contact-form-editor [data-config-field]'
 	).forEach( field => {
 		field.addEventListener( 'change', event => {
-			// Todo: Update
+			const id = document.querySelector( '[name="post_ID"]' )?.value;
+
+			if ( id && 0 < id ) {
+				verifyContactForm( id );
+			}
 		} );
 	} );
 
@@ -94,6 +100,58 @@ const countErrors = ( tab = '' ) => {
 	} else {
 		return configErrors.length;
 	}
+};
+
+
+const verifyContactForm = id => {
+	const {
+		namespace,
+	} = wpcf7.apiSettings;
+
+	const path = `/${ namespace }/contact-forms/${ id }`;
+
+	const data = new FormData();
+
+	document.querySelectorAll(
+		'#contact-form-editor [data-config-field]'
+	).forEach( field => {
+		const name = field.name?.replace( /^wpcf7-/, '' ).replace( /-/g, '_' );
+
+		if ( ! name ) {
+			return;
+		}
+
+		let value;
+
+		if ( [ 'checkbox', 'radio' ].includes( field.type ) ) {
+			if ( field.checked ) {
+				value = field.value;
+			}
+		} else {
+			value = field.value;
+		}
+
+		if ( value === undefined ) {
+			return;
+		}
+
+		if ( name.endsWith( '[]' ) ) {
+			data.append( name, value );
+		} else {
+			data.set( name, value );
+		}
+	} );
+
+	data.set( 'context', 'dry-run' );
+
+	apiFetch( {
+		path,
+		method: 'POST',
+		body: data,
+	} ).then( response => {
+		wpcf7.configValidator.errors = response.config_errors;
+		update();
+	} );
 };
 
 
