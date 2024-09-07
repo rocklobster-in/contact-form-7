@@ -1,6 +1,9 @@
 import apiFetch from '@wordpress/api-fetch';
 
-import { iconInCircle } from './utils';
+import {
+	iconInCircle,
+ 	canonicalizeName,
+} from './utils';
 
 
 const init = () => {
@@ -40,6 +43,10 @@ const update = () => {
 				section,
 				errors,
 			} ) );
+
+			field.setAttribute( 'aria-describedby',
+				canonicalizeName( `wpcf7-config-error-for-${ section }` )
+			);
 		} else { // Valid field
 			field.removeAttribute( 'aria-invalid' );
 		}
@@ -64,8 +71,12 @@ const createErrorsList = args => {
 	}
 
 	const ul = document.createElement( 'ul' );
-	ul.setAttribute( 'id', `wpcf7-config-error-for-${ section }` );
-	ul.setAttribute( 'class', 'config-error' );
+
+	ul.setAttribute( 'id',
+		canonicalizeName( `wpcf7-config-error-for-${ section }` )
+	);
+
+	ul.classList.add( 'config-error' );
 
 	errors.forEach( err => {
 		if ( ! err.message ) {

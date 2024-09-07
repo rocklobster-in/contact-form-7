@@ -24,44 +24,7 @@
 		} );
 
 		wpcf7.updateConfigErrors();
-/*
-		$( '[data-config-field]' ).change( function() {
-			var postId = $( '#post_ID' ).val();
 
-			if ( ! postId || -1 == postId ) {
-				return;
-			}
-
-			var data = [];
-
-			$( this ).closest( 'form' ).find( '[data-config-field]' ).each( function() {
-				var val = $( this ).val();
-
-				if ( $( this ).is( '[type=checkbox]' ) ) {
-					val = $( this ).is( ':checked' ) ? 1 : 0;
-				}
-
-				data.push( {
-					'name': $( this ).attr( 'name' ).replace( /^wpcf7-/, '' ).replace( /-/g, '_' ),
-					'value': val
-				} );
-			} );
-
-			data.push( { 'name': 'context', 'value': 'dry-run' } );
-
-			$.ajax( {
-				method: 'POST',
-				url: wpcf7.apiSettings.getRoute( '/contact-forms/' + postId ),
-				beforeSend: function( xhr ) {
-					xhr.setRequestHeader( 'X-WP-Nonce', wpcf7.apiSettings.nonce );
-				},
-				data: data
-			} ).done( function( response ) {
-				wpcf7.configValidator.errors = response.config_errors;
-				wpcf7.updateConfigErrors();
-			} );
-		} );
-*/
 		$( window ).on( 'beforeunload', function( event ) {
 			var changed = false;
 
@@ -126,54 +89,7 @@
 	wpcf7.updateConfigErrors = function() {
 		var errors = wpcf7.configValidator.errors;
 		var errorCount = { total: 0 };
-/*
-		$( '[data-config-field]' ).each( function() {
-			$( this ).removeAttr( 'aria-invalid' );
-			$( this ).next( 'ul.config-error' ).remove();
 
-			var section = $( this ).attr( 'data-config-field' );
-
-			$( this ).attr( 'aria-describedby', 'wpcf7-config-error-for-' + section );
-
-			if ( errors[ section ] ) {
-				var $list = $( '<ul></ul>' ).attr( {
-					'id': 'wpcf7-config-error-for-' + section,
-					'class': 'config-error'
-				} );
-
-				$.each( errors[ section ], function( i, val ) {
-					var $li = $( '<li></li>' ).append(
-						wpcf7.iconInCircle( '!' )
-					).append(
-						$( '<span class="screen-reader-text"></span>' ).text( wpcf7.configValidator.iconAlt )
-					).append( ' ' );
-
-					if ( val.link ) {
-						$li.append(
-							$( '<a></a>' ).attr( 'href', val.link ).text( val.message )
-						);
-					} else {
-						$li.text( val.message );
-					}
-
-					$li.appendTo( $list );
-
-					var tab = section
-						.replace( /^mail_\d+\./, 'mail.' ).replace( /\..*$/, '' );
-
-					if ( ! errorCount[ tab ] ) {
-						errorCount[ tab ] = 0;
-					}
-
-					errorCount[ tab ] += 1;
-
-					errorCount.total += 1;
-				} );
-
-				$( this ).after( $list ).attr( { 'aria-invalid': 'true' } );
-			}
-		} );
-*/
 		$( '#contact-form-editor-tabs > li' ).each( function() {
 			var $item = $( this );
 			$item.find( '.icon-in-circle' ).remove();

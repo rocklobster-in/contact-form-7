@@ -9,6 +9,10 @@ const iconInCircle = icon => {
 };
 
 
+const canonicalizeName = orig => orig.replace( /[^0-9a-z]+/gi, '-' );
+
+
 export {
 	iconInCircle,
+	canonicalizeName,
 };
