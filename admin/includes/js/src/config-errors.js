@@ -34,19 +34,15 @@ const update = () => {
 		'#contact-form-editor [data-config-field]'
 	).forEach( field => {
 		const section = field.dataset.configField;
-		const errors = retrieveErrors( section );
 
-		if ( errors ) {
+		if ( countErrors( { section } ) ) {
 			field.setAttribute( 'aria-invalid', 'true' );
-
-			field.after( createErrorsList( {
-				section,
-				errors,
-			} ) );
 
 			field.setAttribute( 'aria-describedby',
 				canonicalizeName( `wpcf7-config-error-for-${ section }` )
 			);
+
+			field.after( createErrorsList( section ) );
 		} else { // Valid field
 			field.removeAttribute( 'aria-invalid' );
 		}
@@ -54,18 +50,31 @@ const update = () => {
 };
 
 
-const retrieveErrors = section => {
-	const configErrors = wpcf7.configValidator.errors;
-	return configErrors[ section ];
+const retrieveErrors = args => {
+	const {
+		section,
+		tab,
+	} = args;
+
+	const errors = [];
+
+	for ( const prop in wpcf7.configValidator.errors ) {
+		if ( prop === section ) {
+			errors.push( ...wpcf7.configValidator.errors[ prop ] );
+		}
+	}
+
+	return errors;
 };
 
 
-const createErrorsList = args => {
-	const {
-		section,
-		errors = [],
-	} = args;
+const countErrors = args => {
+	const errors = retrieveErrors( args );
+	return errors.length;
+};
 
+
+const createErrorsList = section => {
 	if ( ! section ) {
 		return '';
 	}
@@ -77,6 +86,8 @@ const createErrorsList = args => {
 	);
 
 	ul.classList.add( 'config-error' );
+
+	const errors = retrieveErrors( { section } );
 
 	errors.forEach( err => {
 		if ( ! err.message ) {
@@ -99,18 +110,6 @@ const createErrorsList = args => {
 	} );
 
 	return ul;
-};
-
-
-const countErrors = ( tab = '' ) => {
-	const configErrors = wpcf7.configValidator.errors;
-
-	if ( tab ) {
-		tab = tab.replace( /-panel$/, '' );
-		return configErrors[ tab ]?.length;
-	} else {
-		return configErrors.length;
-	}
 };
 
 
