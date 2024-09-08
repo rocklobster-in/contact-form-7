@@ -2,6 +2,7 @@ import { init as initTabs } from './tabs';
 import { init as initConfigFields } from './config-errors';
 import { init as initWelcomePanel } from './welcome-panel';
 import { init as initTagGenerator } from './tag-generator';
+import { toggleFieldset } from './utils';
 
 
 document.addEventListener( 'DOMContentLoaded', event => {
@@ -15,20 +16,6 @@ document.addEventListener( 'DOMContentLoaded', event => {
 	if ( titleField && '' === titleField.value ) {
 		titleField.focus();
 	}
-
-	const toggleFieldset = toggle => {
-		const target = document.querySelector( `#${ toggle.dataset?.toggle }` );
-
-		if ( ! target ) {
-			return;
-		}
-
-		if ( toggle.checked ) {
-			target.classList.remove( 'hidden' );
-		} else {
-			target.classList.add( 'hidden' );
-		}
-	};
 
 	document.querySelectorAll(
 		'[data-toggle]'

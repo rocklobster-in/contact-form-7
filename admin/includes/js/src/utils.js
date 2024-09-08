@@ -12,7 +12,23 @@ const iconInCircle = icon => {
 const canonicalizeName = orig => orig.replace( /[^0-9a-z]+/gi, '-' );
 
 
+const toggleFieldset = toggle => {
+	const target = document.querySelector( `#${ toggle.dataset?.toggle }` );
+
+	if ( ! target ) {
+		return;
+	}
+
+	if ( toggle.checked ) {
+		target.classList.remove( 'hidden' );
+	} else {
+		target.classList.add( 'hidden' );
+	}
+};
+
+
 export {
 	iconInCircle,
 	canonicalizeName,
+	toggleFieldset,
 };
