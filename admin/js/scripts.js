@@ -13,17 +13,11 @@
 			wpcf7.toggleMail2( this );
 		} );
 
-		if ( '' === $( '#title' ).val() ) {
-			$( '#title' ).focus();
-		}
-
 		$( '.contact-form-editor-box-mail span.mailtag' ).click( function( event ) {
 			var range = document.createRange();
 			range.selectNodeContents( this );
 			window.getSelection().addRange( range );
 		} );
-
-		wpcf7.updateConfigErrors();
 
 		$( window ).on( 'beforeunload', function( event ) {
 			var changed = false;

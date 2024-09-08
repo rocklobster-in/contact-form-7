@@ -9,6 +9,12 @@ document.addEventListener( 'DOMContentLoaded', event => {
 	initConfigFields();
 	initWelcomePanel();
 
+	const titleField = document.querySelector( 'input#title' );
+
+	if ( titleField && '' === titleField.value ) {
+		titleField.focus();
+	}
+
 	document.querySelectorAll(
 		'[data-taggen="open-dialog"]'
 	).forEach( button => {
