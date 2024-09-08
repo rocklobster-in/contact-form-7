@@ -7,12 +7,6 @@
 	}
 
 	$( function() {
-		$( '.contact-form-editor-box-mail span.mailtag' ).click( function( event ) {
-			var range = document.createRange();
-			range.selectNodeContents( this );
-			window.getSelection().addRange( range );
-		} );
-
 		$( window ).on( 'beforeunload', function( event ) {
 			var changed = false;
 

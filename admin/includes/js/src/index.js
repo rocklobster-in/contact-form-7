@@ -18,6 +18,16 @@ document.addEventListener( 'DOMContentLoaded', event => {
 	}
 
 	document.querySelectorAll(
+		'.contact-form-editor-box-mail span.mailtag'
+	).forEach( mailtag => {
+		mailtag.addEventListener( 'click', event => {
+			const range = document.createRange();
+			range.selectNodeContents( mailtag );
+			window.getSelection().addRange( range );
+		} );
+	} );
+
+	document.querySelectorAll(
 		'[data-toggle]'
 	).forEach( toggle => {
 		toggleFieldset( toggle );
