@@ -48,6 +48,40 @@ const update = () => {
 			field.removeAttribute( 'aria-invalid' );
 		}
 	} );
+
+	document.querySelectorAll(
+		'#contact-form-editor-tabs [data-panel]'
+	).forEach( tab => {
+		tab.querySelectorAll(
+			'.icon-in-circle'
+		).forEach( icon => {
+			icon.remove();
+		} );
+
+		if ( countErrors( tab.dataset.panel ) ) {
+			tab.querySelector( 'a' )?.append( iconInCircle( '!' ) );
+		}
+	} );
+
+	document.querySelectorAll(
+		'#contact-form-editor .contact-form-editor-panel'
+	).forEach( panel => {
+		const errorsCount = countErrors( panel.id );
+
+		if ( errorsCount ) {
+			const errMsg = document.createElement( 'div' );
+			errMsg.classList.add( 'config-error' );
+			errMsg.append( iconInCircle( '!' ), '1 configuration error detected in this tab panel' );
+			panel.prepend( errMsg );
+		}
+	} );
+};
+
+
+const countErrors = panelId => {
+	return document.querySelectorAll(
+		`#${ panelId } ul.config-error li`
+	)?.length;
 };
 
 

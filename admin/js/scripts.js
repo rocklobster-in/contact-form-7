@@ -92,9 +92,10 @@
 
 		$( '#contact-form-editor-tabs > li' ).each( function() {
 			var $item = $( this );
-			$item.find( '.icon-in-circle' ).remove();
-			var tab = $item.attr( 'id' ).replace( /-panel-tab$/, '' );
 
+			//$item.find( '.icon-in-circle' ).remove();
+			var tab = $item.attr( 'id' ).replace( /-panel-tab$/, '' );
+			/*
 			$.each( errors, function( key, val ) {
 				key = key.replace( /^mail_\d+\./, 'mail.' );
 
@@ -104,7 +105,9 @@
 					return false;
 				}
 			} );
+			*/
 
+			/*
 			var $tabPanelError = $( '#' + tab + '-panel > div.config-error:first' );
 			$tabPanelError.empty();
 
@@ -119,6 +122,7 @@
 					$tabPanelError.append( wpcf7.configValidator.oneErrorInTab );
 				}
 			}
+			*/
 		} );
 
 		$( '#misc-publishing-actions .misc-pub-section.config-error' ).remove();

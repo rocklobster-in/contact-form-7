@@ -65,16 +65,11 @@ class WPCF7_Editor {
 			);
 
 			if ( is_callable( $panel['callback'] ) ) {
-				$this->notice( $panel_id, $panel );
 				call_user_func( $panel['callback'], $this->contact_form );
 			}
 
 			echo '</section>';
 		}
-	}
-
-	public function notice( $panel_id, $panel ) {
-		echo '<div class="config-error"></div>';
 	}
 }
 
