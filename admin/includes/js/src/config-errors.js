@@ -34,8 +34,9 @@ const update = () => {
 		'#contact-form-editor [data-config-field]'
 	).forEach( field => {
 		const section = field.dataset.configField;
+		const errors = retrieveErrors( section );
 
-		if ( countErrors( { section } ) ) {
+		if ( errors.length ) {
 			field.setAttribute( 'aria-invalid', 'true' );
 
 			field.setAttribute( 'aria-describedby',
@@ -50,12 +51,7 @@ const update = () => {
 };
 
 
-const retrieveErrors = args => {
-	const {
-		section,
-		tab,
-	} = args;
-
+const retrieveErrors = section => {
 	const errors = [];
 
 	for ( const prop in wpcf7.configValidator.errors ) {
@@ -65,12 +61,6 @@ const retrieveErrors = args => {
 	}
 
 	return errors;
-};
-
-
-const countErrors = args => {
-	const errors = retrieveErrors( args );
-	return errors.length;
 };
 
 
@@ -87,7 +77,7 @@ const createErrorsList = section => {
 
 	ul.classList.add( 'config-error' );
 
-	const errors = retrieveErrors( { section } );
+	const errors = retrieveErrors( section );
 
 	errors.forEach( err => {
 		if ( ! err.message ) {
