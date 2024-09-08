@@ -15,6 +15,30 @@ document.addEventListener( 'DOMContentLoaded', event => {
 		titleField.focus();
 	}
 
+	const toggleFieldset = toggle => {
+		const target = document.querySelector( `#${ toggle.dataset?.toggle }` );
+
+		if ( ! target ) {
+			return;
+		}
+
+		if ( toggle.checked ) {
+			target.classList.remove( 'hidden' );
+		} else {
+			target.classList.add( 'hidden' );
+		}
+	};
+
+	document.querySelectorAll(
+		'[data-toggle]'
+	).forEach( toggle => {
+		toggleFieldset( toggle );
+
+		toggle.addEventListener( 'change', event => {
+			toggleFieldset( toggle );
+		} );
+	} );
+
 	document.querySelectorAll(
 		'[data-taggen="open-dialog"]'
 	).forEach( button => {

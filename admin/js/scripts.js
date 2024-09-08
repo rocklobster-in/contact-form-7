@@ -7,12 +7,6 @@
 	}
 
 	$( function() {
-		wpcf7.toggleMail2( 'input:checkbox.toggle-form-table' );
-
-		$( 'input:checkbox.toggle-form-table' ).click( function( event ) {
-			wpcf7.toggleMail2( this );
-		} );
-
 		$( '.contact-form-editor-box-mail span.mailtag' ).click( function( event ) {
 			var range = document.createRange();
 			range.selectNodeContents( this );
@@ -65,19 +59,5 @@
 				$( this ).closest( 'tr' ).addClass( 'inactive' );
 			}
 		} );
-
 	} );
-
-	wpcf7.toggleMail2 = function( checkbox ) {
-		var $checkbox = $( checkbox );
-		var $fieldset = $( 'fieldset',
-			$checkbox.closest( '.contact-form-editor-box-mail' ) );
-
-		if ( $checkbox.is( ':checked' ) ) {
-			$fieldset.removeClass( 'hidden' );
-		} else {
-			$fieldset.addClass( 'hidden' );
-		}
-	};
-
 } )( jQuery );
