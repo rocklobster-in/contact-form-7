@@ -87,7 +87,7 @@ ul.config-error li {
 .wp-list-table .config-error .icon-in-circle,
 .icon-in-circle {
 	display: inline-block;
-	vertical-align: text-top;
+	vertical-align: baseline;
 	margin: 1px 6px 0;
 	padding: 0 5px;
 	min-width: 7px;

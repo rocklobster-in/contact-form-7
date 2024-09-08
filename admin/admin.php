@@ -187,6 +187,8 @@ function wpcf7_admin_enqueue_scripts( $hook_suffix ) {
 		$assets['version'],
 		array( 'in_footer' => true )
 	);
+
+	wp_set_script_translations( 'wpcf7-admin-revised', 'contact-form-7' );
 }
 
 

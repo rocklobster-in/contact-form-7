@@ -1,4 +1,5 @@
 import apiFetch from '@wordpress/api-fetch';
+import { sprintf, _n } from '@wordpress/i18n';
 
 import {
 	iconInCircle,
@@ -71,7 +72,17 @@ const update = () => {
 		if ( errorsCount ) {
 			const errMsg = document.createElement( 'div' );
 			errMsg.classList.add( 'config-error' );
-			errMsg.append( iconInCircle( '!' ), '1 configuration error detected in this tab panel' );
+
+			errMsg.append(
+				iconInCircle( '!' ),
+				sprintf( _n(
+					'%d configuration error detected in this tab panel.',
+					'%d configuration errors detected in this tab panel.',
+					errorsCount,
+					'contact-form-7'
+				), errorsCount )
+			);
+
 			panel.prepend( errMsg );
 		}
 	} );
