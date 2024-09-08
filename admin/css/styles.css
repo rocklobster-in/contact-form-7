@@ -78,6 +78,10 @@ ul.config-error li {
 	margin: 0;
 }
 
+#misc-publishing-actions .config-error {
+	line-height: 2;
+}
+
 [data-config-field][aria-invalid="true"] {
 	border-color: #dc3232;
 }

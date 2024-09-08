@@ -1,5 +1,5 @@
 import apiFetch from '@wordpress/api-fetch';
-import { sprintf, _n } from '@wordpress/i18n';
+import { sprintf, _n, __ } from '@wordpress/i18n';
 
 import {
 	iconInCircle,
@@ -26,7 +26,7 @@ const init = () => {
 
 const update = () => {
 	document.querySelectorAll(
-		'#contact-form-editor .config-error'
+		'#contact-form-editor .config-error, #misc-publishing-actions .config-error'
 	).forEach( error => {
 		error.remove();
 	} );
@@ -64,12 +64,16 @@ const update = () => {
 		}
 	} );
 
+	let errorsCountTotal = 0;
+
 	document.querySelectorAll(
 		'#contact-form-editor .contact-form-editor-panel'
 	).forEach( panel => {
 		const errorsCount = countErrors( panel.id );
 
 		if ( errorsCount ) {
+			errorsCountTotal += errorsCount;
+
 			const errMsg = document.createElement( 'div' );
 			errMsg.classList.add( 'config-error' );
 
@@ -86,6 +90,29 @@ const update = () => {
 			panel.prepend( errMsg );
 		}
 	} );
+
+	if ( errorsCountTotal ) {
+		const errMsg = document.createElement( 'div' );
+		errMsg.classList.add( 'misc-pub-section', 'config-error' );
+
+		const howtoLink = document.createElement( 'a' );
+		howtoLink.setAttribute( 'href', wpcf7.configValidator.docUrl );
+		howtoLink.append( __( "How to resolve?", 'contact-form-7' ) );
+
+		errMsg.append(
+			iconInCircle( '!' ),
+			sprintf( _n(
+				'%d configuration error detected.',
+				'%d configuration errors detected.',
+				errorsCountTotal,
+				'contact-form-7'
+			), errorsCountTotal ),
+			document.createElement( 'br' ),
+			howtoLink
+		);
+
+		document.querySelector( '#misc-publishing-actions' )?.append( errMsg );
+	}
 };
 
 

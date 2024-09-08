@@ -147,14 +147,7 @@ function wpcf7_admin_enqueue_scripts( $hook_suffix ) {
 			'contact-form-7' ),
 		'configValidator' => array(
 			'errors' => array(),
-			'howToCorrect' => __( "How to resolve?", 'contact-form-7' ),
-			'oneError' => __( '1 configuration error detected', 'contact-form-7' ),
-			'manyErrors' => __( '%d configuration errors detected', 'contact-form-7' ),
-			'oneErrorInTab' => __( '1 configuration error detected in this tab panel', 'contact-form-7' ),
-			'manyErrorsInTab' => __( '%d configuration errors detected in this tab panel', 'contact-form-7' ),
 			'docUrl' => WPCF7_ConfigValidator::get_doc_link(),
-			/* translators: screen reader text */
-			'iconAlt' => __( '(configuration error)', 'contact-form-7' ),
 		),
 	);
 
