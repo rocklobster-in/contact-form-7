@@ -138,75 +138,121 @@ add_action( 'wpcf7_admin_init', 'wpcf7_add_tag_generator_file', 50, 0 );
 
 function wpcf7_add_tag_generator_file() {
 	$tag_generator = WPCF7_TagGenerator::get_instance();
+
 	$tag_generator->add( 'file', __( 'file', 'contact-form-7' ),
-		'wpcf7_tag_generator_file' );
+		'wpcf7_tag_generator_file',
+	 	array( 'version' => '2' )
+	);
 }
 
-function wpcf7_tag_generator_file( $contact_form, $args = '' ) {
-	$args = wp_parse_args( $args, array() );
-	$type = 'file';
+function wpcf7_tag_generator_file( $contact_form, $options ) {
+	$field_types = array(
+		'file' => array(
+			'display_name' => __( 'File uploading field', 'contact-form-7' ),
+			'heading' => __( 'File uploading field form-tag generator', 'contact-form-7' ),
+			'description' => __( 'Generates a form-tag for a <a href="https://contactform7.com/file-uploading-and-attachment/">file uploading field</a>.', 'contact-form-7' ),
+		),
+	);
 
-	$description = __( "Generate a form-tag for a file uploading field. For more details, see %s.", 'contact-form-7' );
-
-	$desc_link = wpcf7_link( __( 'https://contactform7.com/file-uploading-and-attachment/', 'contact-form-7' ), __( 'File uploading and attachment', 'contact-form-7' ) );
+	$tgg = new WPCF7_TagGeneratorGenerator( $options['content'] );
 
 ?>
+<header class="description-box">
+	<h3><?php
+		echo esc_html( $field_types['file']['heading'] );
+	?></h3>
+
+	<p><?php
+		$description = wp_kses(
+			$field_types['file']['description'],
+			array(
+				'a' => array( 'href' => true ),
+				'strong' => array(),
+			),
+			array( 'http', 'https' )
+		);
+
+		echo $description;
+	?></p>
+</header>
+
 <div class="control-box">
-<fieldset>
-<legend><?php echo sprintf( esc_html( $description ), $desc_link ); ?></legend>
+	<?php
+		$tgg->print( 'field_type', array(
+			'with_required' => true,
+			'select_options' => array(
+				'file' => $field_types['file']['display_name'],
+			),
+		) );
 
-<table class="form-table">
-<tbody>
-	<tr>
-	<th scope="row"><?php echo esc_html( __( 'Field type', 'contact-form-7' ) ); ?></th>
-	<td>
-		<fieldset>
-		<legend class="screen-reader-text"><?php echo esc_html( __( 'Field type', 'contact-form-7' ) ); ?></legend>
-		<label><input type="checkbox" name="required" /> <?php echo esc_html( __( 'Required field', 'contact-form-7' ) ); ?></label>
-		</fieldset>
-	</td>
-	</tr>
+		$tgg->print( 'field_name' );
 
-	<tr>
-	<th scope="row"><label for="<?php echo esc_attr( $args['content'] . '-name' ); ?>"><?php echo esc_html( __( 'Name', 'contact-form-7' ) ); ?></label></th>
-	<td><input type="text" name="name" class="tg-name oneline" id="<?php echo esc_attr( $args['content'] . '-name' ); ?>" /></td>
-	</tr>
+		$tgg->print( 'class_attr' );
+	?>
 
-	<tr>
-	<th scope="row"><label for="<?php echo esc_attr( $args['content'] . '-limit' ); ?>"><?php echo esc_html( __( "File size limit (bytes)", 'contact-form-7' ) ); ?></label></th>
-	<td><input type="text" name="limit" class="filesize oneline option" id="<?php echo esc_attr( $args['content'] . '-limit' ); ?>" /></td>
-	</tr>
+	<fieldset>
+		<legend id="<?php echo esc_attr( $tgg->ref( 'filetypes-option-legend' ) ); ?>"><?php
+			echo esc_html( __( 'Acceptable file types', 'contact-form-7' ) );
+		?></legend>
+		<label><?php
+		echo sprintf(
+			'<span %1$s>%2$s</span><br />',
+			wpcf7_format_atts( array(
+				'id' => $tgg->ref( 'filetypes-option-description' ),
+			) ),
+			esc_html( __( "Pipe-separated file types list. You can use file extensions and MIME types.", 'contact-form-7' ) )
+		);
 
-	<tr>
-	<th scope="row"><label for="<?php echo esc_attr( $args['content'] . '-filetypes' ); ?>"><?php echo esc_html( __( 'Acceptable file types', 'contact-form-7' ) ); ?></label></th>
-	<td><input type="text" name="filetypes" class="filetype oneline option" id="<?php echo esc_attr( $args['content'] . '-filetypes' ); ?>" /></td>
-	</tr>
+		echo sprintf(
+			'<input %s />',
+			wpcf7_format_atts( array(
+				'type' => 'text',
+				'pattern' => '[0-9a-z*\/\|]*',
+				'value' => 'audio/*|video/*|image/*',
+				'aria-labelledby' => $tgg->ref( 'filetypes-option-legend' ),
+				'aria-describedby' => $tgg->ref( 'filetypes-option-description' ),
+				'data-tag-part' => 'option',
+				'data-tag-option' => 'filetypes:',
+			) )
+		);
+		?></label>
+	</fieldset>
 
-	<tr>
-	<th scope="row"><label for="<?php echo esc_attr( $args['content'] . '-id' ); ?>"><?php echo esc_html( __( 'Id attribute', 'contact-form-7' ) ); ?></label></th>
-	<td><input type="text" name="id" class="idvalue oneline option" id="<?php echo esc_attr( $args['content'] . '-id' ); ?>" /></td>
-	</tr>
+	<fieldset>
+		<legend id="<?php echo esc_attr( $tgg->ref( 'limit-option-legend' ) ); ?>"><?php
+			echo esc_html( __( 'File size limit', 'contact-form-7' ) );
+		?></legend>
+		<label><?php
+		echo sprintf(
+			'<span %1$s>%2$s</span><br />',
+			wpcf7_format_atts( array(
+				'id' => $tgg->ref( 'limit-option-description' ),
+			) ),
+			esc_html( __( "In bytes. You can use kb and mb suffixes.", 'contact-form-7' ) )
+		);
 
-	<tr>
-	<th scope="row"><label for="<?php echo esc_attr( $args['content'] . '-class' ); ?>"><?php echo esc_html( __( 'Class attribute', 'contact-form-7' ) ); ?></label></th>
-	<td><input type="text" name="class" class="classvalue oneline option" id="<?php echo esc_attr( $args['content'] . '-class' ); ?>" /></td>
-	</tr>
-
-</tbody>
-</table>
-</fieldset>
+		echo sprintf(
+			'<input %s />',
+			wpcf7_format_atts( array(
+				'type' => 'text',
+				'pattern' => '[1-9][0-9]*([kKmM]?[bB])?',
+				'value' => '1mb',
+				'aria-labelledby' => $tgg->ref( 'limit-option-legend' ),
+				'aria-describedby' => $tgg->ref( 'limit-option-description' ),
+				'data-tag-part' => 'option',
+				'data-tag-option' => 'limit:',
+			) )
+		);
+		?></label>
+	</fieldset>
 </div>
 
-<div class="insert-box">
-	<input type="text" name="<?php echo $type; ?>" class="tag code" readonly="readonly" onfocus="this.select()" />
+<footer class="insert-box">
+	<?php
+		$tgg->print( 'insert_box_content' );
 
-	<div class="submitbox">
-	<input type="button" class="button button-primary insert-tag" value="<?php echo esc_attr( __( 'Insert Tag', 'contact-form-7' ) ); ?>" />
-	</div>
-
-	<br class="clear" />
-
-	<p class="description mail-tag"><label for="<?php echo esc_attr( $args['content'] . '-mailtag' ); ?>"><?php echo sprintf( esc_html( __( "To attach the file uploaded through this field to mail, you need to insert the corresponding mail-tag (%s) into the File Attachments field on the Mail tab.", 'contact-form-7' ) ), '<strong><span class="mail-tag"></span></strong>' ); ?><input type="text" class="mail-tag code hidden" readonly="readonly" id="<?php echo esc_attr( $args['content'] . '-mailtag' ); ?>" /></label></p>
-</div>
+		$tgg->print( 'mail_tag_tip' );
+	?>
+</footer>
 <?php
 }

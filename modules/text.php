@@ -207,118 +207,111 @@ add_action( 'wpcf7_admin_init', 'wpcf7_add_tag_generator_text', 15, 0 );
 
 function wpcf7_add_tag_generator_text() {
 	$tag_generator = WPCF7_TagGenerator::get_instance();
-	$tag_generator->add( 'text', __( 'text', 'contact-form-7' ),
-		'wpcf7_tag_generator_text' );
-	$tag_generator->add( 'email', __( 'email', 'contact-form-7' ),
-		'wpcf7_tag_generator_text' );
-	$tag_generator->add( 'url', __( 'URL', 'contact-form-7' ),
-		'wpcf7_tag_generator_text' );
-	$tag_generator->add( 'tel', __( 'tel', 'contact-form-7' ),
-		'wpcf7_tag_generator_text' );
+
+	$basetypes = array(
+		'text' => __( 'text', 'contact-form-7' ),
+		'email' => __( 'email', 'contact-form-7' ),
+		'url' => __( 'URL', 'contact-form-7' ),
+		'tel' => __( 'tel', 'contact-form-7' ),
+	);
+
+	foreach ( $basetypes as $id => $title ) {
+		$tag_generator->add( $id, $title,
+			'wpcf7_tag_generator_text',
+			array( 'version' => '2' )
+		);
+	}
 }
 
-function wpcf7_tag_generator_text( $contact_form, $args = '' ) {
-	$args = wp_parse_args( $args, array() );
-	$type = $args['id'];
+function wpcf7_tag_generator_text( $contact_form, $options ) {
+	$field_types = array(
+		'text' => array(
+			'display_name' => __( 'Text field', 'contact-form-7' ),
+			'heading' => __( 'Text field form-tag generator', 'contact-form-7' ),
+			'description' => __( 'Generates a form-tag for a <a href="https://contactform7.com/text-fields/">single-line plain text input field</a>.', 'contact-form-7' ),
+			'maybe_purpose' => 'author_name',
+		),
+		'email' => array(
+			'display_name' => __( 'Email address field', 'contact-form-7' ),
+			'heading' => __( 'Email address field form-tag generator', 'contact-form-7' ),
+			'description' => __( 'Generates a form-tag for an <a href="https://contactform7.com/text-fields/">email address input field</a>.', 'contact-form-7' ),
+			'maybe_purpose' => 'author_email',
+		),
+		'url' => array(
+			'display_name' => __( 'URL field', 'contact-form-7' ),
+			'heading' => __( 'URL field form-tag generator', 'contact-form-7' ),
+			'description' => __( 'Generates a form-tag for a <a href="https://contactform7.com/text-fields/">URL input field</a>.', 'contact-form-7' ),
+			'maybe_purpose' => 'author_url',
+		),
+		'tel' => array(
+			'display_name' => __( 'Telephone number field', 'contact-form-7' ),
+			'heading' => __( 'Telephone number field form-tag generator', 'contact-form-7' ),
+			'description' => __( 'Generates a form-tag for a <a href="https://contactform7.com/text-fields/">telephone number input field</a>.', 'contact-form-7' ),
+			'maybe_purpose' => 'author_tel',
+		),
+	);
 
-	if ( ! in_array( $type, array( 'email', 'url', 'tel' ) ) ) {
-		$type = 'text';
+	$basetype = $options['id'];
+
+	if ( ! in_array( $basetype, array_keys( $field_types ) ) ) {
+		$basetype = 'text';
 	}
 
-	if ( 'text' == $type ) {
-		$description = __( "Generate a form-tag for a single-line plain text input field. For more details, see %s.", 'contact-form-7' );
-	} elseif ( 'email' == $type ) {
-		$description = __( "Generate a form-tag for a single-line email address input field. For more details, see %s.", 'contact-form-7' );
-	} elseif ( 'url' == $type ) {
-		$description = __( "Generate a form-tag for a single-line URL input field. For more details, see %s.", 'contact-form-7' );
-	} elseif ( 'tel' == $type ) {
-		$description = __( "Generate a form-tag for a single-line telephone number input field. For more details, see %s.", 'contact-form-7' );
-	}
-
-	$desc_link = wpcf7_link( __( 'https://contactform7.com/text-fields/', 'contact-form-7' ), __( 'Text fields', 'contact-form-7' ) );
+	$tgg = new WPCF7_TagGeneratorGenerator( $options['content'] );
 
 ?>
+<header class="description-box">
+	<h3><?php
+		echo esc_html( $field_types[$basetype]['heading'] );
+	?></h3>
+
+	<p><?php
+		$description = wp_kses(
+			$field_types[$basetype]['description'],
+			array(
+				'a' => array( 'href' => true ),
+				'strong' => array(),
+			),
+			array( 'http', 'https' )
+		);
+
+		echo $description;
+	?></p>
+</header>
+
 <div class="control-box">
-<fieldset>
-<legend><?php echo sprintf( esc_html( $description ), $desc_link ); ?></legend>
+	<?php
+		$tgg->print( 'field_type', array(
+			'with_required' => true,
+			'select_options' => array(
+				$basetype => $field_types[$basetype]['display_name'],
+			),
+		) );
 
-<table class="form-table">
-<tbody>
-	<tr>
-	<th scope="row"><?php echo esc_html( __( 'Field type', 'contact-form-7' ) ); ?></th>
-	<td>
-		<fieldset>
-		<legend class="screen-reader-text"><?php echo esc_html( __( 'Field type', 'contact-form-7' ) ); ?></legend>
-		<label><input type="checkbox" name="required" /> <?php echo esc_html( __( 'Required field', 'contact-form-7' ) ); ?></label>
-		</fieldset>
-	</td>
-	</tr>
+		$tgg->print( 'field_name', array(
+			'ask_if' => $field_types[$basetype]['maybe_purpose']
+		) );
 
-	<tr>
-	<th scope="row"><label for="<?php echo esc_attr( $args['content'] . '-name' ); ?>"><?php echo esc_html( __( 'Name', 'contact-form-7' ) ); ?></label></th>
-	<td><input type="text" name="name" class="tg-name oneline" id="<?php echo esc_attr( $args['content'] . '-name' ); ?>" /></td>
-	</tr>
+		$tgg->print( 'class_attr' );
 
-	<tr>
-	<th scope="row"><label for="<?php echo esc_attr( $args['content'] . '-values' ); ?>"><?php echo esc_html( __( 'Default value', 'contact-form-7' ) ); ?></label></th>
-	<td><input type="text" name="values" class="oneline" id="<?php echo esc_attr( $args['content'] . '-values' ); ?>" /><br />
-	<label><input type="checkbox" name="placeholder" class="option" /> <?php echo esc_html( __( 'Use this text as the placeholder of the field', 'contact-form-7' ) ); ?></label></td>
-	</tr>
+		$tgg->print( 'min_max', array(
+			'title' => __( 'Length', 'contact-form-7' ),
+			'min_option' => 'minlength:',
+			'max_option' => 'maxlength:',
+		) );
 
-<?php if ( in_array( $type, array( 'text', 'email', 'url' ) ) ) : ?>
-	<tr>
-	<th scope="row"><?php echo esc_html( __( 'Akismet', 'contact-form-7' ) ); ?></th>
-	<td>
-		<fieldset>
-		<legend class="screen-reader-text"><?php echo esc_html( __( 'Akismet', 'contact-form-7' ) ); ?></legend>
-
-<?php if ( 'text' == $type ) : ?>
-		<label>
-			<input type="checkbox" name="akismet:author" class="option" />
-			<?php echo esc_html( __( "This field requires author's name", 'contact-form-7' ) ); ?>
-		</label>
-<?php elseif ( 'email' == $type ) : ?>
-		<label>
-			<input type="checkbox" name="akismet:author_email" class="option" />
-			<?php echo esc_html( __( "This field requires author's email address", 'contact-form-7' ) ); ?>
-		</label>
-<?php elseif ( 'url' == $type ) : ?>
-		<label>
-			<input type="checkbox" name="akismet:author_url" class="option" />
-			<?php echo esc_html( __( "This field requires author's URL", 'contact-form-7' ) ); ?>
-		</label>
-<?php endif; ?>
-
-		</fieldset>
-	</td>
-	</tr>
-<?php endif; ?>
-
-	<tr>
-	<th scope="row"><label for="<?php echo esc_attr( $args['content'] . '-id' ); ?>"><?php echo esc_html( __( 'Id attribute', 'contact-form-7' ) ); ?></label></th>
-	<td><input type="text" name="id" class="idvalue oneline option" id="<?php echo esc_attr( $args['content'] . '-id' ); ?>" /></td>
-	</tr>
-
-	<tr>
-	<th scope="row"><label for="<?php echo esc_attr( $args['content'] . '-class' ); ?>"><?php echo esc_html( __( 'Class attribute', 'contact-form-7' ) ); ?></label></th>
-	<td><input type="text" name="class" class="classvalue oneline option" id="<?php echo esc_attr( $args['content'] . '-class' ); ?>" /></td>
-	</tr>
-
-</tbody>
-</table>
-</fieldset>
+		$tgg->print( 'default_value', array(
+			'with_placeholder' => true,
+		) );
+	?>
 </div>
 
-<div class="insert-box">
-	<input type="text" name="<?php echo $type; ?>" class="tag code" readonly="readonly" onfocus="this.select()" />
+<footer class="insert-box">
+	<?php
+		$tgg->print( 'insert_box_content' );
 
-	<div class="submitbox">
-	<input type="button" class="button button-primary insert-tag" value="<?php echo esc_attr( __( 'Insert Tag', 'contact-form-7' ) ); ?>" />
-	</div>
-
-	<br class="clear" />
-
-	<p class="description mail-tag"><label for="<?php echo esc_attr( $args['content'] . '-mailtag' ); ?>"><?php echo sprintf( esc_html( __( "To use the value input through this field in a mail field, you need to insert the corresponding mail-tag (%s) into the field on the Mail tab.", 'contact-form-7' ) ), '<strong><span class="mail-tag"></span></strong>' ); ?><input type="text" class="mail-tag code hidden" readonly="readonly" id="<?php echo esc_attr( $args['content'] . '-mailtag' ); ?>" /></label></p>
-</div>
+		$tgg->print( 'mail_tag_tip' );
+	?>
+</footer>
 <?php
 }

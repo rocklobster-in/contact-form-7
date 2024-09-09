@@ -242,66 +242,97 @@ add_action( 'wpcf7_admin_init', 'wpcf7_add_tag_generator_acceptance', 35, 0 );
 
 function wpcf7_add_tag_generator_acceptance() {
 	$tag_generator = WPCF7_TagGenerator::get_instance();
+
 	$tag_generator->add( 'acceptance', __( 'acceptance', 'contact-form-7' ),
-		'wpcf7_tag_generator_acceptance' );
+		'wpcf7_tag_generator_acceptance',
+	 	array( 'version' => '2' )
+	);
 }
 
-function wpcf7_tag_generator_acceptance( $contact_form, $args = '' ) {
-	$args = wp_parse_args( $args, array() );
-	$type = 'acceptance';
+function wpcf7_tag_generator_acceptance( $contact_form, $options ) {
+	$field_types = array(
+		'acceptance' => array(
+			'display_name' => __( 'Acceptance checkbox', 'contact-form-7' ),
+			'heading' => __( 'Acceptance checkbox form-tag generator', 'contact-form-7' ),
+			'description' => __( 'Generates a form-tag for an <a href="https://contactform7.com/acceptance-checkbox/">acceptance checkbox</a>.', 'contact-form-7' ),
+		),
+	);
 
-	$description = __( "Generate a form-tag for an acceptance checkbox. For more details, see %s.", 'contact-form-7' );
-
-	$desc_link = wpcf7_link( __( 'https://contactform7.com/acceptance-checkbox/', 'contact-form-7' ), __( 'Acceptance checkbox', 'contact-form-7' ) );
+	$tgg = new WPCF7_TagGeneratorGenerator( $options['content'] );
 
 ?>
+<header class="description-box">
+	<h3><?php
+		echo esc_html( $field_types['acceptance']['heading'] );
+	?></h3>
+
+	<p><?php
+		$description = wp_kses(
+			$field_types['acceptance']['description'],
+			array(
+				'a' => array( 'href' => true ),
+				'strong' => array(),
+			),
+			array( 'http', 'https' )
+		);
+
+		echo $description;
+	?></p>
+</header>
+
 <div class="control-box">
-<fieldset>
-<legend><?php echo sprintf( esc_html( $description ), $desc_link ); ?></legend>
+	<fieldset>
+		<legend id="<?php echo esc_attr( $tgg->ref( 'type-legend' ) ); ?>"><?php
+			echo esc_html( __( 'Field type', 'contact-form-7' ) );
+		?></legend>
 
-<table class="form-table">
-<tbody>
-	<tr>
-	<th scope="row"><label for="<?php echo esc_attr( $args['content'] . '-name' ); ?>"><?php echo esc_html( __( 'Name', 'contact-form-7' ) ); ?></label></th>
-	<td><input type="text" name="name" class="tg-name oneline" id="<?php echo esc_attr( $args['content'] . '-name' ); ?>" /></td>
-	</tr>
+		<select data-tag-part="basetype" aria-labelledby="<?php echo esc_attr( $tgg->ref( 'type-legend' ) ); ?>"><?php
+			echo sprintf(
+				'<option %1$s>%2$s</option>',
+				wpcf7_format_atts( array(
+					'value' => 'acceptance',
+				) ),
+				esc_html( $field_types['acceptance']['display_name'] )
+			);
+		?></select>
+		<br />
+		<label>
+			<input type="checkbox" data-tag-part="option" data-tag-option="optional" checked="checked" />
+			<?php echo esc_html( __( "This checkbox is optional.", 'contact-form-7' ) ); ?>
+		</label>
+	</fieldset>
 
-	<tr>
-	<th scope="row"><label for="<?php echo esc_attr( $args['content'] . '-content' ); ?>"><?php echo esc_html( __( 'Condition', 'contact-form-7' ) ); ?></label></th>
-	<td><input type="text" name="content" class="oneline large-text" id="<?php echo esc_attr( $args['content'] . '-content' ); ?>" /></td>
-	</tr>
+	<?php
+		$tgg->print( 'field_name' );
 
-	<tr>
-	<th scope="row"><?php echo esc_html( __( 'Options', 'contact-form-7' ) ); ?></th>
-	<td>
-		<fieldset>
-		<legend class="screen-reader-text"><?php echo esc_html( __( 'Options', 'contact-form-7' ) ); ?></legend>
-		<label><input type="checkbox" name="optional" class="option" checked="checked" /> <?php echo esc_html( __( 'Make this checkbox optional', 'contact-form-7' ) ); ?></label>
-		</fieldset>
-	</td>
-	</tr>
+		$tgg->print( 'class_attr' );
+	?>
 
-	<tr>
-	<th scope="row"><label for="<?php echo esc_attr( $args['content'] . '-id' ); ?>"><?php echo esc_html( __( 'Id attribute', 'contact-form-7' ) ); ?></label></th>
-	<td><input type="text" name="id" class="idvalue oneline option" id="<?php echo esc_attr( $args['content'] . '-id' ); ?>" /></td>
-	</tr>
-
-	<tr>
-	<th scope="row"><label for="<?php echo esc_attr( $args['content'] . '-class' ); ?>"><?php echo esc_html( __( 'Class attribute', 'contact-form-7' ) ); ?></label></th>
-	<td><input type="text" name="class" class="classvalue oneline option" id="<?php echo esc_attr( $args['content'] . '-class' ); ?>" /></td>
-	</tr>
-
-</tbody>
-</table>
-</fieldset>
+	<fieldset>
+		<legend id="<?php echo esc_attr( $tgg->ref( 'value-legend' ) ); ?>"><?php
+			echo esc_html( __( 'Condition', 'contact-form-7' ) );
+		?></legend>
+		<?php
+			echo sprintf(
+				'<input %s />',
+				wpcf7_format_atts( array(
+					'type' => 'text',
+					'required' => true,
+					'value' => __( 'Put the condition for consent here.', 'contact-form-7' ),
+					'data-tag-part' => 'content',
+					'aria-labelledby' => $tgg->ref( 'value-legend' ),
+				) )
+			);
+		?>
+	</fieldset>
 </div>
 
-<div class="insert-box">
-	<input type="text" name="<?php echo $type; ?>" class="tag code" readonly="readonly" onfocus="this.select()" />
+<footer class="insert-box">
+	<?php
+		$tgg->print( 'insert_box_content' );
 
-	<div class="submitbox">
-	<input type="button" class="button button-primary insert-tag" value="<?php echo esc_attr( __( 'Insert Tag', 'contact-form-7' ) ); ?>" />
-	</div>
-</div>
+		$tgg->print( 'mail_tag_tip' );
+	?>
+</footer>
 <?php
 }

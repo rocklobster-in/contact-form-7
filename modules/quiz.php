@@ -192,62 +192,91 @@ add_action( 'wpcf7_admin_init', 'wpcf7_add_tag_generator_quiz', 40, 0 );
 
 function wpcf7_add_tag_generator_quiz() {
 	$tag_generator = WPCF7_TagGenerator::get_instance();
+
 	$tag_generator->add( 'quiz', __( 'quiz', 'contact-form-7' ),
-		'wpcf7_tag_generator_quiz' );
+		'wpcf7_tag_generator_quiz',
+	 	array( 'version' => '2' )
+	);
 }
 
-function wpcf7_tag_generator_quiz( $contact_form, $args = '' ) {
-	$args = wp_parse_args( $args, array() );
-	$type = 'quiz';
+function wpcf7_tag_generator_quiz( $contact_form, $options ) {
+	$field_types = array(
+		'quiz' => array(
+			'display_name' => __( 'Quiz', 'contact-form-7' ),
+			'heading' => __( 'Quiz form-tag generator', 'contact-form-7' ),
+			'description' => __( 'Generates a form-tag for a <a href="https://contactform7.com/quiz/">quiz</a>.', 'contact-form-7' ),
+		),
+	);
 
-	$description = __( "Generate a form-tag for a question-answer pair. For more details, see %s.", 'contact-form-7' );
-
-	$desc_link = wpcf7_link( __( 'https://contactform7.com/quiz/', 'contact-form-7' ), __( 'Quiz', 'contact-form-7' ) );
+	$tgg = new WPCF7_TagGeneratorGenerator( $options['content'] );
 
 ?>
+<header class="description-box">
+	<h3><?php
+		echo esc_html( $field_types['quiz']['heading'] );
+	?></h3>
+
+	<p><?php
+		$description = wp_kses(
+			$field_types['quiz']['description'],
+			array(
+				'a' => array( 'href' => true ),
+				'strong' => array(),
+			),
+			array( 'http', 'https' )
+		);
+
+		echo $description;
+	?></p>
+</header>
+
 <div class="control-box">
-<fieldset>
-<legend><?php echo sprintf( esc_html( $description ), $desc_link ); ?></legend>
+	<?php
+		$tgg->print( 'field_type', array(
+			'select_options' => array(
+				'quiz' => $field_types['quiz']['display_name'],
+			),
+		) );
 
-<table class="form-table">
-<tbody>
-	<tr>
-	<th scope="row"><label for="<?php echo esc_attr( $args['content'] . '-name' ); ?>"><?php echo esc_html( __( 'Name', 'contact-form-7' ) ); ?></label></th>
-	<td><input type="text" name="name" class="tg-name oneline" id="<?php echo esc_attr( $args['content'] . '-name' ); ?>" /></td>
-	</tr>
+		$tgg->print( 'field_name' );
 
-	<tr>
-	<th scope="row"><?php echo esc_html( __( 'Questions and answers', 'contact-form-7' ) ); ?></th>
-	<td>
-		<fieldset>
-		<legend class="screen-reader-text"><?php echo esc_html( __( 'Questions and answers', 'contact-form-7' ) ); ?></legend>
-		<textarea name="values" class="values" id="<?php echo esc_attr( $args['content'] . '-values' ); ?>"></textarea><br />
-		<label for="<?php echo esc_attr( $args['content'] . '-values' ); ?>"><span class="description"><?php echo esc_html( __( "One pipe-separated question-answer pair (e.g. The capital of Brazil?|Rio) per line.", 'contact-form-7' ) ); ?></span></label>
-		</fieldset>
-	</td>
-	</tr>
+		$tgg->print( 'class_attr' );
+	?>
 
-	<tr>
-	<th scope="row"><label for="<?php echo esc_attr( $args['content'] . '-id' ); ?>"><?php echo esc_html( __( 'Id attribute', 'contact-form-7' ) ); ?></label></th>
-	<td><input type="text" name="id" class="idvalue oneline option" id="<?php echo esc_attr( $args['content'] . '-id' ); ?>" /></td>
-	</tr>
+	<fieldset>
+		<legend id="<?php echo esc_attr( $tgg->ref( 'selectable-values-legend' ) ); ?>"><?php
+			echo esc_html( __( 'Questions and answers', 'contact-form-7' ) );
+		?></legend>
+		<?php
+			echo sprintf(
+				'<span %1$s>%2$s</span>',
+				wpcf7_format_atts( array(
+					'id' => $tgg->ref( 'selectable-values-description' ),
+				) ),
+				esc_html( __( "One pipe-separated question-answer pair (question|answer) per line.", 'contact-form-7' ) )
+			);
+		?>
+		<br />
+		<?php
+			echo sprintf(
+				'<textarea %1$s>%2$s</textarea>',
+				wpcf7_format_atts( array(
+					'required' => true,
+					'data-tag-part' => 'value',
+					'aria-labelledby' => $tgg->ref( 'selectable-values-legend' ),
+					'aria-describedby' => $tgg->ref( 'selectable-values-description' ),
+				) ),
+				esc_html( __( "The capital of Brazil? | Rio", 'contact-form-7' ) )
+			);
+		?>
+	</fieldset>
 
-	<tr>
-	<th scope="row"><label for="<?php echo esc_attr( $args['content'] . '-class' ); ?>"><?php echo esc_html( __( 'Class attribute', 'contact-form-7' ) ); ?></label></th>
-	<td><input type="text" name="class" class="classvalue oneline option" id="<?php echo esc_attr( $args['content'] . '-class' ); ?>" /></td>
-	</tr>
-
-</tbody>
-</table>
-</fieldset>
 </div>
 
-<div class="insert-box">
-	<input type="text" name="<?php echo $type; ?>" class="tag code" readonly="readonly" onfocus="this.select()" />
-
-	<div class="submitbox">
-	<input type="button" class="button button-primary insert-tag" value="<?php echo esc_attr( __( 'Insert Tag', 'contact-form-7' ) ); ?>" />
-	</div>
-</div>
+<footer class="insert-box">
+	<?php
+		$tgg->print( 'insert_box_content' );
+	?>
+</footer>
 <?php
 }

@@ -127,56 +127,53 @@ function wpcf7_admin_enqueue_scripts( $hook_suffix ) {
 		);
 	}
 
+	$assets = include(
+		wpcf7_plugin_path( 'admin/includes/js/index.asset.php' )
+	);
+
+	$assets = wp_parse_args( $assets, array(
+		'dependencies' => array(),
+		'version' => WPCF7_VERSION,
+	) );
+
 	wp_enqueue_script( 'wpcf7-admin',
-		wpcf7_plugin_url( 'admin/js/scripts.js' ),
-		array( 'jquery', 'jquery-ui-tabs' ),
-		WPCF7_VERSION,
+		wpcf7_plugin_url( 'admin/includes/js/index.js' ),
+		$assets['dependencies'],
+		$assets['version'],
 		array( 'in_footer' => true )
 	);
 
-	$l10n = array(
+	wp_set_script_translations( 'wpcf7-admin', 'contact-form-7' );
+
+	$wpcf7_obj = array(
 		'apiSettings' => array(
 			'root' => sanitize_url( rest_url( 'contact-form-7/v1' ) ),
 			'namespace' => 'contact-form-7/v1',
 			'nonce' => ( wp_installing() && ! is_multisite() )
 				? '' : wp_create_nonce( 'wp_rest' ),
 		),
-		'pluginUrl' => wpcf7_plugin_url(),
-		'saveAlert' => __(
-			"The changes you made will be lost if you navigate away from this page.",
-			'contact-form-7' ),
-		'activeTab' => (int) ( $_GET['active-tab'] ?? 0 ),
 		'configValidator' => array(
 			'errors' => array(),
-			'howToCorrect' => __( "How to resolve?", 'contact-form-7' ),
-			'oneError' => __( '1 configuration error detected', 'contact-form-7' ),
-			'manyErrors' => __( '%d configuration errors detected', 'contact-form-7' ),
-			'oneErrorInTab' => __( '1 configuration error detected in this tab panel', 'contact-form-7' ),
-			'manyErrorsInTab' => __( '%d configuration errors detected in this tab panel', 'contact-form-7' ),
 			'docUrl' => WPCF7_ConfigValidator::get_doc_link(),
-			/* translators: screen reader text */
-			'iconAlt' => __( '(configuration error)', 'contact-form-7' ),
 		),
 	);
 
-	if ( $post = wpcf7_get_current_contact_form()
-	and current_user_can( 'wpcf7_edit_contact_form', $post->id() )
-	and wpcf7_validate_configuration() ) {
+	if (
+		$post = wpcf7_get_current_contact_form() and
+		current_user_can( 'wpcf7_edit_contact_form', $post->id() ) and
+		wpcf7_validate_configuration()
+	) {
 		$config_validator = new WPCF7_ConfigValidator( $post );
 		$config_validator->restore();
-		$l10n['configValidator']['errors'] =
+		$wpcf7_obj['configValidator']['errors'] =
 			$config_validator->collect_error_messages();
 	}
 
-	wp_localize_script( 'wpcf7-admin', 'wpcf7', $l10n );
-
-	add_thickbox();
-
-	wp_enqueue_script( 'wpcf7-admin-taggenerator',
-		wpcf7_plugin_url( 'admin/js/tag-generator.js' ),
-		array( 'jquery', 'thickbox', 'wpcf7-admin' ),
-		WPCF7_VERSION,
-		array( 'in_footer' => true )
+	wp_add_inline_script( 'wpcf7-admin',
+		sprintf(
+			'const wpcf7 = %s;',
+			wp_json_encode( $wpcf7_obj, JSON_PRETTY_PRINT )
+		)
 	);
 }
 
@@ -243,7 +240,7 @@ function wpcf7_load_contact_form_admin() {
 
 		$query = array(
 			'post' => $contact_form ? $contact_form->id() : 0,
-			'active-tab' => (int) ( $_POST['active-tab'] ?? 0 ),
+			'active-tab' => $_POST['active-tab'] ?? '',
 		);
 
 		if ( ! $contact_form ) {

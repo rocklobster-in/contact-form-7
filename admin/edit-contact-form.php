@@ -85,27 +85,30 @@ if ( $post ) :
 <input type="hidden" id="post_ID" name="post_ID" value="<?php echo (int) $post_id; ?>" />
 <input type="hidden" id="wpcf7-locale" name="wpcf7-locale" value="<?php echo esc_attr( $post->locale() ); ?>" />
 <input type="hidden" id="hiddenaction" name="action" value="save" />
-<input type="hidden" id="active-tab" name="active-tab" value="<?php echo (int) ( $_GET['active-tab'] ?? '0' ); ?>" />
+<input type="hidden" id="active-tab" name="active-tab" value="<?php echo esc_attr( $_GET['active-tab'] ?? '' ); ?>" />
 
 <div id="poststuff">
 <div id="post-body" class="metabox-holder columns-2">
 <div id="post-body-content">
 <div id="titlediv">
 <div id="titlewrap">
-	<label class="screen-reader-text" id="title-prompt-text" for="title"><?php echo esc_html( __( 'Enter title here', 'contact-form-7' ) ); ?></label>
 <?php
-	$posttitle_atts = array(
-		'type' => 'text',
-		'name' => 'post_title',
-		'size' => 30,
-		'value' => $post->initial() ? '' : $post->title(),
-		'id' => 'title',
-		'spellcheck' => 'true',
-		'autocomplete' => 'off',
-		'disabled' => ! current_user_can( 'wpcf7_edit_contact_form', $post_id ),
+
+	echo sprintf(
+		'<input %s />',
+		wpcf7_format_atts( array(
+			'type' => 'text',
+			'name' => 'post_title',
+			'value' => $post->initial() ? '' : $post->title(),
+			'id' => 'title',
+			'spellcheck' => 'true',
+			'autocomplete' => 'off',
+			'disabled' => ! current_user_can( 'wpcf7_edit_contact_form', $post_id ),
+			'placeholder' => __( 'Enter title here', 'contact-form-7' ),
+			'aria-label' => __( 'Enter title here', 'contact-form-7' ),
+		) )
 	);
 
-	echo sprintf( '<input %s />', wpcf7_format_atts( $posttitle_atts ) );
 ?>
 </div><!-- #titlewrap -->
 
@@ -211,19 +214,7 @@ if ( $post ) :
 </div><!-- #postbox-container-1 -->
 
 <div id="postbox-container-2" class="postbox-container">
-<div id="contact-form-editor">
-<div class="keyboard-interaction"><?php
-	echo sprintf(
-		/* translators: 1: ◀ ▶ dashicon, 2: screen reader text for the dashicon */
-		esc_html( __( '%1$s %2$s keys switch panels', 'contact-form-7' ) ),
-		'<span class="dashicons dashicons-leftright" aria-hidden="true"></span>',
-		sprintf(
-			'<span class="screen-reader-text">%s</span>',
-			/* translators: screen reader text */
-			esc_html( __( '(left and right arrow)', 'contact-form-7' ) )
-		)
-	);
-?></div>
+<div id="contact-form-editor" data-active-tab="">
 
 <?php
 
