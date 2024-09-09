@@ -134,33 +134,36 @@ function wpcf7_admin_enqueue_scripts( $hook_suffix ) {
 		array( 'in_footer' => true )
 	);
 
-	$l10n = array(
+	$wpcf7_obj = array(
 		'apiSettings' => array(
 			'root' => sanitize_url( rest_url( 'contact-form-7/v1' ) ),
 			'namespace' => 'contact-form-7/v1',
 			'nonce' => ( wp_installing() && ! is_multisite() )
 				? '' : wp_create_nonce( 'wp_rest' ),
 		),
-		'pluginUrl' => wpcf7_plugin_url(),
-		'saveAlert' => __(
-			"The changes you made will be lost if you navigate away from this page.",
-			'contact-form-7' ),
 		'configValidator' => array(
 			'errors' => array(),
 			'docUrl' => WPCF7_ConfigValidator::get_doc_link(),
 		),
 	);
 
-	if ( $post = wpcf7_get_current_contact_form()
-	and current_user_can( 'wpcf7_edit_contact_form', $post->id() )
-	and wpcf7_validate_configuration() ) {
+	if (
+		$post = wpcf7_get_current_contact_form() and
+		current_user_can( 'wpcf7_edit_contact_form', $post->id() ) and
+		wpcf7_validate_configuration()
+	) {
 		$config_validator = new WPCF7_ConfigValidator( $post );
 		$config_validator->restore();
-		$l10n['configValidator']['errors'] =
+		$wpcf7_obj['configValidator']['errors'] =
 			$config_validator->collect_error_messages();
 	}
 
-	wp_localize_script( 'wpcf7-admin', 'wpcf7', $l10n );
+	wp_add_inline_script( 'wpcf7-admin',
+		sprintf(
+			'const wpcf7 = %s;',
+			wp_json_encode( $wpcf7_obj, JSON_PRETTY_PRINT )
+		)
+	);
 
 	$assets = include(
 		wpcf7_plugin_path( 'admin/includes/js/index.asset.php' )
