@@ -127,12 +127,23 @@ function wpcf7_admin_enqueue_scripts( $hook_suffix ) {
 		);
 	}
 
+	$assets = include(
+		wpcf7_plugin_path( 'admin/includes/js/index.asset.php' )
+	);
+
+	$assets = wp_parse_args( $assets, array(
+		'dependencies' => array(),
+		'version' => WPCF7_VERSION,
+	) );
+
 	wp_enqueue_script( 'wpcf7-admin',
-		wpcf7_plugin_url( 'admin/js/scripts.js' ),
-		array( 'jquery' ),
-		WPCF7_VERSION,
+		wpcf7_plugin_url( 'admin/includes/js/index.js' ),
+		$assets['dependencies'],
+		$assets['version'],
 		array( 'in_footer' => true )
 	);
+
+	wp_set_script_translations( 'wpcf7-admin', 'contact-form-7' );
 
 	$wpcf7_obj = array(
 		'apiSettings' => array(
@@ -164,27 +175,6 @@ function wpcf7_admin_enqueue_scripts( $hook_suffix ) {
 			wp_json_encode( $wpcf7_obj, JSON_PRETTY_PRINT )
 		)
 	);
-
-	$assets = include(
-		wpcf7_plugin_path( 'admin/includes/js/index.asset.php' )
-	);
-
-	$assets = wp_parse_args( $assets, array(
-		'dependencies' => array(),
-		'version' => WPCF7_VERSION,
-	) );
-
-	wp_enqueue_script( 'wpcf7-admin-revised',
-		wpcf7_plugin_url( 'admin/includes/js/index.js' ),
-		array_merge(
-			$assets['dependencies'],
-			array()
-		),
-		$assets['version'],
-		array( 'in_footer' => true )
-	);
-
-	wp_set_script_translations( 'wpcf7-admin-revised', 'contact-form-7' );
 }
 
 
