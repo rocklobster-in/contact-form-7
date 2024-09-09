@@ -38,4 +38,16 @@ document.addEventListener( 'DOMContentLoaded', event => {
 			toggleFieldset( toggle );
 		} );
 	} );
+
+	document.querySelector(
+		'#wpcf7-admin-form-element'
+	)?.addEventListener( 'submit', event => {
+		if ( 'wpcf7-save' === event.submitter?.name ) {
+			document.querySelectorAll(
+				'#wpcf7-admin-form-element #publishing-action .spinner'
+			).forEach( spinner => {
+				spinner.classList.add( 'is-active' );
+			} );
+		}
+	} );
 } );
