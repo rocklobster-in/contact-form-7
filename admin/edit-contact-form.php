@@ -15,25 +15,28 @@ $save_button = sprintf(
 	) )
 );
 
-?><div class="wrap" id="wpcf7-contact-form-editor">
+?>
 
-<h1 class="wp-heading-inline"><?php
-	if ( $post->initial() ) {
-		echo esc_html( __( 'Add New Contact Form', 'contact-form-7' ) );
-	} else {
-		echo esc_html( __( 'Edit Contact Form', 'contact-form-7' ) );
-	}
-?></h1>
+<div class="wrap" id="wpcf7-contact-form-editor">
 
 <?php
-	if ( ! $post->initial()
-	and current_user_can( 'wpcf7_edit_contact_forms' ) ) {
-		echo wpcf7_link(
+
+	echo sprintf(
+		'<h1 class="wp-heading-inline">%1$s</h1> %2$s',
+		esc_html(
+			$post->initial()
+			? __( 'Add New Contact Form', 'contact-form-7' )
+			: __( 'Edit Contact Form', 'contact-form-7' )
+		),
+		( $post->initial() || ! current_user_can( 'wpcf7_edit_contact_forms' ) )
+		? ''
+		: wpcf7_link(
 			menu_page_url( 'wpcf7-new', false ),
 			__( 'Add New', 'contact-form-7' ),
 			array( 'class' => 'page-title-action' )
-		);
-	}
+		)
+	);
+
 ?>
 
 <hr class="wp-header-end">
