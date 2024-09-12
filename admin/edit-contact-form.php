@@ -312,12 +312,20 @@ if ( $post ) :
 	}
 
 	$editor->display();
+
 ?>
 </div><!-- #contact-form-editor -->
 
-<?php if ( current_user_can( 'wpcf7_edit_contact_form', $post_id ) ) : ?>
-<p class="submit"><?php echo $save_button; ?></p>
-<?php endif; ?>
+<?php
+
+	if ( current_user_can( 'wpcf7_edit_contact_form', $post_id ) ) {
+		echo sprintf(
+			'<p class="submit">%s</p>',
+			$save_button
+		);
+	}
+
+?>
 
 </div><!-- #postbox-container-2 -->
 
@@ -326,13 +334,17 @@ if ( $post ) :
 </div><!-- #poststuff -->
 </form>
 
-<?php endif; ?>
+<?php
+
+endif;
+
+?>
 
 </div><!-- .wrap -->
 
 <?php
 
-	$tag_generator = WPCF7_TagGenerator::get_instance();
-	$tag_generator->print_panels( $post );
+$tag_generator = WPCF7_TagGenerator::get_instance();
+$tag_generator->print_panels( $post );
 
-	do_action( 'wpcf7_admin_footer', $post );
+do_action( 'wpcf7_admin_footer', $post );
