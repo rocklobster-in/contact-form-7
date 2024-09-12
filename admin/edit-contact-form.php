@@ -149,7 +149,13 @@ if ( $post ) :
 </div><!-- #post-body-content -->
 
 <div id="postbox-container-1" class="postbox-container">
-<?php if ( current_user_can( 'wpcf7_edit_contact_form', $post_id ) ) : ?>
+
+<?php
+
+	if ( current_user_can( 'wpcf7_edit_contact_form', $post_id ) ) :
+
+?>
+
 <section id="submitdiv" class="postbox">
 <h2><?php echo esc_html( __( 'Status', 'contact-form-7' ) ); ?></h2>
 <div class="inside">
@@ -162,10 +168,21 @@ if ( $post ) :
 </div>
 
 <?php
-	if ( ! $post->initial() ) :
+
+		if ( ! $post->initial() ) {
+			echo sprintf(
+				'<input %s />',
+				wpcf7_format_atts( array(
+					'type' => 'submit',
+					'name' => 'wpcf7-copy',
+					'class' => 'copy button',
+					'value' => __( 'Duplicate', 'contact-form-7' ),
+				) )
+			);
+		}
+
 ?>
-	<input type="submit" name="wpcf7-copy" class="copy button" value="<?php echo esc_attr( __( 'Duplicate', 'contact-form-7' ) ); ?>" />
-<?php endif; ?>
+
 </div><!-- #minor-publishing-actions -->
 
 <div id="misc-publishing-actions">
