@@ -125,8 +125,8 @@ if ( $post ) :
 
 <div id="postbox-container-1" class="postbox-container">
 <?php if ( current_user_can( 'wpcf7_edit_contact_form', $post_id ) ) : ?>
-<div id="submitdiv" class="postbox">
-<h3><?php echo esc_html( __( 'Status', 'contact-form-7' ) ); ?></h3>
+<section id="submitdiv" class="postbox">
+<h2><?php echo esc_html( __( 'Status', 'contact-form-7' ) ); ?></h2>
 <div class="inside">
 <div class="submitbox" id="submitpost">
 
@@ -165,11 +165,11 @@ if ( $post ) :
 </div><!-- #major-publishing-actions -->
 </div><!-- #submitpost -->
 </div>
-</div><!-- #submitdiv -->
+</section><!-- #submitdiv -->
 <?php endif; ?>
 
-<div id="informationdiv" class="postbox">
-<h3><?php echo esc_html( __( "Do you need help?", 'contact-form-7' ) ); ?></h3>
+<section id="informationdiv" class="postbox">
+<h2><?php echo esc_html( __( "Do you need help?", 'contact-form-7' ) ); ?></h2>
 <div class="inside">
 	<p><?php echo esc_html( __( "Here are some available options to help solve your problems.", 'contact-form-7' ) ); ?></p>
 	<ol>
@@ -195,7 +195,7 @@ if ( $post ) :
 		); ?></li>
 	</ol>
 </div>
-</div><!-- #informationdiv -->
+</section><!-- #informationdiv -->
 
 </div><!-- #postbox-container-1 -->
 
