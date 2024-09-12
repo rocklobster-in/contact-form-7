@@ -5,17 +5,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( '-1' );
 }
 
-function wpcf7_admin_save_button( $post_id ) {
-	echo sprintf(
-		'<input %s />',
-		wpcf7_format_atts( array(
-			'type' => 'submit',
-			'class' => 'button-primary',
-			'name' => 'wpcf7-save',
-			'value' => __( 'Save', 'contact-form-7' ),
-		) )
-	);
-}
+$save_button = sprintf(
+	'<input %s />',
+	wpcf7_format_atts( array(
+		'type' => 'submit',
+		'class' => 'button-primary',
+		'name' => 'wpcf7-save',
+		'value' => __( 'Save', 'contact-form-7' ),
+	) )
+);
 
 ?><div class="wrap" id="wpcf7-contact-form-editor">
 
@@ -159,7 +157,7 @@ if ( $post ) :
 
 <div id="publishing-action">
 	<span class="spinner"></span>
-	<?php wpcf7_admin_save_button( $post_id ); ?>
+	<?php echo $save_button; ?>
 </div>
 <div class="clear"></div>
 </div><!-- #major-publishing-actions -->
@@ -256,7 +254,7 @@ if ( $post ) :
 </div><!-- #contact-form-editor -->
 
 <?php if ( current_user_can( 'wpcf7_edit_contact_form', $post_id ) ) : ?>
-<p class="submit"><?php wpcf7_admin_save_button( $post_id ); ?></p>
+<p class="submit"><?php echo $save_button; ?></p>
 <?php endif; ?>
 
 </div><!-- #postbox-container-2 -->
