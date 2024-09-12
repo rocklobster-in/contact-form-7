@@ -107,24 +107,44 @@ if ( $post ) :
 
 <div class="inside">
 <?php
-	if ( ! $post->initial() ) :
-?>
-	<p class="description">
-	<label for="wpcf7-shortcode"><?php echo esc_html( __( "Copy this shortcode and paste it into your post, page, or text widget content:", 'contact-form-7' ) ); ?></label>
-	<span class="shortcode wp-ui-highlight"><input type="text" id="wpcf7-shortcode" onfocus="this.select();" readonly="readonly" class="large-text code" value="<?php echo esc_attr( $post->shortcode() ); ?>" /></span>
-	</p>
-<?php
-		if ( $old_shortcode = $post->shortcode( array( 'use_old_format' => true ) ) ) :
-?>
-	<p class="description">
-	<label for="wpcf7-shortcode-old"><?php echo esc_html( __( "You can also use this old-style shortcode:", 'contact-form-7' ) ); ?></label>
-	<span class="shortcode old"><input type="text" id="wpcf7-shortcode-old" onfocus="this.select();" readonly="readonly" class="large-text code" value="<?php echo esc_attr( $old_shortcode ); ?>" /></span>
-	</p>
-<?php
-		endif;
-	endif;
+
+	if ( ! $post->initial() ) {
+
+		if ( $shortcode = $post->shortcode() ) {
+			echo sprintf(
+				'<p class="description"><label for="wpcf7-shortcode">%1$s</label> <span class="shortcode wp-ui-highlight"><input %2$s /></span></p>',
+				esc_html( __( "Copy this shortcode and paste it into your post, page, or text widget content:", 'contact-form-7' ) ),
+				wpcf7_format_atts( array(
+					'type' => 'text',
+					'id' => 'wpcf7-shortcode',
+					'onfocus' => 'this.select();',
+					'readonly' => true,
+					'class' => 'large-text code',
+					'value' => $shortcode,
+				) )
+			);
+		}
+
+		if ( $shortcode = $post->shortcode( array( 'use_old_format' => true ) ) ) {
+			echo sprintf(
+				'<p class="description"><label for="wpcf7-shortcode-old">%1$s</label> <span class="shortcode old"><input %2$s /></span></p>',
+				esc_html( __( "You can also use this old-style shortcode:", 'contact-form-7' ) ),
+				wpcf7_format_atts( array(
+					'type' => 'text',
+					'id' => 'wpcf7-shortcode-old',
+					'onfocus' => 'this.select();',
+					'readonly' => true,
+					'class' => 'large-text code',
+					'value' => $shortcode,
+				) )
+			);
+		}
+
+	}
+
 ?>
 </div>
+
 </div><!-- #titlediv -->
 </div><!-- #post-body-content -->
 
