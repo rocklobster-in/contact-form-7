@@ -6,27 +6,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 function wpcf7_admin_save_button( $post_id ) {
-	static $button = '';
-
-	if ( ! empty( $button ) ) {
-		echo $button;
-		return;
-	}
-
-	$nonce = wp_create_nonce( 'wpcf7-save-contact-form_' . $post_id );
-
-	$onclick = sprintf(
-		"this.form._wpnonce.value = '%s';"
-		. " this.form.action.value = 'save';"
-		. " return true;",
-		$nonce );
-
-	$button = sprintf(
-		'<input type="submit" class="button-primary" name="wpcf7-save" value="%1$s" onclick="%2$s" />',
-		esc_attr( __( 'Save', 'contact-form-7' ) ),
-		$onclick );
-
-	echo $button;
+	echo sprintf(
+		'<input %s />',
+		wpcf7_format_atts( array(
+			'type' => 'submit',
+			'class' => 'button-primary',
+			'name' => 'wpcf7-save',
+			'value' => __( 'Save', 'contact-form-7' ),
+		) )
+	);
 }
 
 ?><div class="wrap" id="wpcf7-contact-form-editor">
@@ -150,9 +138,8 @@ if ( $post ) :
 
 <?php
 	if ( ! $post->initial() ) :
-		$copy_nonce = wp_create_nonce( 'wpcf7-copy-contact-form_' . $post_id );
 ?>
-	<input type="submit" name="wpcf7-copy" class="copy button" value="<?php echo esc_attr( __( 'Duplicate', 'contact-form-7' ) ); ?>" <?php echo "onclick=\"this.form._wpnonce.value = '$copy_nonce'; this.form.action.value = 'copy'; return true;\""; ?> />
+	<input type="submit" name="wpcf7-copy" class="copy button" value="<?php echo esc_attr( __( 'Duplicate', 'contact-form-7' ) ); ?>" />
 <?php endif; ?>
 </div><!-- #minor-publishing-actions -->
 
@@ -164,10 +151,9 @@ if ( $post ) :
 
 <?php
 	if ( ! $post->initial() ) :
-		$delete_nonce = wp_create_nonce( 'wpcf7-delete-contact-form_' . $post_id );
 ?>
 <div id="delete-action">
-	<input type="submit" name="wpcf7-delete" class="delete submitdelete" value="<?php echo esc_attr( __( 'Delete', 'contact-form-7' ) ); ?>" <?php echo "onclick=\"if (confirm('" . esc_js( __( "You are about to delete this contact form.\n  'Cancel' to stop, 'OK' to delete.", 'contact-form-7' ) ) . "')) {this.form._wpnonce.value = '$delete_nonce'; this.form.action.value = 'delete'; return true;} return false;\""; ?> />
+	<input type="submit" name="wpcf7-delete" class="delete submitdelete" value="<?php echo esc_attr( __( 'Delete', 'contact-form-7' ) ); ?>" />
 </div><!-- #delete-action -->
 <?php endif; ?>
 
