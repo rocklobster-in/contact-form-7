@@ -186,18 +186,31 @@ if ( $post ) :
 </div><!-- #minor-publishing-actions -->
 
 <div id="misc-publishing-actions">
-<?php do_action( 'wpcf7_admin_misc_pub_section', $post_id ); ?>
+
+<?php
+
+		do_action( 'wpcf7_admin_misc_pub_section', $post_id );
+
+?>
 </div><!-- #misc-publishing-actions -->
 
 <div id="major-publishing-actions">
 
 <?php
-	if ( ! $post->initial() ) :
+
+		if ( ! $post->initial() ) {
+			echo sprintf(
+				'<div id="delete-action"><input %s /></div>',
+				wpcf7_format_atts( array(
+					'type' => 'submit',
+					'name' => 'wpcf7-delete',
+					'class' => 'delete submitdelete',
+					'value' => __( 'Delete', 'contact-form-7' ),
+				) )
+			);
+		}
+
 ?>
-<div id="delete-action">
-	<input type="submit" name="wpcf7-delete" class="delete submitdelete" value="<?php echo esc_attr( __( 'Delete', 'contact-form-7' ) ); ?>" />
-</div><!-- #delete-action -->
-<?php endif; ?>
 
 <div id="publishing-action">
 	<span class="spinner"></span>
@@ -208,7 +221,12 @@ if ( $post ) :
 </div><!-- #submitpost -->
 </div>
 </section><!-- #submitdiv -->
-<?php endif; ?>
+
+<?php
+
+	endif;
+
+?>
 
 <section id="informationdiv" class="postbox">
 <h2><?php echo esc_html( __( "Do you need help?", 'contact-form-7' ) ); ?></h2>
