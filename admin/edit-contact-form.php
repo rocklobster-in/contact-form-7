@@ -21,55 +21,59 @@ $save_button = sprintf(
 
 <?php
 
-	echo sprintf(
-		'<h1 class="wp-heading-inline">%1$s</h1> %2$s',
-		esc_html(
-			$post->initial()
-			? __( 'Add New Contact Form', 'contact-form-7' )
-			: __( 'Edit Contact Form', 'contact-form-7' )
-		),
-		( $post->initial() || ! current_user_can( 'wpcf7_edit_contact_forms' ) )
-		? ''
-		: wpcf7_link(
-			menu_page_url( 'wpcf7-new', false ),
-			__( 'Add New', 'contact-form-7' ),
-			array( 'class' => 'page-title-action' )
-		)
-	);
+echo sprintf(
+	'<h1 class="wp-heading-inline">%1$s</h1> %2$s',
+	esc_html(
+		$post->initial()
+		? __( 'Add New Contact Form', 'contact-form-7' )
+		: __( 'Edit Contact Form', 'contact-form-7' )
+	),
+	( $post->initial() || ! current_user_can( 'wpcf7_edit_contact_forms' ) )
+	? ''
+	: wpcf7_link(
+		menu_page_url( 'wpcf7-new', false ),
+		__( 'Add New', 'contact-form-7' ),
+		array( 'class' => 'page-title-action' )
+	)
+);
 
 ?>
 
 <hr class="wp-header-end">
 
 <?php
-	do_action( 'wpcf7_admin_warnings',
-		$post->initial() ? 'wpcf7-new' : 'wpcf7',
-		wpcf7_current_action(),
-		$post
-	);
 
-	do_action( 'wpcf7_admin_notices',
-		$post->initial() ? 'wpcf7-new' : 'wpcf7',
-		wpcf7_current_action(),
-		$post
-	);
-?>
+do_action( 'wpcf7_admin_warnings',
+	$post->initial() ? 'wpcf7-new' : 'wpcf7',
+	wpcf7_current_action(),
+	$post
+);
 
-<?php
+do_action( 'wpcf7_admin_notices',
+	$post->initial() ? 'wpcf7-new' : 'wpcf7',
+	wpcf7_current_action(),
+	$post
+);
+
 if ( $post ) :
 
-	if ( current_user_can( 'wpcf7_edit_contact_form', $post_id ) ) {
-		$disabled = '';
-	} else {
-		$disabled = ' disabled="disabled"';
-	}
-?>
+	echo sprintf(
+		'<form %s>',
+		wpcf7_format_atts( array(
+			'method' => 'post',
+			'action' => esc_url( add_query_arg(
+				array( 'post' => $post_id ),
+				menu_page_url( 'wpcf7', false )
+			) ),
+			'id' => 'wpcf7-admin-form-element',
+			'disabled' => ! current_user_can( 'wpcf7_edit_contact_form', $post_id ),
+		) )
+	);
 
-<form method="post" action="<?php echo esc_url( add_query_arg( array( 'post' => $post_id ), menu_page_url( 'wpcf7', false ) ) ); ?>" id="wpcf7-admin-form-element"<?php do_action( 'wpcf7_post_edit_form_tag' ); ?>>
-<?php
 	if ( current_user_can( 'wpcf7_edit_contact_form', $post_id ) ) {
 		wp_nonce_field( 'wpcf7-save-contact-form_' . $post_id );
 	}
+
 ?>
 <input type="hidden" id="post_ID" name="post_ID" value="<?php echo (int) $post_id; ?>" />
 <input type="hidden" id="wpcf7-locale" name="wpcf7-locale" value="<?php echo esc_attr( $post->locale() ); ?>" />
