@@ -12,17 +12,24 @@
 	text-align: right;
 }
 
-.tag-generator-panel .control-box > fieldset > legend {
-	border: 1px solid #dfdfdf;
-	border-right: 4px solid #00a0d2;
+.tag-generator-dialog > .close-button {
+	right: auto;
+	left: 8px;
 }
 
-.tag-generator-panel .insert-box input.tag {
-	float: right;
-}
+form.tag-generator-panel[data-version="1"] {
+	.control-box > fieldset > legend {
+		border: 1px solid #dfdfdf;
+		border-right: 4px solid #00a0d2;
+	}
 
-.tag-generator-panel .insert-box .submitbox input[type="button"] {
-	float: left;
+	.insert-box input.tag {
+		float: right;
+	}
+
+	.insert-box .submitbox input[type="button"] {
+		float: left;
+	}
 }
 
 /*

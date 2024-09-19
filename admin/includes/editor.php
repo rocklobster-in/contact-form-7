@@ -23,35 +23,53 @@ class WPCF7_Editor {
 			return;
 		}
 
+		$active_panel_id = trim( $_GET['active-tab'] ?? '' );
+
+		if ( ! array_key_exists( $active_panel_id, $this->panels ) ) {
+			$active_panel_id = array_key_first( $this->panels );
+		}
+
+		echo '<nav>';
 		echo '<ul id="contact-form-editor-tabs">';
 
 		foreach ( $this->panels as $panel_id => $panel ) {
+			$active = $panel_id === $active_panel_id;
+
 			echo sprintf(
-				'<li id="%1$s-tab"><a href="#%1$s">%2$s</a></li>',
-				esc_attr( $panel_id ),
+				'<li %1$s><a %2$s>%3$s</a></li>',
+				wpcf7_format_atts( array(
+					'id' => sprintf( '%s-tab', $panel_id ),
+					'class' => $active ? 'active' : null,
+					'tabindex' => $active ? '0' : '-1',
+					'data-panel' => $panel_id,
+				) ),
+				wpcf7_format_atts( array(
+					'href' => sprintf( '#%s', $panel_id ),
+				) ),
 				esc_html( $panel['title'] )
 			);
 		}
 
 		echo '</ul>';
+		echo '</nav>';
 
 		foreach ( $this->panels as $panel_id => $panel ) {
+			$active = $panel_id === $active_panel_id;
+
 			echo sprintf(
-				'<div class="contact-form-editor-panel" id="%1$s">',
-				esc_attr( $panel_id )
+				'<section %s>',
+				wpcf7_format_atts( array(
+					'id' => $panel_id,
+					'class' => 'contact-form-editor-panel' . ( $active ? ' active' : '' ),
+				) )
 			);
 
 			if ( is_callable( $panel['callback'] ) ) {
-				$this->notice( $panel_id, $panel );
 				call_user_func( $panel['callback'], $this->contact_form );
 			}
 
-			echo '</div>';
+			echo '</section>';
 		}
-	}
-
-	public function notice( $panel_id, $panel ) {
-		echo '<div class="config-error"></div>';
 	}
 }
 
@@ -114,19 +132,36 @@ function wpcf7_editor_box_mail( $post, $options = '' ) {
 	) );
 
 ?>
-<div class="contact-form-editor-box-mail" id="<?php echo $id; ?>">
+<div class="contact-form-editor-box-mail" id="<?php echo esc_attr( $id ); ?>">
 <h2><?php echo esc_html( $options['title'] ); ?></h2>
 
 <?php
-	if ( ! empty( $options['use'] ) ) :
-?>
-<label for="<?php echo $id; ?>-active"><input type="checkbox" id="<?php echo $id; ?>-active" name="<?php echo $id; ?>[active]" data-config-field="" class="toggle-form-table" value="1"<?php echo ( $mail['active'] ) ? ' checked="checked"' : ''; ?> /> <?php echo esc_html( $options['use'] ); ?></label>
-<p class="description"><?php echo esc_html( __( "Mail (2) is an additional mail template often used as an autoresponder.", 'contact-form-7' ) ); ?></p>
-<?php
-	endif;
+	if ( ! empty( $options['use'] ) ) {
+		echo sprintf(
+			'<label %1$s><input %2$s /> %3$s</label>',
+			wpcf7_format_atts( array(
+				'for' => sprintf( '%s-active', $id ),
+			) ),
+			wpcf7_format_atts( array(
+				'type' => 'checkbox',
+				'id' => sprintf( '%s-active', $id ),
+				'name' => sprintf( '%s[active]', $id ),
+				'data-config-field' => '',
+				'data-toggle' => sprintf( '%s-fieldset', $id ),
+				'value' => '1',
+				'checked' => $mail['active'],
+			) ),
+			esc_html( $options['use'] )
+		);
+
+		echo sprintf(
+			'<p class="description">%s</p>',
+			esc_html( __( "Mail (2) is an additional mail template often used as an autoresponder.", 'contact-form-7' ) )
+		);
+	}
 ?>
 
-<fieldset>
+<fieldset id="<?php echo esc_attr( sprintf( '%s-fieldset', $id ) ); ?>">
 <legend>
 <?php
 	$desc_link = wpcf7_link(

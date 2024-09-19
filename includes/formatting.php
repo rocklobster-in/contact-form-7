@@ -255,6 +255,14 @@ function wpcf7_canonicalize( $text, $options = '' ) {
 
 
 /**
+ * Returns a canonical keyword usable for a name or an ID purposes.
+ */
+function wpcf7_canonicalize_name( $text ) {
+	return preg_replace( '/[^0-9a-z]+/i', '-', $text );
+}
+
+
+/**
  * Sanitizes Contact Form 7's form unit-tag.
  *
  * @param string $tag Unit-tag.
