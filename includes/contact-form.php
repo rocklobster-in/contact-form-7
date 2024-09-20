@@ -590,6 +590,7 @@ class WPCF7_ContactForm {
 				( get_option( 'html_type' ) == 'text/html' ) ? 'lang' : 'xml:lang'
 					=> $lang_tag,
 				'dir' => wpcf7_is_rtl( $this->locale ) ? 'rtl' : 'ltr',
+				'data-wpcf7-id' => $this->id(),
 			) )
 		);
 
