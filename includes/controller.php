@@ -34,12 +34,9 @@ function wpcf7_control_init() {
 add_action(
 	'wp_enqueue_scripts',
 	static function () {
-		$assets = array();
-		$asset_file = wpcf7_plugin_path( 'includes/js/index.asset.php' );
-
-		if ( file_exists( $asset_file ) ) {
-			$assets = include( $asset_file );
-		}
+		$assets = include(
+			wpcf7_plugin_path( 'includes/js/index.asset.php' )
+		);
 
 		$assets = wp_parse_args( $assets, array(
 			'dependencies' => array(),
@@ -111,7 +108,7 @@ add_action(
 function wpcf7_enqueue_scripts() {
 	wp_enqueue_script( 'contact-form-7' );
 
-	$wpcf7 = array(
+	$wpcf7_obj = array(
 		'api' => array(
 			'root' => sanitize_url( get_rest_url() ),
 			'namespace' => 'contact-form-7/v1',
@@ -119,10 +116,18 @@ function wpcf7_enqueue_scripts() {
 	);
 
 	if ( defined( 'WP_CACHE' ) and WP_CACHE ) {
-		$wpcf7['cached'] = 1;
+		$wpcf7_obj = array_merge( $wpcf7_obj, array(
+			'cached' => 1,
+		) );
 	}
 
-	wp_localize_script( 'contact-form-7', 'wpcf7', $wpcf7 );
+	wp_add_inline_script( 'contact-form-7',
+		sprintf(
+			'var wpcf7 = %s;',
+			wp_json_encode( $wpcf7_obj, JSON_PRETTY_PRINT )
+		),
+		'before'
+	);
 
 	do_action( 'wpcf7_enqueue_scripts' );
 }
