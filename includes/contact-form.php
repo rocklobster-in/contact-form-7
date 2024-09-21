@@ -232,31 +232,28 @@ class WPCF7_ContactForm {
 	public function __get( $name ) {
 		$message = __( '<code>%1$s</code> property of a <code>WPCF7_ContactForm</code> object is <strong>no longer accessible</strong>. Use <code>%2$s</code> method instead.', 'contact-form-7' );
 
-		if ( 'id' == $name ) {
-			if ( WP_DEBUG ) {
-				trigger_error(
-					sprintf( $message, 'id', 'id()' ),
-					E_USER_DEPRECATED
-				);
-			}
+		if ( 'id' === $name ) {
+			wp_trigger_error(
+				'',
+				sprintf( $message, 'id', 'id()' ),
+				E_USER_DEPRECATED
+			);
 
 			return $this->id;
-		} elseif ( 'title' == $name ) {
-			if ( WP_DEBUG ) {
-				trigger_error(
-					sprintf( $message, 'title', 'title()' ),
-					E_USER_DEPRECATED
-				);
-			}
+		} elseif ( 'title' === $name ) {
+			wp_trigger_error(
+				'',
+				sprintf( $message, 'title', 'title()' ),
+				E_USER_DEPRECATED
+			);
 
 			return $this->title;
 		} elseif ( $prop = $this->prop( $name ) ) {
-			if ( WP_DEBUG ) {
-				trigger_error(
-					sprintf( $message, $name, 'prop(\'' . $name . '\')' ),
-					E_USER_DEPRECATED
-				);
-			}
+			wp_trigger_error(
+				'',
+				sprintf( $message, $name, 'prop(\'' . $name . '\')' ),
+				E_USER_DEPRECATED
+			);
 
 			return $prop;
 		}

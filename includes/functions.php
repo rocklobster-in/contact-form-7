@@ -518,26 +518,21 @@ function wpcf7_is_localhost() {
  * @param string $replacement The function that should have been called.
  */
 function wpcf7_deprecated_function( $function_name, $version, $replacement ) {
-	if ( WP_DEBUG ) {
-		if ( function_exists( '__' ) ) {
-			trigger_error(
-				sprintf(
-					/* translators: 1: PHP function name, 2: version number, 3: alternative function name */
-					__( 'Function %1$s is <strong>deprecated</strong> since Contact Form 7 version %2$s! Use %3$s instead.', 'contact-form-7' ),
-					$function_name, $version, $replacement
-				),
-				E_USER_DEPRECATED
-			);
-		} else {
-			trigger_error(
-				sprintf(
-					'Function %1$s is <strong>deprecated</strong> since Contact Form 7 version %2$s! Use %3$s instead.',
-					$function_name, $version, $replacement
-				),
-				E_USER_DEPRECATED
-			);
-		}
+
+	if ( ! WP_DEBUG ) {
+		return;
 	}
+
+	if ( function_exists( '__' ) ) {
+		/* translators: 1: PHP function name, 2: version number, 3: alternative function name */
+		$message = __( 'Function %1$s is <strong>deprecated</strong> since Contact Form 7 version %2$s! Use %3$s instead.', 'contact-form-7' );
+	} else {
+		$message = 'Function %1$s is <strong>deprecated</strong> since Contact Form 7 version %2$s! Use %3$s instead.';
+	}
+
+	$message = sprintf( $message, $function_name, $version, $replacement );
+
+	wp_trigger_error( '', $message, E_USER_DEPRECATED );
 }
 
 
@@ -558,7 +553,8 @@ function wpcf7_apply_filters_deprecated( $hook_name, $args, $version, $replaceme
 
 	if ( WP_DEBUG and apply_filters( 'deprecated_hook_trigger_error', true ) ) {
 		if ( $replacement ) {
-			trigger_error(
+			wp_trigger_error(
+				'',
 				sprintf(
 					/* translators: 1: WordPress hook name, 2: version number, 3: alternative hook name */
 					__( 'Hook %1$s is <strong>deprecated</strong> since Contact Form 7 version %2$s! Use %3$s instead.', 'contact-form-7' ),
@@ -569,7 +565,8 @@ function wpcf7_apply_filters_deprecated( $hook_name, $args, $version, $replaceme
 				E_USER_DEPRECATED
 			);
 		} else {
-			trigger_error(
+			wp_trigger_error(
+				'',
 				sprintf(
 					/* translators: 1: WordPress hook name, 2: version number */
 					__( 'Hook %1$s is <strong>deprecated</strong> since Contact Form 7 version %2$s with no alternative available.', 'contact-form-7' ),
@@ -594,44 +591,49 @@ function wpcf7_apply_filters_deprecated( $hook_name, $args, $version, $replaceme
  *                        was added.
  */
 function wpcf7_doing_it_wrong( $function_name, $message, $version ) {
-	if ( WP_DEBUG ) {
-		if ( function_exists( '__' ) ) {
-			if ( $version ) {
-				$version = sprintf(
-					/* translators: %s: Contact Form 7 version number. */
-					__( '(This message was added in Contact Form 7 version %s.)', 'contact-form-7' ),
-					$version
-				);
-			}
 
-			trigger_error(
-				sprintf(
-					/* translators: Developer debugging message. 1: PHP function name, 2: Explanatory message, 3: Contact Form 7 version number. */
-					__( 'Function %1$s was called incorrectly. %2$s %3$s', 'contact-form-7' ),
-					$function_name,
-					$message,
-					$version
-				),
-				E_USER_NOTICE
-			);
-		} else {
-			if ( $version ) {
-				$version = sprintf(
-					'(This message was added in Contact Form 7 version %s.)',
-					$version
-				);
-			}
+	if ( ! WP_DEBUG ) {
+		return;
+	}
 
-			trigger_error(
-				sprintf(
-					'Function %1$s was called incorrectly. %2$s %3$s',
-					$function_name,
-					$message,
-					$version
-				),
-				E_USER_NOTICE
+	if ( function_exists( '__' ) ) {
+		if ( $version ) {
+			$version = sprintf(
+				/* translators: %s: Contact Form 7 version number. */
+				__( '(This message was added in Contact Form 7 version %s.)', 'contact-form-7' ),
+				$version
 			);
 		}
+
+		wp_trigger_error(
+			'',
+			sprintf(
+				/* translators: Developer debugging message. 1: PHP function name, 2: Explanatory message, 3: Contact Form 7 version number. */
+				__( 'Function %1$s was called incorrectly. %2$s %3$s', 'contact-form-7' ),
+				$function_name,
+				$message,
+				$version
+			),
+			E_USER_NOTICE
+		);
+	} else {
+		if ( $version ) {
+			$version = sprintf(
+				'(This message was added in Contact Form 7 version %s.)',
+				$version
+			);
+		}
+
+		wp_trigger_error(
+			'',
+			sprintf(
+				'Function %1$s was called incorrectly. %2$s %3$s',
+				$function_name,
+				$message,
+				$version
+			),
+			E_USER_NOTICE
+		);
 	}
 }
 
@@ -644,6 +646,11 @@ function wpcf7_doing_it_wrong( $function_name, $message, $version ) {
  * @param array|WP_Error $response The response or WP_Error on failure.
  */
 function wpcf7_log_remote_request( $url, $request, $response ) {
+
+	if ( ! WP_DEBUG ) {
+		return;
+	}
+
 	$log = sprintf(
 		/* translators: 1: response code, 2: message, 3: body, 4: URL */
 		__( 'HTTP Response: %1$s %2$s %3$s from %4$s', 'contact-form-7' ),
@@ -658,7 +665,7 @@ function wpcf7_log_remote_request( $url, $request, $response ) {
 	);
 
 	if ( $log ) {
-		trigger_error( $log );
+		wp_trigger_error( '', $log, E_USER_NOTICE );
 	}
 }
 
