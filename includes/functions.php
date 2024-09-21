@@ -518,26 +518,21 @@ function wpcf7_is_localhost() {
  * @param string $replacement The function that should have been called.
  */
 function wpcf7_deprecated_function( $function_name, $version, $replacement ) {
-	if ( WP_DEBUG ) {
-		if ( function_exists( '__' ) ) {
-			trigger_error(
-				sprintf(
-					/* translators: 1: PHP function name, 2: version number, 3: alternative function name */
-					__( 'Function %1$s is <strong>deprecated</strong> since Contact Form 7 version %2$s! Use %3$s instead.', 'contact-form-7' ),
-					$function_name, $version, $replacement
-				),
-				E_USER_DEPRECATED
-			);
-		} else {
-			trigger_error(
-				sprintf(
-					'Function %1$s is <strong>deprecated</strong> since Contact Form 7 version %2$s! Use %3$s instead.',
-					$function_name, $version, $replacement
-				),
-				E_USER_DEPRECATED
-			);
-		}
+
+	if ( ! WP_DEBUG ) {
+		return;
 	}
+
+	if ( function_exists( '__' ) ) {
+		/* translators: 1: PHP function name, 2: version number, 3: alternative function name */
+		$message = __( 'Function %1$s is <strong>deprecated</strong> since Contact Form 7 version %2$s! Use %3$s instead.', 'contact-form-7' );
+	} else {
+		$message = 'Function %1$s is <strong>deprecated</strong> since Contact Form 7 version %2$s! Use %3$s instead.';
+	}
+
+	$message = sprintf( $message, $function_name, $version, $replacement );
+
+	wp_trigger_error( $function_name, $message, E_USER_DEPRECATED );
 }
 
 
