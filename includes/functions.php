@@ -553,7 +553,8 @@ function wpcf7_apply_filters_deprecated( $hook_name, $args, $version, $replaceme
 
 	if ( WP_DEBUG and apply_filters( 'deprecated_hook_trigger_error', true ) ) {
 		if ( $replacement ) {
-			trigger_error(
+			wp_trigger_error(
+				'',
 				sprintf(
 					/* translators: 1: WordPress hook name, 2: version number, 3: alternative hook name */
 					__( 'Hook %1$s is <strong>deprecated</strong> since Contact Form 7 version %2$s! Use %3$s instead.', 'contact-form-7' ),
@@ -564,7 +565,8 @@ function wpcf7_apply_filters_deprecated( $hook_name, $args, $version, $replaceme
 				E_USER_DEPRECATED
 			);
 		} else {
-			trigger_error(
+			wp_trigger_error(
+				'',
 				sprintf(
 					/* translators: 1: WordPress hook name, 2: version number */
 					__( 'Hook %1$s is <strong>deprecated</strong> since Contact Form 7 version %2$s with no alternative available.', 'contact-form-7' ),
