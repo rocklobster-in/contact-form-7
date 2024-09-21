@@ -56,12 +56,9 @@ function wpcf7_recaptcha_enqueue_scripts() {
 		array( 'in_footer' => true )
 	);
 
-	$assets = array();
-	$asset_file = wpcf7_plugin_path( 'modules/recaptcha/index.asset.php' );
-
-	if ( file_exists( $asset_file ) ) {
-		$assets = include( $asset_file );
-	}
+	$assets = include(
+		wpcf7_plugin_path( 'modules/recaptcha/index.asset.php' )
+	);
 
 	$assets = wp_parse_args( $assets, array(
 		'dependencies' => array(),
@@ -84,15 +81,20 @@ function wpcf7_recaptcha_enqueue_scripts() {
 
 	wp_enqueue_script( 'wpcf7-recaptcha' );
 
-	wp_localize_script( 'wpcf7-recaptcha',
-		'wpcf7_recaptcha',
-		array(
-			'sitekey' => $service->get_sitekey(),
-			'actions' => apply_filters( 'wpcf7_recaptcha_actions', array(
-				'homepage' => 'homepage',
-				'contactform' => 'contactform',
-			) ),
-		)
+	$wpcf7_recaptcha_obj = array(
+		'sitekey' => $service->get_sitekey(),
+		'actions' => apply_filters( 'wpcf7_recaptcha_actions', array(
+			'homepage' => 'homepage',
+			'contactform' => 'contactform',
+		) ),
+	);
+
+	wp_add_inline_script( 'wpcf7-recaptcha',
+		sprintf(
+			'var wpcf7_recaptcha = %s;',
+			wp_json_encode( $wpcf7_recaptcha_obj, JSON_PRETTY_PRINT )
+		),
+		'before'
 	);
 }
 

@@ -196,9 +196,10 @@ function wpcf7_admin_enqueue_scripts( $hook_suffix ) {
 
 	wp_add_inline_script( 'wpcf7-admin',
 		sprintf(
-			'const wpcf7 = %s;',
+			'var wpcf7 = %s;',
 			wp_json_encode( $wpcf7_obj, JSON_PRETTY_PRINT )
-		)
+		),
+		'before'
 	);
 }
 
