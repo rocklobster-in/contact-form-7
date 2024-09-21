@@ -646,6 +646,11 @@ function wpcf7_doing_it_wrong( $function_name, $message, $version ) {
  * @param array|WP_Error $response The response or WP_Error on failure.
  */
 function wpcf7_log_remote_request( $url, $request, $response ) {
+
+	if ( ! WP_DEBUG ) {
+		return;
+	}
+
 	$log = sprintf(
 		/* translators: 1: response code, 2: message, 3: body, 4: URL */
 		__( 'HTTP Response: %1$s %2$s %3$s from %4$s', 'contact-form-7' ),
@@ -660,7 +665,7 @@ function wpcf7_log_remote_request( $url, $request, $response ) {
 	);
 
 	if ( $log ) {
-		trigger_error( $log );
+		wp_trigger_error( '', $log, E_USER_NOTICE );
 	}
 }
 
