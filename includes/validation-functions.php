@@ -39,8 +39,27 @@ function wpcf7_is_url( $text ) {
  * Checks whether the given text is a well-formed telephone number.
  */
 function wpcf7_is_tel( $text ) {
+	$text = preg_replace( '/[#*].*$/', '', $text ); // Remove extension
 	$text = preg_replace( '%[()/.*#\s-]+%', '', $text );
-	$result = preg_match( '/^[+]?[0-9]+$/', $text );
+
+	$is_international = false ||
+		str_starts_with( $text, '+' ) ||
+		str_starts_with( $text, '00' );
+
+	if ( $is_international ) {
+		$text = '+' . preg_replace( '/^[+0]+/', '', $text );
+	}
+
+	$result = true;
+
+	if ( ! preg_match( '/^[+]?[0-9]+$/', $text ) ) {
+		$result = false;
+	}
+
+	if ( ! ( 6 < strlen( $text ) and strlen( $text ) < 16 ) ) {
+		$result = false;
+	}
+
 	return apply_filters( 'wpcf7_is_tel', $result, $text );
 }
 
