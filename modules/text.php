@@ -51,6 +51,7 @@ function wpcf7_text_form_tag_handler( $tag ) {
 
 	$atts['class'] = $tag->get_class_option( $class );
 	$atts['id'] = $tag->get_id_option();
+	$atts['list'] = $tag->get_option( 'list', 'id', true );
 	$atts['tabindex'] = $tag->get_option( 'tabindex', 'signed_int', true );
 	$atts['readonly'] = $tag->has_option( 'readonly' );
 
