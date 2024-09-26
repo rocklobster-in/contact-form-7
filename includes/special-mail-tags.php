@@ -74,6 +74,14 @@ function wpcf7_special_mail_tag( $output, $name, $html, $mail_tag = null ) {
 		return count( $submission->get_invalid_fields() );
 	}
 
+	if ( '_contact_form_title' === $name ) {
+		$contact_form = $submission->get_contact_form();
+
+		return $html
+			? esc_html( $contact_form->title() )
+			: $contact_form->title();
+	}
+
 	return $output;
 }
 
