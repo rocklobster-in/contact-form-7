@@ -190,6 +190,21 @@ function wpcf7_site_related_smt( $output, $name, $html, $mail_tag = null ) {
 		return get_bloginfo( 'url', $filter );
 	}
 
+	if ( '_site_domain' === $name ) {
+		$url = get_bloginfo( 'url', $filter );
+		$host = wp_parse_url( $url, PHP_URL_HOST );
+
+		if ( null === $host ) {
+			return '';
+		}
+
+		if ( str_starts_with( $host, 'www.' ) ) {
+			$host = substr( $host, 4 );
+		}
+
+		return $host;
+	}
+
 	if ( '_site_admin_email' === $name ) {
 		return get_bloginfo( 'admin_email', $filter );
 	}
