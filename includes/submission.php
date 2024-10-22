@@ -536,6 +536,14 @@ class WPCF7_Submission {
 		if ( self::is_restful() ) {
 			$referer = trim( $_SERVER['HTTP_REFERER'] ?? '' );
 
+			if ( ! $referer ) {
+                $post_id = (int) $_POST['postId'] ?? 0;
+
+                if ( $post_id ) {
+                    $referer = get_permalink($post_id);
+                }
+            }
+
 			if ( $referer
 			and 0 === strpos( $referer, $home_url ) ) {
 				return sanitize_url( $referer );
