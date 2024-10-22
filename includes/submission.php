@@ -537,12 +537,12 @@ class WPCF7_Submission {
 			$referer = trim( $_SERVER['HTTP_REFERER'] ?? '' );
 
 			if ( ! $referer ) {
-                $post_id = (int) $_POST['postId'] ?? 0;
+				$post_id = (int) $_POST['postId'] ?? 0;
 
-                if ( $post_id ) {
-                    $referer = get_permalink($post_id);
-                }
-            }
+				if ( $post_id ) {
+					$referer = get_permalink($post_id);
+				}
+			}
 
 			if ( $referer
 			and 0 === strpos( $referer, $home_url ) ) {
