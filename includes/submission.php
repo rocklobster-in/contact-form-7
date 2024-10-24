@@ -536,8 +536,7 @@ class WPCF7_Submission {
 		if ( self::is_restful() ) {
 			$referer = trim( $_SERVER['HTTP_REFERER'] ?? '' );
 
-			if ( $referer
-			and 0 === strpos( $referer, $home_url ) ) {
+			if ( $referer and str_starts_with( $referer, $home_url ) ) {
 				return sanitize_url( $referer );
 			}
 		}
