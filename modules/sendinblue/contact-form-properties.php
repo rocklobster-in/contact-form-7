@@ -107,7 +107,7 @@ function wpcf7_sendinblue_editor_panels( $panels ) {
 <h2><?php echo esc_html( __( 'Brevo', 'contact-form-7' ) ); ?></h2>
 
 <fieldset>
-	<legend><?php echo $description; ?></legend>
+	<legend><?php echo esc_html( $description ); ?></legend>
 
 	<table class="form-table" role="presentation">
 		<tbody>
