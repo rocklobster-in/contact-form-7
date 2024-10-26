@@ -13,7 +13,7 @@ Just another contact form plugin. Simple but flexible.
 
 == Description ==
 
-Contact Form 7 can manage multiple contact forms, plus you can customize the form and the mail contents flexibly with simple markup. The form supports Ajax-powered submitting, CAPTCHA, Akismet spam filtering and so on.
+Contact Form 7 is a plugin designed to be a practical tool for all WordPress users who embrace the philosophy of free and open source software. It employs sophisticatedly modularized architecture and its original [Schema-Woven Validation](https://contactform7.com/schema-woven-validation/) technology.
 
 = Docs and support =
 
@@ -21,7 +21,7 @@ You can find [docs](https://contactform7.com/docs/), [FAQ](https://contactform7.
 
 = Contact Form 7 needs your support =
 
-It is hard to continue development and support for this free plugin without contributions from users like you. If you enjoy using Contact Form 7 and find it useful, please consider [making a donation](https://contactform7.com/donate/). Your donation will help encourage and support the plugin's continued development and better user support.
+It is hard to continue to maintain this plugin without support from users like you. There are several ways for you to [contribute to the project](https://contactform7.com/contributing/): testing, coding, translating it into your local languages, helping other users, financial donations, etc, etc. We equally welcome you regardless of the way you contribute.
 
 = Privacy notices =
 
@@ -46,10 +46,6 @@ The following plugins are recommended for Contact Form 7 users:
 
 * [Flamingo](https://wordpress.org/plugins/flamingo/) by Takayuki Miyoshi - With Flamingo, you can save submitted messages via contact forms in the database.
 * [Bogo](https://wordpress.org/plugins/bogo/) by Takayuki Miyoshi - Bogo is a straight-forward multilingual plugin that does not cause headaches.
-
-= Translations =
-
-You can [translate Contact Form 7](https://contactform7.com/translating-contact-form-7/) on [translate.wordpress.org](https://translate.wordpress.org/projects/wp-plugins/contact-form-7).
 
 == Installation ==
 
