@@ -81,7 +81,7 @@ if ( $post ) :
 <input type="hidden" id="active-tab" name="active-tab" value="<?php echo esc_attr( $_GET['active-tab'] ?? '' ); ?>" />
 
 <div id="poststuff">
-<div id="post-body" class="metabox-holder columns-2">
+<div id="post-body" class="metabox-holder columns-2 wp-clearfix">
 <div id="post-body-content">
 <div id="titlediv">
 <div id="titlewrap">
