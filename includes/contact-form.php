@@ -726,7 +726,7 @@ class WPCF7_ContactForm {
 		}
 
 		$hidden_fields += (array) apply_filters(
-			'wpcf7_form_hidden_fields', array()
+			'wpcf7_form_hidden_fields', array(), $this
 		);
 
 		$content = '';
