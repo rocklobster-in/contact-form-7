@@ -112,7 +112,12 @@ class WPCF7_TagGenerator {
 				);
 				echo "\n";
 				echo sprintf(
-					'<button class="close-button" data-taggen="close-dialog">%s</button>',
+					'<button %1$s>%2$s</button>',
+					wpcf7_format_atts( array(
+						'class' => 'close-button',
+						'title' => __( 'Close this dialog box', 'contact-form-7' ),
+						'data-taggen' => 'close-dialog',
+					) ),
 					esc_html( __( 'Close', 'contact-form-7' ) )
 				);
 				echo "\n";
