@@ -16,7 +16,7 @@ function wpcf7_admin_has_edit_cap() {
 	return current_user_can( 'wpcf7_edit_contact_forms' );
 }
 
-function wpcf7_add_tag_generator( $name, $title, $elm_id, $callback, $options = array() ) {
+function wpcf7_add_tag_generator( $name, $title, $callback, $options = array() ) {
 	$tag_generator = WPCF7_TagGenerator::get_instance();
 	return $tag_generator->add( $name, $title, $callback, $options );
 }
