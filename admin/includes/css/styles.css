@@ -199,7 +199,9 @@ ul.config-error li {
 	padding: 12px;
 	border: 1px solid #c3c4c7;
 	box-shadow: 0 1px 1px rgba( 0, 0, 0, 0.04 );
-	min-height: 720px; /* needed for Safari */
+	height: 720px;
+	width: 720px;
+	overflow: auto;
 }
 
 .tag-generator-dialog::backdrop {
@@ -241,7 +243,8 @@ form.tag-generator-panel[data-version="2"] {
 		display: flex;
 		flex-direction: column;
 		gap: 12px 0;
-		overflow: scroll;
+		min-height: 120px;
+		overflow: auto;
 	}
 
 	.control-box > fieldset {
