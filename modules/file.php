@@ -37,6 +37,7 @@ function wpcf7_file_form_tag_handler( $tag ) {
 	$atts['id'] = $tag->get_id_option();
 	$atts['capture'] = $tag->get_option( 'capture', '(user|environment)', true );
 	$atts['tabindex'] = $tag->get_option( 'tabindex', 'signed_int', true );
+	$atts['multiple'] = $tag->has_option( 'multiple' );
 
 	$atts['accept'] = wpcf7_acceptable_filetypes(
 		$tag->get_option( 'filetypes' ), 'attr'
@@ -57,6 +58,10 @@ function wpcf7_file_form_tag_handler( $tag ) {
 
 	$atts['type'] = 'file';
 	$atts['name'] = $tag->name;
+
+	if ( $atts['multiple'] ) {
+		$atts['name'] .= '[]';
+	}
 
 	$html = sprintf(
 		'<span class="wpcf7-form-control-wrap" data-name="%1$s"><input %2$s />%3$s</span>',
@@ -180,6 +185,7 @@ function wpcf7_tag_generator_file( $contact_form, $options ) {
 	<?php
 		$tgg->print( 'field_type', array(
 			'with_required' => true,
+			'support_multiple' => true,
 			'select_options' => array(
 				'file' => $field_types['file']['display_name'],
 			),

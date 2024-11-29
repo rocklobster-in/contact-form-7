@@ -189,6 +189,7 @@ class WPCF7_TagGeneratorGenerator {
 	private function field_type( $options = '' ) {
 		$options = wp_parse_args( $options, array(
 			'with_required' => false,
+			'support_multiple' => false,
 			'select_options' => array(),
 		) );
 
@@ -215,6 +216,14 @@ class WPCF7_TagGeneratorGenerator {
 	<label>
 		<input type="checkbox" data-tag-part="type-suffix" value="*" />
 		<?php echo esc_html( __( "This is a required field.", 'contact-form-7' ) ); ?>
+	</label>
+	<?php } ?>
+
+	<?php if ( $options['support_multiple'] ) { ?>
+	<br />
+	<label>
+		<input type="checkbox" data-tag-part="option" data-tag-option="multiple" />
+		<?php echo esc_html( __( "Support multiple file uploads.", 'contact-form-7' ) ); ?>
 	</label>
 	<?php } ?>
 </fieldset>
