@@ -1,5 +1,8 @@
 {
 	"landingPage": "/wp-admin/admin.php?page=wpcf7",
+	"features": {
+		"networking": true
+	},
 	"plugins": [
 		"contact-form-7"
 	],
