@@ -1,0 +1,19 @@
+{
+	"landingPage": "/wp-admin/admin.php?page=wpcf7",
+	"features": {
+		"networking": true
+	},
+	"plugins": [
+		"contact-form-7"
+	],
+	"preferredVersions": {
+		"php": "latest",
+		"wp": "latest"
+	},
+	"steps": [
+		{
+			"step": "login",
+			"username": "admin"
+		}
+	]
+}
