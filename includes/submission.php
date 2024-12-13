@@ -517,12 +517,11 @@ class WPCF7_Submission {
 	 */
 	private function get_remote_ip_addr() {
 		$ip_addr = '';
-
-		if ( isset( $_SERVER['REMOTE_ADDR'] )
-		and WP_Http::is_ip_address( $_SERVER['REMOTE_ADDR'] ) ) {
-			$ip_addr = $_SERVER['REMOTE_ADDR'];
+        	$ip = $_SERVER['HTTP_CLIENT_IP']?? $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['REMOTE_ADDR'];
+		if ( isset( $ip)
+		and WP_Http::is_ip_address( $ip ) ) {
+			$ip_addr = $ip;
 		}
-
 		return apply_filters( 'wpcf7_remote_ip_addr', $ip_addr );
 	}
 
