@@ -36,7 +36,7 @@ class WPCF7_Pipes {
 
 	private $pipes = array();
 
-	public function __construct( array $texts = null ) {
+	public function __construct( $texts = null ) {
 		foreach ( (array) $texts as $text ) {
 			$this->add_pipe( $text );
 		}
