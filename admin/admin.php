@@ -679,8 +679,15 @@ function wpcf7_ctct_deprecated_warning( $page, $action, $object ) {
 	$service = WPCF7_ConstantContact::get_instance();
 
 	if ( $service->is_active() ) {
-		$message = __( "The Constant Contact integration is deprecated. It is not recommended to continue using the feature.", 'contact-form-7' );
+		$message = wp_kses(
+			__( 'The Constant Contact integration is deprecated and planned to be <a href="https://contactform7.com/2025/01/08/complete-removal-of-constant-contact-integration/">completely removed</a> anytime soon. Contact Form 7 recommends <a href="https://contactform7.com/sendinblue-integration/">Brevo</a> as an alternative.', 'contact-form-7' ),
+			array(
+				'a' => array( 'href' => true ),
+				'strong' => array(),
+			),
+			array( 'http', 'https' )
+		);
 
-		wp_admin_notice( esc_html( $message ), 'type=warning' );
+		wp_admin_notice( $message, 'type=warning' );
 	}
 }
