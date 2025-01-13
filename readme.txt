@@ -67,6 +67,12 @@ Do you have questions or issues with Contact Form 7? Use these support channels 
 
 For more information, see [Releases](https://contactform7.com/category/releases/).
 
+= 6.0.3 =
+
+* Updates the copyright year to 2025.
+* Updates the "Contact Form 7 needs your support" message content.
+* Updates the Constant Contact deprecation warning.
+
 = 6.0.2 =
 
 * Removes unnecessary type declaration from nullable arguments to avoid deprecation warnings in PHP 8.4.
