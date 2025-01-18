@@ -189,7 +189,7 @@ class WPCF7_HTMLFormatter {
 				array( "\r\n", "\r" ), "\n", $chunk['content']
 			);
 
-			if ( $chunk['type'] === self::start_tag ) {
+			if ( self::start_tag === $chunk['type'] ) {
 				list( $chunk['content'] ) =
 					self::normalize_start_tag( $chunk['content'] );
 
@@ -222,7 +222,7 @@ class WPCF7_HTMLFormatter {
 		foreach ( $chunks as $chunk ) {
 			$chunk['position'] = $position;
 
-			if ( $chunk['type'] === self::text ) {
+			if ( self::text === $chunk['type'] ) {
 				if ( isset( $text_left ) ) {
 					$text_left['content'] .= $chunk['content'];
 				} else {
@@ -263,19 +263,19 @@ class WPCF7_HTMLFormatter {
 
 		foreach ( $chunks as $chunk ) {
 
-			if ( $chunk['type'] === self::text ) {
+			if ( self::text === $chunk['type'] ) {
 				$this->append_text( $chunk['content'] );
 			}
 
-			if ( $chunk['type'] === self::start_tag ) {
+			if ( self::start_tag === $chunk['type'] ) {
 				$this->start_tag( $chunk['content'] );
 			}
 
-			if ( $chunk['type'] === self::end_tag ) {
+			if ( self::end_tag === $chunk['type'] ) {
 				$this->end_tag( $chunk['content'] );
 			}
 
-			if ( $chunk['type'] === self::comment ) {
+			if ( self::comment === $chunk['type'] ) {
 				$this->append_comment( $chunk['content'] );
 			}
 		}

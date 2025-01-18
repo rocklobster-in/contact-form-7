@@ -607,7 +607,7 @@ function wpcf7_admin_updated_message( $page, $action, $object ) {
 add_filter( 'plugin_action_links', 'wpcf7_plugin_action_links', 10, 2 );
 
 function wpcf7_plugin_action_links( $links, $file ) {
-	if ( $file != WPCF7_PLUGIN_BASENAME ) {
+	if ( WPCF7_PLUGIN_BASENAME !== $file ) {
 		return $links;
 	}
 

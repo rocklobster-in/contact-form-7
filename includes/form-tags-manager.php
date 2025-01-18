@@ -230,8 +230,7 @@ class WPCF7_FormTagsManager {
 	 */
 	private function normalize_callback( $matches ) {
 		// allow [[foo]] syntax for escaping a tag
-		if ( $matches[1] == '['
-		and $matches[6] == ']' ) {
+		if ( '[' === $matches[1] and ']' === $matches[6] ) {
 			return $matches[0];
 		}
 
@@ -466,8 +465,7 @@ class WPCF7_FormTagsManager {
 	 */
 	private function scan_callback( $matches, $replace = false ) {
 		// allow [[foo]] syntax for escaping a tag
-		if ( $matches[1] == '['
-		and $matches[6] == ']' ) {
+		if ( '[' === $matches[1] and ']' === $matches[6] ) {
 			return substr( $matches[0], 1, -1 );
 		}
 
