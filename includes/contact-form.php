@@ -528,7 +528,7 @@ class WPCF7_ContactForm {
 
 		$this->shortcode_atts = $options;
 
-		if ( 'raw_form' == $options['output'] ) {
+		if ( 'raw_form' === $options['output'] ) {
 			return sprintf(
 				'<pre class="wpcf7-raw-form"><code>%s</code></pre>',
 				esc_html( $this->prop( 'form' ) )
@@ -584,7 +584,7 @@ class WPCF7_ContactForm {
 			wpcf7_format_atts( array(
 				'class' => 'wpcf7 no-js',
 				'id' => $this->unit_tag(),
-				( get_option( 'html_type' ) == 'text/html' ) ? 'lang' : 'xml:lang'
+				( get_option( 'html_type' ) === 'text/html' ) ? 'lang' : 'xml:lang'
 					=> $lang_tag,
 				'dir' => wpcf7_is_rtl( $this->locale ) ? 'rtl' : 'ltr',
 				'data-wpcf7-id' => $this->id(),
@@ -982,11 +982,11 @@ class WPCF7_ContactForm {
 			if ( empty( $type ) ) {
 				continue;
 			} elseif ( ! empty( $options['include'] ) ) {
-				if ( ! in_array( $type, $options['include'] ) ) {
+				if ( ! in_array( $type, $options['include'], true ) ) {
 					continue;
 				}
 			} elseif ( ! empty( $options['exclude'] ) ) {
-				if ( in_array( $type, $options['exclude'] ) ) {
+				if ( in_array( $type, $options['exclude'], true ) ) {
 					continue;
 				}
 			}
@@ -1155,7 +1155,7 @@ class WPCF7_ContactForm {
 
 		foreach ( $settings as $setting ) {
 			if ( preg_match( $pattern, $setting, $matches ) ) {
-				if ( $matches[1] != $name ) {
+				if ( $matches[1] !== $name ) {
 					continue;
 				}
 

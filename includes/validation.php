@@ -101,7 +101,7 @@ class WPCF7_Validation implements ArrayAccess {
 			$this->container[$offset] = $value;
 		}
 
-		if ( 'reason' == $offset
+		if ( 'reason' === $offset
 		and is_array( $value ) ) {
 			foreach ( $value as $k => $v ) {
 				$this->invalidate( $k, $v );

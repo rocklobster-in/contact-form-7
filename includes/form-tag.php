@@ -75,7 +75,7 @@ class WPCF7_FormTag implements ArrayAccess {
 			$pattern = $preset_patterns[$pattern];
 		}
 
-		if ( '' == $pattern ) {
+		if ( '' === $pattern ) {
 			$pattern = '.+';
 		}
 
@@ -350,9 +350,9 @@ class WPCF7_FormTag implements ArrayAccess {
 		foreach ( $options as $opt ) {
 			$opt = sanitize_key( $opt );
 
-			if ( 'user_' == substr( $opt, 0, 5 ) and is_user_logged_in() ) {
+			if ( 'user_' === substr( $opt, 0, 5 ) and is_user_logged_in() ) {
 				$primary_props = array( 'user_login', 'user_email', 'user_url' );
-				$opt = in_array( $opt, $primary_props ) ? $opt : substr( $opt, 5 );
+				$opt = in_array( $opt, $primary_props, true ) ? $opt : substr( $opt, 5 );
 
 				$user = wp_get_current_user();
 				$user_prop = $user->get( $opt );

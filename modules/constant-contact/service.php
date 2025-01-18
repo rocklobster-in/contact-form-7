@@ -134,7 +134,7 @@ class WPCF7_ConstantContact extends WPCF7_Service_OAuth2 {
 	}
 
 	public function load( $action = '' ) {
-		if ( 'auth_redirect' == $action ) {
+		if ( 'auth_redirect' === $action ) {
 			$code = isset( $_GET['code'] ) ? urldecode( $_GET['code'] ) : '';
 			$state = isset( $_GET['state'] ) ? urldecode( $_GET['state'] ) : '';
 
@@ -159,7 +159,7 @@ class WPCF7_ConstantContact extends WPCF7_Service_OAuth2 {
 			exit();
 		}
 
-		if ( 'setup' == $action and 'POST' == $_SERVER['REQUEST_METHOD'] ) {
+		if ( 'setup' === $action and 'POST' === $_SERVER['REQUEST_METHOD'] ) {
 			check_admin_referer( 'wpcf7-constant-contact-setup' );
 
 			if ( ! empty( $_POST['reset'] ) ) {
@@ -398,7 +398,7 @@ class WPCF7_ConstantContact extends WPCF7_Service_OAuth2 {
 			);
 		}
 
-		if ( 'setup' == $action ) {
+		if ( 'setup' === $action ) {
 			$this->display_setup();
 		} else {
 			echo sprintf(

@@ -30,7 +30,7 @@ function wpcf7_text_form_tag_handler( $tag ) {
 
 	$class = wpcf7_form_controls_class( $tag->type, 'wpcf7-text' );
 
-	if ( in_array( $tag->basetype, array( 'email', 'url', 'tel' ) ) ) {
+	if ( in_array( $tag->basetype, array( 'email', 'url', 'tel' ), true ) ) {
 		$class .= ' wpcf7-validates-as-' . $tag->basetype;
 	}
 
@@ -254,7 +254,7 @@ function wpcf7_tag_generator_text( $contact_form, $options ) {
 
 	$basetype = $options['id'];
 
-	if ( ! in_array( $basetype, array_keys( $field_types ) ) ) {
+	if ( ! in_array( $basetype, array_keys( $field_types ), true ) ) {
 		$basetype = 'text';
 	}
 

@@ -21,7 +21,7 @@ function wpcf7_flamingo_submit( $contact_form, $result ) {
 	);
 
 	if ( empty( $result['status'] )
-	or ! in_array( $result['status'], $cases ) ) {
+	or ! in_array( $result['status'], $cases, true ) ) {
 		return;
 	}
 
@@ -84,7 +84,7 @@ function wpcf7_flamingo_submit( $contact_form, $result ) {
 		$last_contacted = '0000-00-00 00:00:00';
 	}
 
-	if ( 'mail_sent' == $result['status'] ) {
+	if ( 'mail_sent' === $result['status'] ) {
 		$flamingo_contact = Flamingo_Contact::add( array(
 			'email' => $email,
 			'name' => $name,
@@ -135,7 +135,7 @@ function wpcf7_flamingo_submit( $contact_form, $result ) {
 		'fields' => $posted_data,
 		'meta' => $meta,
 		'akismet' => $submission->pull( 'akismet' ),
-		'spam' => ( 'spam' == $result['status'] ),
+		'spam' => ( 'spam' === $result['status'] ),
 		'consent' => $submission->collect_consent(),
 		'timestamp' => $timestamp,
 		'posted_data_hash' => $submission->get_posted_data_hash(),
@@ -183,7 +183,7 @@ function wpcf7_flamingo_get_value( $field, $contact_form ) {
 
 	$value = '';
 
-	if ( in_array( $field, array( 'email', 'name', 'subject' ) ) ) {
+	if ( in_array( $field, array( 'email', 'name', 'subject' ), true ) ) {
 		$template = $contact_form->pref( 'flamingo_' . $field );
 
 		if ( null === $template ) {
@@ -306,7 +306,7 @@ function wpcf7_flamingo_serial_number( $output, $name, $html, $mail_tag = null )
 		);
 	}
 
-	if ( '_serial_number' != $name ) {
+	if ( '_serial_number' !== $name ) {
 		return $output;
 	}
 

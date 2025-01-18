@@ -375,7 +375,7 @@ class WPCF7_HTMLFormatter {
 	public function start_tag( $tag ) {
 		list( $tag, $tag_name ) = self::normalize_start_tag( $tag );
 
-		if ( in_array( $tag_name, self::p_child_elements ) ) {
+		if ( in_array( $tag_name, self::p_child_elements, true ) ) {
 			if (
 				! $this->is_inside( 'p' ) and
 				! $this->is_inside( self::p_child_elements ) and
@@ -386,8 +386,8 @@ class WPCF7_HTMLFormatter {
 			}
 		} elseif (
 			'p' === $tag_name or
-			in_array( $tag_name, self::p_parent_elements ) or
-			in_array( $tag_name, self::p_nonparent_elements )
+			in_array( $tag_name, self::p_parent_elements, true ) or
+			in_array( $tag_name, self::p_nonparent_elements, true )
 		) {
 			// Close <p> if it exists.
 			$this->end_tag( 'p' );
@@ -442,11 +442,11 @@ class WPCF7_HTMLFormatter {
 			$this->end_tag( 'tbody' );
 		}
 
-		if ( ! in_array( $tag_name, self::void_elements ) ) {
+		if ( ! in_array( $tag_name, self::void_elements, true ) ) {
 			array_unshift( $this->stacked_elements, $tag_name );
 		}
 
-		if ( ! in_array( $tag_name, self::p_child_elements ) ) {
+		if ( ! in_array( $tag_name, self::p_child_elements, true ) ) {
 			if ( '' !== $this->output ) {
 				$this->output = rtrim( $this->output ) . "\n";
 			}
@@ -474,7 +474,7 @@ class WPCF7_HTMLFormatter {
 
 		$stacked_elements = array_values( $this->stacked_elements );
 
-		$tag_position = array_search( $tag_name, $stacked_elements );
+		$tag_position = array_search( $tag_name, $stacked_elements, true );
 
 		if ( false === $tag_position ) {
 			return;
@@ -501,7 +501,7 @@ class WPCF7_HTMLFormatter {
 			$ancestors = (array) $family['ancestors'];
 			$descendants = (array) $family['descendants'];
 
-			if ( in_array( $tag_name, $descendants ) ) {
+			if ( in_array( $tag_name, $descendants, true ) ) {
 				$intersect = array_intersect(
 					$ancestors,
 					array_slice( $stacked_elements, 0, $tag_position )
@@ -539,7 +539,7 @@ class WPCF7_HTMLFormatter {
 	 * @param string $tag_name Tag name.
 	 */
 	public function append_end_tag( $tag_name ) {
-		if ( ! in_array( $tag_name, self::p_child_elements ) ) {
+		if ( ! in_array( $tag_name, self::p_child_elements, true ) ) {
 			// Remove unnecessary <br />.
 			$this->output = preg_replace( '/\s*<br \/>\s*$/', '', $this->output );
 
@@ -577,7 +577,7 @@ class WPCF7_HTMLFormatter {
 		$tag_names = (array) $tag_names;
 
 		foreach ( $this->stacked_elements as $element ) {
-			if ( in_array( $element, $tag_names ) ) {
+			if ( in_array( $element, $tag_names, true ) ) {
 				return true;
 			}
 		}
@@ -601,7 +601,7 @@ class WPCF7_HTMLFormatter {
 			return false;
 		}
 
-		return in_array( $parent, $tag_names );
+		return in_array( $parent, $tag_names, true );
 	}
 
 
@@ -648,7 +648,7 @@ class WPCF7_HTMLFormatter {
 			$tag = sprintf( '<%s>', $tag_name );
 		}
 
-		if ( in_array( $tag_name, self::void_elements ) ) {
+		if ( in_array( $tag_name, self::void_elements, true ) ) {
 			// Normalize void element.
 			$tag = preg_replace( '/\s*\/?>/', ' />', $tag );
 		}

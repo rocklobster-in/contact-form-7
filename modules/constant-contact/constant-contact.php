@@ -48,7 +48,7 @@ function wpcf7_constant_contact_submit( $contact_form, $result ) {
 	$do_submit = true;
 
 	if ( empty( $result['status'] )
-	or ! in_array( $result['status'], array( 'mail_sent' ) ) ) {
+	or ! in_array( $result['status'], array( 'mail_sent' ), true ) ) {
 		$do_submit = false;
 	}
 

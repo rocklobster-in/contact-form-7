@@ -226,7 +226,7 @@ class WPCF7_REST_Controller {
 
 			$response['config_errors'] = $config_validator->collect_error_messages();
 
-			if ( 'save' == $context ) {
+			if ( 'save' === $context ) {
 				$config_validator->save();
 			}
 		}
@@ -293,7 +293,7 @@ class WPCF7_REST_Controller {
 
 			$response['config_errors'] = $config_validator->collect_error_messages();
 
-			if ( 'save' == $context ) {
+			if ( 'save' === $context ) {
 				$config_validator->save();
 			}
 		}

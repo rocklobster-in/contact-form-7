@@ -216,7 +216,7 @@ function wpcf7_is_email_in_domain( $email, $domain ) {
 		do {
 			$site_domain = implode( '.', $domain_parts );
 
-			if ( $site_domain == $email_domain ) {
+			if ( $site_domain === $email_domain ) {
 				continue 2;
 			}
 

@@ -37,7 +37,7 @@ function wpcf7_checkbox_form_tag_handler( $tag ) {
 	$free_text = $tag->has_option( 'free_text' );
 	$multiple = false;
 
-	if ( 'checkbox' == $tag->basetype ) {
+	if ( 'checkbox' === $tag->basetype ) {
 		$multiple = ! $exclusive;
 	} else { // radio
 		$exclusive = false;
@@ -143,11 +143,11 @@ function wpcf7_checkbox_form_tag_handler( $tag ) {
 		$class = 'wpcf7-list-item';
 		$count += 1;
 
-		if ( 1 == $count ) {
+		if ( 1 === $count ) {
 			$class .= ' first';
 		}
 
-		if ( count( $values ) == $count ) { // last round
+		if ( count( $values ) === $count ) { // last round
 			$class .= ' last';
 
 			if ( $free_text ) {
@@ -375,7 +375,7 @@ function wpcf7_tag_generator_checkbox( $contact_form, $options ) {
 
 	$basetype = $options['id'];
 
-	if ( ! in_array( $basetype, array_keys( $field_types ) ) ) {
+	if ( ! in_array( $basetype, array_keys( $field_types ), true ) ) {
 		$basetype = 'checkbox';
 	}
 

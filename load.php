@@ -158,7 +158,7 @@ function wpcf7_upgrade() {
 	$old_ver = WPCF7::get_option( 'version', '0' );
 	$new_ver = WPCF7_VERSION;
 
-	if ( $old_ver == $new_ver ) {
+	if ( $old_ver === $new_ver ) {
 		return;
 	}
 

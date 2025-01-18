@@ -215,7 +215,7 @@ add_filter(
 			'wpcf7_contact_forms_per_page',
 		);
 
-		if ( in_array( $option, $wpcf7_screens ) ) {
+		if ( in_array( $option, $wpcf7_screens, true ) ) {
 			$result = $value;
 		}
 
@@ -275,7 +275,7 @@ function wpcf7_load_contact_form_admin() {
 
 		if ( ! $contact_form ) {
 			$query['message'] = 'failed';
-		} elseif ( -1 == $id ) {
+		} elseif ( -1 === (int) $id ) {
 			$query['message'] = 'created';
 		} else {
 			$query['message'] = 'saved';
@@ -405,7 +405,7 @@ function wpcf7_admin_management_page() {
 		return;
 	}
 
-	if ( 'validate' == wpcf7_current_action()
+	if ( 'validate' === wpcf7_current_action()
 	and wpcf7_validate_configuration()
 	and current_user_can( 'wpcf7_edit_contact_forms' ) ) {
 		wpcf7_admin_bulk_validate_page();
@@ -552,7 +552,7 @@ function wpcf7_admin_integration_page() {
 add_action( 'wpcf7_admin_notices', 'wpcf7_admin_updated_message', 10, 3 );
 
 function wpcf7_admin_updated_message( $page, $action, $object ) {
-	if ( ! in_array( $page, array( 'wpcf7', 'wpcf7-new' ) ) ) {
+	if ( ! in_array( $page, array( 'wpcf7', 'wpcf7-new' ), true ) ) {
 		return;
 	}
 
@@ -607,7 +607,7 @@ function wpcf7_admin_updated_message( $page, $action, $object ) {
 add_filter( 'plugin_action_links', 'wpcf7_plugin_action_links', 10, 2 );
 
 function wpcf7_plugin_action_links( $links, $file ) {
-	if ( $file != WPCF7_PLUGIN_BASENAME ) {
+	if ( WPCF7_PLUGIN_BASENAME !== $file ) {
 		return $links;
 	}
 

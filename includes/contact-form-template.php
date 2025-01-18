@@ -3,13 +3,13 @@
 class WPCF7_ContactFormTemplate {
 
 	public static function get_default( $prop = 'form' ) {
-		if ( 'form' == $prop ) {
+		if ( 'form' === $prop ) {
 			$template = self::form();
-		} elseif ( 'mail' == $prop ) {
+		} elseif ( 'mail' === $prop ) {
 			$template = self::mail();
-		} elseif ( 'mail_2' == $prop ) {
+		} elseif ( 'mail_2' === $prop ) {
 			$template = self::mail_2();
-		} elseif ( 'messages' == $prop ) {
+		} elseif ( 'messages' === $prop ) {
 			$template = self::messages();
 		} else {
 			$template = null;

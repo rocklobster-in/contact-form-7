@@ -140,7 +140,7 @@ class WPCF7_ConstantContact_ContactPostRequest {
 			'unsubscribe', 'temp_hold', 'not_set',
 		);
 
-		if ( ! in_array( $permission_to_send, $types_of_permission ) ) {
+		if ( ! in_array( $permission_to_send, $types_of_permission, true ) ) {
 			$permission_to_send = 'implicit';
 		}
 
@@ -195,7 +195,7 @@ class WPCF7_ConstantContact_ContactPostRequest {
 	}
 
 	public function set_create_source( $create_source ) {
-		if ( ! in_array( $create_source, array( 'Contact', 'Account' ) ) ) {
+		if ( ! in_array( $create_source, array( 'Contact', 'Account' ), true ) ) {
 			return false;
 		}
 
@@ -259,7 +259,7 @@ class WPCF7_ConstantContact_ContactPostRequest {
 		or ! wpcf7_is_tel( $phone_number )
 		or 25 < $this->strlen( $phone_number )
 		or 2 <= count( $this->phone_numbers )
-		or ! in_array( $kind, array( 'home', 'work', 'other' ) ) ) {
+		or ! in_array( $kind, array( 'home', 'work', 'other' ), true ) ) {
 			return false;
 		}
 
@@ -278,7 +278,7 @@ class WPCF7_ConstantContact_ContactPostRequest {
 
 		if ( ! ( $street || $city || $state || $postal_code || $country )
 		or 1 <= count( $this->street_addresses )
-		or ! in_array( $kind, array( 'home', 'work', 'other' ) )
+		or ! in_array( $kind, array( 'home', 'work', 'other' ), true )
 		or 255 < $this->strlen( $street )
 		or 50 < $this->strlen( $city )
 		or 50 < $this->strlen( $state )
