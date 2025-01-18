@@ -585,8 +585,8 @@ function wpcf7_admin_updated_message( $page, $action, $object ) {
 
 		if ( $count_invalid ) {
 			$message = sprintf(
+				/* translators: %s: number of contact forms */
 				_n(
-					/* translators: %s: number of contact forms */
 					"Configuration validation completed. %s invalid contact form was found.",
 					"Configuration validation completed. %s invalid contact forms were found.",
 					$count_invalid, 'contact-form-7'

@@ -156,6 +156,7 @@ function wpcf7_recaptcha_verify_response( $spam, $submission ) {
 			$submission->add_spam_log( array(
 				'agent' => 'recaptcha',
 				'reason' => sprintf(
+					/* translators: 1: value of reCAPTCHA score 2: value of reCAPTCHA threshold */
 					__(
 						'reCAPTCHA score (%1$.2f) is lower than the threshold (%2$.2f).',
 						'contact-form-7'
@@ -254,10 +255,13 @@ function wpcf7_admin_warnings_recaptcha_v2_v3( $page, $action, $object ) {
 	}
 
 	$message = sprintf(
-		esc_html( __(
-			"API keys for reCAPTCHA v3 are different from those for v2; keys for v2 do not work with the v3 API. You need to register your sites again to get new keys for v3. For details, see %s.",
-			'contact-form-7'
-		) ),
+		esc_html(
+			/* translators: %s: link labeled 'reCAPTCHA (v3)' */
+			__(
+				"API keys for reCAPTCHA v3 are different from those for v2; keys for v2 do not work with the v3 API. You need to register your sites again to get new keys for v3. For details, see %s.",
+				'contact-form-7'
+			)
+		),
 		wpcf7_link(
 			__( 'https://contactform7.com/recaptcha/', 'contact-form-7' ),
 			__( 'reCAPTCHA (v3)', 'contact-form-7' )

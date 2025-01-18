@@ -134,8 +134,8 @@ class WPCF7_Contact_Form_List_Table extends WP_List_Table {
 
 			if ( $count_errors = $config_validator->count_errors() ) {
 				$error_notice = sprintf(
+					/* translators: %s: number of errors detected */
 					_n(
-						/* translators: %s: number of errors detected */
 						'%s configuration error detected',
 						'%s configuration errors detected',
 						$count_errors, 'contact-form-7' ),

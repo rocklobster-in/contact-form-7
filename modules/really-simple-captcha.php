@@ -271,7 +271,11 @@ function wpcf7_captcha_display_warning_message( $page, $action, $object ) {
 	wpcf7_init_captcha();
 
 	if ( ! is_dir( $uploads_dir ) or ! wp_is_writable( $uploads_dir ) ) {
-		$message = sprintf( __( 'This contact form contains CAPTCHA fields, but the temporary folder for the files (%s) does not exist or is not writable. You can create the folder or change its permission manually.', 'contact-form-7' ), $uploads_dir );
+		$message = sprintf(
+			/* translators: %s: Path to the temporary folder */
+			__( 'This contact form contains CAPTCHA fields, but the temporary folder for the files (%s) does not exist or is not writable. You can create the folder or change its permission manually.', 'contact-form-7' ),
+			$uploads_dir
+		);
 
 		wp_admin_notice( esc_html( $message ), 'type=warning' );
 	}
