@@ -537,15 +537,20 @@ class WPCF7_ContactForm {
 
 		if ( $this->is_true( 'subscribers_only' )
 		and ! current_user_can( 'wpcf7_submit', $this->id() ) ) {
-			$notice = __(
-				"This contact form is available only for logged in users.",
-				'contact-form-7'
-			);
-
 			$notice = sprintf(
-				'<p class="wpcf7-subscribers-only">%s</p>',
-				esc_html( $notice )
-			);
+    __(
+        'This contact form is available only for logged-in users. Please <a href="%s">log in</a> or <a href="%s">register</a> to submit the form.',
+        'contact-form-7'
+    ),
+    wp_login_url( get_permalink() ), // Generate login URL with redirect back to the current page
+    wp_registration_url() // Generate registration URL
+);
+
+$notice = sprintf(
+    '<p class="wpcf7-subscribers-only">%s</p>',
+    wp_kses_post( $notice )
+);
+
 
 			return apply_filters( 'wpcf7_subscribers_only_notice', $notice, $this );
 		}
