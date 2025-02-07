@@ -531,8 +531,7 @@ class WPCF7_MailTaggedText {
 	 */
 	private function replace_tags_callback( $matches, $html = false ) {
 		// allow [[foo]] syntax for escaping a tag
-		if ( $matches[1] == '['
-		and $matches[4] == ']' ) {
+		if ( '[' === $matches[1] and ']' === $matches[4] ) {
 			return substr( $matches[0], 1, -1 );
 		}
 

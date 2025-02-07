@@ -406,8 +406,7 @@ function wpcf7_rmdir_p( $dir ) {
 
 	if ( $handle = opendir( $dir ) ) {
 		while ( false !== ( $file = readdir( $handle ) ) ) {
-			if ( $file == "."
-			or $file == ".." ) {
+			if ( '.' === $file or '..' === $file ) {
 				continue;
 			}
 

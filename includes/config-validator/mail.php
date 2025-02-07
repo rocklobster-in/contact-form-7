@@ -24,7 +24,7 @@ trait WPCF7_ConfigValidator_Mail {
 	 */
 	public function replace_mail_tags_with_minimum_input_callback( $matches ) {
 		// allow [[foo]] syntax for escaping a tag
-		if ( $matches[1] === '[' and $matches[4] === ']' ) {
+		if ( '[' === $matches[1] and ']' === $matches[4] ) {
 			return substr( $matches[0], 1, -1 );
 		}
 
@@ -536,7 +536,7 @@ trait WPCF7_ConfigValidator_Mail {
 		$content = $this->replace_mail_tags( $content, array(
 			'callback' => function ( $matches ) use ( $example_email ) {
 				// allow [[foo]] syntax for escaping a tag
-				if ( $matches[1] === '[' and $matches[4] === ']' ) {
+				if ( '[' === $matches[1] and ']' === $matches[4] ) {
 					return substr( $matches[0], 1, -1 );
 				}
 
