@@ -209,7 +209,7 @@ function wpcf7_acceptable_filetypes( $types = 'default', $format = 'regex' ) {
 				if ( false === strpos( $type, '/' ) ) {
 					return sprintf( '.%s', trim( $type, '.' ) );
 				} elseif ( preg_match( '%^([a-z]+)/[*]$%i', $type, $matches ) ) {
-					if ( in_array( $matches[1], array( 'audio', 'video', 'image' ) ) ) {
+					if ( in_array( $matches[1], array( 'audio', 'video', 'image' ), true ) ) {
 						return $type;
 					} else {
 						return '';
@@ -360,9 +360,7 @@ function wpcf7_cleanup_upload_files( $seconds = 60, $max = 100 ) {
 
 	if ( $handle = opendir( $dir ) ) {
 		while ( false !== ( $file = readdir( $handle ) ) ) {
-			if ( '.' == $file
-			or '..' == $file
-			or '.htaccess' == $file ) {
+			if ( '.' === $file or '..' === $file or '.htaccess' === $file ) {
 				continue;
 			}
 

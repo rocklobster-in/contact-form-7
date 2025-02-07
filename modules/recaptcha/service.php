@@ -149,7 +149,7 @@ class WPCF7_RECAPTCHA extends WPCF7_Service {
 
 		$response = wp_remote_post( sanitize_url( $endpoint ), $request );
 
-		if ( 200 != wp_remote_retrieve_response_code( $response ) ) {
+		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
 			if ( WP_DEBUG ) {
 				$this->log( $endpoint, $request, $response );
 			}
@@ -218,7 +218,7 @@ class WPCF7_RECAPTCHA extends WPCF7_Service {
 
 
 	public function load( $action = '' ) {
-		if ( 'setup' == $action and 'POST' == $_SERVER['REQUEST_METHOD'] ) {
+		if ( 'setup' === $action and 'POST' === $_SERVER['REQUEST_METHOD'] ) {
 			check_admin_referer( 'wpcf7-recaptcha-setup' );
 
 			if ( ! empty( $_POST['reset'] ) ) {
@@ -295,7 +295,7 @@ class WPCF7_RECAPTCHA extends WPCF7_Service {
 			);
 		}
 
-		if ( 'setup' == $action ) {
+		if ( 'setup' === $action ) {
 			$this->display_setup();
 		} else {
 			echo sprintf(

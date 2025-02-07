@@ -300,7 +300,7 @@ function wpcf7_save_contact_form( $data = '', $context = 'save' ) {
 
 	$data['id'] = (int) $data['id'];
 
-	if ( -1 == $data['id'] ) {
+	if ( -1 === $data['id'] ) {
 		$contact_form = WPCF7_ContactForm::get_template();
 	} else {
 		$contact_form = wpcf7_contact_form( $data['id'] );
@@ -347,7 +347,7 @@ function wpcf7_save_contact_form( $data = '', $context = 'save' ) {
 
 	do_action( 'wpcf7_save_contact_form', $contact_form, $data, $context );
 
-	if ( 'save' == $context ) {
+	if ( 'save' === $context ) {
 		$contact_form->save();
 	}
 

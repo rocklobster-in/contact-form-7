@@ -102,7 +102,7 @@ class WPCF7_Stripe_API {
 
 		$response = wp_remote_post( sanitize_url( $endpoint ), $request );
 
-		if ( 200 != wp_remote_retrieve_response_code( $response ) ) {
+		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
 			if ( WP_DEBUG ) {
 				$this->log( $endpoint, $request, $response );
 			}
@@ -137,7 +137,7 @@ class WPCF7_Stripe_API {
 
 		$response = wp_remote_get( sanitize_url( $endpoint ), $request );
 
-		if ( 200 != wp_remote_retrieve_response_code( $response ) ) {
+		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
 			if ( WP_DEBUG ) {
 				$this->log( $endpoint, $request, $response );
 			}

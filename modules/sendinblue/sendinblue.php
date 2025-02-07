@@ -46,7 +46,7 @@ function wpcf7_sendinblue_submit( $contact_form, $result ) {
 	}
 
 	if ( empty( $result['status'] )
-	or ! in_array( $result['status'], array( 'mail_sent', 'mail_failed' ) ) ) {
+	or ! in_array( $result['status'], array( 'mail_sent', 'mail_failed' ), true ) ) {
 		return;
 	}
 
@@ -175,7 +175,7 @@ function wpcf7_sendinblue_collect_parameters() {
 	foreach ( (array) $submission->get_posted_data() as $name => $val ) {
 		$name = strtoupper( $name );
 
-		if ( 'YOUR-' == substr( $name, 0, 5 ) ) {
+		if ( 'YOUR-' === substr( $name, 0, 5 ) ) {
 			$name = substr( $name, 5 );
 		}
 

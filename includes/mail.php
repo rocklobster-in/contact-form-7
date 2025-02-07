@@ -365,7 +365,7 @@ class WPCF7_Mail {
 		foreach ( explode( "\n", $template ) as $line ) {
 			$line = trim( $line );
 
-			if ( '' === $line or '[' == substr( $line, 0, 1 ) ) {
+			if ( '' === $line or '[' === substr( $line, 0, 1 ) ) {
 				continue;
 			}
 

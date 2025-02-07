@@ -259,7 +259,7 @@ function wpcf7_user_related_smt( $output, $name, $html, $mail_tag = null ) {
 
 	$primary_props = array( 'user_login', 'user_email', 'user_url' );
 	$opt = ltrim( $name, '_' );
-	$opt = in_array( $opt, $primary_props ) ? $opt : substr( $opt, 5 );
+	$opt = in_array( $opt, $primary_props, true ) ? $opt : substr( $opt, 5 );
 
 	$user = new WP_User( $user_id );
 

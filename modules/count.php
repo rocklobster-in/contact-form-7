@@ -29,7 +29,7 @@ function wpcf7_count_form_tag_handler( $tag ) {
 	while ( $targets ) {
 		$target = array_shift( $targets );
 
-		if ( 'count' != $target->type ) {
+		if ( 'count' !== $target->type ) {
 			$maxlength = $target->get_maxlength_option();
 			$minlength = $target->get_minlength_option();
 			break;

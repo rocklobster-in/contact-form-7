@@ -60,10 +60,10 @@ function wpcf7_admin_warnings_bulk_cv( $page, $action, $object ) {
 add_action( 'wpcf7_admin_load', 'wpcf7_load_bulk_validate_page', 10, 2 );
 
 function wpcf7_load_bulk_validate_page( $page, $action ) {
-	if ( 'wpcf7' != $page
-	or 'validate' != $action
+	if ( 'wpcf7' !== $page
+	or 'validate' !== $action
 	or ! wpcf7_validate_configuration()
-	or 'POST' != $_SERVER['REQUEST_METHOD'] ) {
+	or 'POST' !== $_SERVER['REQUEST_METHOD'] ) {
 		return;
 	}
 

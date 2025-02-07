@@ -276,7 +276,7 @@ function wpcf7_welcome_panel_screen_settings( $screen_settings, $screen ) {
 	);
 
 	$checkbox_id = 'wpcf7-welcome-panel-show';
-	$checked = ! in_array( wpcf7_version( 'only_major=1' ), $vers );
+	$checked = ! in_array( wpcf7_version( 'only_major=1' ), $vers, true );
 
 	$checkbox = sprintf(
 		'<input %s />',

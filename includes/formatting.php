@@ -143,7 +143,7 @@ function wpcf7_normalize_newline( $text, $to = "\n" ) {
 
 	$nls = array( "\r\n", "\r", "\n" );
 
-	if ( ! in_array( $to, $nls ) ) {
+	if ( ! in_array( $to, $nls, true ) ) {
 		return $text;
 	}
 
@@ -215,7 +215,8 @@ function wpcf7_canonicalize( $text, $options = '' ) {
 
 		$is_utf8 = in_array(
 			$charset,
-			array( 'utf8', 'utf-8', 'UTF8', 'UTF-8' )
+			array( 'utf8', 'utf-8', 'UTF8', 'UTF-8' ),
+			true
 		);
 
 		if ( $is_utf8 ) {
@@ -235,13 +236,13 @@ function wpcf7_canonicalize( $text, $options = '' ) {
 		$text = preg_replace( '/[\r\n\t ]+/', ' ', $text );
 	}
 
-	if ( 'lower' == $options['strto'] ) {
+	if ( 'lower' === $options['strto'] ) {
 		if ( function_exists( 'mb_strtolower' ) ) {
 			$text = mb_strtolower( $text, $charset );
 		} else {
 			$text = strtolower( $text );
 		}
-	} elseif ( 'upper' == $options['strto'] ) {
+	} elseif ( 'upper' === $options['strto'] ) {
 		if ( function_exists( 'mb_strtoupper' ) ) {
 			$text = mb_strtoupper( $text, $charset );
 		} else {
@@ -550,7 +551,7 @@ function wpcf7_format_atts( $atts ) {
 			'selected',
 		);
 
-		if ( in_array( $name, $boolean_attributes ) and '' === $value ) {
+		if ( in_array( $name, $boolean_attributes, true ) and '' === $value ) {
 			$value = false;
 		}
 

@@ -80,7 +80,7 @@ class WPCF7_Integration {
 	 * @param string $name The name of service to search.
 	 */
 	public function service_exists( $name = '' ) {
-		if ( '' == $name ) {
+		if ( '' === $name ) {
 			return (bool) count( $this->services );
 		} else {
 			return isset( $this->services[$name] );
@@ -120,7 +120,7 @@ class WPCF7_Integration {
 				array_flip( (array) $args['include'] )
 			);
 
-			if ( 1 == count( $services ) ) {
+			if ( 1 === count( $services ) ) {
 				$singular = true;
 			}
 		}
@@ -331,7 +331,7 @@ class WPCF7_Service_OAuth2 extends WPCF7_Service {
 			$this->log( $endpoint, $request, $response );
 		}
 
-		if ( 401 == $response_code ) { // Unauthorized
+		if ( 401 === $response_code ) { // Unauthorized
 			$this->access_token = null;
 			$this->refresh_token = null;
 		} else {
@@ -378,7 +378,7 @@ class WPCF7_Service_OAuth2 extends WPCF7_Service {
 			$this->log( $endpoint, $request, $response );
 		}
 
-		if ( 401 == $response_code ) { // Unauthorized
+		if ( 401 === $response_code ) { // Unauthorized
 			$this->access_token = null;
 			$this->refresh_token = null;
 		} else {

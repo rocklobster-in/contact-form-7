@@ -273,7 +273,7 @@ trait WPCF7_ConfigValidator_Mail {
 
 			if (
 				in_array(
-					strtolower( $header_name ), array( 'reply-to', 'cc', 'bcc' )
+					strtolower( $header_name ), array( 'reply-to', 'cc', 'bcc' ), true
 				) and
 				'' !== $header_value and
 				$this->detect_invalid_mailbox_syntax( $section, $header_value )
@@ -283,7 +283,7 @@ trait WPCF7_ConfigValidator_Mail {
 			}
 
 			if (
-				in_array( strtolower( $header_name ), array( 'cc', 'bcc' ) ) and
+				in_array( strtolower( $header_name ), array( 'cc', 'bcc' ), true ) and
 				$this->detect_unsafe_email_without_protection( $section, $header_value )
 			) {
 				$unsafe_email_fields[] = $header_name;
