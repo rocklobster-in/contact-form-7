@@ -230,6 +230,7 @@ class WPCF7_ContactForm {
 	 * Magic method for property overloading.
 	 */
 	public function __get( $name ) {
+		/* translators: 1: property name, 2: method name */
 		$message = __( '<code>%1$s</code> property of a <code>WPCF7_ContactForm</code> object is <strong>no longer accessible</strong>. Use <code>%2$s</code> method instead.', 'contact-form-7' );
 
 		if ( 'id' === $name ) {

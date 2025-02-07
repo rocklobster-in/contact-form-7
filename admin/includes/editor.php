@@ -77,6 +77,7 @@ function wpcf7_editor_panel_form( $post ) {
 	$desc_link = wpcf7_link(
 		__( 'https://contactform7.com/editing-form-template/', 'contact-form-7' ),
 		__( 'Editing form template', 'contact-form-7' ) );
+	/* translators: %s: link labeled 'Editing form template' */
 	$description = __( "You can edit the form template here. For details, see %s.", 'contact-form-7' );
 	$description = sprintf( esc_html( $description ), $desc_link );
 ?>
@@ -167,6 +168,7 @@ function wpcf7_editor_box_mail( $post, $options = '' ) {
 	$desc_link = wpcf7_link(
 		__( 'https://contactform7.com/setting-up-mail/', 'contact-form-7' ),
 		__( 'Setting up mail', 'contact-form-7' ) );
+	/* translators: %s: link labeled 'Setting up mail' */
 	$description = __( "You can edit the mail template here. For details, see %s.", 'contact-form-7' );
 	$description = sprintf( esc_html( $description ), $desc_link );
 	echo $description;
@@ -248,6 +250,7 @@ function wpcf7_editor_panel_messages( $post ) {
 	$desc_link = wpcf7_link(
 		__( 'https://contactform7.com/editing-messages/', 'contact-form-7' ),
 		__( 'Editing messages', 'contact-form-7' ) );
+	/* translators: %s: link labeled 'Editing messages' */
 	$description = __( "You can edit messages used in various situations here. For details, see %s.", 'contact-form-7' );
 	$description = sprintf( esc_html( $description ), $desc_link );
 
@@ -285,6 +288,7 @@ function wpcf7_editor_panel_additional_settings( $post ) {
 	$desc_link = wpcf7_link(
 		__( 'https://contactform7.com/additional-settings/', 'contact-form-7' ),
 		__( 'Additional settings', 'contact-form-7' ) );
+	/* translators: %s: link labeled 'Additional settings' */
 	$description = __( "You can add customization code snippets here. For details, see %s.", 'contact-form-7' );
 	$description = sprintf( esc_html( $description ), $desc_link );
 

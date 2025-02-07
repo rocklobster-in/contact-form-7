@@ -112,8 +112,8 @@ function wpcf7_admin_bulk_validate_page() {
 	$count = WPCF7_ContactForm::count();
 
 	$submit_text = sprintf(
+		/* translators: %s: number of contact forms */
 		_n(
-			/* translators: %s: number of contact forms */
 			"Validate %s contact form now",
 			"Validate %s contact forms now",
 			$count, 'contact-form-7'
