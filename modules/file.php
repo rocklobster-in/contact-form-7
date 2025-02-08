@@ -141,7 +141,7 @@ function wpcf7_add_tag_generator_file() {
 
 	$tag_generator->add( 'file', __( 'file', 'contact-form-7' ),
 		'wpcf7_tag_generator_file',
-	 	array( 'version' => '2' )
+		array( 'version' => '2' )
 	);
 }
 

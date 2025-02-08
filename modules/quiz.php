@@ -195,7 +195,7 @@ function wpcf7_add_tag_generator_quiz() {
 
 	$tag_generator->add( 'quiz', __( 'quiz', 'contact-form-7' ),
 		'wpcf7_tag_generator_quiz',
-	 	array( 'version' => '2' )
+		array( 'version' => '2' )
 	);
 }
 

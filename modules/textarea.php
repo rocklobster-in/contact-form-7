@@ -142,7 +142,7 @@ function wpcf7_add_tag_generator_textarea() {
 	$tag_generator->add( 'textarea',
 		__( 'text area', 'contact-form-7' ),
 		'wpcf7_tag_generator_textarea',
-	 	array( 'version' => '2' )
+		array( 'version' => '2' )
 	);
 }
 
