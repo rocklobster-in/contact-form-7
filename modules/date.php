@@ -86,14 +86,12 @@ function wpcf7_date_form_tag_handler( $tag ) {
 	$atts['type'] = $tag->basetype;
 	$atts['name'] = $tag->name;
 
-	$html = sprintf(
+	return sprintf(
 		'<span class="wpcf7-form-control-wrap" data-name="%1$s"><input %2$s />%3$s</span>',
 		esc_attr( $tag->name ),
 		wpcf7_format_atts( $atts ),
 		$validation_error
 	);
-
-	return $html;
 }
 
 
@@ -206,7 +204,7 @@ function wpcf7_tag_generator_date( $contact_form, $options ) {
 	?></h3>
 
 	<p><?php
-		$description = wp_kses(
+		echo wp_kses(
 			$field_types['date']['description'],
 			array(
 				'a' => array( 'href' => true ),
@@ -214,8 +212,6 @@ function wpcf7_tag_generator_date( $contact_form, $options ) {
 			),
 			array( 'http', 'https' )
 		);
-
-		echo $description;
 	?></p>
 </header>
 

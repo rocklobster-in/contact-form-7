@@ -77,7 +77,7 @@ function wpcf7_quiz_form_tag_handler( $tag ) {
 	$atts['type'] = 'text';
 	$atts['name'] = $tag->name;
 
-	$html = sprintf(
+	return sprintf(
 		'<span class="wpcf7-form-control-wrap" data-name="%1$s"><label><span class="wpcf7-quiz-label">%2$s</span> <input %3$s /></label><input type="hidden" name="_wpcf7_quiz_answer_%4$s" value="%5$s" />%6$s</span>',
 		esc_attr( $tag->name ),
 		esc_html( $question ),
@@ -86,8 +86,6 @@ function wpcf7_quiz_form_tag_handler( $tag ) {
 		wp_hash( $answer, 'wpcf7_quiz' ),
 		$validation_error
 	);
-
-	return $html;
 }
 
 
@@ -217,7 +215,7 @@ function wpcf7_tag_generator_quiz( $contact_form, $options ) {
 	?></h3>
 
 	<p><?php
-		$description = wp_kses(
+		echo wp_kses(
 			$field_types['quiz']['description'],
 			array(
 				'a' => array( 'href' => true ),
@@ -225,8 +223,6 @@ function wpcf7_tag_generator_quiz( $contact_form, $options ) {
 			),
 			array( 'http', 'https' )
 		);
-
-		echo $description;
 	?></p>
 </header>
 

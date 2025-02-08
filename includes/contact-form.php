@@ -829,13 +829,11 @@ class WPCF7_ContactForm {
 			implode( "\n", $validation_errors )
 		);
 
-		$output = sprintf(
+		return sprintf(
 			'<div class="screen-reader-response">%1$s %2$s</div>',
 			$primary_response,
 			$validation_errors
 		);
-
-		return $output;
 	}
 
 
@@ -1058,7 +1056,7 @@ class WPCF7_ContactForm {
 
 		if ( $this->is_true( 'subscribers_only' )
 		and ! current_user_can( 'wpcf7_submit', $this->id() ) ) {
-			$result = array(
+			return array(
 				'contact_form_id' => $this->id(),
 				'status' => 'error',
 				'message' => __(
@@ -1066,8 +1064,6 @@ class WPCF7_ContactForm {
 					'contact-form-7'
 				),
 			);
-
-			return $result;
 		}
 
 		$submission = WPCF7_Submission::get_instance( $this, array(

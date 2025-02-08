@@ -58,7 +58,7 @@ class WPCF7_Stripe_API {
 			'application' => $app_info,
 		);
 
-		$headers = array(
+		return array(
 			'Authorization' => sprintf( 'Bearer %s', $this->secret ),
 			'Stripe-Version' => self::api_version,
 			'X-Stripe-Client-User-Agent' => wp_json_encode( $ua ),
@@ -69,8 +69,6 @@ class WPCF7_Stripe_API {
 				self::app_url
 			),
 		);
-
-		return $headers;
 	}
 
 

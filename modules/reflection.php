@@ -66,7 +66,7 @@ function wpcf7_reflection_form_tag_handler( $tag ) {
 		''
 	);
 
-	$html = sprintf(
+	return sprintf(
 		'<fieldset %1$s>%2$s</fieldset>',
 		wpcf7_format_atts( array(
 			'data-reflection-of' => $tag->name,
@@ -77,8 +77,6 @@ function wpcf7_reflection_form_tag_handler( $tag ) {
 		) ),
 		$content
 	);
-
-	return $html;
 }
 
 
@@ -100,7 +98,7 @@ function wpcf7_output_form_tag_handler( $tag ) {
 		}
 	}
 
-	$html = sprintf(
+	return sprintf(
 		'<output %1$s>%2$s</output>',
 		wpcf7_format_atts( array(
 			'data-reflection-of' => $tag->name,
@@ -113,6 +111,4 @@ function wpcf7_output_form_tag_handler( $tag ) {
 		) ),
 		esc_html( $value )
 	);
-
-	return $html;
 }

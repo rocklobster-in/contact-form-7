@@ -44,8 +44,7 @@ class WPCF7_Stripe extends WPCF7_Service {
 
 	public function api() {
 		if ( $this->is_active() ) {
-			$api = new WPCF7_Stripe_API( $this->api_keys['secret'] );
-			return $api;
+			return new WPCF7_Stripe_API( $this->api_keys['secret'] );
 		}
 	}
 

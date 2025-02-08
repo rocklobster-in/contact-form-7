@@ -450,8 +450,7 @@ function wpcf7_sanitize_additional_settings( $input, $default_template = '' ) {
 		return $default_template;
 	}
 
-	$output = trim( $input );
-	return $output;
+	return trim( $input );
 }
 
 
