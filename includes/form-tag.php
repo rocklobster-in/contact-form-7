@@ -499,7 +499,7 @@ class WPCF7_FormTag implements ArrayAccess {
 	 *                    False if there is no option matches the pattern.
 	 */
 	public function get_first_match_option( $pattern ) {
-		foreach( (array) $this->options as $option ) {
+		foreach ( (array) $this->options as $option ) {
 			if ( preg_match( $pattern, $option, $matches ) ) {
 				return $matches;
 			}
@@ -519,7 +519,7 @@ class WPCF7_FormTag implements ArrayAccess {
 	public function get_all_match_options( $pattern ) {
 		$result = array();
 
-		foreach( (array) $this->options as $option ) {
+		foreach ( (array) $this->options as $option ) {
 			if ( preg_match( $pattern, $option, $matches ) ) {
 				$result[] = $matches;
 			}
