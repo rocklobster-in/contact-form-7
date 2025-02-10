@@ -231,7 +231,7 @@ function wpcf7_add_tag_generator_menu() {
 
 	$tag_generator->add( 'menu', __( 'drop-down menu', 'contact-form-7' ),
 		'wpcf7_tag_generator_menu',
-	 	array( 'version' => '2' )
+		array( 'version' => '2' )
 	);
 }
 

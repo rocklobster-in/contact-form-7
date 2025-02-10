@@ -203,7 +203,7 @@ function wpcf7_add_tag_generator_number() {
 
 	$tag_generator->add( 'number', __( 'number', 'contact-form-7' ),
 		'wpcf7_tag_generator_number',
-	 	array( 'version' => '2' )
+		array( 'version' => '2' )
 	);
 }
 

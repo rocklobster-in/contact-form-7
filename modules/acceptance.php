@@ -245,7 +245,7 @@ function wpcf7_add_tag_generator_acceptance() {
 
 	$tag_generator->add( 'acceptance', __( 'acceptance', 'contact-form-7' ),
 		'wpcf7_tag_generator_acceptance',
-	 	array( 'version' => '2' )
+		array( 'version' => '2' )
 	);
 }
 

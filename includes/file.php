@@ -161,7 +161,7 @@ function wpcf7_convert_mime_to_ext( $mime ) {
 	if ( preg_match( '%^([a-z]+)/([*]|[a-z0-9.+-]+)$%i', $mime, $matches ) ) {
 		foreach ( $mime_types as $key => $val ) {
 			if ( '*' === $matches[2] and str_starts_with( $val, $matches[1] . '/' )
-		 	or $val === $matches[0] ) {
+			or $val === $matches[0] ) {
 				$results = array_merge( $results, explode( '|', $key ) );
 			}
 		}
