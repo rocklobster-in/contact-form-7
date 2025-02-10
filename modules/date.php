@@ -158,18 +158,18 @@ add_filter( 'wpcf7_messages', 'wpcf7_date_messages', 10, 1 );
 function wpcf7_date_messages( $messages ) {
 	return array_merge( $messages, array(
 		'invalid_date' => array(
-			'description' => __( "Date format that the sender entered is invalid", 'contact-form-7' ),
-			'default' => __( "Please enter a date in YYYY-MM-DD format.", 'contact-form-7' ),
+			'description' => __( 'Date format that the sender entered is invalid', 'contact-form-7' ),
+			'default' => __( 'Please enter a date in YYYY-MM-DD format.', 'contact-form-7' ),
 		),
 
 		'date_too_early' => array(
-			'description' => __( "Date is earlier than minimum limit", 'contact-form-7' ),
-			'default' => __( "This field has a too early date.", 'contact-form-7' ),
+			'description' => __( 'Date is earlier than minimum limit', 'contact-form-7' ),
+			'default' => __( 'This field has a too early date.', 'contact-form-7' ),
 		),
 
 		'date_too_late' => array(
-			'description' => __( "Date is later than maximum limit", 'contact-form-7' ),
-			'default' => __( "This field has a too late date.", 'contact-form-7' ),
+			'description' => __( 'Date is later than maximum limit', 'contact-form-7' ),
+			'default' => __( 'This field has a too late date.', 'contact-form-7' ),
 		),
 	) );
 }

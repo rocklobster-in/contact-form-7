@@ -852,7 +852,7 @@ class WPCF7_HTMLFormatter {
 			$paragraph = preg_replace( '/\s*\n\s*/', "<br />\n", $paragraph );
 		}
 
-		$paragraph = preg_replace( '/[ ]+/', " ", $paragraph );
+		$paragraph = preg_replace( '/[ ]+/', ' ', $paragraph );
 
 		return $paragraph;
 	}

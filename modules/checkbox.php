@@ -216,7 +216,7 @@ function wpcf7_swv_add_checkbox_rules( $schema, $contact_form ) {
 					'field' => $tag->name,
 					'threshold' => 1,
 					'error' => $contact_form->filter_message(
-						__( "Too many items are selected.", 'contact-form-7' )
+						__( 'Too many items are selected.', 'contact-form-7' )
 					),
 				) )
 			);
@@ -297,7 +297,7 @@ function wpcf7_swv_add_checkbox_enum_rules( $schema, $contact_form ) {
 				'field' => $field,
 				'accept' => array_values( $field_values ),
 				'error' => $contact_form->filter_message(
-					__( "Undefined value was submitted through this field.", 'contact-form-7' )
+					__( 'Undefined value was submitted through this field.', 'contact-form-7' )
 				),
 			) )
 		);
