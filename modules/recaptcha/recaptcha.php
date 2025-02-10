@@ -56,9 +56,7 @@ function wpcf7_recaptcha_enqueue_scripts() {
 		array( 'in_footer' => true )
 	);
 
-	$assets = include(
-		wpcf7_plugin_path( 'modules/recaptcha/index.asset.php' )
-	);
+	$assets = include wpcf7_plugin_path( 'modules/recaptcha/index.asset.php' );
 
 	$assets = wp_parse_args( $assets, array(
 		'dependencies' => array(),

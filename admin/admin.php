@@ -127,9 +127,7 @@ function wpcf7_admin_enqueue_scripts( $hook_suffix ) {
 		);
 	}
 
-	$assets = include(
-		wpcf7_plugin_path( 'admin/includes/js/index.asset.php' )
-	);
+	$assets = include wpcf7_plugin_path( 'admin/includes/js/index.asset.php' );
 
 	$assets = wp_parse_args( $assets, array(
 		'dependencies' => array(),

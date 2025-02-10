@@ -17,7 +17,7 @@ function wpcf7_l10n() {
 		return $l10n;
 	}
 
-	require_once( ABSPATH . 'wp-admin/includes/translation-install.php' );
+	require_once ABSPATH . 'wp-admin/includes/translation-install.php';
 
 	$api = translations_api( 'plugins', array(
 		'slug' => 'contact-form-7',
