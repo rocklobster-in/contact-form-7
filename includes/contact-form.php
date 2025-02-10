@@ -94,7 +94,7 @@ class WPCF7_ContactForm {
 
 		$objs = array();
 
-		foreach ( (array) $posts as $post ) {
+		foreach ( $posts as $post ) {
 			$objs[] = new self( $post );
 		}
 

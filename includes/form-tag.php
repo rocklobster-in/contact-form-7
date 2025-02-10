@@ -177,7 +177,7 @@ class WPCF7_FormTag implements ArrayAccess {
 
 		$matches_a = $this->get_all_match_options( '%^([0-9]*)/[0-9]*$%' );
 
-		foreach ( (array) $matches_a as $matches ) {
+		foreach ( $matches_a as $matches ) {
 			if ( isset( $matches[1] ) and '' !== $matches[1] ) {
 				return $matches[1];
 			}
@@ -204,7 +204,7 @@ class WPCF7_FormTag implements ArrayAccess {
 			'%^(?:[0-9]*x?[0-9]*)?/([0-9]+)$%'
 		);
 
-		foreach ( (array) $matches_a as $matches ) {
+		foreach ( $matches_a as $matches ) {
 			if ( isset( $matches[1] ) and '' !== $matches[1] ) {
 				return $matches[1];
 			}
@@ -248,7 +248,7 @@ class WPCF7_FormTag implements ArrayAccess {
 			'%^([0-9]*)x([0-9]*)(?:/[0-9]+)?$%'
 		);
 
-		foreach ( (array) $matches_a as $matches ) {
+		foreach ( $matches_a as $matches ) {
 			if ( isset( $matches[1] ) and '' !== $matches[1] ) {
 				return $matches[1];
 			}
@@ -275,7 +275,7 @@ class WPCF7_FormTag implements ArrayAccess {
 			'%^([0-9]*)x([0-9]*)(?:/[0-9]+)?$%'
 		);
 
-		foreach ( (array) $matches_a as $matches ) {
+		foreach ( $matches_a as $matches ) {
 			if ( isset( $matches[2] ) and '' !== $matches[2] ) {
 				return $matches[2];
 			}

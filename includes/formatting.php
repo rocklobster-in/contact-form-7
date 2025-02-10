@@ -309,7 +309,7 @@ function wpcf7_antiscript_file_name( $filename ) {
 	$filename = array_shift( $parts );
 	$extension = array_pop( $parts );
 
-	foreach ( (array) $parts as $part ) {
+	foreach ( $parts as $part ) {
 		if ( preg_match( $script_pattern, $part ) ) {
 			$filename .= '.' . $part . '_';
 		} else {

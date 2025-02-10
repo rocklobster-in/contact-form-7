@@ -157,7 +157,7 @@ function wpcf7_flat_join( $input, $options = '' ) {
 	$input = wpcf7_array_flatten( $input );
 	$output = array();
 
-	foreach ( (array) $input as $value ) {
+	foreach ( $input as $value ) {
 		if ( is_scalar( $value ) ) {
 			$output[] = trim( (string) $value );
 		}
