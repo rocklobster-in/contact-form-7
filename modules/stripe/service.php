@@ -142,14 +142,14 @@ class WPCF7_Stripe extends WPCF7_Service {
 					esc_html( __( "Error", 'contact-form-7' ) ),
 					esc_html( __( "Invalid key values.", 'contact-form-7' ) )
 				),
-				'type=error'
+				array( 'type' => 'error' )
 			);
 		}
 
 		if ( 'success' === $message ) {
 			wp_admin_notice(
 				esc_html( __( "Settings saved.", 'contact-form-7' ) ),
-				'type=success'
+				array( 'type' => 'success' )
 			);
 		}
 	}

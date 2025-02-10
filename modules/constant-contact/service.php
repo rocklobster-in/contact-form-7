@@ -343,7 +343,7 @@ class WPCF7_ConstantContact extends WPCF7_Service_OAuth2 {
 			case 'success':
 				wp_admin_notice(
 					esc_html( __( "Connection established.", 'contact-form-7' ) ),
-					'type=success'
+					array( 'type' => 'success' )
 				);
 
 				break;
@@ -354,14 +354,14 @@ class WPCF7_ConstantContact extends WPCF7_Service_OAuth2 {
 						esc_html( __( "Error", 'contact-form-7' ) ),
 						esc_html( __( "Failed to establish connection. Please double-check your configuration.", 'contact-form-7' ) )
 					),
-					'type=error'
+					array( 'type' => 'error' )
 				);
 
 				break;
 			case 'updated':
 				wp_admin_notice(
 					esc_html( __( "Configuration updated.", 'contact-form-7' ) ),
-					'type=success'
+					array( 'type' => 'success' )
 				);
 
 				break;

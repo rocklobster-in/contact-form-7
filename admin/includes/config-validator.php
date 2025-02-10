@@ -53,7 +53,7 @@ function wpcf7_admin_warnings_bulk_cv( $page, $action, $object ) {
 			esc_html( $message ),
 			$link
 		),
-		'type=warning'
+		array( 'type' => 'warning' )
 	);
 }
 

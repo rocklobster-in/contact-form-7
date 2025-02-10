@@ -416,6 +416,6 @@ function wpcf7_file_display_warning_message( $page, $action, $object ) {
 			$uploads_dir
 		);
 
-		wp_admin_notice( esc_html( $message ), 'type=warning' );
+		wp_admin_notice( esc_html( $message ), array( 'type' => 'warning' ) );
 	}
 }
