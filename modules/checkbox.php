@@ -137,11 +137,11 @@ function wpcf7_checkbox_form_tag_handler( $tag ) {
 		}
 
 		if ( false !== $tabindex and 0 < $tabindex ) {
-			$tabindex += 1;
+			++$tabindex;
 		}
 
 		$class = 'wpcf7-list-item';
-		$count += 1;
+		++$count;
 
 		if ( 1 === $count ) {
 			$class .= ' first';

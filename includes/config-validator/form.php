@@ -116,12 +116,12 @@ trait WPCF7_ConfigValidator_Form {
 						$fields_count += count( $tag->values );
 
 						if ( $tag->has_option( 'free_text' ) ) {
-							$fields_count += 1;
+							++$fields_count;
 						}
 					} elseif ( $is_zero_controls_container ) {
 						$fields_count += 0;
 					} elseif ( ! empty( $tag->name ) ) {
-						$fields_count += 1;
+						++$fields_count;
 					}
 
 					if ( 1 < $fields_count ) {

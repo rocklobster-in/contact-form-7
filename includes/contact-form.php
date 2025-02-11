@@ -183,7 +183,7 @@ class WPCF7_ContactForm {
 	private static function generate_unit_tag( $id = 0 ) {
 		static $global_count = 0;
 
-		$global_count += 1;
+		++$global_count;
 
 		if ( in_the_loop() ) {
 			$unit_tag = sprintf( 'wpcf7-f%1$d-p%2$d-o%3$d',
@@ -1162,7 +1162,7 @@ class WPCF7_ContactForm {
 
 				if ( ! $max or $count < (int) $max ) {
 					$values[] = trim( $matches[2] );
-					$count += 1;
+					++$count;
 				}
 			}
 		}

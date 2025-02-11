@@ -343,7 +343,7 @@ function wpcf7_load_contact_form_admin() {
 				wp_die( __( "Error in deleting.", 'contact-form-7' ) );
 			}
 
-			$deleted += 1;
+			++$deleted;
 		}
 
 		$query = array();
