@@ -36,7 +36,7 @@ class WPCF7_Integration {
 	 */
 	public static function get_instance() {
 		if ( empty( self::$instance ) ) {
-			self::$instance = new self;
+			self::$instance = new self();
 			self::$instance->categories = self::get_builtin_categories();
 		}
 

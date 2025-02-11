@@ -91,7 +91,7 @@ function wpcf7_constant_contact_submit( $contact_form, $result ) {
 		return;
 	}
 
-	$request_builder = new $request_builder_class_name;
+	$request_builder = new $request_builder_class_name();
 	$request_builder->build( $submission );
 
 	if ( ! $request_builder->is_valid() ) {

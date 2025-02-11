@@ -17,7 +17,7 @@ class WPCF7_TagGenerator {
 	 */
 	public static function get_instance() {
 		if ( empty( self::$instance ) ) {
-			self::$instance = new self;
+			self::$instance = new self();
 		}
 
 		return self::$instance;

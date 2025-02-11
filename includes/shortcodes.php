@@ -41,7 +41,7 @@ class WPCF7_ShortcodeManager {
 			'WPCF7_FormTagsManager::get_instance' );
 
 		self::$form_tags_manager = WPCF7_FormTagsManager::get_instance();
-		return new self;
+		return new self();
 	}
 
 	public function get_scanned_tags() {
