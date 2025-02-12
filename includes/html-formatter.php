@@ -484,16 +484,16 @@ class WPCF7_HTMLFormatter {
 		// Descendant can contain ancestors.
 		static $nesting_families = array(
 			array(
-				'ancestors' => array( 'dl', ),
-				'descendants' => array( 'dd', 'dt', ),
+				'ancestors' => array( 'dl' ),
+				'descendants' => array( 'dd', 'dt' ),
 			),
 			array(
-				'ancestors' => array( 'ol', 'ul', 'menu', ),
-				'descendants' => array( 'li', ),
+				'ancestors' => array( 'ol', 'ul', 'menu' ),
+				'descendants' => array( 'li' ),
 			),
 			array(
-				'ancestors' => array( 'table', ),
-				'descendants' => array( 'td', 'th', 'tr', 'thead', 'tbody', 'tfoot', ),
+				'ancestors' => array( 'table' ),
+				'descendants' => array( 'td', 'th', 'tr', 'thead', 'tbody', 'tfoot' ),
 			),
 		);
 
