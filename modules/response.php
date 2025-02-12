@@ -1,7 +1,7 @@
 <?php
 /**
-** A base module for [response]
-**/
+ * A base module for [response]
+ */
 
 /* form_tag handler */
 

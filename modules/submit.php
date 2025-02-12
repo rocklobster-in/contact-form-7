@@ -1,7 +1,7 @@
 <?php
 /**
-** A base module for [submit]
-**/
+ * A base module for [submit]
+ */
 
 /* form_tag handler */
 

@@ -1,7 +1,7 @@
 <?php
 /**
-** A base module for [file] and [file*]
-**/
+ * A base module for [file] and [file*]
+ */
 
 /* form_tag handler */
 

@@ -1,7 +1,7 @@
 <?php
 /**
-** A base module for [textarea] and [textarea*]
-**/
+ * A base module for [textarea] and [textarea*]
+ */
 
 /* form_tag handler */
 

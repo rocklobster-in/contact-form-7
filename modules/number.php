@@ -1,9 +1,9 @@
 <?php
 /**
-** A base module for the following types of tags:
-** 	[number] and [number*]		# Number
-** 	[range] and [range*]		# Range
-**/
+ * A base module for the following types of tags:
+ *      [number] and [number*]          # Number
+ *      [range] and [range*]            # Range
+ */
 
 /* form_tag handler */
 

@@ -1,11 +1,11 @@
 <?php
 /**
-** A base module for the following types of tags:
-** 	[text] and [text*]		# Single-line text
-** 	[email] and [email*]	# Email address
-** 	[url] and [url*]		# URL
-** 	[tel] and [tel*]		# Telephone number
-**/
+ * A base module for the following types of tags:
+ *      [text] and [text*]              # Single-line text
+ *      [email] and [email*]            # Email address
+ *      [url] and [url*]                # URL
+ *      [tel] and [tel*]                # Telephone number
+ */
 
 /* form_tag handler */
 

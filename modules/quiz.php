@@ -1,7 +1,7 @@
 <?php
 /**
-** A base module for [quiz]
-**/
+ * A base module for [quiz]
+ */
 
 /* form_tag handler */
 

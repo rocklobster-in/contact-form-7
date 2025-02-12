@@ -1,7 +1,7 @@
 <?php
 /**
-** A base module for [select] and [select*]
-**/
+ * A base module for [select] and [select*]
+ */
 
 /* form_tag handler */
 

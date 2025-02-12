@@ -1,7 +1,7 @@
 <?php
 /**
-** A base module for [checkbox], [checkbox*], and [radio]
-**/
+ * A base module for [checkbox], [checkbox*], and [radio]
+ */
 
 /* form_tag handler */
 

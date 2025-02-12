@@ -1,7 +1,7 @@
 <?php
 /**
-** A base module for [captchac] and [captchar]
-**/
+ * A base module for [captchac] and [captchar]
+ */
 
 /* form_tag handler */
 
