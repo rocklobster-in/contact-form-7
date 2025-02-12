@@ -34,9 +34,7 @@ function wpcf7_control_init() {
 add_action(
 	'wp_enqueue_scripts',
 	static function () {
-		$assets = include(
-			wpcf7_plugin_path( 'includes/js/index.asset.php' )
-		);
+		$assets = include wpcf7_plugin_path( 'includes/js/index.asset.php' );
 
 		$assets = wp_parse_args( $assets, array(
 			'dependencies' => array(),
