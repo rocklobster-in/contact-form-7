@@ -319,7 +319,7 @@ class WPCF7_ConstantContact extends WPCF7_Service_OAuth2 {
 		}
 
 		foreach ( (array) $selection as $key => $ids_or_names ) {
-			foreach( $contact_lists as $list_id => $list ) {
+			foreach ( $contact_lists as $list_id => $list ) {
 				if ( in_array( $list['list_id'], (array) $ids_or_names, true )
 				or in_array( $list['name'], (array) $ids_or_names, true ) ) {
 					$contact_lists[$list_id]['selected'][$key] = true;
