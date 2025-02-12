@@ -119,7 +119,7 @@ class WPCF7_ContactForm {
 		}
 
 		$callback = static function ( $options ) {
-			$contact_form = new self;
+			$contact_form = new self();
 			$contact_form->title = $options['title'];
 			$contact_form->locale = $options['locale'];
 
@@ -1313,7 +1313,7 @@ class WPCF7_ContactForm {
 	 * @return WPCF7_ContactForm New contact form object.
 	 */
 	public function copy() {
-		$new = new self;
+		$new = new self();
 		$new->title = $this->title . '_copy';
 		$new->locale = $this->locale;
 		$new->properties = $this->properties;

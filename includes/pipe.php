@@ -127,7 +127,7 @@ trait WPCF7_PipesHolder {
 			return $this->pipes[$field_name];
 		}
 
-		$result = new WPCF7_Pipes;
+		$result = new WPCF7_Pipes();
 
 		$tags = $this->scan_form_tags( array(
 			'name' => $field_name,

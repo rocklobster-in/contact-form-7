@@ -3,7 +3,7 @@
 add_action(
 	'rest_api_init',
 	static function () {
-		$controller = new WPCF7_REST_Controller;
+		$controller = new WPCF7_REST_Controller();
 		$controller->register_routes();
 	},
 	10, 0
