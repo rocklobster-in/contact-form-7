@@ -396,7 +396,7 @@ trait WPCF7_ConfigValidator_Mail {
 				} elseif ( $this->detect_file_not_in_content_dir( $section, $line ) ) {
 					$files_out_of_content[] = $line;
 				} else {
-					$total_size += (int) @filesize( $path );
+					$total_size += (int) @filesize( path_join( WP_CONTENT_DIR, $line ) );
 				}
 			}
 		}
