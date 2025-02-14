@@ -266,5 +266,5 @@ function wpcf7_admin_warnings_recaptcha_v2_v3( $page, $action, $object ) {
 		)
 	);
 
-	wp_admin_notice( $message, 'type=warning' );
+	wp_admin_notice( $message, array( 'type' => 'warning' ) );
 }

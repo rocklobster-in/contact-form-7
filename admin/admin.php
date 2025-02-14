@@ -567,14 +567,14 @@ function wpcf7_admin_updated_message( $page, $action, $object ) {
 	}
 
 	if ( ! empty( $message ) ) {
-		wp_admin_notice( esc_html( $message ), 'type=success' );
+		wp_admin_notice( esc_html( $message ), array( 'type' => 'success' ) );
 	}
 
 	if ( 'failed' === $_REQUEST['message'] ) {
 		$message =
 			__( "There was an error saving the contact form.", 'contact-form-7' );
 
-		wp_admin_notice( esc_html( $message ), 'type=error' );
+		wp_admin_notice( esc_html( $message ), array( 'type' => 'error' ) );
 	}
 
 	if ( 'validated' === $_REQUEST['message'] ) {
@@ -592,11 +592,11 @@ function wpcf7_admin_updated_message( $page, $action, $object ) {
 				number_format_i18n( $count_invalid )
 			);
 
-			wp_admin_notice( esc_html( $message ), 'type=warning' );
+			wp_admin_notice( esc_html( $message ), array( 'type' => 'warning' ) );
 		} else {
 			$message = __( "Configuration validation completed. No invalid contact form was found.", 'contact-form-7' );
 
-			wp_admin_notice( esc_html( $message ), 'type=success' );
+			wp_admin_notice( esc_html( $message ), array( 'type' => 'success' ) );
 		}
 	}
 }
@@ -638,7 +638,7 @@ function wpcf7_old_wp_version_error( $page, $action, $object ) {
 			admin_url( 'update-core.php' )
 		);
 
-		wp_admin_notice( $message, 'type=warning' );
+		wp_admin_notice( $message, array( 'type' => 'warning' ) );
 	}
 }
 
@@ -655,7 +655,7 @@ function wpcf7_not_allowed_to_edit( $page, $action, $object ) {
 	if ( ! current_user_can( 'wpcf7_edit_contact_form', $contact_form->id() ) ) {
 		$message = __( "You are not allowed to edit this contact form.", 'contact-form-7' );
 
-		wp_admin_notice( esc_html( $message ), 'type=warning' );
+		wp_admin_notice( esc_html( $message ), array( 'type' => 'warning' ) );
 	}
 }
 
@@ -666,7 +666,7 @@ function wpcf7_outdated_php_warning( $page, $action, $object ) {
 	if ( version_compare( PHP_VERSION, '7.4', '<' ) ) {
 		$message = __( "The next major release of Contact Form 7 will discontinue support for outdated PHP versions. If you don't upgrade PHP, you will not be able to upgrade the plugin.", 'contact-form-7' );
 
-		wp_admin_notice( esc_html( $message ), 'type=warning' );
+		wp_admin_notice( esc_html( $message ), array( 'type' => 'warning' ) );
 	}
 }
 
@@ -686,6 +686,6 @@ function wpcf7_ctct_deprecated_warning( $page, $action, $object ) {
 			array( 'http', 'https' )
 		);
 
-		wp_admin_notice( $message, 'type=warning' );
+		wp_admin_notice( $message, array( 'type' => 'warning' ) );
 	}
 }
