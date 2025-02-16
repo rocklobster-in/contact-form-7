@@ -268,3 +268,25 @@ function wpcf7_admin_warnings_recaptcha_v2_v3( $page, $action, $object ) {
 
 	wp_admin_notice( $message, array( 'type' => 'warning' ) );
 }
+
+
+add_action( 'wpcf7_admin_warnings', 'wpcf7_captcha_future_warning', 10, 3 );
+
+function wpcf7_captcha_future_warning( $page, $action, $object ) {
+	$service = WPCF7_RECAPTCHA::get_instance();
+
+	if ( ! $service->is_active() ) {
+		return;
+	}
+
+	$message = wp_kses(
+		__( '<strong>Attention reCAPTCHA users:</strong> Google has a plan to make all reCAPTCHA users migrate to reCAPTCHA Enterprise. This means a cost increase for many of you. Learn about <a href="https://contactform7.com/2025/02/10/our-future-plans-for-captchas/">our future plans for CAPTCHAs</a> and the options you have.', 'contact-form-7' ),
+		array(
+			'a' => array( 'href' => true ),
+			'strong' => array(),
+		),
+		array( 'http', 'https' )
+	);
+
+	wp_admin_notice( $message, array( 'type' => 'warning' ) );
+}
