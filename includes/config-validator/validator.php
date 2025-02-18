@@ -153,7 +153,7 @@ class WPCF7_ConfigValidator {
 					continue;
 				}
 
-				$count += 1;
+				++$count;
 			}
 		}
 

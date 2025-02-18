@@ -371,7 +371,7 @@ function wpcf7_cleanup_upload_files( $seconds = 60, $max = 100 ) {
 			}
 
 			wpcf7_rmdir_p( path_join( $dir, $file ) );
-			$count += 1;
+			++$count;
 
 			if ( $max <= $count ) {
 				break;
