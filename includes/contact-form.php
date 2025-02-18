@@ -539,7 +539,7 @@ class WPCF7_ContactForm {
 		if ( $this->is_true( 'subscribers_only' )
 		and ! current_user_can( 'wpcf7_submit', $this->id() ) ) {
 			$notice = __(
-				"This contact form is available only for logged in users.",
+				'This contact form is available only for logged in users.',
 				'contact-form-7'
 			);
 
@@ -571,7 +571,7 @@ class WPCF7_ContactForm {
 			return sprintf(
 				'<p class="wpcf7-invalid-action-url"><strong>%1$s</strong> %2$s</p>',
 				esc_html( __( 'Error:', 'contact-form-7' ) ),
-				esc_html( __( "Invalid action URL is detected.", 'contact-form-7' ) )
+				esc_html( __( 'Invalid action URL is detected.', 'contact-form-7' ) )
 			);
 		}
 
@@ -1062,7 +1062,7 @@ class WPCF7_ContactForm {
 				'contact_form_id' => $this->id(),
 				'status' => 'error',
 				'message' => __(
-					"This contact form is available only for logged in users.",
+					'This contact form is available only for logged in users.',
 					'contact-form-7'
 				),
 			);

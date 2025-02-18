@@ -78,7 +78,7 @@ function wpcf7_editor_panel_form( $post ) {
 		__( 'https://contactform7.com/editing-form-template/', 'contact-form-7' ),
 		__( 'Editing form template', 'contact-form-7' ) );
 	/* translators: %s: link labeled 'Editing form template' */
-	$description = __( "You can edit the form template here. For details, see %s.", 'contact-form-7' );
+	$description = __( 'You can edit the form template here. For details, see %s.', 'contact-form-7' );
 	$description = sprintf( esc_html( $description ), $desc_link );
 ?>
 
@@ -157,7 +157,7 @@ function wpcf7_editor_box_mail( $post, $options = '' ) {
 
 		echo sprintf(
 			'<p class="description">%s</p>',
-			esc_html( __( "Mail (2) is an additional mail template often used as an autoresponder.", 'contact-form-7' ) )
+			esc_html( __( 'Mail (2) is an additional mail template often used as an autoresponder.', 'contact-form-7' ) )
 		);
 	}
 ?>
@@ -169,12 +169,12 @@ function wpcf7_editor_box_mail( $post, $options = '' ) {
 		__( 'https://contactform7.com/setting-up-mail/', 'contact-form-7' ),
 		__( 'Setting up mail', 'contact-form-7' ) );
 	/* translators: %s: link labeled 'Setting up mail' */
-	$description = __( "You can edit the mail template here. For details, see %s.", 'contact-form-7' );
+	$description = __( 'You can edit the mail template here. For details, see %s.', 'contact-form-7' );
 	$description = sprintf( esc_html( $description ), $desc_link );
 	echo $description;
 	echo '<br />';
 
-	echo esc_html( __( "In the following fields, you can use these mail-tags:",
+	echo esc_html( __( 'In the following fields, you can use these mail-tags:',
 		'contact-form-7' ) );
 	echo '<br />';
 	$post->suggest_mail_tags( $options['name'] );
@@ -251,7 +251,7 @@ function wpcf7_editor_panel_messages( $post ) {
 		__( 'https://contactform7.com/editing-messages/', 'contact-form-7' ),
 		__( 'Editing messages', 'contact-form-7' ) );
 	/* translators: %s: link labeled 'Editing messages' */
-	$description = __( "You can edit messages used in various situations here. For details, see %s.", 'contact-form-7' );
+	$description = __( 'You can edit messages used in various situations here. For details, see %s.', 'contact-form-7' );
 	$description = sprintf( esc_html( $description ), $desc_link );
 
 	$messages = wpcf7_messages();
@@ -289,7 +289,7 @@ function wpcf7_editor_panel_additional_settings( $post ) {
 		__( 'https://contactform7.com/additional-settings/', 'contact-form-7' ),
 		__( 'Additional settings', 'contact-form-7' ) );
 	/* translators: %s: link labeled 'Additional settings' */
-	$description = __( "You can add customization code snippets here. For details, see %s.", 'contact-form-7' );
+	$description = __( 'You can add customization code snippets here. For details, see %s.', 'contact-form-7' );
 	$description = sprintf( esc_html( $description ), $desc_link );
 
 ?>

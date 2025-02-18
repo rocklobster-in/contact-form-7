@@ -13,7 +13,7 @@ trait WPCF7_ConfigValidator_Form {
 			if ( $this->detect_multiple_controls_in_label( $section, $form ) ) {
 				$this->add_error( $section, 'multiple_controls_in_label',
 					array(
-						'message' => __( "Multiple form controls are in a single label element.", 'contact-form-7' ),
+						'message' => __( 'Multiple form controls are in a single label element.', 'contact-form-7' ),
 					)
 				);
 			} else {
@@ -29,7 +29,7 @@ trait WPCF7_ConfigValidator_Form {
 					array(
 						'message' =>
 							/* translators: %names%: a list of form control names */
-							__( "Unavailable names (%names%) are used for form controls.", 'contact-form-7' ),
+							__( 'Unavailable names (%names%) are used for form controls.', 'contact-form-7' ),
 						'params' => array( 'names' => implode( ', ', $ng_names ) ),
 					)
 				);
@@ -42,7 +42,7 @@ trait WPCF7_ConfigValidator_Form {
 			if ( $this->detect_unavailable_html_elements( $section, $form ) ) {
 				$this->add_error( $section, 'unavailable_html_elements',
 					array(
-						'message' => __( "Unavailable HTML elements are used in the form template.", 'contact-form-7' ),
+						'message' => __( 'Unavailable HTML elements are used in the form template.', 'contact-form-7' ),
 					)
 				);
 			} else {
@@ -54,7 +54,7 @@ trait WPCF7_ConfigValidator_Form {
 			if ( $this->detect_dots_in_names( $section, $form ) ) {
 				$this->add_error( $section, 'dots_in_names',
 					array(
-						'message' => __( "Dots are used in form-tag names.", 'contact-form-7' ),
+						'message' => __( 'Dots are used in form-tag names.', 'contact-form-7' ),
 					)
 				);
 			} else {
@@ -66,7 +66,7 @@ trait WPCF7_ConfigValidator_Form {
 			if ( $this->detect_colons_in_names( $section, $form ) ) {
 				$this->add_error( $section, 'colons_in_names',
 					array(
-						'message' => __( "Colons are used in form-tag names.", 'contact-form-7' ),
+						'message' => __( 'Colons are used in form-tag names.', 'contact-form-7' ),
 					)
 				);
 			} else {
@@ -78,7 +78,7 @@ trait WPCF7_ConfigValidator_Form {
 			if ( $this->detect_upload_filesize_overlimit( $section, $form ) ) {
 				$this->add_error( $section, 'upload_filesize_overlimit',
 					array(
-						'message' => __( "Uploadable file size exceeds PHP’s maximum acceptable size.", 'contact-form-7' ),
+						'message' => __( 'Uploadable file size exceeds PHP’s maximum acceptable size.', 'contact-form-7' ),
 					)
 				);
 			} else {

@@ -258,8 +258,8 @@ class WPCF7_RECAPTCHA extends WPCF7_Service {
 			wp_admin_notice(
 				sprintf(
 					'<strong>%1$s</strong>: %2$s',
-					esc_html( __( "Error", 'contact-form-7' ) ),
-					esc_html( __( "Invalid key values.", 'contact-form-7' ) )
+					esc_html( __( 'Error', 'contact-form-7' ) ),
+					esc_html( __( 'Invalid key values.', 'contact-form-7' ) )
 				),
 				array( 'type' => 'error' )
 			);
@@ -277,7 +277,7 @@ class WPCF7_RECAPTCHA extends WPCF7_Service {
 	public function display( $action = '' ) {
 		echo sprintf(
 			'<p>%s</p>',
-			esc_html( __( "reCAPTCHA protects you against spam and other types of automated abuse. With Contact Form 7&#8217;s reCAPTCHA integration module, you can block abusive form submissions by spam bots.", 'contact-form-7' ) )
+			esc_html( __( 'reCAPTCHA protects you against spam and other types of automated abuse. With Contact Form 7&#8217;s reCAPTCHA integration module, you can block abusive form submissions by spam bots.', 'contact-form-7' ) )
 		);
 
 		echo sprintf(
@@ -291,7 +291,7 @@ class WPCF7_RECAPTCHA extends WPCF7_Service {
 		if ( $this->is_active() ) {
 			echo sprintf(
 				'<p class="dashicons-before dashicons-yes">%s</p>',
-				esc_html( __( "reCAPTCHA is active on this site.", 'contact-form-7' ) )
+				esc_html( __( 'reCAPTCHA is active on this site.', 'contact-form-7' ) )
 			);
 		}
 

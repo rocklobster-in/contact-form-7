@@ -48,7 +48,7 @@ function wpcf7_convert_to_cpt( $new_ver, $old_ver ) {
 
 	$old_rows = array();
 
-	$table_name = $wpdb->prefix . "contact_form_7";
+	$table_name = $wpdb->prefix . 'contact_form_7';
 
 	if ( $wpdb->get_var( "SHOW TABLES LIKE '$table_name'" ) ) {
 		$old_rows = $wpdb->get_results( "SELECT * FROM $table_name" );
@@ -64,7 +64,7 @@ function wpcf7_convert_to_cpt( $new_ver, $old_ver ) {
 
 	foreach ( (array) $old_rows as $row ) {
 		$q = "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = '_old_cf7_unit_id'"
-			. $wpdb->prepare( " AND meta_value = %d", $row->cf7_unit_id );
+			. $wpdb->prepare( ' AND meta_value = %d', $row->cf7_unit_id );
 
 		if ( $wpdb->get_var( $q ) ) {
 			continue;

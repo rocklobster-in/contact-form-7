@@ -113,7 +113,7 @@ if ( $post ) :
 		if ( $shortcode = $post->shortcode() ) {
 			echo sprintf(
 				'<p class="description"><label for="wpcf7-shortcode">%1$s</label> <span class="shortcode wp-ui-highlight"><input %2$s /></span></p>',
-				esc_html( __( "Copy this shortcode and paste it into your post, page, or text widget content:", 'contact-form-7' ) ),
+				esc_html( __( 'Copy this shortcode and paste it into your post, page, or text widget content:', 'contact-form-7' ) ),
 				wpcf7_format_atts( array(
 					'type' => 'text',
 					'id' => 'wpcf7-shortcode',
@@ -128,7 +128,7 @@ if ( $post ) :
 		if ( $shortcode = $post->shortcode( array( 'use_old_format' => true ) ) ) {
 			echo sprintf(
 				'<p class="description"><label for="wpcf7-shortcode-old">%1$s</label> <span class="shortcode old"><input %2$s /></span></p>',
-				esc_html( __( "You can also use this old-style shortcode:", 'contact-form-7' ) ),
+				esc_html( __( 'You can also use this old-style shortcode:', 'contact-form-7' ) ),
 				wpcf7_format_atts( array(
 					'type' => 'text',
 					'id' => 'wpcf7-shortcode-old',
@@ -229,9 +229,9 @@ if ( $post ) :
 ?>
 
 <section id="informationdiv" class="postbox">
-<h2><?php echo esc_html( __( "Do you need help?", 'contact-form-7' ) ); ?></h2>
+<h2><?php echo esc_html( __( 'Do you need help?', 'contact-form-7' ) ); ?></h2>
 <div class="inside">
-	<p><?php echo esc_html( __( "Here are some available options to help solve your problems.", 'contact-form-7' ) ); ?></p>
+	<p><?php echo esc_html( __( 'Here are some available options to help solve your problems.', 'contact-form-7' ) ); ?></p>
 	<ol>
 		<li><?php echo sprintf(
 			/* translators: 1: FAQ, 2: Docs ("FAQ & Docs") */

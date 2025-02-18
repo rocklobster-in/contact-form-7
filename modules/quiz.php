@@ -176,9 +176,9 @@ function wpcf7_quiz_messages( $messages ) {
 	$messages = array_merge( $messages, array(
 		'quiz_answer_not_correct' => array(
 			'description' =>
-				__( "Sender does not enter the correct answer to the quiz", 'contact-form-7' ),
+				__( 'Sender does not enter the correct answer to the quiz', 'contact-form-7' ),
 			'default' =>
-				__( "The answer to the quiz is incorrect.", 'contact-form-7' ),
+				__( 'The answer to the quiz is incorrect.', 'contact-form-7' ),
 		),
 	) );
 
@@ -253,7 +253,7 @@ function wpcf7_tag_generator_quiz( $contact_form, $options ) {
 				wpcf7_format_atts( array(
 					'id' => $tgg->ref( 'selectable-values-description' ),
 				) ),
-				esc_html( __( "One pipe-separated question-answer pair (question|answer) per line.", 'contact-form-7' ) )
+				esc_html( __( 'One pipe-separated question-answer pair (question|answer) per line.', 'contact-form-7' ) )
 			);
 		?>
 		<br />
@@ -266,7 +266,7 @@ function wpcf7_tag_generator_quiz( $contact_form, $options ) {
 					'aria-labelledby' => $tgg->ref( 'selectable-values-legend' ),
 					'aria-describedby' => $tgg->ref( 'selectable-values-description' ),
 				) ),
-				esc_html( __( "The capital of Brazil? | Rio", 'contact-form-7' ) )
+				esc_html( __( 'The capital of Brazil? | Rio', 'contact-form-7' ) )
 			);
 		?>
 	</fieldset>

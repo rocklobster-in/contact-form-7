@@ -93,7 +93,7 @@ function wpcf7_sendinblue_editor_panels( $panels ) {
 		$description = sprintf(
 			esc_html(
 				/* translators: %s: link labeled 'Brevo integration' */
-				__( "You can set up the Brevo integration here. For details, see %s.", 'contact-form-7' )
+				__( 'You can set up the Brevo integration here. For details, see %s.', 'contact-form-7' )
 			),
 			wpcf7_link(
 				__( 'https://contactform7.com/sendinblue-integration/', 'contact-form-7' ),
@@ -134,7 +134,7 @@ function wpcf7_sendinblue_editor_panels( $panels ) {
 		<?php
 
 		echo esc_html(
-			__( "Add form submitters to your contact lists", 'contact-form-7' )
+			__( 'Add form submitters to your contact lists', 'contact-form-7' )
 		);
 
 		?>
@@ -217,7 +217,7 @@ function wpcf7_sendinblue_editor_panels( $panels ) {
 		<?php
 
 		echo esc_html(
-			__( "Send a welcome email to new contacts", 'contact-form-7' )
+			__( 'Send a welcome email to new contacts', 'contact-form-7' )
 		);
 
 		?>

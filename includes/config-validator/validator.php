@@ -226,7 +226,7 @@ class WPCF7_ConfigValidator {
 	 * is not specified.
 	 */
 	public function get_default_message( $code = '' ) {
-		return __( "Configuration error is detected.", 'contact-form-7' );
+		return __( 'Configuration error is detected.', 'contact-form-7' );
 	}
 
 

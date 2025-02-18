@@ -157,7 +157,7 @@ trait WPCF7_ConfigValidator_Mail {
 			if ( $this->detect_maybe_empty( $section, $content ) ) {
 				$this->add_error( $section, 'maybe_empty',
 					array(
-						'message' => __( "There is a possible empty field.", 'contact-form-7' ),
+						'message' => __( 'There is a possible empty field.', 'contact-form-7' ),
 					)
 				);
 			} else {
@@ -177,7 +177,7 @@ trait WPCF7_ConfigValidator_Mail {
 			if ( $this->detect_invalid_mailbox_syntax( $section, $content ) ) {
 				$this->add_error( $section, 'invalid_mailbox_syntax',
 					array(
-						'message' => __( "Invalid mailbox syntax is used.", 'contact-form-7' ),
+						'message' => __( 'Invalid mailbox syntax is used.', 'contact-form-7' ),
 					)
 				);
 			} else {
@@ -195,7 +195,7 @@ trait WPCF7_ConfigValidator_Mail {
 				if ( ! wpcf7_is_email_in_site_domain( $sender ) ) {
 					$this->add_error( $section, 'email_not_in_site_domain',
 						array(
-							'message' => __( "Sender email address does not belong to the site domain.", 'contact-form-7' ),
+							'message' => __( 'Sender email address does not belong to the site domain.', 'contact-form-7' ),
 						)
 					);
 				}
@@ -214,7 +214,7 @@ trait WPCF7_ConfigValidator_Mail {
 			if ( $this->detect_invalid_mailbox_syntax( $section, $content ) ) {
 				$this->add_error( $section, 'invalid_mailbox_syntax',
 					array(
-						'message' => __( "Invalid mailbox syntax is used.", 'contact-form-7' ),
+						'message' => __( 'Invalid mailbox syntax is used.', 'contact-form-7' ),
 					)
 				);
 			} else {
@@ -231,7 +231,7 @@ trait WPCF7_ConfigValidator_Mail {
 				) {
 					$this->add_error( $section, 'unsafe_email_without_protection',
 						array(
-							'message' => __( "Unsafe email config is used without sufficient protection.", 'contact-form-7' ),
+							'message' => __( 'Unsafe email config is used without sufficient protection.', 'contact-form-7' ),
 						)
 					);
 				}
@@ -294,7 +294,7 @@ trait WPCF7_ConfigValidator_Mail {
 			if ( ! empty( $invalid_mail_headers ) ) {
 				$this->add_error( $section, 'invalid_mail_header',
 					array(
-						'message' => __( "There are invalid mail header fields.", 'contact-form-7' ),
+						'message' => __( 'There are invalid mail header fields.', 'contact-form-7' ),
 					)
 				);
 			} else {
@@ -307,7 +307,7 @@ trait WPCF7_ConfigValidator_Mail {
 				foreach ( $invalid_mailbox_fields as $header_name ) {
 					$this->add_error( $section, 'invalid_mailbox_syntax',
 						array(
-							'message' => __( "Invalid mailbox syntax is used in the %name% field.", 'contact-form-7' ),
+							'message' => __( 'Invalid mailbox syntax is used in the %name% field.', 'contact-form-7' ),
 							'params' => array( 'name' => $header_name ),
 						)
 					);
@@ -321,7 +321,7 @@ trait WPCF7_ConfigValidator_Mail {
 			if ( ! empty( $unsafe_email_fields ) ) {
 				$this->add_error( $section, 'unsafe_email_without_protection',
 					array(
-						'message' => __( "Unsafe email config is used without sufficient protection.", 'contact-form-7' ),
+						'message' => __( 'Unsafe email config is used without sufficient protection.', 'contact-form-7' ),
 					)
 				);
 			} else {
@@ -341,7 +341,7 @@ trait WPCF7_ConfigValidator_Mail {
 			if ( $this->detect_maybe_empty( $section, $content ) ) {
 				$this->add_error( $section, 'maybe_empty',
 					array(
-						'message' => __( "There is a possible empty field.", 'contact-form-7' ),
+						'message' => __( 'There is a possible empty field.', 'contact-form-7' ),
 					)
 				);
 			} else {
@@ -406,7 +406,7 @@ trait WPCF7_ConfigValidator_Mail {
 				foreach ( $files_not_found as $line ) {
 					$this->add_error( $section, 'file_not_found',
 						array(
-							'message' => __( "Attachment file does not exist at %path%.", 'contact-form-7' ),
+							'message' => __( 'Attachment file does not exist at %path%.', 'contact-form-7' ),
 							'params' => array( 'path' => $line ),
 						)
 					);
@@ -420,7 +420,7 @@ trait WPCF7_ConfigValidator_Mail {
 			if ( ! empty( $files_out_of_content ) ) {
 				$this->add_error( $section, 'file_not_in_content_dir',
 					array(
-						'message' => __( "It is not allowed to use files outside the wp-content directory.", 'contact-form-7' ),
+						'message' => __( 'It is not allowed to use files outside the wp-content directory.', 'contact-form-7' ),
 					)
 				);
 			} else {
@@ -434,7 +434,7 @@ trait WPCF7_ConfigValidator_Mail {
 			if ( $max < $total_size ) {
 				$this->add_error( $section, 'attachments_overweight',
 					array(
-						'message' => __( "The total size of attachment files is too large.", 'contact-form-7' ),
+						'message' => __( 'The total size of attachment files is too large.', 'contact-form-7' ),
 					)
 				);
 			} else {

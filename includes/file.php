@@ -99,23 +99,23 @@ add_filter(
 function wpcf7_file_messages( $messages ) {
 	return array_merge( $messages, array(
 		'upload_failed' => array(
-			'description' => __( "Uploading a file fails for any reason", 'contact-form-7' ),
-			'default' => __( "There was an unknown error uploading the file.", 'contact-form-7' ),
+			'description' => __( 'Uploading a file fails for any reason', 'contact-form-7' ),
+			'default' => __( 'There was an unknown error uploading the file.', 'contact-form-7' ),
 		),
 
 		'upload_file_type_invalid' => array(
-			'description' => __( "Uploaded file is not allowed for file type", 'contact-form-7' ),
-			'default' => __( "You are not allowed to upload files of this type.", 'contact-form-7' ),
+			'description' => __( 'Uploaded file is not allowed for file type', 'contact-form-7' ),
+			'default' => __( 'You are not allowed to upload files of this type.', 'contact-form-7' ),
 		),
 
 		'upload_file_too_large' => array(
-			'description' => __( "Uploaded file is too large", 'contact-form-7' ),
-			'default' => __( "The uploaded file is too large.", 'contact-form-7' ),
+			'description' => __( 'Uploaded file is too large', 'contact-form-7' ),
+			'default' => __( 'The uploaded file is too large.', 'contact-form-7' ),
 		),
 
 		'upload_failed_php_error' => array(
-			'description' => __( "Uploading a file fails for PHP error", 'contact-form-7' ),
-			'default' => __( "There was an error uploading the file.", 'contact-form-7' ),
+			'description' => __( 'Uploading a file fails for PHP error', 'contact-form-7' ),
+			'default' => __( 'There was an error uploading the file.', 'contact-form-7' ),
 		),
 	) );
 }

@@ -298,7 +298,7 @@ function wpcf7_tag_generator_acceptance( $contact_form, $options ) {
 		<br />
 		<label>
 			<input type="checkbox" data-tag-part="option" data-tag-option="optional" checked="checked" />
-			<?php echo esc_html( __( "This checkbox is optional.", 'contact-form-7' ) ); ?>
+			<?php echo esc_html( __( 'This checkbox is optional.', 'contact-form-7' ) ); ?>
 		</label>
 	</fieldset>
 
