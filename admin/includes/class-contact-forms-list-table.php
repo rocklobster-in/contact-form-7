@@ -7,15 +7,13 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
 class WPCF7_Contact_Form_List_Table extends WP_List_Table {
 
 	public static function define_columns() {
-		$columns = array(
+		return array(
 			'cb' => '<input type="checkbox" />',
 			'title' => __( 'Title', 'contact-form-7' ),
 			'shortcode' => __( 'Shortcode', 'contact-form-7' ),
 			'author' => __( 'Author', 'contact-form-7' ),
 			'date' => __( 'Date', 'contact-form-7' ),
 		);
-
-		return $columns;
 	}
 
 	public function __construct() {
@@ -76,21 +74,17 @@ class WPCF7_Contact_Form_List_Table extends WP_List_Table {
 	}
 
 	protected function get_sortable_columns() {
-		$columns = array(
+		return array(
 			'title' => array( 'title', true ),
 			'author' => array( 'author', false ),
 			'date' => array( 'date', false ),
 		);
-
-		return $columns;
 	}
 
 	protected function get_bulk_actions() {
-		$actions = array(
+		return array(
 			'delete' => __( 'Delete', 'contact-form-7' ),
 		);
-
-		return $actions;
 	}
 
 	protected function column_default( $item, $column_name ) {
@@ -229,7 +223,7 @@ class WPCF7_Contact_Form_List_Table extends WP_List_Table {
 			return '';
 		}
 
-		$t_time = sprintf(
+		return sprintf(
 			/* translators: 1: date, 2: time */
 			__( '%1$s at %2$s', 'contact-form-7' ),
 			/* translators: date format, see https://www.php.net/date */
@@ -237,7 +231,5 @@ class WPCF7_Contact_Form_List_Table extends WP_List_Table {
 			/* translators: time format, see https://www.php.net/date */
 			$datetime->format( __( 'g:i a', 'contact-form-7' ) )
 		);
-
-		return $t_time;
 	}
 }

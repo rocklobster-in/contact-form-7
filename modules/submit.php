@@ -31,9 +31,7 @@ function wpcf7_submit_form_tag_handler( $tag ) {
 
 	$atts = wpcf7_format_atts( $atts );
 
-	$html = sprintf( '<input %1$s />', $atts );
-
-	return $html;
+	return sprintf( '<input %1$s />', $atts );
 }
 
 
@@ -68,7 +66,7 @@ function wpcf7_tag_generator_submit( $contact_form, $options ) {
 	?></h3>
 
 	<p><?php
-		$description = wp_kses(
+		echo wp_kses(
 			$field_types['submit']['description'],
 			array(
 				'a' => array( 'href' => true ),
@@ -76,8 +74,6 @@ function wpcf7_tag_generator_submit( $contact_form, $options ) {
 			),
 			array( 'http', 'https' )
 		);
-
-		echo $description;
 	?></p>
 </header>
 

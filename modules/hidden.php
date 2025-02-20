@@ -31,6 +31,5 @@ function wpcf7_hidden_form_tag_handler( $tag ) {
 	$atts['name'] = $tag->name;
 	$atts = wpcf7_format_atts( $atts );
 
-	$html = sprintf( '<input %s />', $atts );
-	return $html;
+	return sprintf( '<input %s />', $atts );
 }

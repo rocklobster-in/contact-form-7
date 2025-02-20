@@ -516,12 +516,10 @@ function wpcf7_kses_allowed_html( $context = 'form' ) {
  * @return string Filtered text with allowed HTML tags and attributes intact.
  */
 function wpcf7_kses( $input, $context = 'form' ) {
-	$output = wp_kses(
+	return wp_kses(
 		$input,
 		wpcf7_kses_allowed_html( $context )
 	);
-
-	return $output;
 }
 
 

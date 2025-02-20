@@ -253,7 +253,7 @@ function wpcf7_tag_generator_menu( $contact_form, $options ) {
 	?></h3>
 
 	<p><?php
-		$description = wp_kses(
+		echo wp_kses(
 			$field_types['select']['description'],
 			array(
 				'a' => array( 'href' => true ),
@@ -261,8 +261,6 @@ function wpcf7_tag_generator_menu( $contact_form, $options ) {
 			),
 			array( 'http', 'https' )
 		);
-
-		echo $description;
 	?></p>
 </header>
 

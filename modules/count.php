@@ -59,11 +59,9 @@ function wpcf7_count_form_tag_handler( $tag ) {
 	$atts['data-maximum-value'] = $maxlength;
 	$atts['data-minimum-value'] = $minlength;
 
-	$html = sprintf(
+	return sprintf(
 		'<span %1$s>%2$s</span>',
 		wpcf7_format_atts( $atts ),
 		$value
 	);
-
-	return $html;
 }

@@ -446,7 +446,7 @@ class WPCF7_Submission {
 			$tick = $this->posted_data_hash_tick();
 		}
 
-		$hash = wp_hash(
+		return wp_hash(
 			wpcf7_flat_join( array_merge(
 				array(
 					$tick,
@@ -457,8 +457,6 @@ class WPCF7_Submission {
 			) ),
 			'wpcf7_submission'
 		);
-
-		return $hash;
 	}
 
 

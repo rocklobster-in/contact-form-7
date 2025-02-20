@@ -81,14 +81,12 @@ function wpcf7_captchac_form_tag_handler( $tag ) {
 
 	$prefix = substr( $filename, 0, strrpos( $filename, '.' ) );
 
-	$html = sprintf(
+	return sprintf(
 		'<input type="hidden" name="%1$s" value="%2$s" /><img %3$s />',
 		esc_attr( sprintf( '_wpcf7_captcha_challenge_%s', $tag->name ) ),
 		esc_attr( $prefix ),
 		$atts
 	);
-
-	return $html;
 }
 
 function wpcf7_captchar_form_tag_handler( $tag ) {
@@ -145,14 +143,12 @@ function wpcf7_captchar_form_tag_handler( $tag ) {
 	$atts['type'] = 'text';
 	$atts['name'] = $tag->name;
 
-	$html = sprintf(
+	return sprintf(
 		'<span class="wpcf7-form-control-wrap" data-name="%1$s"><input %2$s />%3$s</span>',
 		esc_attr( $tag->name ),
 		wpcf7_format_atts( $atts ),
 		$validation_error
 	);
-
-	return $html;
 }
 
 

@@ -76,15 +76,13 @@ function wpcf7_textarea_form_tag_handler( $tag ) {
 
 	$atts['name'] = $tag->name;
 
-	$html = sprintf(
+	return sprintf(
 		'<span class="wpcf7-form-control-wrap" data-name="%1$s"><textarea %2$s>%3$s</textarea>%4$s</span>',
 		esc_attr( $tag->name ),
 		wpcf7_format_atts( $atts ),
 		esc_textarea( $value ),
 		$validation_error
 	);
-
-	return $html;
 }
 
 
@@ -164,7 +162,7 @@ function wpcf7_tag_generator_textarea( $contact_form, $options ) {
 	?></h3>
 
 	<p><?php
-		$description = wp_kses(
+		echo wp_kses(
 			$field_types['textarea']['description'],
 			array(
 				'a' => array( 'href' => true ),
@@ -172,8 +170,6 @@ function wpcf7_tag_generator_textarea( $contact_form, $options ) {
 			),
 			array( 'http', 'https' )
 		);
-
-		echo $description;
 	?></p>
 </header>
 
