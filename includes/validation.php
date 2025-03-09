@@ -47,10 +47,9 @@ class WPCF7_Validation implements ArrayAccess {
 		}
 
 		if ( $this->is_valid( $name ) ) {
-			$id = $tag->get_id_option();
+			$id = (string) $tag->get_option( 'id', 'id', true );
 
-			if ( empty( $id )
-			or ! wpcf7_is_name( $id ) ) {
+			if ( ! wpcf7_is_name( $id ) or str_starts_with( $id, 'wpcf7' ) ) {
 				$id = null;
 			}
 
