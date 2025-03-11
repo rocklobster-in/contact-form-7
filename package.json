@@ -1,6 +1,6 @@
 {
 	"name": "contact-form-7",
-	"version": "6.0.4",
+	"version": "6.0.5",
 	"description": "JavaScript packages for Contact Form 7.",
 	"private": true,
 	"scripts": {
@@ -30,7 +30,7 @@
 	},
 	"homepage": "https://github.com/rocklobster-in/contact-form-7#readme",
 	"devDependencies": {
-		"@contactable/swv": "^1.4.0",
-		"@wordpress/scripts": "^30.11.0"
+		"@contactable/swv": "^1.4.1",
+		"@wordpress/scripts": "^30.12.0"
 	}
 }
