@@ -56,7 +56,7 @@ function wpcf7_is_tel( $text ) {
 		$result = false;
 	}
 
-	if ( ! ( 6 < strlen( $text ) and strlen( $text ) < 16 ) ) {
+	if ( ! ( 5 < strlen( $text ) and strlen( $text ) < 16 ) ) {
 		$result = false;
 	}
 
