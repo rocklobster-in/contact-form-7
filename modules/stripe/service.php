@@ -139,8 +139,8 @@ class WPCF7_Stripe extends WPCF7_Service {
 			wp_admin_notice(
 				sprintf(
 					'<strong>%1$s</strong>: %2$s',
-					esc_html( __( "Error", 'contact-form-7' ) ),
-					esc_html( __( "Invalid key values.", 'contact-form-7' ) )
+					esc_html( __( 'Error', 'contact-form-7' ) ),
+					esc_html( __( 'Invalid key values.', 'contact-form-7' ) )
 				),
 				array( 'type' => 'error' )
 			);
@@ -159,7 +159,7 @@ class WPCF7_Stripe extends WPCF7_Service {
 		echo sprintf(
 			'<p>%s</p>',
 			// https://stripe.com/docs/partners/support#intro
-			esc_html( __( "Stripe is a simple and powerful way to accept payments online. Stripe has no setup fees, no monthly fees, and no hidden costs. Millions of businesses rely on Stripe’s software tools to accept payments securely and expand globally.", 'contact-form-7' ) )
+			esc_html( __( 'Stripe is a simple and powerful way to accept payments online. Stripe has no setup fees, no monthly fees, and no hidden costs. Millions of businesses rely on Stripe’s software tools to accept payments securely and expand globally.', 'contact-form-7' ) )
 		);
 
 		echo sprintf(
@@ -173,7 +173,7 @@ class WPCF7_Stripe extends WPCF7_Service {
 		if ( $this->is_active() ) {
 			echo sprintf(
 				'<p class="dashicons-before dashicons-yes">%s</p>',
-				esc_html( __( "Stripe is active on this site.", 'contact-form-7' ) )
+				esc_html( __( 'Stripe is active on this site.', 'contact-form-7' ) )
 			);
 		}
 
@@ -188,7 +188,7 @@ class WPCF7_Stripe extends WPCF7_Service {
 		} else {
 			echo sprintf(
 				'<p class="dashicons-before dashicons-warning">%s</p>',
-				esc_html( __( "Stripe is not available on this site. It requires an HTTPS-enabled site.", 'contact-form-7' ) )
+				esc_html( __( 'Stripe is not available on this site. It requires an HTTPS-enabled site.', 'contact-form-7' ) )
 			);
 		}
 	}

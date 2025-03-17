@@ -564,7 +564,7 @@ class WPCF7_FormTagsManager {
 	 */
 	private function parse_atts( $text ) {
 		$atts = array( 'options' => array(), 'values' => array() );
-		$text = preg_replace( "/[\x{00a0}\x{200b}]+/u", " ", $text );
+		$text = preg_replace( "/[\x{00a0}\x{200b}]+/u", ' ', $text );
 		$text = trim( $text );
 
 		$pattern = '%^([-+*=0-9a-zA-Z:.!?#$&@_/|\%\r\n\t ]*?)((?:[\r\n\t ]*"[^"]*"|[\r\n\t ]*\'[^\']*\')*)$%';

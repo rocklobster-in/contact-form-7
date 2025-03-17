@@ -214,7 +214,7 @@ class WPCF7_TagGeneratorGenerator {
 	<br />
 	<label>
 		<input type="checkbox" data-tag-part="type-suffix" value="*" />
-		<?php echo esc_html( __( "This is a required field.", 'contact-form-7' ) ); ?>
+		<?php echo esc_html( __( 'This is a required field.', 'contact-form-7' ) ); ?>
 	</label>
 	<?php } ?>
 </fieldset>
@@ -247,7 +247,7 @@ class WPCF7_TagGeneratorGenerator {
 				$tag_option .= ' akismet:author';
 			}
 
-			$label = __( "This field expects the submitter name.", 'contact-form-7' );
+			$label = __( 'This field expects the submitter name.', 'contact-form-7' );
 		} elseif ( 'author_email' === $options['ask_if'] ) {
 			$tag_option = 'autocomplete:email';
 
@@ -255,7 +255,7 @@ class WPCF7_TagGeneratorGenerator {
 				$tag_option .= ' akismet:author_email';
 			}
 
-			$label = __( "This field expects the submitter email.", 'contact-form-7' );
+			$label = __( 'This field expects the submitter email.', 'contact-form-7' );
 		} elseif ( 'author_url' === $options['ask_if'] ) {
 			$tag_option = 'autocomplete:url';
 
@@ -263,10 +263,10 @@ class WPCF7_TagGeneratorGenerator {
 				$tag_option .= ' akismet:author_url';
 			}
 
-			$label = __( "This field expects the submitter URL.", 'contact-form-7' );
+			$label = __( 'This field expects the submitter URL.', 'contact-form-7' );
 		} elseif ( 'author_tel' === $options['ask_if'] ) {
 			$tag_option = 'autocomplete:tel';
-			$label = __( "This field expects the submitter telephone number.", 'contact-form-7' );
+			$label = __( 'This field expects the submitter telephone number.', 'contact-form-7' );
 		}
 
 		if ( $tag_option ) {
@@ -393,7 +393,7 @@ class WPCF7_TagGeneratorGenerator {
 	<?php if ( $options['with_placeholder'] ) { ?>
 	<br />
 	<label>
-		<input type="checkbox" data-tag-part="option" data-tag-option="placeholder" /> <?php echo esc_html( __( "Use this text as the placeholder.", 'contact-form-7' ) ); ?>
+		<input type="checkbox" data-tag-part="option" data-tag-option="placeholder" /> <?php echo esc_html( __( 'Use this text as the placeholder.', 'contact-form-7' ) ); ?>
 	</label>
 	<?php } ?>
 
@@ -422,7 +422,7 @@ class WPCF7_TagGeneratorGenerator {
 			wpcf7_format_atts( array(
 				'id' => $this->ref( 'selectable-values-description' ),
 			) ),
-			esc_html( __( "One item per line.", 'contact-form-7' ) )
+			esc_html( __( 'One item per line.', 'contact-form-7' ) )
 		);
 	?>
 	<br />
@@ -450,7 +450,7 @@ class WPCF7_TagGeneratorGenerator {
 				'data-tag-part' => 'option',
 				'data-tag-option' => 'first_as_label',
 			) ),
-			esc_html( __( "Use the first item as a label.", 'contact-form-7' ) )
+			esc_html( __( 'Use the first item as a label.', 'contact-form-7' ) )
 		);
 	?>
 	<?php } ?>
@@ -466,7 +466,7 @@ class WPCF7_TagGeneratorGenerator {
 				'data-tag-part' => 'option',
 				'data-tag-option' => 'use_label_element',
 			) ),
-			esc_html( __( "Wrap each item with a label element.", 'contact-form-7' ) )
+			esc_html( __( 'Wrap each item with a label element.', 'contact-form-7' ) )
 		);
 	?>
 	<?php } ?>
@@ -491,7 +491,7 @@ class WPCF7_TagGeneratorGenerator {
 				'readonly' => true,
 				'onfocus' => 'this.select();',
 				'data-tag-part' => 'tag',
-				'aria-label' => __( "The form-tag to be inserted into the form template", 'contact-form-7' ),
+				'aria-label' => __( 'The form-tag to be inserted into the form template', 'contact-form-7' ),
 			) )
 		);
 	?>

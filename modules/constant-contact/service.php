@@ -351,8 +351,8 @@ class WPCF7_ConstantContact extends WPCF7_Service_OAuth2 {
 				wp_admin_notice(
 					sprintf(
 						'<strong>%1$s</strong>: %2$s',
-						esc_html( __( "Error", 'contact-form-7' ) ),
-						esc_html( __( "Failed to establish connection. Please double-check your configuration.", 'contact-form-7' ) )
+						esc_html( __( 'Error', 'contact-form-7' ) ),
+						esc_html( __( 'Failed to establish connection. Please double-check your configuration.', 'contact-form-7' ) )
 					),
 					array( 'type' => 'error' )
 				);
@@ -374,13 +374,13 @@ class WPCF7_ConstantContact extends WPCF7_Service_OAuth2 {
 			esc_html( __( 'Warning:', 'contact-form-7' ) ),
 			wpcf7_link(
 				__( 'https://contactform7.com/2024/02/02/we-end-the-constant-contact-integration/', 'contact-form-7' ),
-				__( "This feature is deprecated. You are not recommended to use it.", 'contact-form-7' )
+				__( 'This feature is deprecated. You are not recommended to use it.', 'contact-form-7' )
 			)
 		);
 
 		echo sprintf(
 			'<p>%s</p>',
-			esc_html( __( "The Constant Contact integration module allows you to send contact data collected through your contact forms to the Constant Contact API. You can create reliable email subscription services in a few easy steps.", 'contact-form-7' ) )
+			esc_html( __( 'The Constant Contact integration module allows you to send contact data collected through your contact forms to the Constant Contact API. You can create reliable email subscription services in a few easy steps.', 'contact-form-7' ) )
 		);
 
 		echo sprintf(
@@ -394,7 +394,7 @@ class WPCF7_ConstantContact extends WPCF7_Service_OAuth2 {
 		if ( $this->is_active() ) {
 			echo sprintf(
 				'<p class="dashicons-before dashicons-yes">%s</p>',
-				esc_html( __( "This site is connected to the Constant Contact API.", 'contact-form-7' ) )
+				esc_html( __( 'This site is connected to the Constant Contact API.', 'contact-form-7' ) )
 			);
 		}
 
@@ -419,16 +419,16 @@ class WPCF7_ConstantContact extends WPCF7_Service_OAuth2 {
 	<th scope="row"><label for="client_id"><?php echo esc_html( __( 'API Key', 'contact-form-7' ) ); ?></label></th>
 	<td><?php
 		if ( $this->is_active() ) {
-			echo esc_html( $this->client_id );
-			echo sprintf(
-				'<input type="hidden" value="%1$s" id="client_id" name="client_id" />',
-				esc_attr( $this->client_id )
-			);
+		echo esc_html( $this->client_id );
+		echo sprintf(
+		'<input type="hidden" value="%1$s" id="client_id" name="client_id" />',
+		esc_attr( $this->client_id )
+	);
 		} else {
-			echo sprintf(
-				'<input type="text" aria-required="true" value="%1$s" id="client_id" name="client_id" class="regular-text code" />',
-				esc_attr( $this->client_id )
-			);
+		echo sprintf(
+		'<input type="text" aria-required="true" value="%1$s" id="client_id" name="client_id" class="regular-text code" />',
+		esc_attr( $this->client_id )
+		);
 		}
 	?></td>
 </tr>
@@ -436,16 +436,16 @@ class WPCF7_ConstantContact extends WPCF7_Service_OAuth2 {
 	<th scope="row"><label for="client_secret"><?php echo esc_html( __( 'App Secret', 'contact-form-7' ) ); ?></label></th>
 	<td><?php
 		if ( $this->is_active() ) {
-			echo esc_html( wpcf7_mask_password( $this->client_secret, 4, 4 ) );
-			echo sprintf(
-				'<input type="hidden" value="%1$s" id="client_secret" name="client_secret" />',
-				esc_attr( $this->client_secret )
-			);
+		echo esc_html( wpcf7_mask_password( $this->client_secret, 4, 4 ) );
+		echo sprintf(
+		'<input type="hidden" value="%1$s" id="client_secret" name="client_secret" />',
+		esc_attr( $this->client_secret )
+	);
 		} else {
-			echo sprintf(
-				'<input type="text" aria-required="true" value="%1$s" id="client_secret" name="client_secret" class="regular-text code" />',
-				esc_attr( $this->client_secret )
-			);
+		echo sprintf(
+		'<input type="text" aria-required="true" value="%1$s" id="client_secret" name="client_secret" class="regular-text code" />',
+		esc_attr( $this->client_secret )
+		);
 		}
 	?></td>
 </tr>
@@ -457,7 +457,7 @@ class WPCF7_ConstantContact extends WPCF7_Service_OAuth2 {
 			$this->get_redirect_uri()
 		);
 	?>
-	<p class="description"><?php echo esc_html( __( "Set this URL as the redirect URI.", 'contact-form-7' ) ); ?></p>
+	<p class="description"><?php echo esc_html( __( 'Set this URL as the redirect URI.', 'contact-form-7' ) ); ?></p>
 	</td>
 </tr>
 </tbody>

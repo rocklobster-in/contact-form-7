@@ -25,7 +25,7 @@ function wpcf7_get_contact_form_by_old_id( $old_id ) {
 	global $wpdb;
 
 	$q = "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = '_old_cf7_unit_id'"
-		. $wpdb->prepare( " AND meta_value = %d", $old_id );
+		. $wpdb->prepare( ' AND meta_value = %d', $old_id );
 
 	if ( $new_id = $wpdb->get_var( $q ) ) {
 		return wpcf7_contact_form( $new_id );
@@ -51,7 +51,7 @@ function wpcf7_get_contact_form_by_hash( $hash ) {
 	$like = $wpdb->esc_like( $hash ) . '%';
 
 	$q = "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = '_hash'"
-		. $wpdb->prepare( " AND meta_value LIKE %s", $like );
+		. $wpdb->prepare( ' AND meta_value LIKE %s', $like );
 
 	if ( $post_id = $wpdb->get_var( $q ) ) {
 		return wpcf7_contact_form( $post_id );
@@ -261,7 +261,7 @@ function wpcf7_contact_form_tag_func( $atts, $content = null, $code = '' ) {
 		return sprintf(
 			'<p class="wpcf7-contact-form-not-found"><strong>%1$s</strong> %2$s</p>',
 			esc_html( __( 'Error:', 'contact-form-7' ) ),
-			esc_html( __( "Contact form not found.", 'contact-form-7' ) )
+			esc_html( __( 'Contact form not found.', 'contact-form-7' ) )
 		);
 	}
 

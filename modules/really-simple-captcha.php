@@ -33,7 +33,7 @@ function wpcf7_captchac_form_tag_handler( $tag ) {
 	if ( ! class_exists( 'ReallySimpleCaptcha' ) ) {
 		$error = sprintf(
 			/* translators: %s: link labeled 'Really Simple CAPTCHA' */
-			esc_html( __( "To use CAPTCHA, you need %s plugin installed.", 'contact-form-7' ) ),
+			esc_html( __( 'To use CAPTCHA, you need %s plugin installed.', 'contact-form-7' ) ),
 			wpcf7_link( 'https://wordpress.org/plugins/really-simple-captcha/', 'Really Simple CAPTCHA' )
 		);
 
@@ -234,7 +234,7 @@ function wpcf7_captcha_messages( $messages ) {
 	$messages = array_merge( $messages, array(
 		'captcha_not_match' => array(
 			'description' =>
-				__( "The code that sender entered does not match the CAPTCHA", 'contact-form-7' ),
+				__( 'The code that sender entered does not match the CAPTCHA', 'contact-form-7' ),
 			'default' =>
 				__( 'Your entered code is incorrect.', 'contact-form-7' ),
 		),
@@ -284,7 +284,7 @@ function wpcf7_captcha_display_warning_message( $page, $action, $object ) {
 		! function_exists( 'imagecreatetruecolor' ) or
 		! function_exists( 'imagettftext' )
 	) {
-		$message = __( "This contact form contains CAPTCHA fields, but the necessary libraries (GD and FreeType) are not available on your server.", 'contact-form-7' );
+		$message = __( 'This contact form contains CAPTCHA fields, but the necessary libraries (GD and FreeType) are not available on your server.', 'contact-form-7' );
 
 		wp_admin_notice( esc_html( $message ), array( 'type' => 'warning' ) );
 	}

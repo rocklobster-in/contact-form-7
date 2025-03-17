@@ -121,8 +121,8 @@ class WPCF7_Sendinblue extends WPCF7_Service {
 			wp_admin_notice(
 				sprintf(
 					'<strong>%1$s</strong>: %2$s',
-					esc_html( __( "Error", 'contact-form-7' ) ),
-					esc_html( __( "You have not been authenticated. Make sure the provided API key is correct.", 'contact-form-7' ) )
+					esc_html( __( 'Error', 'contact-form-7' ) ),
+					esc_html( __( 'You have not been authenticated. Make sure the provided API key is correct.', 'contact-form-7' ) )
 				),
 				array( 'type' => 'error' )
 			);
@@ -132,8 +132,8 @@ class WPCF7_Sendinblue extends WPCF7_Service {
 			wp_admin_notice(
 				sprintf(
 					'<strong>%1$s</strong>: %2$s',
-					esc_html( __( "Error", 'contact-form-7' ) ),
-					esc_html( __( "Invalid key values.", 'contact-form-7' ) )
+					esc_html( __( 'Error', 'contact-form-7' ) ),
+					esc_html( __( 'Invalid key values.', 'contact-form-7' ) )
 				),
 				array( 'type' => 'error' )
 			);
@@ -150,7 +150,7 @@ class WPCF7_Sendinblue extends WPCF7_Service {
 	public function display( $action = '' ) {
 		echo sprintf(
 			'<p>%s</p>',
-			esc_html( __( "Store and organize your contacts while protecting user privacy on Brevo, the leading CRM & email marketing platform in Europe. Brevo offers unlimited contacts and advanced marketing features.", 'contact-form-7' ) )
+			esc_html( __( 'Store and organize your contacts while protecting user privacy on Brevo, the leading CRM & email marketing platform in Europe. Brevo offers unlimited contacts and advanced marketing features.', 'contact-form-7' ) )
 		);
 
 		echo sprintf(
@@ -164,7 +164,7 @@ class WPCF7_Sendinblue extends WPCF7_Service {
 		if ( $this->is_active() ) {
 			echo sprintf(
 				'<p class="dashicons-before dashicons-yes">%s</p>',
-				esc_html( __( "Brevo is active on this site.", 'contact-form-7' ) )
+				esc_html( __( 'Brevo is active on this site.', 'contact-form-7' ) )
 			);
 		}
 

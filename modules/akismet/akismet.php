@@ -81,7 +81,7 @@ function wpcf7_akismet( $spam, $submission ) {
 
 		$submission->add_spam_log( array(
 			'agent' => 'akismet',
-			'reason' => __( "Akismet returns a spam response.", 'contact-form-7' ),
+			'reason' => __( 'Akismet returns a spam response.', 'contact-form-7' ),
 		) );
 	} else {
 		$spam = false;
@@ -294,10 +294,10 @@ function wpcf7_akismet_default_template( $template, $prop ) {
 		);
 
 		$privacy_notice = sprintf( '%s %s',
-			__( "This form uses Akismet to reduce spam.", 'contact-form-7' ),
+			__( 'This form uses Akismet to reduce spam.', 'contact-form-7' ),
 			wpcf7_link(
 				'https://akismet.com/privacy/',
-				__( "Learn how your data is processed.", 'contact-form-7' ),
+				__( 'Learn how your data is processed.', 'contact-form-7' ),
 				array(
 					'target' => '_blank',
 					'rel' => 'nofollow noopener',

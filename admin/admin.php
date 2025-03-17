@@ -240,7 +240,7 @@ function wpcf7_load_contact_form_admin() {
 
 		if ( ! current_user_can( 'wpcf7_edit_contact_form', $id ) ) {
 			wp_die(
-				__( "You are not allowed to edit this item.", 'contact-form-7' )
+				__( 'You are not allowed to edit this item.', 'contact-form-7' )
 			);
 		}
 
@@ -291,7 +291,7 @@ function wpcf7_load_contact_form_admin() {
 
 		if ( ! current_user_can( 'wpcf7_edit_contact_form', $id ) ) {
 			wp_die(
-				__( "You are not allowed to edit this item.", 'contact-form-7' )
+				__( 'You are not allowed to edit this item.', 'contact-form-7' )
 			);
 		}
 
@@ -333,12 +333,12 @@ function wpcf7_load_contact_form_admin() {
 
 			if ( ! current_user_can( 'wpcf7_delete_contact_form', $post->id() ) ) {
 				wp_die(
-					__( "You are not allowed to delete this item.", 'contact-form-7' )
+					__( 'You are not allowed to delete this item.', 'contact-form-7' )
 				);
 			}
 
 			if ( ! $post->delete() ) {
-				wp_die( __( "Error in deleting.", 'contact-form-7' ) );
+				wp_die( __( 'Error in deleting.', 'contact-form-7' ) );
 			}
 
 			$deleted += 1;
@@ -513,7 +513,7 @@ function wpcf7_admin_integration_page() {
 <p><?php
 	echo sprintf(
 		/* translators: %s: link labeled 'Integration with external APIs' */
-		esc_html( __( "You can expand the possibilities of your contact forms by integrating them with external services. For details, see %s.", 'contact-form-7' ) ),
+		esc_html( __( 'You can expand the possibilities of your contact forms by integrating them with external services. For details, see %s.', 'contact-form-7' ) ),
 		wpcf7_link(
 			__( 'https://contactform7.com/integration-with-external-apis/', 'contact-form-7' ),
 			__( 'Integration with external APIs', 'contact-form-7' )
@@ -559,11 +559,11 @@ function wpcf7_admin_updated_message( $page, $action, $object ) {
 	}
 
 	if ( 'created' === $_REQUEST['message'] ) {
-		$message = __( "Contact form created.", 'contact-form-7' );
+		$message = __( 'Contact form created.', 'contact-form-7' );
 	} elseif ( 'saved' === $_REQUEST['message'] ) {
-		$message = __( "Contact form saved.", 'contact-form-7' );
+		$message = __( 'Contact form saved.', 'contact-form-7' );
 	} elseif ( 'deleted' === $_REQUEST['message'] ) {
-		$message = __( "Contact form deleted.", 'contact-form-7' );
+		$message = __( 'Contact form deleted.', 'contact-form-7' );
 	}
 
 	if ( ! empty( $message ) ) {
@@ -572,7 +572,7 @@ function wpcf7_admin_updated_message( $page, $action, $object ) {
 
 	if ( 'failed' === $_REQUEST['message'] ) {
 		$message =
-			__( "There was an error saving the contact form.", 'contact-form-7' );
+			__( 'There was an error saving the contact form.', 'contact-form-7' );
 
 		wp_admin_notice( esc_html( $message ), array( 'type' => 'error' ) );
 	}
@@ -585,8 +585,8 @@ function wpcf7_admin_updated_message( $page, $action, $object ) {
 			$message = sprintf(
 				/* translators: %s: number of contact forms */
 				_n(
-					"Configuration validation completed. %s invalid contact form was found.",
-					"Configuration validation completed. %s invalid contact forms were found.",
+					'Configuration validation completed. %s invalid contact form was found.',
+					'Configuration validation completed. %s invalid contact forms were found.',
 					$count_invalid, 'contact-form-7'
 				),
 				number_format_i18n( $count_invalid )
@@ -594,7 +594,7 @@ function wpcf7_admin_updated_message( $page, $action, $object ) {
 
 			wp_admin_notice( esc_html( $message ), array( 'type' => 'warning' ) );
 		} else {
-			$message = __( "Configuration validation completed. No invalid contact form was found.", 'contact-form-7' );
+			$message = __( 'Configuration validation completed. No invalid contact form was found.', 'contact-form-7' );
 
 			wp_admin_notice( esc_html( $message ), array( 'type' => 'success' ) );
 		}
@@ -653,7 +653,7 @@ function wpcf7_not_allowed_to_edit( $page, $action, $object ) {
 	}
 
 	if ( ! current_user_can( 'wpcf7_edit_contact_form', $contact_form->id() ) ) {
-		$message = __( "You are not allowed to edit this contact form.", 'contact-form-7' );
+		$message = __( 'You are not allowed to edit this contact form.', 'contact-form-7' );
 
 		wp_admin_notice( esc_html( $message ), array( 'type' => 'warning' ) );
 	}

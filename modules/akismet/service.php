@@ -48,7 +48,7 @@ class WPCF7_Akismet extends WPCF7_Service {
 	public function display( $action = '' ) {
 		echo sprintf(
 			'<p>%s</p>',
-			esc_html( __( "CAPTCHAs are designed to distinguish spambots from humans, and are therefore helpless against human spammers. In contrast to CAPTCHAs, Akismet checks form submissions against the global database of spam; this means Akismet is a comprehensive solution against spam. This is why we consider Akismet to be the centerpiece of the spam prevention strategy.", 'contact-form-7' ) )
+			esc_html( __( 'CAPTCHAs are designed to distinguish spambots from humans, and are therefore helpless against human spammers. In contrast to CAPTCHAs, Akismet checks form submissions against the global database of spam; this means Akismet is a comprehensive solution against spam. This is why we consider Akismet to be the centerpiece of the spam prevention strategy.', 'contact-form-7' ) )
 		);
 
 		echo sprintf(
@@ -62,7 +62,7 @@ class WPCF7_Akismet extends WPCF7_Service {
 		if ( $this->is_active() ) {
 			echo sprintf(
 				'<p class="dashicons-before dashicons-yes">%s</p>',
-				esc_html( __( "Akismet is active on this site.", 'contact-form-7' ) )
+				esc_html( __( 'Akismet is active on this site.', 'contact-form-7' ) )
 			);
 		}
 	}

@@ -200,7 +200,7 @@ function wpcf7_tag_generator_file( $contact_form, $options ) {
 			wpcf7_format_atts( array(
 				'id' => $tgg->ref( 'filetypes-option-description' ),
 			) ),
-			esc_html( __( "Pipe-separated file types list. You can use file extensions and MIME types.", 'contact-form-7' ) )
+			esc_html( __( 'Pipe-separated file types list. You can use file extensions and MIME types.', 'contact-form-7' ) )
 		);
 
 		echo sprintf(
@@ -228,7 +228,7 @@ function wpcf7_tag_generator_file( $contact_form, $options ) {
 			wpcf7_format_atts( array(
 				'id' => $tgg->ref( 'limit-option-description' ),
 			) ),
-			esc_html( __( "In bytes. You can use kb and mb suffixes.", 'contact-form-7' ) )
+			esc_html( __( 'In bytes. You can use kb and mb suffixes.', 'contact-form-7' ) )
 		);
 
 		echo sprintf(

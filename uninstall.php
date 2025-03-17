@@ -22,7 +22,7 @@ function wpcf7_delete_plugin() {
 	}
 
 	$wpdb->query( sprintf(
-		"DROP TABLE IF EXISTS %s",
+		'DROP TABLE IF EXISTS %s',
 		$wpdb->prefix . 'contact_form_7'
 	) );
 

@@ -178,23 +178,23 @@ function wpcf7_text_messages( $messages ) {
 	$messages = array_merge( $messages, array(
 		'invalid_email' => array(
 			'description' =>
-				__( "Email address that the sender entered is invalid", 'contact-form-7' ),
+				__( 'Email address that the sender entered is invalid', 'contact-form-7' ),
 			'default' =>
-				__( "Please enter an email address.", 'contact-form-7' ),
+				__( 'Please enter an email address.', 'contact-form-7' ),
 		),
 
 		'invalid_url' => array(
 			'description' =>
-				__( "URL that the sender entered is invalid", 'contact-form-7' ),
+				__( 'URL that the sender entered is invalid', 'contact-form-7' ),
 			'default' =>
-				__( "Please enter a URL.", 'contact-form-7' ),
+				__( 'Please enter a URL.', 'contact-form-7' ),
 		),
 
 		'invalid_tel' => array(
 			'description' =>
-				__( "Telephone number that the sender entered is invalid", 'contact-form-7' ),
+				__( 'Telephone number that the sender entered is invalid', 'contact-form-7' ),
 			'default' =>
-				__( "Please enter a telephone number.", 'contact-form-7' ),
+				__( 'Please enter a telephone number.', 'contact-form-7' ),
 		),
 	) );
 

@@ -45,7 +45,7 @@ function wpcf7_admin_warnings_bulk_cv( $page, $action, $object ) {
 		__( 'Validate Contact Form 7 Configuration', 'contact-form-7' )
 	);
 
-	$message = __( "Misconfiguration leads to mail delivery failure or other troubles. Validate your contact forms now.", 'contact-form-7' );
+	$message = __( 'Misconfiguration leads to mail delivery failure or other troubles. Validate your contact forms now.', 'contact-form-7' );
 
 	wp_admin_notice(
 		sprintf(
@@ -70,7 +70,7 @@ function wpcf7_load_bulk_validate_page( $page, $action ) {
 	check_admin_referer( 'wpcf7-bulk-validate' );
 
 	if ( ! current_user_can( 'wpcf7_edit_contact_forms' ) ) {
-		wp_die( __( "You are not allowed to validate configuration.", 'contact-form-7' ) );
+		wp_die( __( 'You are not allowed to validate configuration.', 'contact-form-7' ) );
 	}
 
 	$contact_forms = WPCF7_ContactForm::find();
@@ -114,8 +114,8 @@ function wpcf7_admin_bulk_validate_page() {
 	$submit_text = sprintf(
 		/* translators: %s: number of contact forms */
 		_n(
-			"Validate %s contact form now",
-			"Validate %s contact forms now",
+			'Validate %s contact form now',
+			'Validate %s contact forms now',
 			$count, 'contact-form-7'
 		),
 		number_format_i18n( $count )

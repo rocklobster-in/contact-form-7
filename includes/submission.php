@@ -117,7 +117,7 @@ class WPCF7_Submission {
 
 					if ( '' === $this->get_response() ) {
 						$this->set_response( $contact_form->filter_message(
-							__( "Sending mail has been aborted.", 'contact-form-7' ) )
+							__( 'Sending mail has been aborted.', 'contact-form-7' ) )
 						);
 					}
 				} elseif ( $this->mail() ) {
@@ -645,7 +645,7 @@ class WPCF7_Submission {
 
 			$this->add_spam_log( array(
 				'agent' => 'wpcf7',
-				'reason' => __( "User-Agent string is unnaturally short.", 'contact-form-7' ),
+				'reason' => __( 'User-Agent string is unnaturally short.', 'contact-form-7' ),
 			) );
 		}
 
@@ -654,7 +654,7 @@ class WPCF7_Submission {
 
 			$this->add_spam_log( array(
 				'agent' => 'wpcf7',
-				'reason' => __( "Submitted nonce is invalid.", 'contact-form-7' ),
+				'reason' => __( 'Submitted nonce is invalid.', 'contact-form-7' ),
 			) );
 		}
 
