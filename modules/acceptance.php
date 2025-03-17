@@ -1,7 +1,7 @@
 <?php
 /**
-** A base module for [acceptance]
-**/
+ * A base module for [acceptance]
+ */
 
 /* form_tag handler */
 

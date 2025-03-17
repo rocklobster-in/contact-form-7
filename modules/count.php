@@ -1,7 +1,7 @@
 <?php
 /**
-** A base module for [count], Twitter-like character count
-**/
+ * A base module for [count], Twitter-like character count
+ */
 
 /* form_tag handler */
 
