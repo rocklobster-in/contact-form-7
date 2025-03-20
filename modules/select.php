@@ -70,7 +70,7 @@ function wpcf7_select_form_tag_handler( $tag ) {
 	}
 
 	if ( $data = (array) $tag->get_data_option() ) {
-		$tag->values = array_merge( $tag->values, array_values( $data ) );
+		$tag->values = array_merge( $tag->values, array_keys( $data ) );
 		$tag->labels = array_merge( $tag->labels, array_values( $data ) );
 	}
 
