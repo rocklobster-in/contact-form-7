@@ -603,6 +603,10 @@ class WPCF7_ContactForm {
 		);
 
 		$title_attr = apply_filters( 'wpcf7_form_title_attr', $options['html_title'] );
+		if ( '' === $title_attr ) {
+			/* translators: default accessible name of the form */
+			$title_attr = __( 'Contact', 'contact-form-7' );
+		}
 
 		$class = 'wpcf7-form';
 
@@ -643,8 +647,7 @@ class WPCF7_ContactForm {
 			'class' => ( '' !== $class ) ? $class : null,
 			'id' => ( '' !== $id_attr ) ? $id_attr : null,
 			'name' => ( '' !== $name_attr ) ? $name_attr : null,
-			'aria-label' => ( '' !== $title_attr )
-				? $title_attr : __( 'Contact form', 'contact-form-7' ),
+			'aria-label' => $title_attr,
 			'enctype' => ( '' !== $enctype ) ? $enctype : null,
 			'autocomplete' => ( '' !== $autocomplete ) ? $autocomplete : null,
 			'novalidate' => true,
