@@ -99,8 +99,6 @@ class WPCF7_HTMLFormatter {
 		$this->options = wp_parse_args( $options, array(
 			'auto_br' => true,
 			'auto_indent' => true,
-			'auto_paragraph' => true,
-			'auto_parent' => true,
 		) );
 	}
 
