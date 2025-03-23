@@ -585,7 +585,7 @@ function wpcf7_format_atts( $atts ) {
  *
  * @param string|array $input Input text.
  * @param string $side The side from which whitespaces are stripped.
- *               'beginning', 'end', or 'both' (default).
+ *               'start', 'end', or 'both' (default).
  * @return string|array Output text.
  */
 function wpcf7_strip_whitespaces( $input, $side = 'both' ) {
@@ -606,7 +606,7 @@ function wpcf7_strip_whitespaces( $input, $side = 'both' ) {
 		);
 	}
 
-	if ( 'beginning' !== $side ) {
+	if ( 'start' !== $side ) {
 		// Strip trailing whitespaces
 		$input = preg_replace(
 			sprintf( '/[%s]+$/u', $whitespaces ),
