@@ -314,7 +314,7 @@ class WPCF7_HTMLFormatter {
 			$paragraphs = preg_split( '/\s*\n\s*\n\s*/', $content );
 
 			$paragraphs = array_filter( $paragraphs, static function ( $paragraph ) {
-				return '' !== trim( $paragraph );
+				return '' !== wpcf7_strip_whitespaces( $paragraph );
 			} );
 
 			$paragraphs = array_values( $paragraphs );
@@ -334,7 +334,7 @@ class WPCF7_HTMLFormatter {
 				foreach ( $paragraphs as $paragraph ) {
 					$this->start_tag( 'p' );
 
-					$paragraph = ltrim( $paragraph );
+					$paragraph = wpcf7_strip_whitespaces( $paragraph, 'start' );
 
 					$paragraph = self::normalize_paragraph(
 						$paragraph,
@@ -450,7 +450,7 @@ class WPCF7_HTMLFormatter {
 
 		if ( ! in_array( $tag_name, self::p_child_elements, true ) ) {
 			if ( '' !== $this->output ) {
-				$this->output = rtrim( $this->output ) . "\n";
+				$this->output = wpcf7_strip_whitespaces( $this->output, 'end' ) . "\n";
 			}
 
 			if ( $this->options['auto_indent'] ) {
@@ -545,7 +545,7 @@ class WPCF7_HTMLFormatter {
 			// Remove unnecessary <br />.
 			$this->output = preg_replace( '/\s*<br \/>\s*$/', '', $this->output );
 
-			$this->output = rtrim( $this->output ) . "\n";
+			$this->output = wpcf7_strip_whitespaces( $this->output, 'end' ) . "\n";
 
 			if ( $this->options['auto_indent'] ) {
 				$this->output .= self::indent( count( $this->stacked_elements ) );
