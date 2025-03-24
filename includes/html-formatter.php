@@ -527,6 +527,19 @@ class WPCF7_HTMLFormatter {
 	 * @param string $tag A start tag.
 	 */
 	public function append_start_tag( $tag_name, $atts = array(), $tag = '' ) {
+		if ( ! self::validate_tag_name( $tag_name ) ) {
+			wp_trigger_error(
+				__METHOD__,
+				sprintf(
+					__( 'Invalid tag name (%s) was specified.', 'contact-form-7' ),
+					$tag_name
+				),
+				E_USER_WARNING
+			);
+
+			return false;
+		}
+
 		if ( ! in_array( $tag_name, self::void_elements, true ) ) {
 			array_unshift( $this->stacked_elements, $tag_name );
 		}
@@ -699,6 +712,14 @@ class WPCF7_HTMLFormatter {
 		$paragraph = preg_replace( '/[ ]+/', " ", $paragraph );
 
 		return $paragraph;
+	}
+
+
+	/**
+	 * Returns true if the specified tag name is valid.
+	 */
+	public static function validate_tag_name( $tag_name ) {
+		return preg_match( '/^[a-z][0-9a-z]*(?:[:][a-z][0-9a-z]*)?$/', $tag_name );
 	}
 
 }
