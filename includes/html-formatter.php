@@ -375,6 +375,31 @@ class WPCF7_HTMLFormatter {
 	public function start_tag( $tag ) {
 		list( $tag, $tag_name ) = self::normalize_start_tag( $tag );
 
+		$this->append_start_tag( $tag_name, array(), $tag );
+	}
+
+
+	/**
+	 * Appends a start tag to the output property.
+	 *
+	 * @param string $tag_name Tag name.
+	 * @param array $atts Associative array of attribute name and value pairs.
+	 * @param string $tag A start tag.
+	 */
+	public function append_start_tag( $tag_name, $atts = array(), $tag = '' ) {
+		if ( ! self::validate_tag_name( $tag_name ) ) {
+			wp_trigger_error(
+				__METHOD__,
+				sprintf(
+					__( 'Invalid tag name (%s) was specified.', 'contact-form-7' ),
+					$tag_name
+				),
+				E_USER_WARNING
+			);
+
+			return false;
+		}
+
 		if ( in_array( $tag_name, self::p_child_elements, true ) ) {
 			if (
 				! $this->is_inside( 'p' ) and
@@ -442,7 +467,35 @@ class WPCF7_HTMLFormatter {
 			$this->end_tag( 'tbody' );
 		}
 
-		$this->append_start_tag( $tag_name, array(), $tag );
+		if ( ! in_array( $tag_name, self::void_elements, true ) ) {
+			array_unshift( $this->stacked_elements, $tag_name );
+		}
+
+		if ( ! in_array( $tag_name, self::p_child_elements, true ) ) {
+			if ( '' !== $this->output ) {
+				$this->output = wpcf7_strip_whitespaces( $this->output, 'end' ) . "\n";
+			}
+
+			if ( $this->options['auto_indent'] ) {
+				$this->output .= self::indent( count( $this->stacked_elements ) - 1 );
+			}
+		}
+
+		if ( $tag ) {
+			$this->output .= $tag;
+		} elseif ( in_array( $tag_name, self::void_elements, true ) ) {
+			$this->output .= sprintf(
+				'<%1$s %2$s />',
+				$tag_name,
+				wpcf7_format_atts( $atts )
+			);
+		} else {
+			$this->output .= sprintf(
+				'<%1$s %2$s>',
+				$tag_name,
+				wpcf7_format_atts( $atts )
+			);
+		}
 	}
 
 
@@ -510,69 +563,6 @@ class WPCF7_HTMLFormatter {
 
 
 	/**
-	 * Closes all open tags.
-	 */
-	public function close_all_tags() {
-		while ( $element = array_shift( $this->stacked_elements ) ) {
-			$this->append_end_tag( $element );
-		}
-	}
-
-
-	/**
-	 * Appends a start tag to the output property.
-	 *
-	 * @param string $tag_name Tag name.
-	 * @param array $atts Associative array of attribute name and value pairs.
-	 * @param string $tag A start tag.
-	 */
-	public function append_start_tag( $tag_name, $atts = array(), $tag = '' ) {
-		if ( ! self::validate_tag_name( $tag_name ) ) {
-			wp_trigger_error(
-				__METHOD__,
-				sprintf(
-					__( 'Invalid tag name (%s) was specified.', 'contact-form-7' ),
-					$tag_name
-				),
-				E_USER_WARNING
-			);
-
-			return false;
-		}
-
-		if ( ! in_array( $tag_name, self::void_elements, true ) ) {
-			array_unshift( $this->stacked_elements, $tag_name );
-		}
-
-		if ( ! in_array( $tag_name, self::p_child_elements, true ) ) {
-			if ( '' !== $this->output ) {
-				$this->output = wpcf7_strip_whitespaces( $this->output, 'end' ) . "\n";
-			}
-
-			if ( $this->options['auto_indent'] ) {
-				$this->output .= self::indent( count( $this->stacked_elements ) - 1 );
-			}
-		}
-
-		if ( $tag ) {
-			$this->output .= $tag;
-		} elseif ( in_array( $tag_name, self::void_elements, true ) ) {
-			$this->output .= sprintf(
-				'<%1$s %2$s />',
-				$tag_name,
-				wpcf7_format_atts( $atts )
-			);
-		} else {
-			$this->output .= sprintf(
-				'<%1$s %2$s>',
-				$tag_name,
-				wpcf7_format_atts( $atts )
-			);
-		}
-	}
-
-
-	/**
 	 * Appends an end tag to the output property.
 	 *
 	 * @param string $tag_name Tag name.
@@ -593,6 +583,16 @@ class WPCF7_HTMLFormatter {
 
 		// Remove trailing <p></p>.
 		$this->output = preg_replace( '/<p>\s*<\/p>$/', '', $this->output );
+	}
+
+
+	/**
+	 * Closes all open tags.
+	 */
+	public function close_all_tags() {
+		while ( $element = array_shift( $this->stacked_elements ) ) {
+			$this->append_end_tag( $element );
+		}
 	}
 
 
