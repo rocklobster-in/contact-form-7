@@ -483,18 +483,32 @@ class WPCF7_HTMLFormatter {
 
 		if ( $tag ) {
 			$this->output .= $tag;
-		} elseif ( in_array( $tag_name, self::void_elements, true ) ) {
-			$this->output .= sprintf(
-				'<%1$s %2$s />',
-				$tag_name,
-				wpcf7_format_atts( $atts )
-			);
+		} elseif ( $atts ) {
+			if ( in_array( $tag_name, self::void_elements, true ) ) {
+				$this->output .= sprintf(
+					'<%1$s %2$s />',
+					$tag_name,
+					wpcf7_format_atts( $atts )
+				);
+			} else {
+				$this->output .= sprintf(
+					'<%1$s %2$s>',
+					$tag_name,
+					wpcf7_format_atts( $atts )
+				);
+			}
 		} else {
-			$this->output .= sprintf(
-				'<%1$s %2$s>',
-				$tag_name,
-				wpcf7_format_atts( $atts )
-			);
+			if ( in_array( $tag_name, self::void_elements, true ) ) {
+				$this->output .= sprintf(
+					'<%s />',
+					$tag_name
+				);
+			} else {
+				$this->output .= sprintf(
+					'<%s>',
+					$tag_name
+				);
+			}
 		}
 	}
 
