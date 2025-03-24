@@ -442,21 +442,7 @@ class WPCF7_HTMLFormatter {
 			$this->end_tag( 'tbody' );
 		}
 
-		if ( ! in_array( $tag_name, self::void_elements, true ) ) {
-			array_unshift( $this->stacked_elements, $tag_name );
-		}
-
-		if ( ! in_array( $tag_name, self::p_child_elements, true ) ) {
-			if ( '' !== $this->output ) {
-				$this->output = wpcf7_strip_whitespaces( $this->output, 'end' ) . "\n";
-			}
-
-			if ( $this->options['auto_indent'] ) {
-				$this->output .= self::indent( count( $this->stacked_elements ) - 1 );
-			}
-		}
-
-		$this->output .= $tag;
+		$this->append_start_tag( $tag_name, array(), $tag );
 	}
 
 
@@ -529,6 +515,46 @@ class WPCF7_HTMLFormatter {
 	public function close_all_tags() {
 		while ( $element = array_shift( $this->stacked_elements ) ) {
 			$this->append_end_tag( $element );
+		}
+	}
+
+
+	/**
+	 * Appends a start tag to the output property.
+	 *
+	 * @param string $tag_name Tag name.
+	 * @param array $atts Associative array of attribute name and value pairs.
+	 * @param string $tag A start tag.
+	 */
+	public function append_start_tag( $tag_name, $atts = array(), $tag = '' ) {
+		if ( ! in_array( $tag_name, self::void_elements, true ) ) {
+			array_unshift( $this->stacked_elements, $tag_name );
+		}
+
+		if ( ! in_array( $tag_name, self::p_child_elements, true ) ) {
+			if ( '' !== $this->output ) {
+				$this->output = wpcf7_strip_whitespaces( $this->output, 'end' ) . "\n";
+			}
+
+			if ( $this->options['auto_indent'] ) {
+				$this->output .= self::indent( count( $this->stacked_elements ) - 1 );
+			}
+		}
+
+		if ( $tag ) {
+			$this->output .= $tag;
+		} elseif ( in_array( $tag_name, self::void_elements, true ) ) {
+			$this->output .= sprintf(
+				'<%1$s %2$s />',
+				$tag_name,
+				wpcf7_format_atts( $atts )
+			);
+		} else {
+			$this->output .= sprintf(
+				'<%1$s %2$s>',
+				$tag_name,
+				wpcf7_format_atts( $atts )
+			);
 		}
 	}
 
