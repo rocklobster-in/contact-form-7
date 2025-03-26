@@ -312,7 +312,7 @@ class WPCF7_HTMLFormatter {
 			$paragraphs = preg_split( '/\s*\n\s*\n\s*/', $content );
 
 			$paragraphs = array_filter( $paragraphs, static function ( $paragraph ) {
-				return '' !== trim( $paragraph );
+				return '' !== wpcf7_strip_whitespaces( $paragraph );
 			} );
 
 			$paragraphs = array_values( $paragraphs );
@@ -332,7 +332,7 @@ class WPCF7_HTMLFormatter {
 				foreach ( $paragraphs as $paragraph ) {
 					$this->start_tag( 'p' );
 
-					$paragraph = ltrim( $paragraph );
+					$paragraph = wpcf7_strip_whitespaces( $paragraph, 'start' );
 
 					$paragraph = self::normalize_paragraph(
 						$paragraph,
@@ -375,16 +375,42 @@ class WPCF7_HTMLFormatter {
 	public function start_tag( $tag ) {
 		list( $tag, $tag_name ) = self::normalize_start_tag( $tag );
 
-		if ( in_array( $tag_name, self::p_child_elements, true ) ) {
-			if (
-				! $this->is_inside( 'p' ) and
-				! $this->is_inside( self::p_child_elements ) and
-				! $this->has_parent( self::p_nonparent_elements )
-			) {
-				// Open <p> if it does not exist.
-				$this->start_tag( 'p' );
-			}
-		} elseif (
+		if (
+			in_array( $tag_name, self::p_child_elements, true ) and
+			! $this->is_inside( 'p' ) and
+			! $this->is_inside( self::p_child_elements ) and
+			! $this->has_parent( self::p_nonparent_elements )
+		) {
+			// Open <p> if it does not exist.
+			$this->start_tag( 'p' );
+		}
+
+		$this->append_start_tag( $tag_name, array(), $tag );
+	}
+
+
+	/**
+	 * Appends a start tag to the output property.
+	 *
+	 * @param string $tag_name Tag name.
+	 * @param array $atts Associative array of attribute name and value pairs.
+	 * @param string $tag A start tag.
+	 */
+	public function append_start_tag( $tag_name, $atts = array(), $tag = '' ) {
+		if ( ! self::validate_tag_name( $tag_name ) ) {
+			wp_trigger_error(
+				__METHOD__,
+				sprintf(
+					__( 'Invalid tag name (%s) was specified.', 'contact-form-7' ),
+					$tag_name
+				),
+				E_USER_WARNING
+			);
+
+			return false;
+		}
+
+		if (
 			'p' === $tag_name or
 			in_array( $tag_name, self::p_parent_elements, true ) or
 			in_array( $tag_name, self::p_nonparent_elements, true )
@@ -448,7 +474,7 @@ class WPCF7_HTMLFormatter {
 
 		if ( ! in_array( $tag_name, self::p_child_elements, true ) ) {
 			if ( '' !== $this->output ) {
-				$this->output = rtrim( $this->output ) . "\n";
+				$this->output = wpcf7_strip_whitespaces( $this->output, 'end' ) . "\n";
 			}
 
 			if ( $this->options['auto_indent'] ) {
@@ -456,7 +482,35 @@ class WPCF7_HTMLFormatter {
 			}
 		}
 
-		$this->output .= $tag;
+		if ( $tag ) {
+			$this->output .= $tag;
+		} elseif ( $atts ) {
+			if ( in_array( $tag_name, self::void_elements, true ) ) {
+				$this->output .= sprintf(
+					'<%1$s %2$s />',
+					$tag_name,
+					wpcf7_format_atts( $atts )
+				);
+			} else {
+				$this->output .= sprintf(
+					'<%1$s %2$s>',
+					$tag_name,
+					wpcf7_format_atts( $atts )
+				);
+			}
+		} else {
+			if ( in_array( $tag_name, self::void_elements, true ) ) {
+				$this->output .= sprintf(
+					'<%s />',
+					$tag_name
+				);
+			} else {
+				$this->output .= sprintf(
+					'<%s>',
+					$tag_name
+				);
+			}
+		}
 	}
 
 
@@ -524,16 +578,6 @@ class WPCF7_HTMLFormatter {
 
 
 	/**
-	 * Closes all open tags.
-	 */
-	public function close_all_tags() {
-		while ( $element = array_shift( $this->stacked_elements ) ) {
-			$this->append_end_tag( $element );
-		}
-	}
-
-
-	/**
 	 * Appends an end tag to the output property.
 	 *
 	 * @param string $tag_name Tag name.
@@ -543,7 +587,7 @@ class WPCF7_HTMLFormatter {
 			// Remove unnecessary <br />.
 			$this->output = preg_replace( '/\s*<br \/>\s*$/', '', $this->output );
 
-			$this->output = rtrim( $this->output ) . "\n";
+			$this->output = wpcf7_strip_whitespaces( $this->output, 'end' ) . "\n";
 
 			if ( $this->options['auto_indent'] ) {
 				$this->output .= self::indent( count( $this->stacked_elements ) );
@@ -554,6 +598,16 @@ class WPCF7_HTMLFormatter {
 
 		// Remove trailing <p></p>.
 		$this->output = preg_replace( '/<p>\s*<\/p>$/', '', $this->output );
+	}
+
+
+	/**
+	 * Closes all open tags.
+	 */
+	public function close_all_tags() {
+		while ( $element = array_shift( $this->stacked_elements ) ) {
+			$this->append_end_tag( $element );
+		}
 	}
 
 
@@ -602,6 +656,18 @@ class WPCF7_HTMLFormatter {
 		}
 
 		return in_array( $parent, $tag_names, true );
+	}
+
+
+	/**
+	 * Closes all remaining tags, echos the output, and resets the output.
+	 */
+	public function print() {
+		$this->close_all_tags();
+
+		echo $this->output;
+
+		$this->output = '';
 	}
 
 
@@ -673,6 +739,14 @@ class WPCF7_HTMLFormatter {
 		$paragraph = preg_replace( '/[ ]+/', " ", $paragraph );
 
 		return $paragraph;
+	}
+
+
+	/**
+	 * Returns true if the specified tag name is valid.
+	 */
+	public static function validate_tag_name( $tag_name ) {
+		return preg_match( '/^[a-z][0-9a-z]*(?:[:][a-z][0-9a-z]*)?$/', $tag_name );
 	}
 
 }
