@@ -660,6 +660,18 @@ class WPCF7_HTMLFormatter {
 
 
 	/**
+	 * Closes all remaining tags, echos the output, and resets the output.
+	 */
+	public function print() {
+		$this->close_all_tags();
+
+		echo $this->output;
+
+		$this->output = '';
+	}
+
+
+	/**
 	 * Calculates the position of the next chunk based on the position and
 	 * length of the current chunk.
 	 *
