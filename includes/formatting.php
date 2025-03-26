@@ -590,7 +590,12 @@ function wpcf7_format_atts( $atts ) {
  */
 function wpcf7_strip_whitespaces( $input, $side = 'both' ) {
 	if ( is_array( $input ) ) {
-		return array_map( 'wpcf7_strip_whitespaces', $input, $side );
+		return array_map(
+			static function ( $i ) use ( $side ) {
+				return wpcf7_strip_whitespaces( $i, $side );
+			},
+			$input
+		);
 	}
 
 	// https://www.unicode.org/Public/UCD/latest/ucd/PropList.txt
