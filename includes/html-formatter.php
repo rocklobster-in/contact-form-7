@@ -375,6 +375,16 @@ class WPCF7_HTMLFormatter {
 	public function start_tag( $tag ) {
 		list( $tag, $tag_name ) = self::normalize_start_tag( $tag );
 
+		if (
+			in_array( $tag_name, self::p_child_elements, true ) and
+			! $this->is_inside( 'p' ) and
+			! $this->is_inside( self::p_child_elements ) and
+			! $this->has_parent( self::p_nonparent_elements )
+		) {
+			// Open <p> if it does not exist.
+			$this->start_tag( 'p' );
+		}
+
 		$this->append_start_tag( $tag_name, array(), $tag );
 	}
 
@@ -400,16 +410,7 @@ class WPCF7_HTMLFormatter {
 			return false;
 		}
 
-		if ( in_array( $tag_name, self::p_child_elements, true ) ) {
-			if (
-				! $this->is_inside( 'p' ) and
-				! $this->is_inside( self::p_child_elements ) and
-				! $this->has_parent( self::p_nonparent_elements )
-			) {
-				// Open <p> if it does not exist.
-				$this->start_tag( 'p' );
-			}
-		} elseif (
+		if (
 			'p' === $tag_name or
 			in_array( $tag_name, self::p_parent_elements, true ) or
 			in_array( $tag_name, self::p_nonparent_elements, true )
