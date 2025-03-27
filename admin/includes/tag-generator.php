@@ -68,26 +68,29 @@ class WPCF7_TagGenerator {
 	 * Renders form-tag generator calling buttons.
 	 */
 	public function print_buttons() {
-		echo '<span id="tag-generator-list" class="hide-if-no-js">';
+		$formatter = new WPCF7_HTMLFormatter();
+
+		$formatter->append_start_tag( 'span', array(
+			'id' => 'tag-generator-list',
+			'class' => 'hide-if-no-js',
+		) );
 
 		foreach ( (array) $this->panels as $panel ) {
-			echo sprintf(
-				'<button %1$s>%2$s</button>',
-				wpcf7_format_atts( array(
-					'type' => 'button',
-					'data-taggen' => 'open-dialog',
-					'data-target' => $panel['content'],
-					'title' => sprintf(
-						/* translators: %s: title of form-tag */
-						__( 'Form-tag Generator: %s', 'contact-form-7' ),
-						$panel['title']
-					),
-				) ),
-				esc_html( $panel['title'] )
-			);
+			$formatter->append_start_tag( 'button', array(
+				'type' => 'button',
+				'data-taggen' => 'open-dialog',
+				'data-target' => $panel['content'],
+				'title' => sprintf(
+					/* translators: %s: title of form-tag */
+					__( 'Form-tag Generator: %s', 'contact-form-7' ),
+					$panel['title']
+				),
+			) );
+
+			$formatter->append_text( esc_html( $panel['title'] ) );
 		}
 
-		echo '</span>';
+		$formatter->print();
 	}
 
 
