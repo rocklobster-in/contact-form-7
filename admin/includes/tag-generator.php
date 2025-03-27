@@ -98,6 +98,20 @@ class WPCF7_TagGenerator {
 	 * Renders form-tag generator dialog panels (hidden until called).
 	 */
 	public function print_panels( WPCF7_ContactForm $contact_form ) {
+		$formatter = new WPCF7_HTMLFormatter( array(
+			'allowed_html' => array_merge( wpcf7_kses_allowed_html(), array(
+				'dialog' => array(
+					'id' => true,
+					'class' => true,
+				),
+				'form' => array(
+					'method' => true,
+					'class' => true,
+					'data-*' => true,
+				),
+			) ),
+		) );
+
 		foreach ( (array) $this->panels as $id => $panel ) {
 			$callback = $panel['callback'];
 
@@ -108,40 +122,35 @@ class WPCF7_TagGenerator {
 			) );
 
 			if ( is_callable( $callback ) ) {
-				echo "\n";
-				echo sprintf(
-					'<dialog id="%s" class="tag-generator-dialog">',
-					esc_attr( $options['content'] )
-				);
-				echo "\n";
-				echo sprintf(
-					'<button %1$s>%2$s</button>',
-					wpcf7_format_atts( array(
-						'class' => 'close-button',
-						'title' => __( 'Close this dialog box', 'contact-form-7' ),
-						'data-taggen' => 'close-dialog',
-					) ),
-					esc_html( __( 'Close', 'contact-form-7' ) )
-				);
-				echo "\n";
-				echo sprintf(
-					'<form %s>',
-					wpcf7_format_atts( array(
-						'method' => 'dialog',
-						'class' => 'tag-generator-panel',
-						'data-id' => $options['id'],
-						'data-version' => $options['version'],
-					) )
-				);
-				echo "\n";
-				call_user_func( $callback, $contact_form, $options );
-				echo "\n";
-				echo '</form>';
-				echo "\n";
-				echo '</dialog>';
-				echo "\n\n";
+				$formatter->append_start_tag( 'dialog', array(
+					'id' => $options['content'],
+					'class' => 'tag-generator-dialog',
+				) );
+
+				$formatter->append_start_tag( 'button', array(
+					'class' => 'close-button',
+					'title' => __( 'Close this dialog box', 'contact-form-7' ),
+					'data-taggen' => 'close-dialog',
+				) );
+
+				$formatter->append_text( esc_html( __( 'Close', 'contact-form-7' ) ) );
+
+				$formatter->end_tag( 'button' );
+
+				$formatter->append_start_tag( 'form', array(
+					'method' => 'dialog',
+					'class' => 'tag-generator-panel',
+					'data-id' => $options['id'],
+					'data-version' => $options['version'],
+				) );
+
+				$formatter->call_user_func( $callback, $contact_form, $options );
+
+				$formatter->close_all_tags();
 			}
 		}
+
+		$formatter->print();
 	}
 
 }
