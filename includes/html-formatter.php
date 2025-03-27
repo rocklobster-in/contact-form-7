@@ -106,6 +106,7 @@ class WPCF7_HTMLFormatter {
 		$this->options = wp_parse_args( $options, array(
 			'auto_br' => true,
 			'auto_indent' => true,
+			'allowed_html' => wpcf7_kses_allowed_html(),
 		) );
 	}
 
@@ -679,7 +680,7 @@ class WPCF7_HTMLFormatter {
 	public function print() {
 		$this->close_all_tags();
 
-		echo $this->output;
+		echo wp_kses( $this->output, $this->options['allowed_html'] );
 
 		$this->output = '';
 	}
