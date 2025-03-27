@@ -33,6 +33,13 @@ class WPCF7_HTMLFormatter {
 	);
 
 	/**
+	 * HTML elements that can be a direct child of the same element.
+	 */
+	const nestable_elements = array(
+		'article', 'aside', 'blockquote', 'div', 'fieldset', 'section', 'span',
+	);
+
+	/**
 	 * HTML elements that can contain flow content.
 	 */
 	const p_parent_elements = array(
@@ -466,6 +473,13 @@ class WPCF7_HTMLFormatter {
 		if ( 'tfoot' === $tag_name ) {
 			// Close <tbody> if closing tag is omitted.
 			$this->end_tag( 'tbody' );
+		}
+
+		if (
+			$this->has_parent( $tag_name ) and
+			! in_array( $tag_name, self::nestable_elements, true )
+		) {
+			$this->end_tag( $tag_name );
 		}
 
 		if ( ! in_array( $tag_name, self::void_elements, true ) ) {
