@@ -675,6 +675,23 @@ class WPCF7_HTMLFormatter {
 
 
 	/**
+	 * Calls the callback given by the first parameter. The buffered output
+	 * will be appended to the output property.
+	 */
+	public function call_user_func( $callback, ...$args ) {
+		ob_start();
+		$result = call_user_func( $callback, ...$args );
+		$output = ob_get_clean();
+
+		if ( false !== $output ) {
+			$this->output .= "\n" . $output . "\n";
+		}
+
+		return $result;
+	}
+
+
+	/**
 	 * Closes all remaining tags, echos the output, and resets the output.
 	 */
 	public function print() {
