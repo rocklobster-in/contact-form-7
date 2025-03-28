@@ -296,13 +296,29 @@ class WPCF7_HTMLFormatter {
 
 
 	/**
+	 * Appends preformatted text to the output property.
+	 */
+	public function append_preformatted( $content ) {
+		$this->output .= $content;
+	}
+
+
+	/**
+	 * Appends whitespace to the output property.
+	 */
+	public function append_whitespace() {
+		$this->append_preformatted( ' ' );
+	}
+
+
+	/**
 	 * Appends a text node content to the output property.
 	 *
 	 * @param string $content Text node content.
 	 */
 	public function append_text( $content ) {
 		if ( $this->is_inside( array( 'pre', 'template' ) ) ) {
-			$this->output .= $content;
+			$this->append_preformatted( $content );
 			return;
 		}
 
@@ -334,7 +350,7 @@ class WPCF7_HTMLFormatter {
 						$this->options['auto_br']
 					);
 
-					$this->output .= $paragraph;
+					$this->append_preformatted( $paragraph );
 				}
 
 				foreach ( $paragraphs as $paragraph ) {
@@ -347,7 +363,7 @@ class WPCF7_HTMLFormatter {
 						$this->options['auto_br']
 					);
 
-					$this->output .= $paragraph;
+					$this->append_preformatted( $paragraph );
 				}
 			}
 
@@ -362,7 +378,7 @@ class WPCF7_HTMLFormatter {
 
 				$content = self::normalize_paragraph( $content, $auto_br );
 
-				$this->output .= $content;
+				$this->append_preformatted( $content );
 			}
 		} else {
 			$auto_br = $this->options['auto_br'] &&
@@ -370,16 +386,8 @@ class WPCF7_HTMLFormatter {
 
 			$content = self::normalize_paragraph( $content, $auto_br );
 
-			$this->output .= $content;
+			$this->append_preformatted( $content );
 		}
-	}
-
-
-	/**
-	 * Appends whitespace to the output property.
-	 */
-	public function append_whitespace() {
-		$this->output .= ' ';
 	}
 
 
@@ -501,36 +509,46 @@ class WPCF7_HTMLFormatter {
 			}
 
 			if ( $this->options['auto_indent'] ) {
-				$this->output .= self::indent( count( $this->stacked_elements ) - 1 );
+				$this->append_preformatted(
+					self::indent( count( $this->stacked_elements ) - 1 )
+				);
 			}
 		}
 
 		if ( $tag ) {
-			$this->output .= $tag;
+			$this->append_preformatted( $tag );
 		} elseif ( $atts ) {
 			if ( in_array( $tag_name, self::void_elements, true ) ) {
-				$this->output .= sprintf(
-					'<%1$s %2$s />',
-					$tag_name,
-					wpcf7_format_atts( $atts )
+				$this->append_preformatted(
+					sprintf(
+						'<%1$s %2$s />',
+						$tag_name,
+						wpcf7_format_atts( $atts )
+					)
 				);
 			} else {
-				$this->output .= sprintf(
-					'<%1$s %2$s>',
-					$tag_name,
-					wpcf7_format_atts( $atts )
+				$this->append_preformatted(
+					sprintf(
+						'<%1$s %2$s>',
+						$tag_name,
+						wpcf7_format_atts( $atts )
+					)
 				);
 			}
 		} else {
 			if ( in_array( $tag_name, self::void_elements, true ) ) {
-				$this->output .= sprintf(
-					'<%s />',
-					$tag_name
+				$this->append_preformatted(
+					sprintf(
+						'<%s />',
+						$tag_name
+					)
 				);
 			} else {
-				$this->output .= sprintf(
-					'<%s>',
-					$tag_name
+				$this->append_preformatted(
+					sprintf(
+						'<%s>',
+						$tag_name
+					)
 				);
 			}
 		}
@@ -613,11 +631,15 @@ class WPCF7_HTMLFormatter {
 			$this->output = wpcf7_strip_whitespaces( $this->output, 'end' ) . "\n";
 
 			if ( $this->options['auto_indent'] ) {
-				$this->output .= self::indent( count( $this->stacked_elements ) );
+				$this->append_preformatted(
+					self::indent( count( $this->stacked_elements ) )
+				);
 			}
 		}
 
-		$this->output .= sprintf( '</%s>', $tag_name );
+		$this->append_preformatted(
+			sprintf( '</%s>', $tag_name )
+		);
 
 		// Remove trailing <p></p>.
 		$this->output = preg_replace( '/<p>\s*<\/p>$/', '', $this->output );
@@ -640,7 +662,7 @@ class WPCF7_HTMLFormatter {
 	 * @param string $tag An HTML comment.
 	 */
 	public function append_comment( $tag ) {
-		$this->output .= $tag;
+		$this->append_preformatted( $tag );
 	}
 
 
@@ -692,7 +714,7 @@ class WPCF7_HTMLFormatter {
 		$output = ob_get_clean();
 
 		if ( false !== $output ) {
-			$this->output .= "\n" . $output . "\n";
+			$this->append_preformatted( "\n" . $output . "\n" );
 		}
 
 		return $result;
