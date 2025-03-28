@@ -204,33 +204,52 @@ class WPCF7_TagGeneratorGenerator {
 			'select_options' => array(),
 		) );
 
-?>
-<fieldset>
-	<legend id="<?php echo esc_attr( $this->ref( 'type-legend' ) ); ?>"><?php
-		echo esc_html( __( 'Field type', 'contact-form-7' ) );
-	?></legend>
+		$formatter = new WPCF7_HTMLFormatter();
 
-	<select data-tag-part="basetype" aria-labelledby="<?php echo esc_attr( $this->ref( 'type-legend' ) ); ?>"><?php
+		$formatter->append_start_tag( 'fieldset' );
+
+		$formatter->append_start_tag( 'legend', array(
+			'id' => $this->ref( 'type-legend' ),
+		) );
+
+		$formatter->append_text(
+			esc_html( __( 'Field type', 'contact-form-7' ) )
+		);
+
+		$formatter->end_tag( 'legend' );
+
+		$formatter->append_start_tag( 'select', array(
+			'data-tag-part' => 'basetype',
+			'aria-labelledby' => $this->ref( 'type-legend' ),
+		) );
+
 		foreach ( (array) $options['select_options'] as $basetype => $title ) {
-			echo sprintf(
-				'<option %1$s>%2$s</option>',
-				wpcf7_format_atts( array(
-					'value' => $basetype,
-				) ),
-				esc_html( $title )
+			$formatter->append_start_tag( 'option', array(
+				'value' => $basetype,
+			) );
+
+			$formatter->append_text( esc_html( $title ) );
+		}
+
+		$formatter->end_tag( 'select' );
+
+		if ( $options['with_required'] ) {
+			$formatter->append_start_tag( 'br' );
+			$formatter->append_start_tag( 'label' );
+
+			$formatter->append_start_tag( 'input', array(
+				'type' => 'checkbox',
+				'data-tag-part' => 'type-suffix',
+				'value' => '*',
+			) );
+
+			$formatter->append_text(
+				" " .
+				esc_html( __( "This is a required field.", 'contact-form-7' ) )
 			);
 		}
-	?></select>
 
-	<?php if ( $options['with_required'] ) { ?>
-	<br />
-	<label>
-		<input type="checkbox" data-tag-part="type-suffix" value="*" />
-		<?php echo esc_html( __( "This is a required field.", 'contact-form-7' ) ); ?>
-	</label>
-	<?php } ?>
-</fieldset>
-<?php
+		$formatter->print();
 	}
 
 
