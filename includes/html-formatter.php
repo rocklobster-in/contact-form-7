@@ -376,6 +376,14 @@ class WPCF7_HTMLFormatter {
 
 
 	/**
+	 * Appends whitespace to the output property.
+	 */
+	public function append_whitespace() {
+		$this->output .= ' ';
+	}
+
+
+	/**
 	 * Appends a start tag to the output property.
 	 *
 	 * @param string $tag A start tag.

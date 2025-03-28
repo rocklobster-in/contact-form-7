@@ -243,8 +243,9 @@ class WPCF7_TagGeneratorGenerator {
 				'value' => '*',
 			) );
 
+			$formatter->append_whitespace();
+
 			$formatter->append_text(
-				" " .
 				esc_html( __( "This is a required field.", 'contact-form-7' ) )
 			);
 		}
