@@ -358,40 +358,43 @@ class WPCF7_TagGeneratorGenerator {
 			'accept_minus' => false,
 		) );
 
-?>
-<fieldset>
-	<legend><?php
-		echo esc_html( $options['title'] );
-	?></legend>
-	<label><?php
-		echo esc_html( __( 'Min', 'contact-form-7' ) ) . "\n";
+		$formatter = new WPCF7_HTMLFormatter();
 
-		echo sprintf(
-			'<input %s />',
-			wpcf7_format_atts( array(
-				'type' => $options['type'],
-				'data-tag-part' => 'option',
-				'data-tag-option' => $options['min_option'],
-				'min' => $options['accept_minus'] ? null : 0,
-			) )
-		);
-	?></label>
-	&#8660;
-	<label><?php
-		echo esc_html( __( 'Max', 'contact-form-7' ) ) . "\n";
+		$formatter->append_start_tag( 'fieldset' );
 
-		echo sprintf(
-			'<input %s />',
-			wpcf7_format_atts( array(
-				'type' => $options['type'],
-				'data-tag-part' => 'option',
-				'data-tag-option' => $options['max_option'],
-				'min' => $options['accept_minus'] ? null : 0,
-			) )
-		);
-	?></label>
-</fieldset>
-<?php
+		$formatter->append_start_tag( 'legend' );
+		$formatter->append_text( esc_html( $options['title'] ) );
+		$formatter->end_tag( 'legend' );
+
+		$formatter->append_start_tag( 'label' );
+		$formatter->append_text( esc_html( __( 'Min', 'contact-form-7' ) ) );
+		$formatter->append_whitespace();
+
+		$formatter->append_start_tag( 'input', array(
+			'type' => $options['type'],
+			'data-tag-part' => 'option',
+			'data-tag-option' => $options['min_option'],
+			'min' => $options['accept_minus'] ? null : 0,
+		) );
+
+		$formatter->end_tag( 'label' );
+
+		$formatter->append_preformatted( ' &#8660; ' );
+
+		$formatter->append_start_tag( 'label' );
+		$formatter->append_text( esc_html( __( 'Max', 'contact-form-7' ) ) );
+		$formatter->append_whitespace();
+
+		$formatter->append_start_tag( 'input', array(
+			'type' => $options['type'],
+			'data-tag-part' => 'option',
+			'data-tag-option' => $options['max_option'],
+			'min' => $options['accept_minus'] ? null : 0,
+		) );
+
+		$formatter->end_tag( 'label' );
+
+		$formatter->print();
 	}
 
 
