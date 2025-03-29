@@ -544,24 +544,36 @@ class WPCF7_TagGeneratorGenerator {
 	 * Template method for insert-box content including the result form-tag.
 	 */
 	private function insert_box_content( $options = '' ) {
-?>
-<div class="flex-container">
-	<?php
-		echo sprintf(
-			'<input %s />',
-			wpcf7_format_atts( array(
-				'type' => 'text',
-				'class' => 'code',
-				'readonly' => true,
-				'onfocus' => 'this.select();',
-				'data-tag-part' => 'tag',
-				'aria-label' => __( "The form-tag to be inserted into the form template", 'contact-form-7' ),
-			) )
+		$formatter = new WPCF7_HTMLFormatter();
+
+		$formatter->append_start_tag( 'div', array(
+			'class' => 'flex-container',
+		) );
+
+		$formatter->append_start_tag( 'input', array(
+			'type' => 'text',
+			'class' => 'code',
+			'readonly' => true,
+			'onfocus' => 'this.select();',
+			'data-tag-part' => 'tag',
+			'aria-label' => __( 'The form-tag to be inserted into the form template', 'contact-form-7' ),
+		) );
+
+		$formatter->append_whitespace();
+
+		$formatter->append_start_tag( 'button', array(
+			'type' => 'button',
+			'class' => 'button button-primary',
+			'data-taggen' => 'insert-tag',
+		) );
+
+		$formatter->append_text(
+			esc_html( __( 'Insert Tag', 'contact-form-7' ) )
 		);
-	?>
-	<button type="button" class="button button-primary" data-taggen="insert-tag"><?php echo esc_html( __( 'Insert Tag', 'contact-form-7' ) ); ?></button>
-</div>
-<?php
+
+		$formatter->end_tag( 'button' );
+
+		$formatter->print();
 	}
 
 
