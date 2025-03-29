@@ -457,68 +457,86 @@ class WPCF7_TagGeneratorGenerator {
 			'use_label_element' => false,
 		) );
 
-?>
-<fieldset>
-	<legend id="<?php echo esc_attr( $this->ref( 'selectable-values-legend' ) ); ?>"><?php
-		echo esc_html( __( 'Selectable values', 'contact-form-7' ) );
-	?></legend>
-	<?php
-		echo sprintf(
-			'<span %1$s>%2$s</span>',
-			wpcf7_format_atts( array(
-				'id' => $this->ref( 'selectable-values-description' ),
-			) ),
-			esc_html( __( "One item per line.", 'contact-form-7' ) )
+		$formatter = new WPCF7_HTMLFormatter();
+
+		$formatter->append_start_tag( 'fieldset' );
+
+		$formatter->append_start_tag( 'legend', array(
+			'id' => $this->ref( 'selectable-values-legend' ),
+		) );
+
+		$formatter->append_text(
+			esc_html( __( 'Selectable values', 'contact-form-7' ) )
 		);
-	?>
-	<br />
-	<?php
-		echo sprintf(
-			'<textarea %1$s>%2$s</textarea>',
-			wpcf7_format_atts( array(
-				'required' => true,
-				'data-tag-part' => 'value',
-				'aria-labelledby' => $this->ref( 'selectable-values-legend' ),
-				'aria-describedby' => $this->ref( 'selectable-values-description' ),
-			) ),
+
+		$formatter->end_tag( 'legend' );
+
+		$formatter->append_start_tag( 'span', array(
+			'id' => $this->ref( 'selectable-values-description' ),
+		) );
+
+		$formatter->append_text(
+			esc_html( __( 'One item per line.', 'contact-form-7' ) )
+		);
+
+		$formatter->end_tag( 'span' );
+
+		$formatter->append_start_tag( 'br' );
+
+		$formatter->append_start_tag( 'textarea', array(
+			'required' => true,
+			'data-tag-part' => 'value',
+			'aria-labelledby' => $this->ref( 'selectable-values-legend' ),
+			'aria-describedby' => $this->ref( 'selectable-values-description' ),
+		) );
+
+		$formatter->append_text(
 			esc_html( __( "Option 1\nOption 2\nOption 3", 'contact-form-7' ) )
 		);
-	?>
 
-	<?php if ( $options['first_as_label'] ) { ?>
-	<br />
-	<?php
-		echo sprintf(
-			'<label><input %1$s /> %2$s</label>',
-			wpcf7_format_atts( array(
+		$formatter->end_tag( 'textarea' );
+
+		if ( $options['first_as_label'] ) {
+			$formatter->append_start_tag( 'br' );
+			$formatter->append_start_tag( 'label' );
+
+			$formatter->append_start_tag( 'input', array(
 				'type' => 'checkbox',
 				'checked' => 'checked' === $options['first_as_label'],
 				'data-tag-part' => 'option',
 				'data-tag-option' => 'first_as_label',
-			) ),
-			esc_html( __( "Use the first item as a label.", 'contact-form-7' ) )
-		);
-	?>
-	<?php } ?>
+			) );
 
-	<?php if ( $options['use_label_element'] ) { ?>
-	<br />
-	<?php
-		echo sprintf(
-			'<label><input %1$s /> %2$s</label>',
-			wpcf7_format_atts( array(
+			$formatter->append_whitespace();
+
+			$formatter->append_text(
+				esc_html( __( 'Use the first item as a label.', 'contact-form-7' ) )
+			);
+
+			$formatter->end_tag( 'label' );
+		}
+
+		if ( $options['use_label_element'] ) {
+			$formatter->append_start_tag( 'br' );
+			$formatter->append_start_tag( 'label' );
+
+			$formatter->append_start_tag( 'input', array(
 				'type' => 'checkbox',
 				'checked' => 'checked' === $options['use_label_element'],
 				'data-tag-part' => 'option',
 				'data-tag-option' => 'use_label_element',
-			) ),
-			esc_html( __( "Wrap each item with a label element.", 'contact-form-7' ) )
-		);
-	?>
-	<?php } ?>
+			) );
 
-</fieldset>
-<?php
+			$formatter->append_whitespace();
+
+			$formatter->append_text(
+				esc_html( __( 'Wrap each item with a label element.', 'contact-form-7' ) )
+			);
+
+			$formatter->end_tag( 'label' );
+		}
+
+		$formatter->print();
 	}
 
 
