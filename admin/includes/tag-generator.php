@@ -409,31 +409,42 @@ class WPCF7_TagGeneratorGenerator {
 			'use_content' => false,
 		) );
 
-?>
-<fieldset>
-	<legend id="<?php echo esc_attr( $this->ref( 'value-legend' ) ); ?>"><?php
-		echo esc_html( $options['title'] );
-	?></legend>
-	<?php
-		echo sprintf(
-			'<input %s />',
-			wpcf7_format_atts( array(
-				'type' => $options['type'],
-				'data-tag-part' => $options['use_content'] ? 'content' : 'value',
-				'aria-labelledby' => $this->ref( 'value-legend' ),
-			) )
-		);
-	?>
+		$formatter = new WPCF7_HTMLFormatter();
 
-	<?php if ( $options['with_placeholder'] ) { ?>
-	<br />
-	<label>
-		<input type="checkbox" data-tag-part="option" data-tag-option="placeholder" /> <?php echo esc_html( __( "Use this text as the placeholder.", 'contact-form-7' ) ); ?>
-	</label>
-	<?php } ?>
+		$formatter->append_start_tag( 'fieldset' );
 
-</fieldset>
-<?php
+		$formatter->append_start_tag( 'legend', array(
+			'id' => $this->ref( 'value-legend' ),
+		) );
+
+		$formatter->append_text( esc_html( $options['title'] ) );
+
+		$formatter->end_tag( 'legend' );
+
+		$formatter->append_start_tag( 'input', array(
+			'type' => $options['type'],
+			'data-tag-part' => $options['use_content'] ? 'content' : 'value',
+			'aria-labelledby' => $this->ref( 'value-legend' ),
+		) );
+
+		if ( $options['with_placeholder'] ) {
+			$formatter->append_start_tag( 'br' );
+			$formatter->append_start_tag( 'label' );
+
+			$formatter->append_start_tag( 'input', array(
+				'type' => 'checkbox',
+				'data-tag-part' => 'option',
+				'data-tag-option' => 'placeholder',
+			) );
+
+			$formatter->append_whitespace();
+
+			$formatter->append_text(
+				esc_html( __( 'Use this text as the placeholder.', 'contact-form-7' ) )
+			);
+		}
+
+		$formatter->print();
 	}
 
 
