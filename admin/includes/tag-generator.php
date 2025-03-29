@@ -581,15 +581,19 @@ class WPCF7_TagGeneratorGenerator {
 	 * Template method for a tip message about mail-tag.
 	 */
 	private function mail_tag_tip( $options = '' ) {
-		$tip = sprintf(
+		$formatter = new WPCF7_HTMLFormatter();
+
+		$formatter->append_start_tag( 'p', array(
+			'class' => 'mail-tag-tip',
+		) );
+
+		$formatter->append_preformatted( sprintf(
 			/* translators: %s: mail-tag corresponding to the form-tag */
 			esc_html( __( 'To use the user input in the email, insert the corresponding mail-tag %s into the email template.', 'contact-form-7' ) ),
 			'<strong data-tag-part="mail-tag"></strong>'
-		);
+		) );
 
-?>
-<p class="mail-tag-tip"><?php echo $tip; ?></p>
-<?php
+		$formatter->print();
 	}
 
 }
