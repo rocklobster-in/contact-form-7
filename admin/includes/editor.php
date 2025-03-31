@@ -76,27 +76,46 @@ class WPCF7_Editor {
 }
 
 function wpcf7_editor_panel_form( $post ) {
-	$desc_link = wpcf7_link(
-		__( 'https://contactform7.com/editing-form-template/', 'contact-form-7' ),
-		__( 'Editing form template', 'contact-form-7' ) );
-	/* translators: %s: link labeled 'Editing form template' */
-	$description = __( "You can edit the form template here. For details, see %s.", 'contact-form-7' );
-	$description = sprintf( esc_html( $description ), $desc_link );
-?>
+	$description = sprintf(
+		/* translators: %s: link labeled 'Editing form template' */
+		esc_html( __( 'You can edit the form template here. For details, see %s.', 'contact-form-7' ) ),
+		wpcf7_link(
+			__( 'https://contactform7.com/editing-form-template/', 'contact-form-7' ),
+			__( 'Editing form template', 'contact-form-7' )
+		)
+	);
 
-<h2><?php echo esc_html( __( 'Form', 'contact-form-7' ) ); ?></h2>
+	$formatter = new WPCF7_HTMLFormatter();
 
-<fieldset>
-<legend><?php echo $description; ?></legend>
+	$formatter->append_start_tag( 'h2' );
+	$formatter->append_preformatted( esc_html( __( 'Form', 'contact-form-7' ) ) );
+	$formatter->end_tag( 'h2' );
 
-<?php
-	$tag_generator = WPCF7_TagGenerator::get_instance();
-	$tag_generator->print_buttons();
-?>
+	$formatter->append_start_tag( 'fieldset' );
 
-<textarea id="wpcf7-form" name="wpcf7-form" cols="100" rows="24" class="large-text code" data-config-field="form.body"><?php echo esc_textarea( $post->prop( 'form' ) ); ?></textarea>
-</fieldset>
-<?php
+	$formatter->append_start_tag( 'legend' );
+	$formatter->append_preformatted( $description );
+	$formatter->end_tag( 'legend' );
+
+	$formatter->call_user_func( static function () {
+		$tag_generator = WPCF7_TagGenerator::get_instance();
+		$tag_generator->print_buttons();
+	} );
+
+	$formatter->append_start_tag( 'textarea', array(
+		'id' => 'wpcf7-form',
+		'name' => 'wpcf7-form',
+		'cols' => 100,
+		'rows' => 24,
+		'class' => 'large-text code',
+		'data-config-field' => 'form.body',
+	) );
+
+	$formatter->append_preformatted( esc_textarea( $post->prop( 'form' ) ) );
+
+	$formatter->end_tag( 'textarea' );
+
+	$formatter->print();
 }
 
 function wpcf7_editor_panel_mail( $post ) {
