@@ -29,47 +29,49 @@ class WPCF7_Editor {
 			$active_panel_id = array_key_first( $this->panels );
 		}
 
-		echo '<nav>';
-		echo '<ul id="contact-form-editor-tabs">';
+		$formatter = new WPCF7_HTMLFormatter();
+
+		$formatter->append_start_tag( 'nav' );
+
+		$formatter->append_start_tag( 'ul', array(
+			'id' => 'contact-form-editor-tabs',
+		) );
 
 		foreach ( $this->panels as $panel_id => $panel ) {
 			$active = $panel_id === $active_panel_id;
 
-			echo sprintf(
-				'<li %1$s><a %2$s>%3$s</a></li>',
-				wpcf7_format_atts( array(
-					'id' => sprintf( '%s-tab', $panel_id ),
-					'class' => $active ? 'active' : null,
-					'tabindex' => $active ? '0' : '-1',
-					'data-panel' => $panel_id,
-				) ),
-				wpcf7_format_atts( array(
-					'href' => sprintf( '#%s', $panel_id ),
-				) ),
-				esc_html( $panel['title'] )
-			);
+			$formatter->append_start_tag( 'li', array(
+				'id' => sprintf( '%s-tab', $panel_id ),
+				'class' => $active ? 'active' : null,
+				'tabindex' => $active ? '0' : '-1',
+				'data-panel' => $panel_id,
+			) );
+
+			$formatter->append_start_tag( 'a', array(
+				'href' => sprintf( '#%s', $panel_id ),
+			) );
+
+			$formatter->append_text( esc_html( $panel['title'] ) );
 		}
 
-		echo '</ul>';
-		echo '</nav>';
+		$formatter->end_tag( 'nav' );
 
 		foreach ( $this->panels as $panel_id => $panel ) {
 			$active = $panel_id === $active_panel_id;
 
-			echo sprintf(
-				'<section %s>',
-				wpcf7_format_atts( array(
-					'id' => $panel_id,
-					'class' => 'contact-form-editor-panel' . ( $active ? ' active' : '' ),
-				) )
-			);
+			$formatter->append_start_tag( 'section', array(
+				'id' => $panel_id,
+				'class' => 'contact-form-editor-panel' . ( $active ? ' active' : '' ),
+			) );
 
 			if ( is_callable( $panel['callback'] ) ) {
-				call_user_func( $panel['callback'], $this->contact_form );
+				$formatter->call_user_func( $panel['callback'], $this->contact_form );
 			}
 
-			echo '</section>';
+			$formatter->end_tag( 'section' );
 		}
+
+		$formatter->print();
 	}
 }
 
