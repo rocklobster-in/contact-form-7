@@ -29,72 +29,93 @@ class WPCF7_Editor {
 			$active_panel_id = array_key_first( $this->panels );
 		}
 
-		echo '<nav>';
-		echo '<ul id="contact-form-editor-tabs">';
+		$formatter = new WPCF7_HTMLFormatter();
+
+		$formatter->append_start_tag( 'nav' );
+
+		$formatter->append_start_tag( 'ul', array(
+			'id' => 'contact-form-editor-tabs',
+		) );
 
 		foreach ( $this->panels as $panel_id => $panel ) {
 			$active = $panel_id === $active_panel_id;
 
-			echo sprintf(
-				'<li %1$s><a %2$s>%3$s</a></li>',
-				wpcf7_format_atts( array(
-					'id' => sprintf( '%s-tab', $panel_id ),
-					'class' => $active ? 'active' : null,
-					'tabindex' => $active ? '0' : '-1',
-					'data-panel' => $panel_id,
-				) ),
-				wpcf7_format_atts( array(
-					'href' => sprintf( '#%s', $panel_id ),
-				) ),
-				esc_html( $panel['title'] )
-			);
+			$formatter->append_start_tag( 'li', array(
+				'id' => sprintf( '%s-tab', $panel_id ),
+				'class' => $active ? 'active' : null,
+				'tabindex' => $active ? '0' : '-1',
+				'data-panel' => $panel_id,
+			) );
+
+			$formatter->append_start_tag( 'a', array(
+				'href' => sprintf( '#%s', $panel_id ),
+			) );
+
+			$formatter->append_preformatted( esc_html( $panel['title'] ) );
 		}
 
-		echo '</ul>';
-		echo '</nav>';
+		$formatter->end_tag( 'nav' );
 
 		foreach ( $this->panels as $panel_id => $panel ) {
 			$active = $panel_id === $active_panel_id;
 
-			echo sprintf(
-				'<section %s>',
-				wpcf7_format_atts( array(
-					'id' => $panel_id,
-					'class' => 'contact-form-editor-panel' . ( $active ? ' active' : '' ),
-				) )
-			);
+			$formatter->append_start_tag( 'section', array(
+				'id' => $panel_id,
+				'class' => 'contact-form-editor-panel' . ( $active ? ' active' : '' ),
+			) );
 
 			if ( is_callable( $panel['callback'] ) ) {
-				call_user_func( $panel['callback'], $this->contact_form );
+				$formatter->call_user_func( $panel['callback'], $this->contact_form );
 			}
 
-			echo '</section>';
+			$formatter->end_tag( 'section' );
 		}
+
+		$formatter->print();
 	}
 }
 
 function wpcf7_editor_panel_form( $post ) {
-	$desc_link = wpcf7_link(
-		__( 'https://contactform7.com/editing-form-template/', 'contact-form-7' ),
-		__( 'Editing form template', 'contact-form-7' ) );
-	/* translators: %s: link labeled 'Editing form template' */
-	$description = __( "You can edit the form template here. For details, see %s.", 'contact-form-7' );
-	$description = sprintf( esc_html( $description ), $desc_link );
-?>
+	$description = sprintf(
+		/* translators: %s: link labeled 'Editing form template' */
+		esc_html( __( 'You can edit the form template here. For details, see %s.', 'contact-form-7' ) ),
+		wpcf7_link(
+			__( 'https://contactform7.com/editing-form-template/', 'contact-form-7' ),
+			__( 'Editing form template', 'contact-form-7' )
+		)
+	);
 
-<h2><?php echo esc_html( __( 'Form', 'contact-form-7' ) ); ?></h2>
+	$formatter = new WPCF7_HTMLFormatter();
 
-<fieldset>
-<legend><?php echo $description; ?></legend>
+	$formatter->append_start_tag( 'h2' );
+	$formatter->append_preformatted( esc_html( __( 'Form', 'contact-form-7' ) ) );
+	$formatter->end_tag( 'h2' );
 
-<?php
-	$tag_generator = WPCF7_TagGenerator::get_instance();
-	$tag_generator->print_buttons();
-?>
+	$formatter->append_start_tag( 'fieldset' );
 
-<textarea id="wpcf7-form" name="wpcf7-form" cols="100" rows="24" class="large-text code" data-config-field="form.body"><?php echo esc_textarea( $post->prop( 'form' ) ); ?></textarea>
-</fieldset>
-<?php
+	$formatter->append_start_tag( 'legend' );
+	$formatter->append_preformatted( $description );
+	$formatter->end_tag( 'legend' );
+
+	$formatter->call_user_func( static function () {
+		$tag_generator = WPCF7_TagGenerator::get_instance();
+		$tag_generator->print_buttons();
+	} );
+
+	$formatter->append_start_tag( 'textarea', array(
+		'id' => 'wpcf7-form',
+		'name' => 'wpcf7-form',
+		'cols' => 100,
+		'rows' => 24,
+		'class' => 'large-text code',
+		'data-config-field' => 'form.body',
+	) );
+
+	$formatter->append_preformatted( esc_textarea( $post->prop( 'form' ) ) );
+
+	$formatter->end_tag( 'textarea' );
+
+	$formatter->print();
 }
 
 function wpcf7_editor_panel_mail( $post ) {
@@ -132,156 +153,369 @@ function wpcf7_editor_box_mail( $post, $options = '' ) {
 		'exclude_blank' => false,
 	) );
 
-?>
-<div class="contact-form-editor-box-mail" id="<?php echo esc_attr( $id ); ?>">
-<h2><?php echo esc_html( $options['title'] ); ?></h2>
+	$formatter = new WPCF7_HTMLFormatter();
 
-<?php
+	$formatter->append_start_tag( 'div', array(
+		'class' => 'contact-form-editor-box-mail',
+		'id' => $id,
+	) );
+
+	$formatter->append_start_tag( 'h2' );
+	$formatter->append_preformatted( esc_html( $options['title'] ) );
+	$formatter->end_tag( 'h2' );
+
 	if ( ! empty( $options['use'] ) ) {
-		echo sprintf(
-			'<label %1$s><input %2$s /> %3$s</label>',
-			wpcf7_format_atts( array(
-				'for' => sprintf( '%s-active', $id ),
-			) ),
-			wpcf7_format_atts( array(
-				'type' => 'checkbox',
-				'id' => sprintf( '%s-active', $id ),
-				'name' => sprintf( '%s[active]', $id ),
-				'data-config-field' => '',
-				'data-toggle' => sprintf( '%s-fieldset', $id ),
-				'value' => '1',
-				'checked' => $mail['active'],
-			) ),
-			esc_html( $options['use'] )
-		);
+		$formatter->append_start_tag( 'label', array(
+			'for' => sprintf( '%s-active', $id ),
+		) );
 
-		echo sprintf(
-			'<p class="description">%s</p>',
+		$formatter->append_start_tag( 'input', array(
+			'type' => 'checkbox',
+			'id' => sprintf( '%s-active', $id ),
+			'name' => sprintf( '%s[active]', $id ),
+			'data-config-field' => '',
+			'data-toggle' => sprintf( '%s-fieldset', $id ),
+			'value' => '1',
+			'checked' => $mail['active'],
+		) );
+
+		$formatter->append_whitespace();
+		$formatter->append_preformatted( esc_html( $options['use'] ) );
+		$formatter->end_tag( 'label' );
+
+		$formatter->append_start_tag( 'p', array(
+			'class' => 'description',
+		) );
+
+		$formatter->append_preformatted(
 			esc_html( __( "Mail (2) is an additional mail template often used as an autoresponder.", 'contact-form-7' ) )
 		);
+
+		$formatter->end_tag( 'p' );
 	}
-?>
 
-<fieldset id="<?php echo esc_attr( sprintf( '%s-fieldset', $id ) ); ?>">
-<legend>
-<?php
-	$desc_link = wpcf7_link(
-		__( 'https://contactform7.com/setting-up-mail/', 'contact-form-7' ),
-		__( 'Setting up mail', 'contact-form-7' ) );
-	/* translators: %s: link labeled 'Setting up mail' */
-	$description = __( "You can edit the mail template here. For details, see %s.", 'contact-form-7' );
-	$description = sprintf( esc_html( $description ), $desc_link );
-	echo $description;
-	echo '<br />';
+	$formatter->append_start_tag( 'fieldset', array(
+		'id' => sprintf( '%s-fieldset', $id ),
+	) );
 
-	echo esc_html( __( "In the following fields, you can use these mail-tags:",
-		'contact-form-7' ) );
-	echo '<br />';
-	$post->suggest_mail_tags( $options['name'] );
-?>
-</legend>
-<table class="form-table">
-<tbody>
-	<tr>
-	<th scope="row">
-		<label for="<?php echo $id; ?>-recipient"><?php echo esc_html( __( 'To', 'contact-form-7' ) ); ?></label>
-	</th>
-	<td>
-		<input type="text" id="<?php echo $id; ?>-recipient" name="<?php echo $id; ?>[recipient]" class="large-text code" size="70" value="<?php echo esc_attr( $mail['recipient'] ); ?>" data-config-field="<?php echo sprintf( '%s.recipient', esc_attr( $options['name'] ) ); ?>" />
-	</td>
-	</tr>
+	$formatter->append_start_tag( 'legend' );
 
-	<tr>
-	<th scope="row">
-		<label for="<?php echo $id; ?>-sender"><?php echo esc_html( __( 'From', 'contact-form-7' ) ); ?></label>
-	</th>
-	<td>
-		<input type="text" id="<?php echo $id; ?>-sender" name="<?php echo $id; ?>[sender]" class="large-text code" size="70" value="<?php echo esc_attr( $mail['sender'] ); ?>" data-config-field="<?php echo sprintf( '%s.sender', esc_attr( $options['name'] ) ); ?>" />
-	</td>
-	</tr>
+	$description = sprintf(
+		/* translators: %s: link labeled 'Setting up mail' */
+		esc_html( __( 'You can edit the mail template here. For details, see %s.', 'contact-form-7' ) ),
+		wpcf7_link(
+			__( 'https://contactform7.com/setting-up-mail/', 'contact-form-7' ),
+			__( 'Setting up mail', 'contact-form-7' )
+		)
+	);
 
-	<tr>
-	<th scope="row">
-		<label for="<?php echo $id; ?>-subject"><?php echo esc_html( __( 'Subject', 'contact-form-7' ) ); ?></label>
-	</th>
-	<td>
-		<input type="text" id="<?php echo $id; ?>-subject" name="<?php echo $id; ?>[subject]" class="large-text code" size="70" value="<?php echo esc_attr( $mail['subject'] ); ?>" data-config-field="<?php echo sprintf( '%s.subject', esc_attr( $options['name'] ) ); ?>" />
-	</td>
-	</tr>
+	$formatter->append_preformatted( $description );
 
-	<tr>
-	<th scope="row">
-		<label for="<?php echo $id; ?>-additional-headers"><?php echo esc_html( __( 'Additional headers', 'contact-form-7' ) ); ?></label>
-	</th>
-	<td>
-		<textarea id="<?php echo $id; ?>-additional-headers" name="<?php echo $id; ?>[additional_headers]" cols="100" rows="4" class="large-text code" data-config-field="<?php echo sprintf( '%s.additional_headers', esc_attr( $options['name'] ) ); ?>"><?php echo esc_textarea( $mail['additional_headers'] ); ?></textarea>
-	</td>
-	</tr>
+	$formatter->append_start_tag( 'br' );
 
-	<tr>
-	<th scope="row">
-		<label for="<?php echo $id; ?>-body"><?php echo esc_html( __( 'Message body', 'contact-form-7' ) ); ?></label>
-	</th>
-	<td>
-		<textarea id="<?php echo $id; ?>-body" name="<?php echo $id; ?>[body]" cols="100" rows="18" class="large-text code" data-config-field="<?php echo sprintf( '%s.body', esc_attr( $options['name'] ) ); ?>"><?php echo esc_textarea( $mail['body'] ); ?></textarea>
+	$formatter->append_preformatted(
+		esc_html( __( 'In the following fields, you can use these mail-tags:', 'contact-form-7' ) )
+	);
 
-		<p><label for="<?php echo $id; ?>-exclude-blank"><input type="checkbox" id="<?php echo $id; ?>-exclude-blank" name="<?php echo $id; ?>[exclude_blank]" value="1"<?php echo ( ! empty( $mail['exclude_blank'] ) ) ? ' checked="checked"' : ''; ?> /> <?php echo esc_html( __( 'Exclude lines with blank mail-tags from output', 'contact-form-7' ) ); ?></label></p>
+	$formatter->append_start_tag( 'br' );
 
-		<p><label for="<?php echo $id; ?>-use-html"><input type="checkbox" id="<?php echo $id; ?>-use-html" name="<?php echo $id; ?>[use_html]" value="1"<?php echo ( $mail['use_html'] ) ? ' checked="checked"' : ''; ?> /> <?php echo esc_html( __( 'Use HTML content type', 'contact-form-7' ) ); ?></label></p>
-	</td>
-	</tr>
+	$formatter->call_user_func( static function () use ( $post, $options ) {
+		$post->suggest_mail_tags( $options['name'] );
+	} );
 
-	<tr>
-	<th scope="row">
-		<label for="<?php echo $id; ?>-attachments"><?php echo esc_html( __( 'File attachments', 'contact-form-7' ) ); ?></label>
-	</th>
-	<td>
-		<textarea id="<?php echo $id; ?>-attachments" name="<?php echo $id; ?>[attachments]" cols="100" rows="4" class="large-text code" data-config-field="<?php echo sprintf( '%s.attachments', esc_attr( $options['name'] ) ); ?>"><?php echo esc_textarea( $mail['attachments'] ); ?></textarea>
-	</td>
-	</tr>
-</tbody>
-</table>
-</fieldset>
-</div>
-<?php
+	$formatter->end_tag( 'legend' );
+
+	$formatter->append_start_tag( 'table', array(
+		'class' => 'form-table',
+	) );
+
+	$formatter->append_start_tag( 'tbody' );
+
+	$formatter->append_start_tag( 'tr' );
+
+	$formatter->append_start_tag( 'th', array(
+		'scope' => 'row',
+	) );
+
+	$formatter->append_start_tag( 'label', array(
+		'for' => sprintf( '%s-recipient', $id ),
+	) );
+
+	$formatter->append_preformatted(
+		esc_html( __( 'To', 'contact-form-7' ) )
+	);
+
+	$formatter->append_start_tag( 'td' );
+
+	$formatter->append_start_tag( 'input', array(
+		'type' => 'text',
+		'id' => sprintf( '%s-recipient', $id ),
+		'name' => sprintf( '%s[recipient]', $id ),
+		'class' => 'large-text code',
+		'size' => 70,
+		'value' => $mail['recipient'],
+		'data-config-field' => sprintf( '%s.recipient', $options['name'] ),
+	) );
+
+	$formatter->end_tag( 'tr' );
+
+	$formatter->append_start_tag( 'tr' );
+
+	$formatter->append_start_tag( 'th', array(
+		'scope' => 'row',
+	) );
+
+	$formatter->append_start_tag( 'label', array(
+		'for' => sprintf( '%s-sender', $id ),
+	) );
+
+	$formatter->append_preformatted(
+		esc_html( __( 'From', 'contact-form-7' ) )
+	);
+
+	$formatter->append_start_tag( 'td' );
+
+	$formatter->append_start_tag( 'input', array(
+		'type' => 'text',
+		'id' => sprintf( '%s-sender', $id ),
+		'name' => sprintf( '%s[sender]', $id ),
+		'class' => 'large-text code',
+		'size' => 70,
+		'value' => $mail['sender'],
+		'data-config-field' => sprintf( '%s.sender', $options['name'] ),
+	) );
+
+	$formatter->end_tag( 'tr' );
+
+	$formatter->append_start_tag( 'tr' );
+
+	$formatter->append_start_tag( 'th', array(
+		'scope' => 'row',
+	) );
+
+	$formatter->append_start_tag( 'label', array(
+		'for' => sprintf( '%s-subject', $id ),
+	) );
+
+	$formatter->append_preformatted(
+		esc_html( __( 'Subject', 'contact-form-7' ) )
+	);
+
+	$formatter->append_start_tag( 'td' );
+
+	$formatter->append_start_tag( 'input', array(
+		'type' => 'text',
+		'id' => sprintf( '%s-subject', $id ),
+		'name' => sprintf( '%s[subject]', $id ),
+		'class' => 'large-text code',
+		'size' => 70,
+		'value' => $mail['subject'],
+		'data-config-field' => sprintf( '%s.subject', $options['name'] ),
+	) );
+
+	$formatter->end_tag( 'tr' );
+
+	$formatter->append_start_tag( 'tr' );
+
+	$formatter->append_start_tag( 'th', array(
+		'scope' => 'row',
+	) );
+
+	$formatter->append_start_tag( 'label', array(
+		'for' => sprintf( '%s-additional-headers', $id ),
+	) );
+
+	$formatter->append_preformatted(
+		esc_html( __( 'Additional headers', 'contact-form-7' ) )
+	);
+
+	$formatter->append_start_tag( 'td' );
+
+	$formatter->append_start_tag( 'textarea', array(
+		'id' => sprintf( '%s-additional-headers', $id ),
+		'name' => sprintf( '%s[additional_headers]', $id ),
+		'cols' => 100,
+		'rows' => 4,
+		'class' => 'large-text code',
+		'data-config-field' => sprintf( '%s.additional_headers', $options['name'] ),
+	) );
+
+	$formatter->append_preformatted(
+		esc_textarea( $mail['additional_headers'] )
+	);
+
+	$formatter->end_tag( 'tr' );
+
+	$formatter->append_start_tag( 'tr' );
+
+	$formatter->append_start_tag( 'th', array(
+		'scope' => 'row',
+	) );
+
+	$formatter->append_start_tag( 'label', array(
+		'for' => sprintf( '%s-body', $id ),
+	) );
+
+	$formatter->append_preformatted(
+		esc_html( __( 'Message body', 'contact-form-7' ) )
+	);
+
+	$formatter->append_start_tag( 'td' );
+
+	$formatter->append_start_tag( 'textarea', array(
+		'id' => sprintf( '%s-body', $id ),
+		'name' => sprintf( '%s[body]', $id ),
+		'cols' => 100,
+		'rows' => 18,
+		'class' => 'large-text code',
+		'data-config-field' => sprintf( '%s.body', $options['name'] ),
+	) );
+
+	$formatter->append_preformatted(
+		esc_textarea( $mail['body'] )
+	);
+
+	$formatter->end_tag( 'textarea' );
+
+	$formatter->append_start_tag( 'p' );
+
+	$formatter->append_start_tag( 'label', array(
+		'for' => sprintf( '%s-exclude-blank', $id ),
+	) );
+
+	$formatter->append_start_tag( 'input', array(
+		'type' => 'checkbox',
+		'id' => sprintf( '%s-exclude-blank', $id ),
+		'name' => sprintf( '%s[exclude_blank]', $id ),
+		'value' => '1',
+		'checked' => $mail['exclude_blank'],
+	) );
+
+	$formatter->append_whitespace();
+
+	$formatter->append_preformatted(
+		esc_html( __( 'Exclude lines with blank mail-tags from output', 'contact-form-7' ) )
+	);
+
+	$formatter->append_start_tag( 'p' );
+
+	$formatter->append_start_tag( 'label', array(
+		'for' => sprintf( '%s-use-html', $id ),
+	) );
+
+	$formatter->append_start_tag( 'input', array(
+		'type' => 'checkbox',
+		'id' => sprintf( '%s-use-html', $id ),
+		'name' => sprintf( '%s[use_html]', $id ),
+		'value' => '1',
+		'checked' => $mail['use_html'],
+	) );
+
+	$formatter->append_whitespace();
+
+	$formatter->append_preformatted(
+		esc_html( __( 'Use HTML content type', 'contact-form-7' ) )
+	);
+
+	$formatter->end_tag( 'tr' );
+
+	$formatter->append_start_tag( 'tr' );
+
+	$formatter->append_start_tag( 'th', array(
+		'scope' => 'row',
+	) );
+
+	$formatter->append_start_tag( 'label', array(
+		'for' => sprintf( '%s-attachments', $id ),
+	) );
+
+	$formatter->append_preformatted(
+		esc_html( __( 'File attachments', 'contact-form-7' ) )
+	);
+
+	$formatter->append_start_tag( 'td' );
+
+	$formatter->append_start_tag( 'textarea', array(
+		'id' => sprintf( '%s-attachments', $id ),
+		'name' => sprintf( '%s[attachments]', $id ),
+		'cols' => 100,
+		'rows' => 4,
+		'class' => 'large-text code',
+		'data-config-field' => sprintf( '%s.attachments', $options['name'] ),
+	) );
+
+	$formatter->append_preformatted(
+		esc_textarea( $mail['attachments'] )
+	);
+
+	$formatter->end_tag( 'textarea' );
+	$formatter->end_tag( 'tr' );
+
+	$formatter->print();
 }
 
 function wpcf7_editor_panel_messages( $post ) {
-	$desc_link = wpcf7_link(
-		__( 'https://contactform7.com/editing-messages/', 'contact-form-7' ),
-		__( 'Editing messages', 'contact-form-7' ) );
-	/* translators: %s: link labeled 'Editing messages' */
-	$description = __( "You can edit messages used in various situations here. For details, see %s.", 'contact-form-7' );
-	$description = sprintf( esc_html( $description ), $desc_link );
+	$description = sprintf(
+		/* translators: %s: link labeled 'Editing messages' */
+		esc_html( __( 'You can edit messages used in various situations here. For details, see %s.', 'contact-form-7' ) ),
+		wpcf7_link(
+			__( 'https://contactform7.com/editing-messages/', 'contact-form-7' ),
+			__( 'Editing messages', 'contact-form-7' )
+		)
+	);
 
 	$messages = wpcf7_messages();
 
-	if ( isset( $messages['captcha_not_match'] )
-	and ! wpcf7_use_really_simple_captcha() ) {
+	if (
+		isset( $messages['captcha_not_match'] ) and
+		! wpcf7_use_really_simple_captcha()
+	) {
 		unset( $messages['captcha_not_match'] );
 	}
 
-?>
-<h2><?php echo esc_html( __( 'Messages', 'contact-form-7' ) ); ?></h2>
-<fieldset>
-<legend><?php echo $description; ?></legend>
-<?php
+	$formatter = new WPCF7_HTMLFormatter();
+
+	$formatter->append_start_tag( 'h2' );
+
+	$formatter->append_preformatted(
+		esc_html( __( 'Messages', 'contact-form-7' ) )
+	);
+
+	$formatter->end_tag( 'h2' );
+
+	$formatter->append_start_tag( 'fieldset' );
+
+	$formatter->append_start_tag( 'legend' );
+	$formatter->append_preformatted( $description );
+	$formatter->end_tag( 'legend' );
 
 	foreach ( $messages as $key => $arr ) {
 		$field_id = sprintf( 'wpcf7-message-%s', strtr( $key, '_', '-' ) );
 		$field_name = sprintf( 'wpcf7-messages[%s]', $key );
 
-?>
-<p class="description">
-<label for="<?php echo $field_id; ?>"><?php echo esc_html( $arr['description'] ); ?><br />
-<input type="text" id="<?php echo $field_id; ?>" name="<?php echo $field_name; ?>" class="large-text" size="70" value="<?php echo esc_attr( $post->message( $key, false ) ); ?>" data-config-field="<?php echo sprintf( 'messages.%s', esc_attr( $key ) ); ?>" />
-</label>
-</p>
-<?php
+		$formatter->append_start_tag( 'p', array(
+			'class' => 'description',
+		) );
+
+		$formatter->append_start_tag( 'label', array(
+			'for' => $field_id,
+		) );
+
+		$formatter->append_preformatted( esc_html( $arr['description'] ) );
+		$formatter->append_start_tag( 'br' );
+
+		$formatter->append_start_tag( 'input', array(
+			'type' => 'text',
+			'id' => $field_id,
+			'name' => $field_name,
+			'class' => 'large-text',
+			'size' => 70,
+			'value' => $post->message( $key, false ),
+			'data-config-field' => sprintf( 'messages.%s', $key ),
+		) );
 	}
-?>
-</fieldset>
-<?php
+
+	$formatter->print();
 }
 
 function wpcf7_editor_panel_additional_settings( $post ) {

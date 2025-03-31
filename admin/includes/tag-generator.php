@@ -87,7 +87,7 @@ class WPCF7_TagGenerator {
 				),
 			) );
 
-			$formatter->append_text( esc_html( $panel['title'] ) );
+			$formatter->append_preformatted( esc_html( $panel['title'] ) );
 		}
 
 		$formatter->print();
@@ -133,7 +133,9 @@ class WPCF7_TagGenerator {
 					'data-taggen' => 'close-dialog',
 				) );
 
-				$formatter->append_text( esc_html( __( 'Close', 'contact-form-7' ) ) );
+				$formatter->append_preformatted(
+					esc_html( __( 'Close', 'contact-form-7' ) )
+				);
 
 				$formatter->end_tag( 'button' );
 
@@ -212,7 +214,7 @@ class WPCF7_TagGeneratorGenerator {
 			'id' => $this->ref( 'type-legend' ),
 		) );
 
-		$formatter->append_text(
+		$formatter->append_preformatted(
 			esc_html( __( 'Field type', 'contact-form-7' ) )
 		);
 
@@ -228,7 +230,7 @@ class WPCF7_TagGeneratorGenerator {
 				'value' => $basetype,
 			) );
 
-			$formatter->append_text( esc_html( $title ) );
+			$formatter->append_preformatted( esc_html( $title ) );
 		}
 
 		$formatter->end_tag( 'select' );
@@ -245,7 +247,7 @@ class WPCF7_TagGeneratorGenerator {
 
 			$formatter->append_whitespace();
 
-			$formatter->append_text(
+			$formatter->append_preformatted(
 				esc_html( __( "This is a required field.", 'contact-form-7' ) )
 			);
 		}
@@ -363,11 +365,15 @@ class WPCF7_TagGeneratorGenerator {
 		$formatter->append_start_tag( 'fieldset' );
 
 		$formatter->append_start_tag( 'legend' );
-		$formatter->append_text( esc_html( $options['title'] ) );
+		$formatter->append_preformatted( esc_html( $options['title'] ) );
 		$formatter->end_tag( 'legend' );
 
 		$formatter->append_start_tag( 'label' );
-		$formatter->append_text( esc_html( __( 'Min', 'contact-form-7' ) ) );
+
+		$formatter->append_preformatted(
+			esc_html( __( 'Min', 'contact-form-7' ) )
+		);
+
 		$formatter->append_whitespace();
 
 		$formatter->append_start_tag( 'input', array(
@@ -382,7 +388,11 @@ class WPCF7_TagGeneratorGenerator {
 		$formatter->append_preformatted( ' &#8660; ' );
 
 		$formatter->append_start_tag( 'label' );
-		$formatter->append_text( esc_html( __( 'Max', 'contact-form-7' ) ) );
+
+		$formatter->append_preformatted(
+			esc_html( __( 'Max', 'contact-form-7' ) )
+		);
+
 		$formatter->append_whitespace();
 
 		$formatter->append_start_tag( 'input', array(
@@ -417,7 +427,7 @@ class WPCF7_TagGeneratorGenerator {
 			'id' => $this->ref( 'value-legend' ),
 		) );
 
-		$formatter->append_text( esc_html( $options['title'] ) );
+		$formatter->append_preformatted( esc_html( $options['title'] ) );
 
 		$formatter->end_tag( 'legend' );
 
@@ -439,7 +449,7 @@ class WPCF7_TagGeneratorGenerator {
 
 			$formatter->append_whitespace();
 
-			$formatter->append_text(
+			$formatter->append_preformatted(
 				esc_html( __( 'Use this text as the placeholder.', 'contact-form-7' ) )
 			);
 		}
@@ -465,7 +475,7 @@ class WPCF7_TagGeneratorGenerator {
 			'id' => $this->ref( 'selectable-values-legend' ),
 		) );
 
-		$formatter->append_text(
+		$formatter->append_preformatted(
 			esc_html( __( 'Selectable values', 'contact-form-7' ) )
 		);
 
@@ -475,7 +485,7 @@ class WPCF7_TagGeneratorGenerator {
 			'id' => $this->ref( 'selectable-values-description' ),
 		) );
 
-		$formatter->append_text(
+		$formatter->append_preformatted(
 			esc_html( __( 'One item per line.', 'contact-form-7' ) )
 		);
 
@@ -490,7 +500,7 @@ class WPCF7_TagGeneratorGenerator {
 			'aria-describedby' => $this->ref( 'selectable-values-description' ),
 		) );
 
-		$formatter->append_text(
+		$formatter->append_preformatted(
 			esc_html( __( "Option 1\nOption 2\nOption 3", 'contact-form-7' ) )
 		);
 
@@ -509,7 +519,7 @@ class WPCF7_TagGeneratorGenerator {
 
 			$formatter->append_whitespace();
 
-			$formatter->append_text(
+			$formatter->append_preformatted(
 				esc_html( __( 'Use the first item as a label.', 'contact-form-7' ) )
 			);
 
@@ -529,7 +539,7 @@ class WPCF7_TagGeneratorGenerator {
 
 			$formatter->append_whitespace();
 
-			$formatter->append_text(
+			$formatter->append_preformatted(
 				esc_html( __( 'Wrap each item with a label element.', 'contact-form-7' ) )
 			);
 
@@ -567,7 +577,7 @@ class WPCF7_TagGeneratorGenerator {
 			'data-taggen' => 'insert-tag',
 		) );
 
-		$formatter->append_text(
+		$formatter->append_preformatted(
 			esc_html( __( 'Insert Tag', 'contact-form-7' ) )
 		);
 
