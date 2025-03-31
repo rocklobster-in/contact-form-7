@@ -51,7 +51,7 @@ class WPCF7_Editor {
 				'href' => sprintf( '#%s', $panel_id ),
 			) );
 
-			$formatter->append_text( esc_html( $panel['title'] ) );
+			$formatter->append_preformatted( esc_html( $panel['title'] ) );
 		}
 
 		$formatter->end_tag( 'nav' );
