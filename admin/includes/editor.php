@@ -455,41 +455,67 @@ function wpcf7_editor_box_mail( $post, $options = '' ) {
 }
 
 function wpcf7_editor_panel_messages( $post ) {
-	$desc_link = wpcf7_link(
-		__( 'https://contactform7.com/editing-messages/', 'contact-form-7' ),
-		__( 'Editing messages', 'contact-form-7' ) );
-	/* translators: %s: link labeled 'Editing messages' */
-	$description = __( "You can edit messages used in various situations here. For details, see %s.", 'contact-form-7' );
-	$description = sprintf( esc_html( $description ), $desc_link );
+	$description = sprintf(
+		/* translators: %s: link labeled 'Editing messages' */
+		esc_html( __( 'You can edit messages used in various situations here. For details, see %s.', 'contact-form-7' ) ),
+		wpcf7_link(
+			__( 'https://contactform7.com/editing-messages/', 'contact-form-7' ),
+			__( 'Editing messages', 'contact-form-7' )
+		)
+	);
 
 	$messages = wpcf7_messages();
 
-	if ( isset( $messages['captcha_not_match'] )
-	and ! wpcf7_use_really_simple_captcha() ) {
+	if (
+		isset( $messages['captcha_not_match'] ) and
+		! wpcf7_use_really_simple_captcha()
+	) {
 		unset( $messages['captcha_not_match'] );
 	}
 
-?>
-<h2><?php echo esc_html( __( 'Messages', 'contact-form-7' ) ); ?></h2>
-<fieldset>
-<legend><?php echo $description; ?></legend>
-<?php
+	$formatter = new WPCF7_HTMLFormatter();
+
+	$formatter->append_start_tag( 'h2' );
+
+	$formatter->append_preformatted(
+		esc_html( __( 'Messages', 'contact-form-7' ) )
+	);
+
+	$formatter->end_tag( 'h2' );
+
+	$formatter->append_start_tag( 'fieldset' );
+
+	$formatter->append_start_tag( 'legend' );
+	$formatter->append_preformatted( $description );
+	$formatter->end_tag( 'legend' );
 
 	foreach ( $messages as $key => $arr ) {
 		$field_id = sprintf( 'wpcf7-message-%s', strtr( $key, '_', '-' ) );
 		$field_name = sprintf( 'wpcf7-messages[%s]', $key );
 
-?>
-<p class="description">
-<label for="<?php echo $field_id; ?>"><?php echo esc_html( $arr['description'] ); ?><br />
-<input type="text" id="<?php echo $field_id; ?>" name="<?php echo $field_name; ?>" class="large-text" size="70" value="<?php echo esc_attr( $post->message( $key, false ) ); ?>" data-config-field="<?php echo sprintf( 'messages.%s', esc_attr( $key ) ); ?>" />
-</label>
-</p>
-<?php
+		$formatter->append_start_tag( 'p', array(
+			'class' => 'description',
+		) );
+
+		$formatter->append_start_tag( 'label', array(
+			'for' => $field_id,
+		) );
+
+		$formatter->append_preformatted( esc_html( $arr['description'] ) );
+		$formatter->append_start_tag( 'br' );
+
+		$formatter->append_start_tag( 'input', array(
+			'type' => 'text',
+			'id' => $field_id,
+			'name' => $field_name,
+			'class' => 'large-text',
+			'size' => 70,
+			'value' => $post->message( $key, false ),
+			'data-config-field' => sprintf( 'messages.%s', $key ),
+		) );
 	}
-?>
-</fieldset>
-<?php
+
+	$formatter->print();
 }
 
 function wpcf7_editor_panel_additional_settings( $post ) {
