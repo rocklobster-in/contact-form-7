@@ -60,17 +60,19 @@ function wpcf7_admin_warnings_bulk_cv( $page, $action, $object ) {
 add_action( 'wpcf7_admin_load', 'wpcf7_load_bulk_validate_page', 10, 2 );
 
 function wpcf7_load_bulk_validate_page( $page, $action ) {
-	if ( 'wpcf7' !== $page
-	or 'validate' !== $action
-	or ! wpcf7_validate_configuration()
-	or 'POST' !== $_SERVER['REQUEST_METHOD'] ) {
+	if (
+		'wpcf7' !== $page or
+		'validate' !== $action or
+		! wpcf7_validate_configuration() or
+		'POST' !== $_SERVER['REQUEST_METHOD']
+	) {
 		return;
 	}
 
 	check_admin_referer( 'wpcf7-bulk-validate' );
 
 	if ( ! current_user_can( 'wpcf7_edit_contact_forms' ) ) {
-		wp_die( __( "You are not allowed to validate configuration.", 'contact-form-7' ) );
+		wp_die( wp_kses_data( __( 'You are not allowed to validate configuration.', 'contact-form-7' ) ) );
 	}
 
 	$contact_forms = WPCF7_ContactForm::find();
