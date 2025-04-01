@@ -60,17 +60,19 @@ function wpcf7_admin_warnings_bulk_cv( $page, $action, $object ) {
 add_action( 'wpcf7_admin_load', 'wpcf7_load_bulk_validate_page', 10, 2 );
 
 function wpcf7_load_bulk_validate_page( $page, $action ) {
-	if ( 'wpcf7' !== $page
-	or 'validate' !== $action
-	or ! wpcf7_validate_configuration()
-	or 'POST' !== $_SERVER['REQUEST_METHOD'] ) {
+	if (
+		'wpcf7' !== $page or
+		'validate' !== $action or
+		! wpcf7_validate_configuration() or
+		'POST' !== $_SERVER['REQUEST_METHOD']
+	) {
 		return;
 	}
 
 	check_admin_referer( 'wpcf7-bulk-validate' );
 
 	if ( ! current_user_can( 'wpcf7_edit_contact_forms' ) ) {
-		wp_die( __( "You are not allowed to validate configuration.", 'contact-form-7' ) );
+		wp_die( wp_kses_data( __( 'You are not allowed to validate configuration.', 'contact-form-7' ) ) );
 	}
 
 	$contact_forms = WPCF7_ContactForm::find();
@@ -114,31 +116,65 @@ function wpcf7_admin_bulk_validate_page() {
 	$submit_text = sprintf(
 		/* translators: %s: number of contact forms */
 		_n(
-			"Validate %s contact form now",
-			"Validate %s contact forms now",
+			'Validate %s contact form now',
+			'Validate %s contact forms now',
 			$count, 'contact-form-7'
 		),
 		number_format_i18n( $count )
 	);
 
-?>
-<div class="wrap">
+	$formatter = new WPCF7_HTMLFormatter( array(
+		'allowed_html' => array_merge( wpcf7_kses_allowed_html(), array(
+			'form' => array(
+				'action' => true,
+				'method' => true,
+			),
+		) ),
+	) );
 
-<h1><?php echo esc_html( __( 'Validate Configuration', 'contact-form-7' ) ); ?></h1>
+	$formatter->append_start_tag( 'div', array(
+		'class' => 'wrap',
+	) );
 
-<form method="post" action="">
-	<input type="hidden" name="action" value="validate" />
-	<?php wp_nonce_field( 'wpcf7-bulk-validate' ); ?>
-	<p><input type="submit" class="button" value="<?php echo esc_attr( $submit_text ); ?>" /></p>
-</form>
+	$formatter->append_start_tag( 'h1' );
 
-<?php
-	echo wpcf7_link(
-		__( 'https://contactform7.com/configuration-validator-faq/', 'contact-form-7' ),
-		__( 'FAQ about Configuration Validator', 'contact-form-7' )
+	$formatter->append_preformatted(
+		esc_html( __( 'Validate Configuration', 'contact-form-7' ) )
 	);
-?>
 
-</div>
-<?php
+	$formatter->end_tag( 'h1' );
+
+	$formatter->append_start_tag( 'form', array(
+		'method' => 'post',
+		'action' => '',
+	) );
+
+	$formatter->append_start_tag( 'p' );
+
+	$formatter->call_user_func( static function () {
+		wp_nonce_field( 'wpcf7-bulk-validate' );
+	} );
+
+	$formatter->append_start_tag( 'input', array(
+		'type' => 'hidden',
+		'name' => 'action',
+		'value' => 'validate',
+	) );
+
+	$formatter->append_start_tag( 'input', array(
+		'type' => 'submit',
+		'class' => 'button',
+		'value' => $submit_text,
+	) );
+
+	$formatter->end_tag( 'form' );
+
+	$formatter->append_preformatted(
+		wpcf7_link(
+			__( 'https://contactform7.com/configuration-validator-faq/', 'contact-form-7' ),
+			__( 'FAQ about Configuration Validator', 'contact-form-7' )
+		)
+	);
+
+	$formatter->print();
 }
