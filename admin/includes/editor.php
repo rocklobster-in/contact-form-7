@@ -519,18 +519,45 @@ function wpcf7_editor_panel_messages( $post ) {
 }
 
 function wpcf7_editor_panel_additional_settings( $post ) {
-	$desc_link = wpcf7_link(
-		__( 'https://contactform7.com/additional-settings/', 'contact-form-7' ),
-		__( 'Additional settings', 'contact-form-7' ) );
-	/* translators: %s: link labeled 'Additional settings' */
-	$description = __( "You can add customization code snippets here. For details, see %s.", 'contact-form-7' );
-	$description = sprintf( esc_html( $description ), $desc_link );
+	$description = sprintf(
+		/* translators: %s: link labeled 'Additional settings' */
+		esc_html( __( 'You can add customization code snippets here. For details, see %s.', 'contact-form-7' ) ),
+		wpcf7_link(
+			__( 'https://contactform7.com/additional-settings/', 'contact-form-7' ),
+			__( 'Additional settings', 'contact-form-7' )
+		)
+	);
 
-?>
-<h2><?php echo esc_html( __( 'Additional Settings', 'contact-form-7' ) ); ?></h2>
-<fieldset>
-<legend><?php echo $description; ?></legend>
-<textarea id="wpcf7-additional-settings" name="wpcf7-additional-settings" cols="100" rows="8" class="large-text" data-config-field="additional_settings.body"><?php echo esc_textarea( $post->prop( 'additional_settings' ) ); ?></textarea>
-</fieldset>
-<?php
+	$formatter = new WPCF7_HTMLFormatter();
+
+	$formatter->append_start_tag( 'h2' );
+
+	$formatter->append_preformatted(
+		esc_html( __( 'Additional Settings', 'contact-form-7' ) )
+	);
+
+	$formatter->end_tag( 'h2' );
+
+	$formatter->append_start_tag( 'fieldset' );
+
+	$formatter->append_start_tag( 'legend' );
+	$formatter->append_preformatted( $description );
+	$formatter->end_tag( 'legend' );
+
+	$formatter->append_start_tag( 'textarea', array(
+		'id' => 'wpcf7-additional-settings',
+		'name' => 'wpcf7-additional-settings',
+		'cols' => 100,
+		'rows' => 24,
+		'class' => 'large-text',
+		'data-config-field' => 'additional_settings.body',
+	) );
+
+	$formatter->append_preformatted(
+		esc_textarea( $post->prop( 'additional_settings' ) )
+	);
+
+	$formatter->end_tag( 'textarea' );
+
+	$formatter->print();
 }
