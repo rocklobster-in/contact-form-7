@@ -1,8 +1,8 @@
 <?php
 /**
-** A base module for the following types of tags:
-** 	[date] and [date*]		# Date
-**/
+ * A base module for the following types of tags:
+ *      [date] and [date*]              # Date
+ */
 
 /* form_tag handler */
 
