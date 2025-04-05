@@ -396,6 +396,7 @@ function wpcf7_kses_allowed_html( $context = 'form' ) {
 			'input' => array(
 				'accept' => true,
 				'alt' => true,
+				'autocomplete' => true,
 				'capture' => true,
 				'checked' => true,
 				'disabled' => true,
@@ -406,6 +407,7 @@ function wpcf7_kses_allowed_html( $context = 'form' ) {
 				'minlength' => true,
 				'multiple' => true,
 				'name' => true,
+				'onfocus' => true,
 				'placeholder' => true,
 				'readonly' => true,
 				'size' => true,
@@ -444,12 +446,14 @@ function wpcf7_kses_allowed_html( $context = 'form' ) {
 				'value' => true,
 			),
 			'select' => array(
+				'autocomplete' => true,
 				'disabled' => true,
 				'multiple' => true,
 				'name' => true,
 				'size' => true,
 			),
 			'textarea' => array(
+				'autocomplete' => true,
 				'cols' => true,
 				'disabled' => true,
 				'maxlength' => true,
@@ -458,7 +462,6 @@ function wpcf7_kses_allowed_html( $context = 'form' ) {
 				'placeholder' => true,
 				'readonly' => true,
 				'rows' => true,
-				'spellcheck' => true,
 				'wrap' => true,
 			),
 		);
@@ -484,6 +487,7 @@ function wpcf7_kses_allowed_html( $context = 'form' ) {
 					'id' => true,
 					'inputmode' => true,
 					'role' => true,
+					'spellcheck' => true,
 					'style' => true,
 					'tabindex' => true,
 					'title' => true,

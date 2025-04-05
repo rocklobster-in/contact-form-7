@@ -29,11 +29,16 @@ abstract class WPCF7_WelcomePanelColumn {
 		$content = convert_chars( $content );
 		$content = wpautop( $content );
 
-		echo "\n";
-		echo '<div class="welcome-panel-column">';
-		echo $title;
-		echo $content;
-		echo '</div>';
+		$formatter = new WPCF7_HTMLFormatter();
+
+		$formatter->append_start_tag( 'div', array(
+			'class' => 'welcome-panel-column',
+		) );
+
+		$formatter->append_preformatted( $title );
+		$formatter->append_preformatted( $content );
+
+		$formatter->print();
 	}
 }
 
