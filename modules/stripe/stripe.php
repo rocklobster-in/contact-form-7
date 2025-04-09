@@ -115,14 +115,30 @@ function wpcf7_stripe_skip_spam_check( $skip_spam_check, $submission ) {
 		$pi_id = trim( $_POST['_wpcf7_stripe_payment_intent'] );
 		$payment_intent = $service->api()->retrieve_payment_intent( $pi_id );
 
-		if ( isset( $payment_intent['status'] )
-		and ( 'succeeded' === $payment_intent['status'] ) ) {
+		if (
+			isset( $payment_intent['metadata']['wpcf7_submission_timestamp'] )
+		) {
+			return $skip_spam_check;
+		}
+
+		if (
+			isset( $payment_intent['status'] ) and
+			'succeeded' === $payment_intent['status']
+		) {
 			$submission->push( 'payment_intent', $pi_id );
+
+			$service->api()->update_payment_intent( $pi_id, array(
+				'metadata' => array(
+					'wpcf7_submission_timestamp' => $submission->get_meta( 'timestamp' ),
+				),
+			) );
 		}
 	}
 
-	if ( ! empty( $submission->pull( 'payment_intent' ) )
-	and $submission->verify_posted_data_hash() ) {
+	if (
+		! empty( $submission->pull( 'payment_intent' ) ) and
+		$submission->verify_posted_data_hash()
+	) {
 		$skip_spam_check = true;
 	}
 
