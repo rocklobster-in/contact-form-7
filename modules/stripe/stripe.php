@@ -118,6 +118,7 @@ function wpcf7_stripe_skip_spam_check( $skip_spam_check, $submission ) {
 		if (
 			isset( $payment_intent['metadata']['wpcf7_submission_timestamp'] )
 		) {
+			// This PI has already been used. Ignore.
 			return $skip_spam_check;
 		}
 
@@ -143,6 +144,46 @@ function wpcf7_stripe_skip_spam_check( $skip_spam_check, $submission ) {
 	}
 
 	return $skip_spam_check;
+}
+
+
+add_filter(
+	'wpcf7_spam',
+	'wpcf7_stripe_verify_payment_intent',
+	6, 2
+);
+
+/**
+ * Verifies submitted Stripe Payment Intent ID.
+ */
+function wpcf7_stripe_verify_payment_intent( $spam, $submission ) {
+	$service = WPCF7_Stripe::get_instance();
+
+	if ( ! $service->is_active() ) {
+		return $spam;
+	}
+
+	if ( ! empty( $_POST['_wpcf7_stripe_payment_intent'] ) ) {
+		$pi_id = trim( $_POST['_wpcf7_stripe_payment_intent'] );
+		$payment_intent = $service->api()->retrieve_payment_intent( $pi_id );
+
+		if (
+			! $payment_intent or
+			isset( $payment_intent['metadata']['wpcf7_submission_timestamp'] )
+		) {
+			$spam = true;
+
+			$submission->add_spam_log( array(
+				'agent' => 'stripe',
+				'reason' => __(
+					'Invalid Stripe Payment Intent ID detected.',
+					'contact-form-7'
+				),
+			) );
+		}
+	}
+
+	return $spam;
 }
 
 
