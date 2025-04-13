@@ -415,55 +415,91 @@ function wpcf7_admin_management_page() {
 	$list_table = new WPCF7_Contact_Form_List_Table();
 	$list_table->prepare_items();
 
-?>
-<div class="wrap" id="wpcf7-contact-form-list-table">
+	$formatter = new WPCF7_HTMLFormatter( array(
+		'allowed_html' => array_merge( wpcf7_kses_allowed_html(), array(
+			'form' => array(
+				'method' => true,
+			),
+		) ),
+	) );
 
-<h1 class="wp-heading-inline"><?php
-	echo esc_html( __( 'Contact Forms', 'contact-form-7' ) );
-?></h1>
+	$formatter->append_start_tag( 'div', array(
+		'class' => 'wrap',
+		'id' => 'wpcf7-contact-form-list-table',
+	) );
 
-<?php
+	$formatter->append_start_tag( 'h1', array(
+		'class' => 'wp-heading-inline',
+	) );
+
+	$formatter->append_preformatted(
+		esc_html( __( 'Contact Forms', 'contact-form-7' ) )
+	);
+
+	$formatter->end_tag( 'h1' );
+
 	if ( current_user_can( 'wpcf7_edit_contact_forms' ) ) {
-		echo wpcf7_link(
-			menu_page_url( 'wpcf7-new', false ),
-			__( 'Add New', 'contact-form-7' ),
-			array( 'class' => 'page-title-action' )
+		$formatter->append_preformatted(
+			wpcf7_link(
+				menu_page_url( 'wpcf7-new', false ),
+				__( 'Add New', 'contact-form-7' ),
+				array( 'class' => 'page-title-action' )
+			)
 		);
 	}
 
 	if ( ! empty( $_REQUEST['s'] ) ) {
-		echo sprintf(
-			'<span class="subtitle">'
-			/* translators: %s: search keywords */
-			. __( 'Search results for &#8220;%s&#8221;', 'contact-form-7' )
-			. '</span>',
-			esc_html( $_REQUEST['s'] )
+		$formatter->append_start_tag( 'span', array(
+			'class' => 'subtitle',
+		) );
+
+		$formatter->append_preformatted(
+			esc_html( sprintf(
+				/* translators: %s: search keywords */
+				__( 'Search results for &#8220;%s&#8221;', 'contact-form-7' ),
+				$_REQUEST['s']
+			) )
 		);
+
+		$formatter->end_tag( 'span' );
 	}
-?>
 
-<hr class="wp-header-end">
+	$formatter->append_start_tag( 'hr', array(
+		'class' => 'wp-header-end',
+	) );
 
-<?php
-	do_action( 'wpcf7_admin_warnings',
-		'wpcf7', wpcf7_current_action(), null
-	);
+	$formatter->call_user_func( static function () {
+		do_action( 'wpcf7_admin_warnings',
+			'wpcf7', wpcf7_current_action(), null
+		);
 
-	wpcf7_welcome_panel();
+		wpcf7_welcome_panel();
 
-	do_action( 'wpcf7_admin_notices',
-		'wpcf7', wpcf7_current_action(), null
-	);
-?>
+		do_action( 'wpcf7_admin_notices',
+			'wpcf7', wpcf7_current_action(), null
+		);
+	} );
 
-<form method="get" action="">
-	<input type="hidden" name="page" value="<?php echo esc_attr( $_REQUEST['page'] ); ?>" />
-	<?php $list_table->search_box( __( 'Search Contact Forms', 'contact-form-7' ), 'wpcf7-contact' ); ?>
-	<?php $list_table->display(); ?>
-</form>
+	$formatter->append_start_tag( 'form', array(
+		'method' => 'get',
+	) );
 
-</div>
-<?php
+	$formatter->append_start_tag( 'input', array(
+		'type' => 'hidden',
+		'name' => 'page',
+		'value' => $_REQUEST['page'],
+	) );
+
+	$formatter->call_user_func( static function () use ( $list_table ) {
+		$list_table->search_box(
+			__( 'Search Contact Forms', 'contact-form-7' ),
+			'wpcf7-contact'
+		);
+
+		$list_table->display();
+	} );
+
+	$formatter->print();
 }
 
 
