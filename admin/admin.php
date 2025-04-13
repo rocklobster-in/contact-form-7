@@ -543,45 +543,65 @@ function wpcf7_admin_integration_page() {
 		? $integration->get_service( $_REQUEST['service'] )
 		: null;
 
-?>
-<div class="wrap" id="wpcf7-integration">
+	$formatter = new WPCF7_HTMLFormatter( array(
+		'allowed_html' => array_merge( wpcf7_kses_allowed_html(), array(
+			'form' => array(
+				'action' => true,
+				'method' => true,
+			),
+		) ),
+	) );
 
-<h1><?php echo esc_html( __( 'Integration with External API', 'contact-form-7' ) ); ?></h1>
+	$formatter->append_start_tag( 'div', array(
+		'class' => 'wrap',
+		'id' => 'wpcf7-integration',
+	) );
 
-<p><?php
-	echo sprintf(
-		/* translators: %s: link labeled 'Integration with external APIs' */
-		esc_html( __( "You can expand the possibilities of your contact forms by integrating them with external services. For details, see %s.", 'contact-form-7' ) ),
-		wpcf7_link(
-			__( 'https://contactform7.com/integration-with-external-apis/', 'contact-form-7' ),
-			__( 'Integration with external APIs', 'contact-form-7' )
+	$formatter->append_start_tag( 'h1' );
+
+	$formatter->append_preformatted(
+		esc_html( __( 'Integration with External API', 'contact-form-7' ) )
+	);
+
+	$formatter->end_tag( 'h1' );
+
+	$formatter->append_start_tag( 'p' );
+
+	$formatter->append_preformatted(
+		sprintf(
+			/* translators: %s: link labeled 'Integration with external APIs' */
+			esc_html( __( 'You can expand the possibilities of your contact forms by integrating them with external services. For details, see %s.', 'contact-form-7' ) ),
+			wpcf7_link(
+				__( 'https://contactform7.com/integration-with-external-apis/', 'contact-form-7' ),
+				__( 'Integration with external APIs', 'contact-form-7' )
+			)
 		)
 	);
-?></p>
 
-<?php
-	do_action( 'wpcf7_admin_warnings',
-		'wpcf7-integration', wpcf7_current_action(), $service
-	);
+	$formatter->end_tag( 'p' );
 
-	do_action( 'wpcf7_admin_notices',
-		'wpcf7-integration', wpcf7_current_action(), $service
-	);
+	$formatter->call_user_func( static function () use ( $integration, $service ) {
+		do_action( 'wpcf7_admin_warnings',
+			'wpcf7-integration', wpcf7_current_action(), $service
+		);
 
-	if ( $service ) {
-		$message = $_REQUEST['message'] ?? '';
-		$service->admin_notice( $message );
+		do_action( 'wpcf7_admin_notices',
+			'wpcf7-integration', wpcf7_current_action(), $service
+		);
 
-		$integration->list_services( array(
-			'include' => $_REQUEST['service'],
-		) );
-	} else {
-		$integration->list_services();
-	}
-?>
+		if ( $service ) {
+			$message = $_REQUEST['message'] ?? '';
+			$service->admin_notice( $message );
 
-</div>
-<?php
+			$integration->list_services( array(
+				'include' => $_REQUEST['service'],
+			) );
+		} else {
+			$integration->list_services();
+		}
+	} );
+
+	$formatter->print();
 }
 
 
