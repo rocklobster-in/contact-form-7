@@ -240,7 +240,7 @@ function wpcf7_load_contact_form_admin() {
 
 		if ( ! current_user_can( 'wpcf7_edit_contact_form', $id ) ) {
 			wp_die(
-				__( "You are not allowed to edit this item.", 'contact-form-7' )
+				esc_html( __( 'You are not allowed to edit this item.', 'contact-form-7' ) )
 			);
 		}
 
@@ -291,7 +291,7 @@ function wpcf7_load_contact_form_admin() {
 
 		if ( ! current_user_can( 'wpcf7_edit_contact_form', $id ) ) {
 			wp_die(
-				__( "You are not allowed to edit this item.", 'contact-form-7' )
+				esc_html( __( 'You are not allowed to edit this item.', 'contact-form-7' ) )
 			);
 		}
 
@@ -333,12 +333,14 @@ function wpcf7_load_contact_form_admin() {
 
 			if ( ! current_user_can( 'wpcf7_delete_contact_form', $post->id() ) ) {
 				wp_die(
-					__( "You are not allowed to delete this item.", 'contact-form-7' )
+					esc_html( __( 'You are not allowed to delete this item.', 'contact-form-7' ) )
 				);
 			}
 
 			if ( ! $post->delete() ) {
-				wp_die( __( "Error in deleting.", 'contact-form-7' ) );
+				wp_die(
+					esc_html( __( 'Error in deleting.', 'contact-form-7' ) )
+				);
 			}
 
 			$deleted += 1;
@@ -413,55 +415,91 @@ function wpcf7_admin_management_page() {
 	$list_table = new WPCF7_Contact_Form_List_Table();
 	$list_table->prepare_items();
 
-?>
-<div class="wrap" id="wpcf7-contact-form-list-table">
+	$formatter = new WPCF7_HTMLFormatter( array(
+		'allowed_html' => array_merge( wpcf7_kses_allowed_html(), array(
+			'form' => array(
+				'method' => true,
+			),
+		) ),
+	) );
 
-<h1 class="wp-heading-inline"><?php
-	echo esc_html( __( 'Contact Forms', 'contact-form-7' ) );
-?></h1>
+	$formatter->append_start_tag( 'div', array(
+		'class' => 'wrap',
+		'id' => 'wpcf7-contact-form-list-table',
+	) );
 
-<?php
+	$formatter->append_start_tag( 'h1', array(
+		'class' => 'wp-heading-inline',
+	) );
+
+	$formatter->append_preformatted(
+		esc_html( __( 'Contact Forms', 'contact-form-7' ) )
+	);
+
+	$formatter->end_tag( 'h1' );
+
 	if ( current_user_can( 'wpcf7_edit_contact_forms' ) ) {
-		echo wpcf7_link(
-			menu_page_url( 'wpcf7-new', false ),
-			__( 'Add New', 'contact-form-7' ),
-			array( 'class' => 'page-title-action' )
+		$formatter->append_preformatted(
+			wpcf7_link(
+				menu_page_url( 'wpcf7-new', false ),
+				__( 'Add New', 'contact-form-7' ),
+				array( 'class' => 'page-title-action' )
+			)
 		);
 	}
 
 	if ( ! empty( $_REQUEST['s'] ) ) {
-		echo sprintf(
-			'<span class="subtitle">'
-			/* translators: %s: search keywords */
-			. __( 'Search results for &#8220;%s&#8221;', 'contact-form-7' )
-			. '</span>',
-			esc_html( $_REQUEST['s'] )
+		$formatter->append_start_tag( 'span', array(
+			'class' => 'subtitle',
+		) );
+
+		$formatter->append_preformatted(
+			esc_html( sprintf(
+				/* translators: %s: search keywords */
+				__( 'Search results for &#8220;%s&#8221;', 'contact-form-7' ),
+				$_REQUEST['s']
+			) )
 		);
+
+		$formatter->end_tag( 'span' );
 	}
-?>
 
-<hr class="wp-header-end">
+	$formatter->append_start_tag( 'hr', array(
+		'class' => 'wp-header-end',
+	) );
 
-<?php
-	do_action( 'wpcf7_admin_warnings',
-		'wpcf7', wpcf7_current_action(), null
-	);
+	$formatter->call_user_func( static function () {
+		do_action( 'wpcf7_admin_warnings',
+			'wpcf7', wpcf7_current_action(), null
+		);
 
-	wpcf7_welcome_panel();
+		wpcf7_welcome_panel();
 
-	do_action( 'wpcf7_admin_notices',
-		'wpcf7', wpcf7_current_action(), null
-	);
-?>
+		do_action( 'wpcf7_admin_notices',
+			'wpcf7', wpcf7_current_action(), null
+		);
+	} );
 
-<form method="get" action="">
-	<input type="hidden" name="page" value="<?php echo esc_attr( $_REQUEST['page'] ); ?>" />
-	<?php $list_table->search_box( __( 'Search Contact Forms', 'contact-form-7' ), 'wpcf7-contact' ); ?>
-	<?php $list_table->display(); ?>
-</form>
+	$formatter->append_start_tag( 'form', array(
+		'method' => 'get',
+	) );
 
-</div>
-<?php
+	$formatter->append_start_tag( 'input', array(
+		'type' => 'hidden',
+		'name' => 'page',
+		'value' => $_REQUEST['page'],
+	) );
+
+	$formatter->call_user_func( static function () use ( $list_table ) {
+		$list_table->search_box(
+			__( 'Search Contact Forms', 'contact-form-7' ),
+			'wpcf7-contact'
+		);
+
+		$list_table->display();
+	} );
+
+	$formatter->print();
 }
 
 
@@ -505,45 +543,65 @@ function wpcf7_admin_integration_page() {
 		? $integration->get_service( $_REQUEST['service'] )
 		: null;
 
-?>
-<div class="wrap" id="wpcf7-integration">
+	$formatter = new WPCF7_HTMLFormatter( array(
+		'allowed_html' => array_merge( wpcf7_kses_allowed_html(), array(
+			'form' => array(
+				'action' => true,
+				'method' => true,
+			),
+		) ),
+	) );
 
-<h1><?php echo esc_html( __( 'Integration with External API', 'contact-form-7' ) ); ?></h1>
+	$formatter->append_start_tag( 'div', array(
+		'class' => 'wrap',
+		'id' => 'wpcf7-integration',
+	) );
 
-<p><?php
-	echo sprintf(
-		/* translators: %s: link labeled 'Integration with external APIs' */
-		esc_html( __( "You can expand the possibilities of your contact forms by integrating them with external services. For details, see %s.", 'contact-form-7' ) ),
-		wpcf7_link(
-			__( 'https://contactform7.com/integration-with-external-apis/', 'contact-form-7' ),
-			__( 'Integration with external APIs', 'contact-form-7' )
+	$formatter->append_start_tag( 'h1' );
+
+	$formatter->append_preformatted(
+		esc_html( __( 'Integration with External API', 'contact-form-7' ) )
+	);
+
+	$formatter->end_tag( 'h1' );
+
+	$formatter->append_start_tag( 'p' );
+
+	$formatter->append_preformatted(
+		sprintf(
+			/* translators: %s: link labeled 'Integration with external APIs' */
+			esc_html( __( 'You can expand the possibilities of your contact forms by integrating them with external services. For details, see %s.', 'contact-form-7' ) ),
+			wpcf7_link(
+				__( 'https://contactform7.com/integration-with-external-apis/', 'contact-form-7' ),
+				__( 'Integration with external APIs', 'contact-form-7' )
+			)
 		)
 	);
-?></p>
 
-<?php
-	do_action( 'wpcf7_admin_warnings',
-		'wpcf7-integration', wpcf7_current_action(), $service
-	);
+	$formatter->end_tag( 'p' );
 
-	do_action( 'wpcf7_admin_notices',
-		'wpcf7-integration', wpcf7_current_action(), $service
-	);
+	$formatter->call_user_func( static function () use ( $integration, $service ) {
+		do_action( 'wpcf7_admin_warnings',
+			'wpcf7-integration', wpcf7_current_action(), $service
+		);
 
-	if ( $service ) {
-		$message = $_REQUEST['message'] ?? '';
-		$service->admin_notice( $message );
+		do_action( 'wpcf7_admin_notices',
+			'wpcf7-integration', wpcf7_current_action(), $service
+		);
 
-		$integration->list_services( array(
-			'include' => $_REQUEST['service'],
-		) );
-	} else {
-		$integration->list_services();
-	}
-?>
+		if ( $service ) {
+			$message = $_REQUEST['message'] ?? '';
+			$service->admin_notice( $message );
 
-</div>
-<?php
+			$integration->list_services( array(
+				'include' => $_REQUEST['service'],
+			) );
+		} else {
+			$integration->list_services();
+		}
+	} );
+
+	$formatter->print();
 }
 
 
