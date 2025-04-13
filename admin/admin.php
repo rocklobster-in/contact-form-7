@@ -240,7 +240,7 @@ function wpcf7_load_contact_form_admin() {
 
 		if ( ! current_user_can( 'wpcf7_edit_contact_form', $id ) ) {
 			wp_die(
-				__( "You are not allowed to edit this item.", 'contact-form-7' )
+				esc_html( __( 'You are not allowed to edit this item.', 'contact-form-7' ) )
 			);
 		}
 
@@ -291,7 +291,7 @@ function wpcf7_load_contact_form_admin() {
 
 		if ( ! current_user_can( 'wpcf7_edit_contact_form', $id ) ) {
 			wp_die(
-				__( "You are not allowed to edit this item.", 'contact-form-7' )
+				esc_html( __( 'You are not allowed to edit this item.', 'contact-form-7' ) )
 			);
 		}
 
@@ -333,12 +333,14 @@ function wpcf7_load_contact_form_admin() {
 
 			if ( ! current_user_can( 'wpcf7_delete_contact_form', $post->id() ) ) {
 				wp_die(
-					__( "You are not allowed to delete this item.", 'contact-form-7' )
+					esc_html( __( 'You are not allowed to delete this item.', 'contact-form-7' ) )
 				);
 			}
 
 			if ( ! $post->delete() ) {
-				wp_die( __( "Error in deleting.", 'contact-form-7' ) );
+				wp_die(
+					esc_html( __( 'Error in deleting.', 'contact-form-7' ) )
+				);
 			}
 
 			$deleted += 1;
