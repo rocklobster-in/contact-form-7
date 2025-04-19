@@ -61,28 +61,33 @@ function wpcf7_tag_generator_submit( $contact_form, $options ) {
 
 	$tgg = new WPCF7_TagGeneratorGenerator( $options['content'] );
 
-?>
-<header class="description-box">
-	<h3><?php
-		echo esc_html( $field_types['submit']['heading'] );
-	?></h3>
+	$formatter = new WPCF7_HTMLFormatter();
 
-	<p><?php
-		$description = wp_kses(
-			$field_types['submit']['description'],
-			array(
-				'a' => array( 'href' => true ),
-				'strong' => array(),
-			),
-			array( 'http', 'https' )
-		);
+	$formatter->append_start_tag( 'header', array(
+		'class' => 'description-box',
+	) );
 
-		echo $description;
-	?></p>
-</header>
+	$formatter->append_start_tag( 'h3' );
 
-<div class="control-box">
-	<?php
+	$formatter->append_preformatted(
+		esc_html( $field_types['submit']['heading'] )
+	);
+
+	$formatter->end_tag( 'h3' );
+
+	$formatter->append_start_tag( 'p' );
+
+	$formatter->append_preformatted(
+		wp_kses_data( $field_types['submit']['description'] )
+	);
+
+	$formatter->end_tag( 'header' );
+
+	$formatter->append_start_tag( 'div', array(
+		'class' => 'control-box',
+	) );
+
+	$formatter->call_user_func( static function () use ( $tgg, $field_types ) {
 		$tgg->print( 'field_type', array(
 			'select_options' => array(
 				'submit' => $field_types['submit']['display_name'],
@@ -94,13 +99,17 @@ function wpcf7_tag_generator_submit( $contact_form, $options ) {
 		$tgg->print( 'default_value', array(
 			'title' => __( 'Label', 'contact-form-7' ),
 		) );
-	?>
-</div>
+	} );
 
-<footer class="insert-box">
-	<?php
+	$formatter->end_tag( 'div' );
+
+	$formatter->append_start_tag( 'footer', array(
+		'class' => 'insert-box',
+	) );
+
+	$formatter->call_user_func( static function () use ( $tgg, $field_types ) {
 		$tgg->print( 'insert_box_content' );
-	?>
-</footer>
-<?php
+	} );
+
+	$formatter->print();
 }
