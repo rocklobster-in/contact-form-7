@@ -33,6 +33,7 @@ function wpcf7_autop( $input, $br = true ) {
 
 	$formatter = new WPCF7_HTMLFormatter( array(
 		'auto_br' => $br,
+		'allowed_html' => null,
 	) );
 
 	$chunks = $formatter->separate_into_chunks( $input );
