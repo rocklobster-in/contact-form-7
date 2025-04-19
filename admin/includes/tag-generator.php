@@ -203,6 +203,7 @@ class WPCF7_TagGeneratorGenerator {
 	private function field_type( $options = '' ) {
 		$options = wp_parse_args( $options, array(
 			'with_required' => false,
+			'with_optional' => false,
 			'select_options' => array(),
 		) );
 
@@ -248,7 +249,25 @@ class WPCF7_TagGeneratorGenerator {
 			$formatter->append_whitespace();
 
 			$formatter->append_preformatted(
-				esc_html( __( "This is a required field.", 'contact-form-7' ) )
+				esc_html( __( 'This is a required field.', 'contact-form-7' ) )
+			);
+		}
+
+		if ( $options['with_optional'] ) {
+			$formatter->append_start_tag( 'br' );
+			$formatter->append_start_tag( 'label' );
+
+			$formatter->append_start_tag( 'input', array(
+				'type' => 'checkbox',
+				'data-tag-part' => 'option',
+				'data-tag-option' => 'optional',
+				'checked' => true,
+			) );
+
+			$formatter->append_whitespace();
+
+			$formatter->append_preformatted(
+				esc_html( __( 'This checkbox is optional.', 'contact-form-7' ) )
 			);
 		}
 

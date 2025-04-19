@@ -260,79 +260,76 @@ function wpcf7_tag_generator_acceptance( $contact_form, $options ) {
 
 	$tgg = new WPCF7_TagGeneratorGenerator( $options['content'] );
 
-?>
-<header class="description-box">
-	<h3><?php
-		echo esc_html( $field_types['acceptance']['heading'] );
-	?></h3>
+	$formatter = new WPCF7_HTMLFormatter();
 
-	<p><?php
-		$description = wp_kses(
-			$field_types['acceptance']['description'],
-			array(
-				'a' => array( 'href' => true ),
-				'strong' => array(),
+	$formatter->append_start_tag( 'header', array(
+		'class' => 'description-box',
+	) );
+
+	$formatter->append_start_tag( 'h3' );
+
+	$formatter->append_preformatted(
+		esc_html( $field_types['acceptance']['heading'] )
+	);
+
+	$formatter->end_tag( 'h3' );
+
+	$formatter->append_start_tag( 'p' );
+
+	$formatter->append_preformatted(
+		wp_kses_data( $field_types['acceptance']['description'] )
+	);
+
+	$formatter->end_tag( 'header' );
+
+	$formatter->append_start_tag( 'div', array(
+		'class' => 'control-box',
+	) );
+
+	$formatter->call_user_func( static function () use ( $tgg, $field_types ) {
+		$tgg->print( 'field_type', array(
+			'with_optional' => true,
+			'select_options' => array(
+				'acceptance' => $field_types['acceptance']['display_name'],
 			),
-			array( 'http', 'https' )
-		);
+		) );
 
-		echo $description;
-	?></p>
-</header>
-
-<div class="control-box">
-	<fieldset>
-		<legend id="<?php echo esc_attr( $tgg->ref( 'type-legend' ) ); ?>"><?php
-			echo esc_html( __( 'Field type', 'contact-form-7' ) );
-		?></legend>
-
-		<select data-tag-part="basetype" aria-labelledby="<?php echo esc_attr( $tgg->ref( 'type-legend' ) ); ?>"><?php
-			echo sprintf(
-				'<option %1$s>%2$s</option>',
-				wpcf7_format_atts( array(
-					'value' => 'acceptance',
-				) ),
-				esc_html( $field_types['acceptance']['display_name'] )
-			);
-		?></select>
-		<br />
-		<label>
-			<input type="checkbox" data-tag-part="option" data-tag-option="optional" checked="checked" />
-			<?php echo esc_html( __( "This checkbox is optional.", 'contact-form-7' ) ); ?>
-		</label>
-	</fieldset>
-
-	<?php
 		$tgg->print( 'field_name' );
 
 		$tgg->print( 'class_attr' );
-	?>
+	} );
 
-	<fieldset>
-		<legend id="<?php echo esc_attr( $tgg->ref( 'value-legend' ) ); ?>"><?php
-			echo esc_html( __( 'Condition', 'contact-form-7' ) );
-		?></legend>
-		<?php
-			echo sprintf(
-				'<input %s />',
-				wpcf7_format_atts( array(
-					'type' => 'text',
-					'required' => true,
-					'value' => __( 'Put the condition for consent here.', 'contact-form-7' ),
-					'data-tag-part' => 'content',
-					'aria-labelledby' => $tgg->ref( 'value-legend' ),
-				) )
-			);
-		?>
-	</fieldset>
-</div>
+	$formatter->append_start_tag( 'fieldset' );
 
-<footer class="insert-box">
-	<?php
+	$formatter->append_start_tag( 'legend', array(
+		'id' => $tgg->ref( 'value-legend' ),
+	) );
+
+	$formatter->append_preformatted(
+		esc_html( __( 'Condition', 'contact-form-7' ) )
+	);
+
+	$formatter->end_tag( 'legend' );
+
+	$formatter->append_start_tag( 'input', array(
+		'type' => 'text',
+		'required' => true,
+		'value' => __( 'Put the condition for consent here.', 'contact-form-7' ),
+		'data-tag-part' => 'content',
+		'aria-labelledby' => $tgg->ref( 'value-legend' ),
+	) );
+
+	$formatter->end_tag( 'div' );
+
+	$formatter->append_start_tag( 'footer', array(
+		'class' => 'insert-box',
+	) );
+
+	$formatter->call_user_func( static function () use ( $tgg, $field_types ) {
 		$tgg->print( 'insert_box_content' );
 
 		$tgg->print( 'mail_tag_tip' );
-	?>
-</footer>
-<?php
+	} );
+
+	$formatter->print();
 }
