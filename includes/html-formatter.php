@@ -468,6 +468,7 @@ class WPCF7_HTMLFormatter {
 
 			if ( $html_disallowance ) {
 				$notice = sprintf(
+					/* translators: %s: JSON-formatted array of disallowed HTML */
 					__( 'HTML Disallowance: %s', 'contact-form-7' ),
 					wp_json_encode( $html_disallowance, JSON_PRETTY_PRINT )
 				);
