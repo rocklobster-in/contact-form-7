@@ -184,7 +184,6 @@ if ( $post ) {
 			$formatter->append_start_tag( 'input', array(
 				'type' => 'text',
 				'id' => 'wpcf7-shortcode',
-				'onfocus' => 'this.select();',
 				'readonly' => true,
 				'class' => 'large-text code',
 				'value' => $shortcode,
@@ -217,7 +216,6 @@ if ( $post ) {
 			$formatter->append_start_tag( 'input', array(
 				'type' => 'text',
 				'id' => 'wpcf7-shortcode-old',
-				'onfocus' => 'this.select();',
 				'readonly' => true,
 				'class' => 'large-text code',
 				'value' => $shortcode,
