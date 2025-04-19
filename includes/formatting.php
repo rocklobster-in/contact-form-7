@@ -408,7 +408,6 @@ function wpcf7_kses_allowed_html( $context = 'form' ) {
 				'minlength' => true,
 				'multiple' => true,
 				'name' => true,
-				'onfocus' => true,
 				'pattern' => true,
 				'placeholder' => true,
 				'readonly' => true,
