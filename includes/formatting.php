@@ -467,14 +467,22 @@ function wpcf7_kses_allowed_html( $context = 'form' ) {
 			),
 		);
 
-		$additional_tags_for_form = array_map(
+		$allowed_tags[$context] = array_merge(
+			$allowed_tags[$context],
+			$additional_tags_for_form
+		);
+
+		$allowed_tags[$context] = array_map(
 			static function ( $elm ) {
 				$global_attributes = array(
 					'aria-atomic' => true,
 					'aria-checked' => true,
+					'aria-controls' => true,
+					'aria-current' => true,
 					'aria-describedby' => true,
 					'aria-details' => true,
 					'aria-disabled' => true,
+					'aria-expanded' => true,
 					'aria-hidden' => true,
 					'aria-invalid' => true,
 					'aria-label' => true,
@@ -485,23 +493,22 @@ function wpcf7_kses_allowed_html( $context = 'form' ) {
 					'aria-selected' => true,
 					'class' => true,
 					'data-*' => true,
+					'dir' => true,
+					'hidden' => true,
 					'id' => true,
 					'inputmode' => true,
+					'lang' => true,
 					'role' => true,
 					'spellcheck' => true,
 					'style' => true,
 					'tabindex' => true,
 					'title' => true,
+					'xml:lang' => true,
 				);
 
 				return array_merge( $global_attributes, (array) $elm );
 			},
-			$additional_tags_for_form
-		);
-
-		$allowed_tags[$context] = array_merge(
-			$allowed_tags[$context],
-			$additional_tags_for_form
+			$allowed_tags[$context]
 		);
 	}
 
