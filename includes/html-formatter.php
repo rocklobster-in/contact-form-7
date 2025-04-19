@@ -425,13 +425,59 @@ class WPCF7_HTMLFormatter {
 			wp_trigger_error(
 				__METHOD__,
 				sprintf(
-					__( 'Invalid tag name (%s) was specified.', 'contact-form-7' ),
+					__( 'Invalid tag name (%s) is specified.', 'contact-form-7' ),
 					$tag_name
 				),
 				E_USER_WARNING
 			);
 
 			return false;
+		}
+
+		if ( ! empty( $this->options['allowed_html'] ) ) {
+			$html_disallowance = array();
+
+			if ( ! isset( $this->options['allowed_html'][$tag_name] ) ) {
+				$html_disallowance = array(
+					'element' => $tag_name,
+				);
+			} else {
+				$atts_allowed = $this->options['allowed_html'][$tag_name];
+
+				$atts_disallowed = array_diff_ukey( $atts, $atts_allowed,
+					static function ( $key_1, $key_2 ) use ( $atts_allowed ) {
+						if (
+							str_starts_with( $key_1, 'data-' ) and
+							! empty( $atts_allowed['data-*'] ) and
+							preg_match( '/^data-[a-z0-9_-]+$/', $key_1 )
+						) {
+							return 0;
+						} else {
+							return $key_1 === $key_2 ? 0 : 1;
+						}
+					}
+				);
+
+				if ( ! empty( $atts_disallowed ) ) {
+					$html_disallowance = array(
+						'element' => $tag_name,
+						'attributes' => array_keys( $atts_disallowed ),
+					);
+				}
+			}
+
+			if ( $html_disallowance ) {
+				$notice = sprintf(
+					__( 'HTML Disallowance: %s', 'contact-form-7' ),
+					wp_json_encode( $html_disallowance, JSON_PRETTY_PRINT )
+				);
+
+				ob_start();
+				debug_print_backtrace( 0, 4 );
+				$notice .= "\n" . ob_get_contents();
+
+				wp_trigger_error( __METHOD__, $notice, E_USER_NOTICE );
+			}
 		}
 
 		if (
@@ -725,6 +771,10 @@ class WPCF7_HTMLFormatter {
 	 * Closes all remaining tags, echos the output, and resets the output.
 	 */
 	public function print() {
+		if ( empty( $this->options['allowed_html'] ) ) {
+			return false;
+		}
+
 		$this->close_all_tags();
 
 		echo wp_kses( $this->output, $this->options['allowed_html'] );
