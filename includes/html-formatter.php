@@ -434,7 +434,7 @@ class WPCF7_HTMLFormatter {
 			return false;
 		}
 
-		if ( ! empty( $this->options['allowed_html'] ) ) {
+		if ( WP_DEBUG and ! empty( $this->options['allowed_html'] ) ) {
 			$html_disallowance = array();
 
 			if ( ! isset( $this->options['allowed_html'][$tag_name] ) ) {
