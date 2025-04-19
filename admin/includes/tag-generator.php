@@ -564,7 +564,6 @@ class WPCF7_TagGeneratorGenerator {
 			'type' => 'text',
 			'class' => 'code',
 			'readonly' => true,
-			'onfocus' => 'this.select();',
 			'data-tag-part' => 'tag',
 			'aria-label' => __( 'The form-tag to be inserted into the form template', 'contact-form-7' ),
 		) );
