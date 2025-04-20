@@ -452,72 +452,170 @@ class WPCF7_ConstantContact extends WPCF7_Service_OAuth2 {
 	}
 
 	private function display_setup() {
-?>
-<form method="post" action="<?php echo esc_url( $this->menu_page_url( 'action=setup' ) ); ?>">
-<?php wp_nonce_field( 'wpcf7-constant-contact-setup' ); ?>
-<table class="form-table">
-<tbody>
-<tr>
-	<th scope="row"><label for="client_id"><?php echo esc_html( __( 'API Key', 'contact-form-7' ) ); ?></label></th>
-	<td><?php
-		if ( $this->is_active() ) {
-			echo esc_html( $this->client_id );
-			echo sprintf(
-				'<input type="hidden" value="%1$s" id="client_id" name="client_id" />',
-				esc_attr( $this->client_id )
-			);
-		} else {
-			echo sprintf(
-				'<input type="text" aria-required="true" value="%1$s" id="client_id" name="client_id" class="regular-text code" />',
-				esc_attr( $this->client_id )
-			);
-		}
-	?></td>
-</tr>
-<tr>
-	<th scope="row"><label for="client_secret"><?php echo esc_html( __( 'App Secret', 'contact-form-7' ) ); ?></label></th>
-	<td><?php
-		if ( $this->is_active() ) {
-			echo esc_html( wpcf7_mask_password( $this->client_secret, 4, 4 ) );
-			echo sprintf(
-				'<input type="hidden" value="%1$s" id="client_secret" name="client_secret" />',
-				esc_attr( $this->client_secret )
-			);
-		} else {
-			echo sprintf(
-				'<input type="text" aria-required="true" value="%1$s" id="client_secret" name="client_secret" class="regular-text code" />',
-				esc_attr( $this->client_secret )
-			);
-		}
-	?></td>
-</tr>
-<tr>
-	<th scope="row"><label for="redirect_uri"><?php echo esc_html( __( 'Redirect URI', 'contact-form-7' ) ); ?></label></th>
-	<td><?php
-		echo sprintf(
-			'<input type="text" value="%1$s" id="redirect_uri" name="redirect_uri" class="large-text code" readonly="readonly" onfocus="this.select();" style="font-size: 11px;" />',
-			$this->get_redirect_uri()
+		$formatter = new WPCF7_HTMLFormatter( array(
+			'allowed_html' => array_merge( wpcf7_kses_allowed_html(), array(
+				'form' => array(
+					'action' => true,
+					'method' => true,
+				),
+			) ),
+		) );
+
+		$formatter->append_start_tag( 'form', array(
+			'method' => 'post',
+			'action' => esc_url( $this->menu_page_url( 'action=setup' ) ),
+		) );
+
+		$formatter->call_user_func( static function () {
+			wp_nonce_field( 'wpcf7-constant-contact-setup' );
+		} );
+
+		$formatter->append_start_tag( 'table', array(
+			'class' => 'form-table',
+		) );
+
+		$formatter->append_start_tag( 'tbody' );
+
+		$formatter->append_start_tag( 'tr' );
+
+		$formatter->append_start_tag( 'th', array(
+			'scope' => 'row',
+		) );
+
+		$formatter->append_start_tag( 'label', array(
+			'for' => 'client_id',
+		) );
+
+		$formatter->append_preformatted(
+			esc_html( __( 'API Key', 'contact-form-7' ) )
 		);
-	?>
-	<p class="description"><?php echo esc_html( __( "Set this URL as the redirect URI.", 'contact-form-7' ) ); ?></p>
-	</td>
-</tr>
-</tbody>
-</table>
-<?php
+
+		$formatter->end_tag( 'th' );
+
+		$formatter->append_start_tag( 'td' );
+
 		if ( $this->is_active() ) {
-			submit_button(
-				_x( 'Reset Keys', 'API keys', 'contact-form-7' ),
-				'small', 'reset'
-			);
+			$formatter->append_preformatted( esc_html( $this->client_id ) );
+
+			$formatter->append_start_tag( 'input', array(
+				'type' => 'hidden',
+				'value' => $this->client_id,
+				'id' => 'client_id',
+				'name' => 'client_id',
+			) );
 		} else {
-			submit_button(
-				__( 'Connect to the Constant Contact API', 'contact-form-7' )
-			);
+			$formatter->append_start_tag( 'input', array(
+				'type' => 'text',
+				'aria-required' => 'true',
+				'value' => $this->client_id,
+				'id' => 'client_id',
+				'name' => 'client_id',
+				'class' => 'regular-text code',
+			) );
 		}
-?>
-</form>
-<?php
+
+		$formatter->end_tag( 'td' );
+
+		$formatter->end_tag( 'tr' );
+
+		$formatter->append_start_tag( 'tr' );
+
+		$formatter->append_start_tag( 'th', array(
+			'scope' => 'row',
+		) );
+
+		$formatter->append_start_tag( 'label', array(
+			'for' => 'client_secret',
+		) );
+
+		$formatter->append_preformatted(
+			esc_html( __( 'App Secret', 'contact-form-7' ) )
+		);
+
+		$formatter->end_tag( 'th' );
+
+		$formatter->append_start_tag( 'td' );
+
+		if ( $this->is_active() ) {
+			$formatter->append_preformatted(
+				esc_html( wpcf7_mask_password( $this->client_secret, 4, 4 ) )
+			);
+
+			$formatter->append_start_tag( 'input', array(
+				'type' => 'hidden',
+				'value' => $this->client_secret,
+				'id' => 'client_secret',
+				'name' => 'client_secret',
+			) );
+		} else {
+			$formatter->append_start_tag( 'input', array(
+				'type' => 'text',
+				'aria-required' => 'true',
+				'value' => $this->client_secret,
+				'id' => 'client_secret',
+				'name' => 'client_secret',
+				'class' => 'regular-text code',
+			) );
+		}
+
+		$formatter->end_tag( 'td' );
+
+		$formatter->end_tag( 'tr' );
+
+		$formatter->append_start_tag( 'tr' );
+
+		$formatter->append_start_tag( 'th', array(
+			'scope' => 'row',
+		) );
+
+		$formatter->append_start_tag( 'label', array(
+			'for' => 'redirect_uri',
+		) );
+
+		$formatter->append_preformatted(
+			esc_html( __( 'Redirect URI', 'contact-form-7' ) )
+		);
+
+		$formatter->end_tag( 'th' );
+
+		$formatter->append_start_tag( 'td' );
+
+		$formatter->append_start_tag( 'input', array(
+			'type' => 'text',
+			'value' => $this->get_redirect_uri(),
+			'id' => 'redirect_uri',
+			'name' => 'redirect_uri',
+			'class' => 'large-text code',
+			'readonly' => true,
+			'style' => 'font-size: 11px;',
+		) );
+
+		$formatter->append_start_tag( 'p', array(
+			'class' => 'description',
+		) );
+
+		$formatter->append_preformatted(
+			esc_html( __( 'Set this URL as the redirect URI.', 'contact-form-7' ) )
+		);
+
+		$formatter->end_tag( 'td' );
+
+		$formatter->end_tag( 'table' );
+
+		$formatter->call_user_func( function () {
+			if ( $this->is_active() ) {
+				submit_button(
+					_x( 'Reset Keys', 'API keys', 'contact-form-7' ),
+					'small', 'reset'
+				);
+			} else {
+				submit_button(
+					__( 'Connect to the Constant Contact API', 'contact-form-7' )
+				);
+			}
+		} );
+
+		$formatter->print();
 	}
 
 }
