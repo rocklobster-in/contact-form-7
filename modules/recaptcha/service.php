@@ -47,10 +47,10 @@ class WPCF7_RECAPTCHA extends WPCF7_Service {
 
 
 	public function link() {
-		echo wpcf7_link(
+		echo wp_kses_data( wpcf7_link(
 			'https://www.google.com/recaptcha/intro/index.html',
 			'google.com/recaptcha'
-		);
+		) );
 	}
 
 
@@ -275,35 +275,67 @@ class WPCF7_RECAPTCHA extends WPCF7_Service {
 
 
 	public function display( $action = '' ) {
-		echo sprintf(
-			'<p>%s</p>',
-			esc_html( __( "reCAPTCHA protects you against spam and other types of automated abuse. With Contact Form 7&#8217;s reCAPTCHA integration module, you can block abusive form submissions by spam bots.", 'contact-form-7' ) )
+		$formatter = new WPCF7_HTMLFormatter( array(
+			'allowed_html' => array_merge( wpcf7_kses_allowed_html(), array(
+				'form' => array(
+					'action' => true,
+					'method' => true,
+				),
+			) ),
+		) );
+
+		$formatter->append_start_tag( 'p' );
+
+		$formatter->append_preformatted(
+			esc_html( __( 'reCAPTCHA protects you against spam and other types of automated abuse. With Contact Form 7&#8217;s reCAPTCHA integration module, you can block abusive form submissions by spam bots.', 'contact-form-7' ) )
 		);
 
-		echo sprintf(
-			'<p><strong>%s</strong></p>',
+		$formatter->end_tag( 'p' );
+
+		$formatter->append_start_tag( 'p' );
+		$formatter->append_start_tag( 'strong' );
+
+		$formatter->append_preformatted(
 			wpcf7_link(
 				__( 'https://contactform7.com/recaptcha/', 'contact-form-7' ),
 				__( 'reCAPTCHA (v3)', 'contact-form-7' )
 			)
 		);
 
+		$formatter->end_tag( 'p' );
+
 		if ( $this->is_active() ) {
-			echo sprintf(
-				'<p class="dashicons-before dashicons-yes">%s</p>',
-				esc_html( __( "reCAPTCHA is active on this site.", 'contact-form-7' ) )
+			$formatter->append_start_tag( 'p', array(
+				'class' => 'dashicons-before dashicons-yes',
+			) );
+
+			$formatter->append_preformatted(
+				esc_html( __( 'reCAPTCHA is active on this site.', 'contact-form-7' ) )
 			);
+
+			$formatter->end_tag( 'p' );
 		}
 
 		if ( 'setup' === $action ) {
-			$this->display_setup();
+			$formatter->call_user_func( function () {
+				$this->display_setup();
+			} );
 		} else {
-			echo sprintf(
-				'<p><a href="%1$s" class="button">%2$s</a></p>',
-				esc_url( $this->menu_page_url( 'action=setup' ) ),
-				esc_html( __( 'Setup Integration', 'contact-form-7' ) )
+			$formatter->append_start_tag( 'p' );
+
+			$formatter->append_start_tag( 'a', array(
+				'href' => esc_url( $this->menu_page_url( 'action=setup' ) ),
+				'class' => 'button',
+			) );
+
+			$formatter->append_preformatted(
+				esc_html( __( 'Setup integration', 'contact-form-7' ) )
 			);
+
+			$formatter->end_tag( 'p' );
 		}
+
+		$formatter->print();
 	}
 
 
