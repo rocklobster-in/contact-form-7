@@ -210,28 +210,33 @@ function wpcf7_tag_generator_quiz( $contact_form, $options ) {
 
 	$tgg = new WPCF7_TagGeneratorGenerator( $options['content'] );
 
-?>
-<header class="description-box">
-	<h3><?php
-		echo esc_html( $field_types['quiz']['heading'] );
-	?></h3>
+	$formatter = new WPCF7_HTMLFormatter();
 
-	<p><?php
-		$description = wp_kses(
-			$field_types['quiz']['description'],
-			array(
-				'a' => array( 'href' => true ),
-				'strong' => array(),
-			),
-			array( 'http', 'https' )
-		);
+	$formatter->append_start_tag( 'header', array(
+		'class' => 'description-box',
+	) );
 
-		echo $description;
-	?></p>
-</header>
+	$formatter->append_start_tag( 'h3' );
 
-<div class="control-box">
-	<?php
+	$formatter->append_preformatted(
+		esc_html( $field_types['quiz']['heading'] )
+	);
+
+	$formatter->end_tag( 'h3' );
+
+	$formatter->append_start_tag( 'p' );
+
+	$formatter->append_preformatted(
+		wp_kses_data( $field_types['quiz']['description'] )
+	);
+
+	$formatter->end_tag( 'header' );
+
+	$formatter->append_start_tag( 'div', array(
+		'class' => 'control-box',
+	) );
+
+	$formatter->call_user_func( static function () use ( $tgg, $field_types ) {
 		$tgg->print( 'field_type', array(
 			'select_options' => array(
 				'quiz' => $field_types['quiz']['display_name'],
@@ -241,42 +246,54 @@ function wpcf7_tag_generator_quiz( $contact_form, $options ) {
 		$tgg->print( 'field_name' );
 
 		$tgg->print( 'class_attr' );
-	?>
+	} );
 
-	<fieldset>
-		<legend id="<?php echo esc_attr( $tgg->ref( 'selectable-values-legend' ) ); ?>"><?php
-			echo esc_html( __( 'Questions and answers', 'contact-form-7' ) );
-		?></legend>
-		<?php
-			echo sprintf(
-				'<span %1$s>%2$s</span>',
-				wpcf7_format_atts( array(
-					'id' => $tgg->ref( 'selectable-values-description' ),
-				) ),
-				esc_html( __( "One pipe-separated question-answer pair (question|answer) per line.", 'contact-form-7' ) )
-			);
-		?>
-		<br />
-		<?php
-			echo sprintf(
-				'<textarea %1$s>%2$s</textarea>',
-				wpcf7_format_atts( array(
-					'required' => true,
-					'data-tag-part' => 'value',
-					'aria-labelledby' => $tgg->ref( 'selectable-values-legend' ),
-					'aria-describedby' => $tgg->ref( 'selectable-values-description' ),
-				) ),
-				esc_html( __( "The capital of Brazil? | Rio", 'contact-form-7' ) )
-			);
-		?>
-	</fieldset>
+	$formatter->append_start_tag( 'fieldset' );
 
-</div>
+	$formatter->append_start_tag( 'legend', array(
+		'id' => $tgg->ref( 'selectable-values-legend' ),
+	) );
 
-<footer class="insert-box">
-	<?php
+	$formatter->append_preformatted(
+		esc_html( __( 'Questions and answers', 'contact-form-7' ) )
+	);
+
+	$formatter->end_tag( 'legend' );
+
+	$formatter->append_start_tag( 'span', array(
+		'id' => $tgg->ref( 'selectable-values-description' ),
+	) );
+
+	$formatter->append_preformatted(
+		esc_html( __( 'One pipe-separated question-answer pair (question|answer) per line.', 'contact-form-7' ) )
+	);
+
+	$formatter->end_tag( 'span' );
+
+	$formatter->append_start_tag( 'br' );
+
+	$formatter->append_start_tag( 'textarea', array(
+		'required' => true,
+		'data-tag-part' => 'value',
+		'aria-labelledby' => $tgg->ref( 'selectable-values-legend' ),
+		'aria-describedby' => $tgg->ref( 'selectable-values-description' ),
+	) );
+
+	$formatter->append_preformatted(
+		esc_html( __( 'The capital of Brazil? | Rio', 'contact-form-7' ) )
+	);
+
+	$formatter->end_tag( 'textarea' );
+
+	$formatter->end_tag( 'div' );
+
+	$formatter->append_start_tag( 'footer', array(
+		'class' => 'insert-box',
+	) );
+
+	$formatter->call_user_func( static function () use ( $tgg, $field_types ) {
 		$tgg->print( 'insert_box_content' );
-	?>
-</footer>
-<?php
+	} );
+
+	$formatter->print();
 }
