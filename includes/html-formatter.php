@@ -288,10 +288,7 @@ class WPCF7_HTMLFormatter {
 			}
 		}
 
-		// Close all remaining tags.
-		$this->close_all_tags();
-
-		return $this->output;
+		return $this->output();
 	}
 
 
@@ -769,18 +766,27 @@ class WPCF7_HTMLFormatter {
 
 
 	/**
-	 * Closes all remaining tags, echos the output, and resets the output.
+	 * Closes all remaining tags, returns and resets the output.
+	 */
+	public function output() {
+		$this->close_all_tags();
+
+		$output = $this->output;
+		$this->output = '';
+
+		return $output;
+	}
+
+
+	/**
+	 * Prints the output. Returns false if the allowed_html option is empty.
 	 */
 	public function print() {
 		if ( empty( $this->options['allowed_html'] ) ) {
 			return false;
 		}
 
-		$this->close_all_tags();
-
-		echo wp_kses( $this->output, $this->options['allowed_html'] );
-
-		$this->output = '';
+		echo wp_kses( $this->output(), $this->options['allowed_html'] );
 	}
 
 
