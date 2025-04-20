@@ -472,7 +472,7 @@ class WPCF7_HTMLFormatter {
 
 				ob_start();
 				debug_print_backtrace( 0, 4 );
-				$notice .= "\n" . ob_get_contents();
+				$notice .= "\n" . ob_get_clean();
 
 				wp_trigger_error( __METHOD__, $notice, E_USER_NOTICE );
 			}
