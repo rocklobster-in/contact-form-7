@@ -369,44 +369,86 @@ class WPCF7_ConstantContact extends WPCF7_Service_OAuth2 {
 	}
 
 	public function display( $action = '' ) {
-		echo sprintf(
-			'<p><strong>%1$s</strong> %2$s</p>',
-			esc_html( __( 'Warning:', 'contact-form-7' ) ),
+		$formatter = new WPCF7_HTMLFormatter( array(
+			'allowed_html' => array_merge( wpcf7_kses_allowed_html(), array(
+				'form' => array(
+					'action' => true,
+					'method' => true,
+				),
+			) ),
+		) );
+
+		$formatter->append_start_tag( 'p' );
+		$formatter->append_start_tag( 'strong' );
+
+		$formatter->append_preformatted(
+			esc_html( __( 'Warning:', 'contact-form-7' ) )
+		);
+
+		$formatter->end_tag( 'strong' );
+		$formatter->append_whitespace();
+
+		$formatter->append_preformatted(
 			wpcf7_link(
 				__( 'https://contactform7.com/2024/02/02/we-end-the-constant-contact-integration/', 'contact-form-7' ),
-				__( "This feature is deprecated. You are not recommended to use it.", 'contact-form-7' )
+				__( 'This feature is deprecated. You are not recommended to use it.', 'contact-form-7' )
 			)
 		);
 
-		echo sprintf(
-			'<p>%s</p>',
-			esc_html( __( "The Constant Contact integration module allows you to send contact data collected through your contact forms to the Constant Contact API. You can create reliable email subscription services in a few easy steps.", 'contact-form-7' ) )
+		$formatter->end_tag( 'p' );
+
+		$formatter->append_start_tag( 'p' );
+
+		$formatter->append_preformatted(
+			esc_html( __( 'The Constant Contact integration module allows you to send contact data collected through your contact forms to the Constant Contact API. You can create reliable email subscription services in a few easy steps.', 'contact-form-7' ) )
 		);
 
-		echo sprintf(
-			'<p><strong>%s</strong></p>',
+		$formatter->end_tag( 'p' );
+
+		$formatter->append_start_tag( 'p' );
+		$formatter->append_start_tag( 'strong' );
+
+		$formatter->append_preformatted(
 			wpcf7_link(
 				__( 'https://contactform7.com/constant-contact-integration/', 'contact-form-7' ),
 				__( 'Constant Contact integration', 'contact-form-7' )
 			)
 		);
 
+		$formatter->end_tag( 'p' );
+
 		if ( $this->is_active() ) {
-			echo sprintf(
-				'<p class="dashicons-before dashicons-yes">%s</p>',
-				esc_html( __( "This site is connected to the Constant Contact API.", 'contact-form-7' ) )
+			$formatter->append_start_tag( 'p', array(
+				'class' => 'dashicons-before dashicons-yes',
+			) );
+
+			$formatter->append_preformatted(
+				esc_html( __( 'This site is connected to the Constant Contact API.', 'contact-form-7' ) )
 			);
+
+			$formatter->end_tag( 'p' );
 		}
 
 		if ( 'setup' === $action ) {
-			$this->display_setup();
+			$formatter->call_user_func( function () {
+				$this->display_setup();
+			} );
 		} else {
-			echo sprintf(
-				'<p><a href="%1$s" class="button">%2$s</a></p>',
-				esc_url( $this->menu_page_url( 'action=setup' ) ),
-				esc_html( __( 'Setup Integration', 'contact-form-7' ) )
+			$formatter->append_start_tag( 'p' );
+
+			$formatter->append_start_tag( 'a', array(
+				'href' => esc_url( $this->menu_page_url( 'action=setup' ) ),
+				'class' => 'button',
+			) );
+
+			$formatter->append_preformatted(
+				esc_html( __( 'Setup integration', 'contact-form-7' ) )
 			);
+
+			$formatter->end_tag( 'p' );
 		}
+
+		$formatter->print();
 	}
 
 	private function display_setup() {
