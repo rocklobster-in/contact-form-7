@@ -6,6 +6,15 @@ class WPCF7_ContactForm {
 	use WPCF7_PipesHolder;
 
 	const post_type = 'wpcf7_contact_form';
+	const post_type_capabilities = [
+		'edit_post' => 'wpcf7_edit_contact_form',
+		'read_post' => 'wpcf7_read_contact_form',
+		'delete_post' => 'wpcf7_delete_contact_form',
+		'edit_posts' => 'wpcf7_edit_contact_forms',
+		'edit_others_posts' => 'wpcf7_edit_contact_forms',
+		'publish_posts' => 'wpcf7_edit_contact_forms',
+		'read_private_posts' => 'wpcf7_edit_contact_forms',
+	];
 
 	private static $found_items = 0;
 	private static $current = null;
@@ -55,15 +64,7 @@ class WPCF7_ContactForm {
 			'query_var' => false,
 			'public' => false,
 			'capability_type' => 'page',
-			'capabilities' => array(
-				'edit_post' => 'wpcf7_edit_contact_form',
-				'read_post' => 'wpcf7_read_contact_form',
-				'delete_post' => 'wpcf7_delete_contact_form',
-				'edit_posts' => 'wpcf7_edit_contact_forms',
-				'edit_others_posts' => 'wpcf7_edit_contact_forms',
-				'publish_posts' => 'wpcf7_edit_contact_forms',
-				'read_private_posts' => 'wpcf7_edit_contact_forms',
-			),
+			'capabilities' => self::post_type_capabilities,
 		) );
 	}
 
