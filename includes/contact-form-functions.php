@@ -48,13 +48,16 @@ function wpcf7_get_contact_form_by_hash( $hash ) {
 		return null;
 	}
 
-	$like = $wpdb->esc_like( $hash ) . '%';
+	$posts = get_posts( array(
+		'numberposts' => 1,
+		'post_type' => WPCF7_ContactForm::post_type,
+		'meta_key' => '_hash',
+		'meta_compare' => 'LIKE',
+		'meta_value' => $wpdb->esc_like( $hash ) . '%',
+	) );
 
-	$q = "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = '_hash'"
-		. $wpdb->prepare( " AND meta_value LIKE %s", $like );
-
-	if ( $post_id = $wpdb->get_var( $q ) ) {
-		return wpcf7_contact_form( $post_id );
+	if ( $posts ) {
+		return wpcf7_contact_form( $posts[0] );
 	}
 }
 
