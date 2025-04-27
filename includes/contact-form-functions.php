@@ -22,13 +22,16 @@ function wpcf7_contact_form( $post ) {
  * @return WPCF7_ContactForm Contact form object.
  */
 function wpcf7_get_contact_form_by_old_id( $old_id ) {
-	global $wpdb;
+	$posts = get_posts( array(
+		'numberposts' => 1,
+		'post_type' => WPCF7_ContactForm::post_type,
+		'meta_key' => '_old_cf7_unit_id',
+		'meta_type' => 'DECIMAL',
+		'meta_value' => $old_id,
+	) );
 
-	$q = "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = '_old_cf7_unit_id'"
-		. $wpdb->prepare( " AND meta_value = %d", $old_id );
-
-	if ( $new_id = $wpdb->get_var( $q ) ) {
-		return wpcf7_contact_form( $new_id );
+	if ( $posts ) {
+		return wpcf7_contact_form( $posts[0] );
 	}
 }
 
