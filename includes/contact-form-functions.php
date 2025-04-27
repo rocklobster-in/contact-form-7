@@ -22,16 +22,15 @@ function wpcf7_contact_form( $post ) {
  * @return WPCF7_ContactForm Contact form object.
  */
 function wpcf7_get_contact_form_by_old_id( $old_id ) {
-	$posts = get_posts( array(
-		'numberposts' => 1,
-		'post_type' => WPCF7_ContactForm::post_type,
+	$contact_forms = WPCF7_ContactForm::find( array(
 		'meta_key' => '_old_cf7_unit_id',
 		'meta_type' => 'DECIMAL',
 		'meta_value' => $old_id,
+		'posts_per_page' => 1,
 	) );
 
-	if ( $posts ) {
-		return wpcf7_contact_form( $posts[0] );
+	if ( $contact_forms ) {
+		return wpcf7_contact_form( $contact_forms[0] );
 	}
 }
 
@@ -51,16 +50,15 @@ function wpcf7_get_contact_form_by_hash( $hash ) {
 		return null;
 	}
 
-	$posts = get_posts( array(
-		'numberposts' => 1,
-		'post_type' => WPCF7_ContactForm::post_type,
+	$contact_forms = WPCF7_ContactForm::find( array(
 		'meta_key' => '_hash',
 		'meta_compare' => 'LIKE',
 		'meta_value' => $wpdb->esc_like( $hash ) . '%',
+		'posts_per_page' => 1,
 	) );
 
-	if ( $posts ) {
-		return wpcf7_contact_form( $posts[0] );
+	if ( $contact_forms ) {
+		return wpcf7_contact_form( $contact_forms[0] );
 	}
 }
 
@@ -82,7 +80,7 @@ function wpcf7_get_contact_form_by_title( $title ) {
 	) );
 
 	if ( $contact_forms ) {
-		return wpcf7_contact_form( reset( $contact_forms ) );
+		return wpcf7_contact_form( $contact_forms[0] );
 	}
 }
 
