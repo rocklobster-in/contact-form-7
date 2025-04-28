@@ -23,9 +23,13 @@ function wpcf7_contact_form( $post ) {
  */
 function wpcf7_get_contact_form_by_old_id( $old_id ) {
 	$contact_forms = WPCF7_ContactForm::find( array(
-		'meta_key' => '_old_cf7_unit_id',
-		'meta_type' => 'DECIMAL',
-		'meta_value' => $old_id,
+		'meta_query' => array(
+			array(
+				'key' => '_old_cf7_unit_id',
+				'type' => 'DECIMAL',
+				'value' => $old_id,
+			),
+		),
 		'posts_per_page' => 1,
 	) );
 
@@ -42,18 +46,18 @@ function wpcf7_get_contact_form_by_old_id( $old_id ) {
  * @return WPCF7_ContactForm Contact form object.
  */
 function wpcf7_get_contact_form_by_hash( $hash ) {
-	global $wpdb;
-
-	$hash = trim( $hash );
-
-	if ( strlen( $hash ) < 7 ) {
+	if ( ! preg_match( '/^[0-9a-f]{7,}$/', $hash ) ) {
 		return null;
 	}
 
 	$contact_forms = WPCF7_ContactForm::find( array(
-		'meta_key' => '_hash',
-		'meta_compare' => 'LIKE',
-		'meta_value' => $wpdb->esc_like( $hash ) . '%',
+		'meta_query' => array(
+			array(
+				'key' => '_hash',
+				'compare' => 'REGEXP',
+				'value' => '^' . $hash,
+			),
+		),
 		'posts_per_page' => 1,
 	) );
 
