@@ -2,6 +2,7 @@
 
 require_once WPCF7_PLUGIN_DIR . '/includes/l10n.php';
 require_once WPCF7_PLUGIN_DIR . '/includes/capabilities.php';
+require_once WPCF7_PLUGIN_DIR . '/includes/filesystem.php';
 require_once WPCF7_PLUGIN_DIR . '/includes/functions.php';
 require_once WPCF7_PLUGIN_DIR . '/includes/formatting.php';
 require_once WPCF7_PLUGIN_DIR . '/includes/pipe.php';
