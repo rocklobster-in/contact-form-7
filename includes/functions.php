@@ -379,48 +379,9 @@ function wpcf7_enctype_value( $enctype ) {
  * @return bool True on success, false on failure.
  */
 function wpcf7_rmdir_p( $dir ) {
-	if ( is_file( $dir ) ) {
-		$file = $dir;
+	$filesystem = WPCF7_Filesystem::get_instance();
 
-		if ( @unlink( $file ) ) {
-			return true;
-		}
-
-		$stat = stat( $file );
-
-		if ( @chmod( $file, $stat['mode'] | 0200 ) ) { // add write for owner
-			if ( @unlink( $file ) ) {
-				return true;
-			}
-
-			@chmod( $file, $stat['mode'] );
-		}
-
-		return false;
-	}
-
-	if ( ! is_dir( $dir ) ) {
-		return false;
-	}
-
-	if ( $handle = opendir( $dir ) ) {
-		while ( false !== ( $file = readdir( $handle ) ) ) {
-			if ( '.' === $file or '..' === $file ) {
-				continue;
-			}
-
-			wpcf7_rmdir_p( path_join( $dir, $file ) );
-		}
-
-		closedir( $handle );
-	}
-
-	if ( false !== ( $files = scandir( $dir ) )
-	and ! array_diff( $files, array( '.', '..' ) ) ) {
-		return rmdir( $dir );
-	}
-
-	return false;
+	return $filesystem->delete( $dir, true );
 }
 
 

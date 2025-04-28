@@ -54,4 +54,8 @@ class WPCF7_Filesystem {
 			define( 'FS_CHMOD_FILE', fileperms( ABSPATH . 'index.php' ) & 0777 | 0644 );
 		}
 	}
+
+	public function delete( $file, $recursive = false, $type = false ) {
+		return $this->filesystem->delete( $file, $recursive, $type );
+	}
 }
