@@ -422,6 +422,7 @@ class WPCF7_HTMLFormatter {
 			wp_trigger_error(
 				__METHOD__,
 				sprintf(
+					/* translators: %s: Invalid HTML tag name */
 					__( 'Invalid tag name (%s) is specified.', 'contact-form-7' ),
 					$tag_name
 				),
