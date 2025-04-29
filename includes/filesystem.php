@@ -58,4 +58,8 @@ class WPCF7_Filesystem {
 	public function delete( $file, $recursive = false, $type = false ) {
 		return $this->filesystem->delete( $file, $recursive, $type );
 	}
+
+	public function put_contents( $file, $contents, $mode = false ) {
+		return $this->filesystem->put_contents( $file, $contents, $mode );
+	}
 }

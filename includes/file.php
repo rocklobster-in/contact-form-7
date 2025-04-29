@@ -257,6 +257,8 @@ add_action(
  * Initializes the temporary directory for uploaded files.
  */
 function wpcf7_init_uploads() {
+	$filesystem = WPCF7_Filesystem::get_instance();
+
 	$dir = wpcf7_upload_tmp_dir();
 
 	if ( is_dir( $dir ) and is_writable( $dir ) ) {
@@ -273,19 +275,19 @@ function wpcf7_init_uploads() {
 			}
 		}
 
-		if ( $handle = @fopen( $htaccess_file, 'w' ) ) {
-			fwrite( $handle, "# Apache 2.4+\n" );
-			fwrite( $handle, "<IfModule authz_core_module>\n" );
-			fwrite( $handle, "    Require all denied\n" );
-			fwrite( $handle, "</IfModule>\n" );
-			fwrite( $handle, "\n" );
-			fwrite( $handle, "# Apache 2.2\n" );
-			fwrite( $handle, "<IfModule !authz_core_module>\n" );
-			fwrite( $handle, "    Deny from all\n" );
-			fwrite( $handle, "</IfModule>\n" );
+		$htaccess_body = '
+# Apache 2.4+
+<IfModule authz_core_module>
+    Require all denied
+</IfModule>
 
-			fclose( $handle );
-		}
+# Apache 2.2
+<IfModule !authz_core_module>
+    Deny from all
+</IfModule>
+';
+
+		$filesystem->put_contents( $htaccess_file, ltrim( $htaccess_body ) );
 	}
 }
 
