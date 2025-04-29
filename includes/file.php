@@ -257,25 +257,28 @@ add_action(
  * Initializes the temporary directory for uploaded files.
  */
 function wpcf7_init_uploads() {
-	$filesystem = WPCF7_Filesystem::get_instance();
-
 	$dir = wpcf7_upload_tmp_dir();
 
-	if ( is_dir( $dir ) and is_writable( $dir ) ) {
-		$htaccess_file = path_join( $dir, '.htaccess' );
+	if ( ! is_dir( $dir ) or ! wp_is_writable( $dir ) ) {
+		return;
+	}
 
-		if ( file_exists( $htaccess_file ) ) {
-			list( $first_line_comment ) = (array) file(
-				$htaccess_file,
-				FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES
-			);
+	$htaccess_file = path_join( $dir, '.htaccess' );
 
-			if ( '# Apache 2.4+' === $first_line_comment ) {
-				return;
-			}
+	if ( file_exists( $htaccess_file ) ) {
+		list( $first_line_comment ) = (array) file(
+			$htaccess_file,
+			FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES
+		);
+
+		if ( '# Apache 2.4+' === $first_line_comment ) {
+			return;
 		}
+	}
 
-		$htaccess_body = '
+	$filesystem = WPCF7_Filesystem::get_instance();
+
+	$htaccess_body = '
 # Apache 2.4+
 <IfModule authz_core_module>
     Require all denied
@@ -287,8 +290,7 @@ function wpcf7_init_uploads() {
 </IfModule>
 ';
 
-		$filesystem->put_contents( $htaccess_file, ltrim( $htaccess_body ) );
-	}
+	$filesystem->put_contents( $htaccess_file, ltrim( $htaccess_body ) );
 }
 
 
