@@ -292,8 +292,8 @@ class WPCF7_Submission {
 		$this->meta = array(
 			'timestamp' => time(),
 			'remote_ip' => $this->get_remote_ip_addr(),
-			'remote_port' => $_SERVER['REMOTE_PORT'] ?? '',
-			'user_agent' => substr( $_SERVER['HTTP_USER_AGENT'] ?? '', 0, 254 ),
+			'remote_port' => wpcf7_server_superglobal( 'REMOTE_PORT' ),
+			'user_agent' => wpcf7_server_superglobal( 'HTTP_USER_AGENT' ),
 			'url' => $this->get_request_url(),
 			'unit_tag' => wpcf7_sanitize_unit_tag( $_POST['_wpcf7_unit_tag'] ?? '' ),
 			'container_post_id' => absint( $_POST['_wpcf7_container_post'] ?? 0 ),

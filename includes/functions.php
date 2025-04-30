@@ -657,3 +657,23 @@ function wpcf7_anonymize_ip_addr( $ip_addr ) {
 
 	return inet_ntop( $packed & inet_pton( $mask ) );
 }
+
+
+/**
+ * Retrieves a sanitized value from the $_SERVER superglobal.
+ *
+ * @param string $key Array key.
+ * @return string Sanitized value.
+ */
+function wpcf7_server_superglobal( $key ) {
+	if ( ! isset( $_SERVER[$key] ) or is_array( $_SERVER[$key] ) ) {
+		return '';
+	}
+
+	$value = wp_unslash( (string) $_SERVER[$key] );
+	$value = wp_check_invalid_utf8( $value );
+	$value = wp_kses_no_null( $value );
+	$value = wpcf7_strip_whitespaces( $value );
+
+	return $value;
+}
