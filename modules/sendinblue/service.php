@@ -81,7 +81,10 @@ class WPCF7_Sendinblue extends WPCF7_Service {
 	}
 
 	public function load( $action = '' ) {
-		if ( 'setup' === $action and 'POST' === $_SERVER['REQUEST_METHOD'] ) {
+		if (
+			'setup' === $action and
+			'POST' === wpcf7_server_superglobal( 'REQUEST_METHOD' )
+		) {
 			check_admin_referer( 'wpcf7-sendinblue-setup' );
 
 			if ( ! empty( $_POST['reset'] ) ) {

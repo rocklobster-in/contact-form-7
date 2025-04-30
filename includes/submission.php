@@ -292,8 +292,8 @@ class WPCF7_Submission {
 		$this->meta = array(
 			'timestamp' => time(),
 			'remote_ip' => $this->get_remote_ip_addr(),
-			'remote_port' => $_SERVER['REMOTE_PORT'] ?? '',
-			'user_agent' => substr( $_SERVER['HTTP_USER_AGENT'] ?? '', 0, 254 ),
+			'remote_port' => wpcf7_server_superglobal( 'REMOTE_PORT' ),
+			'user_agent' => wpcf7_server_superglobal( 'HTTP_USER_AGENT' ),
 			'url' => $this->get_request_url(),
 			'unit_tag' => wpcf7_sanitize_unit_tag( $_POST['_wpcf7_unit_tag'] ?? '' ),
 			'container_post_id' => absint( $_POST['_wpcf7_container_post'] ?? 0 ),
@@ -516,11 +516,10 @@ class WPCF7_Submission {
 	 * Retrieves the remote IP address of this submission.
 	 */
 	private function get_remote_ip_addr() {
-		$ip_addr = '';
+		$ip_addr = wpcf7_server_superglobal( 'REMOTE_ADDR' );
 
-		if ( isset( $_SERVER['REMOTE_ADDR'] )
-		and WP_Http::is_ip_address( $_SERVER['REMOTE_ADDR'] ) ) {
-			$ip_addr = $_SERVER['REMOTE_ADDR'];
+		if ( ! WP_Http::is_ip_address( $ip_addr ) ) {
+			$ip_addr = '';
 		}
 
 		return apply_filters( 'wpcf7_remote_ip_addr', $ip_addr );
@@ -534,7 +533,7 @@ class WPCF7_Submission {
 		$home_url = untrailingslashit( home_url() );
 
 		if ( self::is_restful() ) {
-			$referer = trim( $_SERVER['HTTP_REFERER'] ?? '' );
+			$referer = wpcf7_server_superglobal( 'HTTP_REFERER' );
 
 			if ( $referer and str_starts_with( $referer, $home_url ) ) {
 				return sanitize_url( $referer );
