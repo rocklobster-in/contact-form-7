@@ -801,19 +801,11 @@ class WPCF7_Submission {
 		$filesystem = WPCF7_Filesystem::get_instance();
 
 		foreach ( (array) $this->uploaded_files as $file_path ) {
-			$paths = (array) $file_path;
-
-			foreach ( $paths as $path ) {
+			foreach ( (array) $file_path as $path ) {
 				wpcf7_rmdir_p( $path );
 
-				if (
-					$dir = dirname( $path ) and
-					false !== ( $files = scandir( $dir ) ) and
-					! array_diff( $files, array( '.', '..' ) )
-				) {
-					// remove parent dir if it's empty.
-					$filesystem->delete( $dir );
-				}
+				// Remove parent dir if empty.
+				$filesystem->delete( dirname( $path ), false );
 			}
 		}
 	}
