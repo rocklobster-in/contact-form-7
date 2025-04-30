@@ -516,11 +516,10 @@ class WPCF7_Submission {
 	 * Retrieves the remote IP address of this submission.
 	 */
 	private function get_remote_ip_addr() {
-		$ip_addr = '';
+		$ip_addr = wpcf7_server_superglobal( 'REMOTE_ADDR' );
 
-		if ( isset( $_SERVER['REMOTE_ADDR'] )
-		and WP_Http::is_ip_address( $_SERVER['REMOTE_ADDR'] ) ) {
-			$ip_addr = $_SERVER['REMOTE_ADDR'];
+		if ( ! WP_Http::is_ip_address( $ip_addr ) ) {
+			$ip_addr = '';
 		}
 
 		return apply_filters( 'wpcf7_remote_ip_addr', $ip_addr );
@@ -534,7 +533,7 @@ class WPCF7_Submission {
 		$home_url = untrailingslashit( home_url() );
 
 		if ( self::is_restful() ) {
-			$referer = trim( $_SERVER['HTTP_REFERER'] ?? '' );
+			$referer = wpcf7_server_superglobal( 'HTTP_REFERER' );
 
 			if ( $referer and str_starts_with( $referer, $home_url ) ) {
 				return sanitize_url( $referer );
