@@ -1,11 +1,28 @@
 <?php
 
+/**
+ * Class for filesystem operations.
+ */
 class WPCF7_Filesystem {
 
+	/**
+	 * The singleton instance.
+	 *
+	 * @var WPCF7_Filesystem
+	 */
 	private static $instance;
 
+	/**
+	 * Filesystem object.
+	 *
+	 * @var WP_Filesystem_Base
+	 */
 	private $filesystem;
 
+
+	/**
+	 * Retrieves the singleton instance.
+	 */
 	public static function get_instance() {
 		if ( empty( self::$instance ) ) {
 			self::$instance = new self();
@@ -14,10 +31,20 @@ class WPCF7_Filesystem {
 		return self::$instance;
 	}
 
+
+	/**
+	 * Constructor.
+	 */
 	private function __construct() {
 		$this->connect();
 	}
 
+
+	/**
+	 * Connects to the filesystem.
+	 *
+	 * @global WP_Filesystem_Base $wp_filesystem WordPress filesystem subclass.
+	 */
 	private function connect() {
 		global $wp_filesystem;
 
@@ -55,11 +82,32 @@ class WPCF7_Filesystem {
 		}
 	}
 
+
+	/**
+	 * Deletes a file or directory.
+	 *
+	 * @param string $file Path to the file or directory.
+	 * @param bool $recursive Optional. If set to true, deletes
+	 *             files and folders recursively. Default false.
+	 * @param string|false $type Type of resource.
+	 *                     'f' for file, 'd' for directory. Default false.
+	 * @return bool True on success, false on failure.
+	 */
 	public function delete( $file, $recursive = false, $type = false ) {
 		return $this->filesystem->delete( $file, $recursive, $type );
 	}
 
+
+	/**
+	 * Writes a string to a file.
+	 *
+	 * @param string $file Path to the file where to write the data.
+	 * @param string $contents The data to write.
+	 * @param int $mode The file permissions as octal number.
+	 * @return bool True on success, false on failure.
+	 */
 	public function put_contents( $file, $contents, $mode = false ) {
 		return $this->filesystem->put_contents( $file, $contents, $mode );
 	}
+
 }
