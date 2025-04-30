@@ -339,26 +339,28 @@ function wpcf7_init_captcha() {
 		}
 	}
 
-	if ( $handle = @fopen( $htaccess_file, 'w' ) ) {
-		fwrite( $handle, "# Apache 2.4+\n" );
-		fwrite( $handle, "<IfModule authz_core_module>\n" );
-		fwrite( $handle, "    Require all denied\n" );
-		fwrite( $handle, '    <FilesMatch "^\w+\.(jpe?g|gif|png)$">' . "\n" );
-		fwrite( $handle, "        Require all granted\n" );
-		fwrite( $handle, "    </FilesMatch>\n" );
-		fwrite( $handle, "</IfModule>\n" );
-		fwrite( $handle, "\n" );
-		fwrite( $handle, "# Apache 2.2\n" );
-		fwrite( $handle, "<IfModule !authz_core_module>\n" );
-		fwrite( $handle, "    Order deny,allow\n" );
-		fwrite( $handle, "    Deny from all\n" );
-		fwrite( $handle, '    <FilesMatch "^\w+\.(jpe?g|gif|png)$">' . "\n" );
-		fwrite( $handle, "        Allow from all\n" );
-		fwrite( $handle, "    </FilesMatch>\n" );
-		fwrite( $handle, "</IfModule>\n" );
+	$filesystem = WPCF7_Filesystem::get_instance();
 
-		fclose( $handle );
-	}
+	$htaccess_body = '
+# Apache 2.4+
+<IfModule authz_core_module>
+    Require all denied
+    <FilesMatch "^\w+\.(jpe?g|gif|png)$">
+        Require all granted
+    </FilesMatch>
+</IfModule>
+
+# Apache 2.2
+<IfModule !authz_core_module>
+    Order deny,allow
+    Deny from all
+    <FilesMatch "^\w+\.(jpe?g|gif|png)$">
+        Allow from all
+    </FilesMatch>
+</IfModule>
+';
+
+	$filesystem->put_contents( $htaccess_file, ltrim( $htaccess_body ) );
 
 	return $captcha;
 }
