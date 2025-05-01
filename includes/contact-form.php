@@ -431,8 +431,8 @@ class WPCF7_ContactForm {
 	 * @param string $title Title.
 	 */
 	public function set_title( $title ) {
-		$title = strip_tags( $title );
-		$title = trim( $title );
+		$title = wp_strip_all_tags( $title, true );
+		$title = wpcf7_strip_whitespaces( $title );
 
 		if ( '' === $title ) {
 			$title = __( 'Untitled', 'contact-form-7' );
