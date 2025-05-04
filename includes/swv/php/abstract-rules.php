@@ -90,6 +90,22 @@ abstract class Rule {
 
 
 	/**
+	 * Returns the default user upload file from $_FILES.
+	 *
+	 * @return stdClass Default user upload file.
+	 */
+	public function get_default_upload() {
+		$field = $this->get_property( 'field' );
+
+		if ( isset( $_FILES[$field] ) ) {
+			return (object) wp_unslash( $_FILES[$field] );
+		}
+
+		return (object) array();
+	}
+
+
+	/**
 	 * Creates an error object. Returns false if the error property is omitted.
 	 */
 	protected function create_error() {
