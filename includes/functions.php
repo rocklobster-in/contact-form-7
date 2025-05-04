@@ -677,3 +677,22 @@ function wpcf7_server_superglobal( $key ) {
 
 	return $value;
 }
+
+
+/**
+ * Retrieves a sanitized value from the $_POST superglobal.
+ *
+ * @param string $key Array key.
+ * @return string|array|null Sanitized value.
+ */
+function wpcf7_post_superglobal( $key ) {
+	if ( isset( $_POST[$key] ) ) {
+		return map_deep( $_POST[$key], static function ( $val ) {
+			$val = wp_unslash( $val );
+			$val = wp_check_invalid_utf8( $val );
+			$val = wp_kses_no_null( $val );
+			$val = wpcf7_strip_whitespaces( $val );
+			return $val;
+		} );
+	}
+}
