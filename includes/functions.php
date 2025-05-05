@@ -663,19 +663,12 @@ function wpcf7_anonymize_ip_addr( $ip_addr ) {
  * Retrieves a sanitized value from the $_SERVER superglobal.
  *
  * @param string $key Array key.
+ * @param mixed $default The default value returned when
+ *              the specified superglobal is not set.
  * @return string Sanitized value.
  */
-function wpcf7_server_superglobal( $key ) {
-	if ( ! isset( $_SERVER[$key] ) or is_array( $_SERVER[$key] ) ) {
-		return '';
-	}
-
-	$value = wp_unslash( (string) $_SERVER[$key] );
-	$value = wp_check_invalid_utf8( $value );
-	$value = wp_kses_no_null( $value );
-	$value = wpcf7_strip_whitespaces( $value );
-
-	return $value;
+function wpcf7_server_superglobal( $key, $default = '' ) {
+	return wpcf7_superglobal( 'server', $key ) ?? $default;
 }
 
 
@@ -683,16 +676,39 @@ function wpcf7_server_superglobal( $key ) {
  * Retrieves a sanitized value from the $_POST superglobal.
  *
  * @param string $key Array key.
+ * @param mixed $default The default value returned when
+ *              the specified superglobal is not set.
  * @return string|array|null Sanitized value.
  */
-function wpcf7_post_superglobal( $key ) {
-	if ( isset( $_POST[$key] ) ) {
-		return map_deep( $_POST[$key], static function ( $val ) {
-			$val = wp_unslash( $val );
-			$val = wp_check_invalid_utf8( $val );
-			$val = wp_kses_no_null( $val );
-			$val = wpcf7_strip_whitespaces( $val );
-			return $val;
-		} );
+function wpcf7_post_superglobal( $key, $default = '' ) {
+	return wpcf7_superglobal( 'post', $key ) ?? $default;
+}
+
+
+/**
+ * Retrieves a sanitized value from the specified superglobal.
+ *
+ * @param string $superglobal A superglobal type.
+ * @param string $key Array key.
+ * @return string|array|null Sanitized value.
+ */
+function wpcf7_superglobal( $superglobal, $key ) {
+	$superglobals = array(
+		'get' => $_GET,
+		'post' => $_POST,
+		'server' => $_SERVER,
+	);
+
+	if ( isset( $superglobals[$superglobal][$key] ) ) {
+		return map_deep(
+			$superglobals[$superglobal][$key],
+			static function ( $val ) {
+				$val = wp_unslash( $val );
+				$val = wp_check_invalid_utf8( $val );
+				$val = wp_kses_no_null( $val );
+				$val = wpcf7_strip_whitespaces( $val );
+				return $val;
+			}
+		);
 	}
 }
