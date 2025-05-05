@@ -292,11 +292,15 @@ class WPCF7_Submission {
 		$this->meta = array(
 			'timestamp' => time(),
 			'remote_ip' => $this->get_remote_ip_addr(),
-			'remote_port' => wpcf7_server_superglobal( 'REMOTE_PORT' ),
-			'user_agent' => wpcf7_server_superglobal( 'HTTP_USER_AGENT' ),
+			'remote_port' => wpcf7_superglobal_server( 'REMOTE_PORT' ),
+			'user_agent' => wpcf7_superglobal_server( 'HTTP_USER_AGENT' ),
 			'url' => $this->get_request_url(),
-			'unit_tag' => wpcf7_sanitize_unit_tag( $_POST['_wpcf7_unit_tag'] ?? '' ),
-			'container_post_id' => absint( $_POST['_wpcf7_container_post'] ?? 0 ),
+			'unit_tag' => wpcf7_sanitize_unit_tag(
+				wpcf7_superglobal_post( '_wpcf7_unit_tag' )
+			),
+			'container_post_id' => absint(
+				wpcf7_superglobal_post( '_wpcf7_container_post' )
+			),
 			'current_user_id' => get_current_user_id(),
 			'do_not_store' => $this->contact_form->is_true( 'do_not_store' ),
 		);
@@ -516,7 +520,7 @@ class WPCF7_Submission {
 	 * Retrieves the remote IP address of this submission.
 	 */
 	private function get_remote_ip_addr() {
-		$ip_addr = wpcf7_server_superglobal( 'REMOTE_ADDR' );
+		$ip_addr = wpcf7_superglobal_server( 'REMOTE_ADDR' );
 
 		if ( ! WP_Http::is_ip_address( $ip_addr ) ) {
 			$ip_addr = '';
@@ -533,7 +537,7 @@ class WPCF7_Submission {
 		$home_url = untrailingslashit( home_url() );
 
 		if ( self::is_restful() ) {
-			$referer = wpcf7_server_superglobal( 'HTTP_REFERER' );
+			$referer = wpcf7_superglobal_server( 'HTTP_REFERER' );
 
 			if ( $referer and str_starts_with( $referer, $home_url ) ) {
 				return sanitize_url( $referer );

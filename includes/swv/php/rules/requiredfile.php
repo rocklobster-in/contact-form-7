@@ -19,8 +19,7 @@ class RequiredFileRule extends Rule {
 	}
 
 	public function validate( $context ) {
-		$field = $this->get_property( 'field' );
-		$input = $_FILES[$field]['tmp_name'] ?? '';
+		$input = $this->get_default_upload()->tmp_name ?? '';
 		$input = wpcf7_array_flatten( $input );
 		$input = wpcf7_exclude_blank( $input );
 

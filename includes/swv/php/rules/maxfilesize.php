@@ -19,8 +19,7 @@ class MaxFileSizeRule extends Rule {
 	}
 
 	public function validate( $context ) {
-		$field = $this->get_property( 'field' );
-		$input = $_FILES[$field]['size'] ?? '';
+		$input = $this->get_default_upload()->size ?? '';
 		$input = wpcf7_array_flatten( $input );
 		$input = wpcf7_exclude_blank( $input );
 

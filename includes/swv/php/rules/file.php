@@ -19,8 +19,7 @@ class FileRule extends Rule {
 	}
 
 	public function validate( $context ) {
-		$field = $this->get_property( 'field' );
-		$input = $_FILES[$field]['name'] ?? '';
+		$input = $this->get_default_upload()->name ?? '';
 		$input = wpcf7_array_flatten( $input );
 		$input = wpcf7_exclude_blank( $input );
 

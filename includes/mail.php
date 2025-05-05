@@ -548,7 +548,7 @@ class WPCF7_MailTaggedText {
 			: null;
 
 		if ( $mail_tag->get_option( 'do_not_heat' ) ) {
-			$submitted = wp_unslash( $_POST[$field_name] ?? '' );
+			$submitted = wpcf7_superglobal_post( $field_name );
 		}
 
 		$replaced = $submitted;
