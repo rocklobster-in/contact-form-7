@@ -18,12 +18,11 @@ function wpcf7_control_init() {
 		return;
 	}
 
-	if ( isset( $_POST['_wpcf7'] ) ) {
-		$contact_form = wpcf7_contact_form( (int) $_POST['_wpcf7'] );
-
-		if ( $contact_form ) {
-			$contact_form->submit();
-		}
+	if (
+		$id = (int) wpcf7_superglobal_post( '_wpcf7' ) and
+		$contact_form = wpcf7_contact_form( $id )
+	) {
+		$contact_form->submit();
 	}
 }
 
