@@ -64,7 +64,7 @@ function wpcf7_load_bulk_validate_page( $page, $action ) {
 		'wpcf7' !== $page or
 		'validate' !== $action or
 		! wpcf7_validate_configuration() or
-		'POST' !== wpcf7_server_superglobal( 'REQUEST_METHOD' )
+		'POST' !== wpcf7_superglobal_server( 'REQUEST_METHOD' )
 	) {
 		return;
 	}

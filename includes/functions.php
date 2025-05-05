@@ -667,7 +667,7 @@ function wpcf7_anonymize_ip_addr( $ip_addr ) {
  *              the specified superglobal is not set.
  * @return string Sanitized value.
  */
-function wpcf7_server_superglobal( $key, $default = '' ) {
+function wpcf7_superglobal_server( $key, $default = '' ) {
 	return wpcf7_superglobal( 'server', $key ) ?? $default;
 }
 
@@ -680,7 +680,7 @@ function wpcf7_server_superglobal( $key, $default = '' ) {
  *              the specified superglobal is not set.
  * @return string|array|null Sanitized value.
  */
-function wpcf7_post_superglobal( $key, $default = '' ) {
+function wpcf7_superglobal_post( $key, $default = '' ) {
 	return wpcf7_superglobal( 'post', $key ) ?? $default;
 }
 
