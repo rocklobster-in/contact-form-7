@@ -56,6 +56,7 @@ class WPCF7 {
 		self::load_module( 'number' );
 		self::load_module( 'quiz' );
 		self::load_module( 'really-simple-captcha' );
+		self::load_module( 'hcaptcha' );
 		self::load_module( 'recaptcha' );
 		self::load_module( 'reflection' );
 		self::load_module( 'response' );
