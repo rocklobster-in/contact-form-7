@@ -698,7 +698,7 @@ class WPCF7_Submission {
 			return true;
 		}
 
-		$nonce = $_POST['_wpnonce'] ?? '';
+		$nonce = wpcf7_superglobal_post( '_wpnonce' );
 
 		return wpcf7_verify_nonce( $nonce );
 	}
