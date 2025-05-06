@@ -665,7 +665,7 @@ function wpcf7_anonymize_ip_addr( $ip_addr ) {
  * @param string $key Array key.
  * @param mixed $default The default value returned when
  *              the specified superglobal is not set.
- * @return string Sanitized value.
+ * @return mixed Sanitized value.
  */
 function wpcf7_superglobal_server( $key, $default = '' ) {
 	return wpcf7_superglobal( 'server', $key ) ?? $default;
@@ -678,7 +678,7 @@ function wpcf7_superglobal_server( $key, $default = '' ) {
  * @param string $key Array key.
  * @param mixed $default The default value returned when
  *              the specified superglobal is not set.
- * @return string|array|null Sanitized value.
+ * @return mixed Sanitized value.
  */
 function wpcf7_superglobal_post( $key, $default = '' ) {
 	return wpcf7_superglobal( 'post', $key ) ?? $default;

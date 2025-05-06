@@ -488,8 +488,8 @@ class WPCF7_Submission {
 	 *                  false if $hash is invalid.
 	 */
 	public function verify_posted_data_hash( $hash = '' ) {
-		if ( '' === $hash and ! empty( $_POST['_wpcf7_posted_data_hash'] ) ) {
-			$hash = trim( $_POST['_wpcf7_posted_data_hash'] );
+		if ( '' === $hash ) {
+			$hash = wpcf7_superglobal_post( '_wpcf7_posted_data_hash' );
 		}
 
 		if ( '' === $hash ) {
@@ -698,7 +698,7 @@ class WPCF7_Submission {
 			return true;
 		}
 
-		$nonce = $_POST['_wpnonce'] ?? '';
+		$nonce = wpcf7_superglobal_post( '_wpnonce' );
 
 		return wpcf7_verify_nonce( $nonce );
 	}
