@@ -135,7 +135,7 @@ function wpcf7_recaptcha_verify_response( $spam, $submission ) {
 		return $spam;
 	}
 
-	$token = trim( $_POST['_wpcf7_recaptcha_response'] ?? '' );
+	$token = wpcf7_superglobal_post( '_wpcf7_recaptcha_response' );
 
 	if ( $service->verify( $token ) ) { // Human
 		$spam = false;
