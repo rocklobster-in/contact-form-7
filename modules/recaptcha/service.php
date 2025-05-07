@@ -228,8 +228,8 @@ class WPCF7_RECAPTCHA extends WPCF7_Service {
 				$this->reset_data();
 				$redirect_to = $this->menu_page_url( 'action=setup' );
 			} else {
-				$sitekey = trim( $_POST['sitekey'] ?? '' );
-				$secret = trim( $_POST['secret'] ?? '' );
+				$sitekey = wpcf7_superglobal_post( 'sitekey' );
+				$secret = wpcf7_superglobal_post( 'secret' );
 
 				if ( $sitekey and $secret ) {
 					$this->sitekeys = array( $sitekey => $secret );
