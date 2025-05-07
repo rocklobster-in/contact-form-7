@@ -38,10 +38,8 @@ function wpcf7_sendinblue_save_contact_form( $contact_form, $args, $context ) {
 		return;
 	}
 
-	$prop = (array) ( $_POST['wpcf7-sendinblue'] ?? array() );
-
 	$prop = wp_parse_args(
-		$prop,
+		(array) wpcf7_superglobal_post( 'wpcf7-sendinblue', array() ),
 		array(
 			'enable_contact_list' => false,
 			'contact_lists' => array(),

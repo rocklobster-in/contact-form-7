@@ -135,7 +135,7 @@ function wpcf7_recaptcha_verify_response( $spam, $submission ) {
 		return $spam;
 	}
 
-	$token = trim( $_POST['_wpcf7_recaptcha_response'] ?? '' );
+	$token = wpcf7_superglobal_post( '_wpcf7_recaptcha_response' );
 
 	if ( $service->verify( $token ) ) { // Human
 		$spam = false;
@@ -145,20 +145,14 @@ function wpcf7_recaptcha_verify_response( $spam, $submission ) {
 		if ( '' === $token ) {
 			$submission->add_spam_log( array(
 				'agent' => 'recaptcha',
-				'reason' => __(
-					'reCAPTCHA response token is empty.',
-					'contact-form-7'
-				),
+				'reason' => __( 'reCAPTCHA response token is empty.', 'contact-form-7' ),
 			) );
 		} else {
 			$submission->add_spam_log( array(
 				'agent' => 'recaptcha',
 				'reason' => sprintf(
 					/* translators: 1: value of reCAPTCHA score 2: value of reCAPTCHA threshold */
-					__(
-						'reCAPTCHA score (%1$.2f) is lower than the threshold (%2$.2f).',
-						'contact-form-7'
-					),
+					__( 'reCAPTCHA score (%1$.2f) is lower than the threshold (%2$.2f).', 'contact-form-7' ),
 					$service->get_last_score(),
 					$service->get_threshold()
 				),

@@ -154,19 +154,20 @@ function wpcf7_checkbox_form_tag_handler( $tag ) {
 				$free_text_name = sprintf( '_wpcf7_free_text_%s', $tag->name );
 
 				$free_text_atts = array(
+					'type' => 'text',
 					'name' => $free_text_name,
 					'class' => 'wpcf7-free-text',
 					'tabindex' => $tabindex,
 				);
 
-				if ( wpcf7_is_posted()
-				and isset( $_POST[$free_text_name] ) ) {
-					$free_text_atts['value'] = wp_unslash( $_POST[$free_text_name] );
+				if ( wpcf7_is_posted() ) {
+					$free_text_atts['value'] = wpcf7_superglobal_post( $free_text_name );
 				}
 
-				$free_text_atts = wpcf7_format_atts( $free_text_atts );
-
-				$item .= sprintf( ' <input type="text" %s />', $free_text_atts );
+				$item .= sprintf(
+					' <input %s />',
+					wpcf7_format_atts( $free_text_atts )
+				);
 
 				$class .= ' has-free-text';
 			}
