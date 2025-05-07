@@ -158,27 +158,21 @@ function wpcf7_captchar_form_tag_handler( $tag ) {
 
 /* Validation filter */
 
-add_filter( 'wpcf7_validate_captchar',
-	'wpcf7_captcha_validation_filter', 10, 2 );
+add_filter(
+	'wpcf7_validate_captchar',
+	'wpcf7_captcha_validation_filter',
+	10, 2
+);
 
 function wpcf7_captcha_validation_filter( $result, $tag ) {
-	$type = $tag->type;
-	$name = $tag->name;
+	$prefix = wpcf7_superglobal_post( '_wpcf7_captcha_challenge_' . $tag->name );
+	$response = wpcf7_canonicalize( wpcf7_superglobal_post( $tag->name ) );
 
-	$captchac = '_wpcf7_captcha_challenge_' . $name;
-
-	$prefix = (string) ( $_POST[$captchac] ?? '' );
-	$response = (string) ( $_POST[$name] ?? '' );
-	$response = wpcf7_canonicalize( $response );
-
-	if ( 0 === strlen( $prefix )
-	or ! wpcf7_check_captcha( $prefix, $response ) ) {
+	if ( ! wpcf7_check_captcha( $prefix, $response ) ) {
 		$result->invalidate( $tag, wpcf7_get_message( 'captcha_not_match' ) );
 	}
 
-	if ( 0 !== strlen( $prefix ) ) {
-		wpcf7_remove_captcha( $prefix );
-	}
+	wpcf7_remove_captcha( $prefix );
 
 	return $result;
 }
