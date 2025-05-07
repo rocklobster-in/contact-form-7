@@ -5,12 +5,6 @@
  * @link https://contactform7.com/constant-contact-integration/
  */
 
-wpcf7_include_module_file( 'constant-contact/service.php' );
-wpcf7_include_module_file( 'constant-contact/contact-post-request.php' );
-wpcf7_include_module_file( 'constant-contact/contact-form-properties.php' );
-wpcf7_include_module_file( 'constant-contact/doi.php' );
-
-
 add_action(
 	'wpcf7_init',
 	'wpcf7_constant_contact_register_service',
@@ -23,103 +17,199 @@ add_action(
 function wpcf7_constant_contact_register_service() {
 	$integration = WPCF7_Integration::get_instance();
 
-	$service = WPCF7_ConstantContact::get_instance();
-	$integration->add_service( 'constant_contact', $service );
+	$integration->add_service( 'constant_contact',
+		WPCF7_ConstantContact::get_instance()
+	);
 }
 
 
-add_action( 'wpcf7_submit', 'wpcf7_constant_contact_submit', 10, 2 );
-
 /**
- * Callback to the wpcf7_submit action hook. Creates a contact
- * based on the submission.
+ * The WPCF7_Service subclass for Constant Contact.
  */
-function wpcf7_constant_contact_submit( $contact_form, $result ) {
-	$service = WPCF7_ConstantContact::get_instance();
+class WPCF7_ConstantContact extends WPCF7_Service {
+	const service_name = 'constant_contact';
 
-	if ( ! $service->is_active() ) {
-		return;
+	private static $instance;
+
+	protected $client_id = '';
+	protected $client_secret = '';
+
+	public static function get_instance() {
+		if ( empty( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
 	}
 
-	if ( $contact_form->in_demo_mode() ) {
-		return;
+	private function __construct() {
+		$option = (array) WPCF7::get_option( self::service_name );
+		$this->client_id = $option['client_id'] ?? '';
+		$this->client_secret = $option['client_secret'] ?? '';
 	}
 
-	$do_submit = true;
-
-	if ( empty( $result['status'] )
-	or ! in_array( $result['status'], array( 'mail_sent' ), true ) ) {
-		$do_submit = false;
+	protected function reset_data() {
+		WPCF7::update_option( self::service_name, array() );
 	}
 
-	$prop = $contact_form->prop( 'constant_contact' );
-
-	if ( empty( $prop['enable_contact_list'] ) ) {
-		$do_submit = false;
+	public function get_title() {
+		return __( 'Constant Contact', 'contact-form-7' );
 	}
 
-	$do_submit = apply_filters( 'wpcf7_constant_contact_submit',
-		$do_submit, $contact_form, $result
-	);
-
-	if ( ! $do_submit ) {
-		return;
+	public function is_active() {
+		return $this->client_id || $this->client_secret;
 	}
 
-	$submission = WPCF7_Submission::get_instance();
+	public function get_categories() {
+		return array( 'email_marketing' );
+	}
 
-	$consented = true;
+	public function icon() {
+	}
 
-	foreach ( $contact_form->scan_form_tags( 'feature=name-attr' ) as $tag ) {
-		if ( $tag->has_option( 'consent_for:constant_contact' )
-		and null == $submission->get_posted_data( $tag->name ) ) {
-			$consented = false;
-			break;
+	public function link() {
+	}
+
+	protected function menu_page_url( $args = '' ) {
+		$args = wp_parse_args( $args, array() );
+
+		$url = add_query_arg(
+			array( 'service' => self::service_name ),
+			menu_page_url( 'wpcf7-integration', false )
+		);
+
+		if ( ! empty( $args ) ) {
+			$url = add_query_arg( $args, $url );
+		}
+
+		return $url;
+	}
+
+	public function load( $action = '' ) {
+		if (
+			'setup' === $action and
+			'POST' === wpcf7_superglobal_server( 'REQUEST_METHOD' )
+		) {
+			check_admin_referer( 'wpcf7-constant-contact-setup' );
+
+			if ( wpcf7_superglobal_post( 'reset' ) ) {
+				$this->reset_data();
+				$message = 'reset';
+			}
+
+			wp_safe_redirect( $this->menu_page_url( array(
+				'action' => 'setup',
+				'message' => $message ?? '',
+			) ) );
+
+			exit();
 		}
 	}
 
-	if ( ! $consented ) {
-		return;
-	}
+	public function admin_notice( $message = '' ) {
+		switch ( $message ) {
+			case 'reset':
+				wp_admin_notice(
+					esc_html( __( 'API configuration cleared.', 'contact-form-7' ) ),
+					array( 'type' => 'success' )
+				);
 
-	$request_builder_class_name = apply_filters(
-		'wpcf7_constant_contact_contact_post_request_builder',
-		'WPCF7_ConstantContact_ContactPostRequest'
-	);
-
-	if ( ! class_exists( $request_builder_class_name ) ) {
-		return;
-	}
-
-	$request_builder = new $request_builder_class_name();
-	$request_builder->build( $submission );
-
-	if ( ! $request_builder->is_valid() ) {
-		return;
-	}
-
-	$email = $request_builder->get_email_address();
-
-	if ( $email ) {
-		if ( $service->email_exists( $email ) ) {
-			return;
+				break;
 		}
+	}
 
-		$token = null;
-
-		do_action_ref_array( 'wpcf7_doi', array(
-			'wpcf7_constant_contact',
-			array(
-				'email_to' => $email,
-				'properties' => $request_builder->to_array(),
-			),
-			&$token,
+	public function display( $action = '' ) {
+		$formatter = new WPCF7_HTMLFormatter( array(
+			'allowed_html' => array_merge( wpcf7_kses_allowed_html(), array(
+				'form' => array(
+					'action' => true,
+					'method' => true,
+				),
+			) ),
 		) );
 
-		if ( isset( $token ) ) {
-			return;
+		$formatter->append_start_tag( 'p' );
+
+		$formatter->append_preformatted(
+			wpcf7_link(
+				__( 'https://contactform7.com/2024/02/02/we-end-the-constant-contact-integration/', 'contact-form-7' ),
+				__( 'The Constant Contact integration has been removed.', 'contact-form-7' )
+			)
+		);
+
+		$formatter->end_tag( 'p' );
+
+		if ( $this->is_active() ) {
+			$formatter->append_start_tag( 'form', array(
+				'method' => 'post',
+				'action' => esc_url( $this->menu_page_url( 'action=setup' ) ),
+			) );
+
+			$formatter->call_user_func( static function () {
+				wp_nonce_field( 'wpcf7-constant-contact-setup' );
+			} );
+
+			$formatter->append_start_tag( 'table', array(
+				'class' => 'form-table',
+			) );
+
+			$formatter->append_start_tag( 'tbody' );
+
+			$formatter->append_start_tag( 'tr' );
+
+			$formatter->append_start_tag( 'th', array(
+				'scope' => 'row',
+			) );
+
+			$formatter->append_start_tag( 'label', array(
+				'for' => 'client_id',
+			) );
+
+			$formatter->append_preformatted(
+				esc_html( __( 'API Key', 'contact-form-7' ) )
+			);
+
+			$formatter->end_tag( 'th' );
+
+			$formatter->append_start_tag( 'td' );
+
+			$formatter->append_preformatted( esc_html( $this->client_id ) );
+
+			$formatter->end_tag( 'tr' );
+
+			$formatter->append_start_tag( 'tr' );
+
+			$formatter->append_start_tag( 'th', array(
+				'scope' => 'row',
+			) );
+
+			$formatter->append_start_tag( 'label', array(
+				'for' => 'client_secret',
+			) );
+
+			$formatter->append_preformatted(
+				esc_html( __( 'App Secret', 'contact-form-7' ) )
+			);
+
+			$formatter->end_tag( 'th' );
+
+			$formatter->append_start_tag( 'td' );
+
+			$formatter->append_preformatted(
+				esc_html( wpcf7_mask_password( $this->client_secret, 4, 4 ) )
+			);
+
+			$formatter->end_tag( 'table' );
+
+			$formatter->call_user_func( function () {
+				submit_button(
+					_x( 'Remove Keys', 'API keys', 'contact-form-7' ),
+					'small', 'reset'
+				);
+			} );
 		}
+
+		$formatter->print();
 	}
 
-	$service->create_contact( $request_builder->to_array() );
 }

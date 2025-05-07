@@ -96,7 +96,7 @@ document.addEventListener( 'DOMContentLoaded', event => {
 	} );
 
 	document.querySelectorAll(
-		'#wpcf7-ctct-enable-contact-list, #wpcf7-sendinblue-enable-contact-list, #wpcf7-sendinblue-enable-transactional-email'
+		'#wpcf7-sendinblue-enable-contact-list, #wpcf7-sendinblue-enable-transactional-email'
 	).forEach( checkbox => {
 		checkbox.addEventListener( 'change', event => {
 			if ( checkbox.checked ) {
