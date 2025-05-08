@@ -303,8 +303,6 @@ function wpcf7_save_contact_form( $data = '', $context = 'save' ) {
 		'additional_settings' => null,
 	) );
 
-	$data = wp_unslash( $data );
-
 	$data['id'] = (int) $data['id'];
 
 	if ( -1 === $data['id'] ) {
