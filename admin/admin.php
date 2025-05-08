@@ -268,7 +268,9 @@ function wpcf7_load_contact_form_admin() {
 
 		$query = array(
 			'post' => $contact_form ? $contact_form->id() : 0,
-			'active-tab' => wpcf7_canonicalize_name( $_POST['active-tab'] ?? '' ),
+			'active-tab' => wpcf7_canonicalize_name(
+				wpcf7_superglobal_post( 'active-tab' )
+			),
 		);
 
 		if ( ! $contact_form ) {
