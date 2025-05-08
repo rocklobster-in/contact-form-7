@@ -325,7 +325,7 @@ function wpcf7_posted_data_checkbox( $value, $value_orig, $form_tag ) {
 		$value = (array) $value;
 
 		$free_text_name = sprintf( '_wpcf7_free_text_%s', $form_tag->name );
-		$free_text = wp_unslash( $_POST[$free_text_name] ?? '' );
+		$free_text = wpcf7_superglobal_post( $free_text_name );
 
 		$last_val = array_pop( $value );
 
