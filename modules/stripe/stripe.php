@@ -111,8 +111,9 @@ function wpcf7_stripe_skip_spam_check( $skip_spam_check, $submission ) {
 		return $skip_spam_check;
 	}
 
-	if ( ! empty( $_POST['_wpcf7_stripe_payment_intent'] ) ) {
-		$pi_id = trim( $_POST['_wpcf7_stripe_payment_intent'] );
+	$pi_id = (string) wpcf7_superglobal_post( '_wpcf7_stripe_payment_intent' );
+
+	if ( $pi_id ) {
 		$payment_intent = $service->api()->retrieve_payment_intent( $pi_id );
 
 		if (
@@ -163,8 +164,9 @@ function wpcf7_stripe_verify_payment_intent( $spam, $submission ) {
 		return $spam;
 	}
 
-	if ( ! empty( $_POST['_wpcf7_stripe_payment_intent'] ) ) {
-		$pi_id = trim( $_POST['_wpcf7_stripe_payment_intent'] );
+	$pi_id = (string) wpcf7_superglobal_post( '_wpcf7_stripe_payment_intent' );
+
+	if ( $pi_id ) {
 		$payment_intent = $service->api()->retrieve_payment_intent( $pi_id );
 
 		if (
