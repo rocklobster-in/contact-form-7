@@ -250,7 +250,7 @@ class WPCF7_Service_OAuth2 extends WPCF7_Service {
 
 	public function load( $action = '' ) {
 		if ( 'auth_redirect' === $action ) {
-			$code = $_GET['code'] ?? '';
+			$code = wpcf7_superglobal_get( 'code' );
 
 			if ( $code ) {
 				$this->request_token( $code );
