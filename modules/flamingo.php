@@ -1,8 +1,8 @@
 <?php
 /**
-** Module for Flamingo plugin.
-** http://wordpress.org/extend/plugins/flamingo/
-**/
+ * Module for Flamingo plugin.
+ * http://wordpress.org/extend/plugins/flamingo/
+ */
 
 add_action( 'wpcf7_submit', 'wpcf7_flamingo_submit', 10, 2 );
 
