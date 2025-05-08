@@ -234,7 +234,7 @@ function wpcf7_load_contact_form_admin() {
 	);
 
 	if ( 'save' === $action ) {
-		$id = $_POST['post_ID'] ?? '-1';
+		$id = wpcf7_superglobal_post( 'post_ID', '-1' );
 
 		check_admin_referer( 'wpcf7-save-contact-form_' . $id );
 
