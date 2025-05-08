@@ -234,7 +234,7 @@ function wpcf7_load_contact_form_admin() {
 	);
 
 	if ( 'save' === $action ) {
-		$id = $_POST['post_ID'] ?? '-1';
+		$id = wpcf7_superglobal_post( 'post_ID', '-1' );
 
 		check_admin_referer( 'wpcf7-save-contact-form_' . $id );
 
@@ -246,16 +246,16 @@ function wpcf7_load_contact_form_admin() {
 
 		$contact_form = wpcf7_save_contact_form(
 			array_merge(
-				$_REQUEST,
+				wp_unslash( $_REQUEST ),
 				array(
 					'id' => $id,
-					'title' => $_POST['post_title'] ?? null,
-					'locale' => $_POST['wpcf7-locale'] ?? null,
-					'form' => $_POST['wpcf7-form'] ?? '',
-					'mail' => $_POST['wpcf7-mail'] ?? array(),
-					'mail_2' => $_POST['wpcf7-mail-2'] ?? array(),
-					'messages' => $_POST['wpcf7-messages'] ?? array(),
-					'additional_settings' => $_POST['wpcf7-additional-settings'] ?? '',
+					'title' => wpcf7_superglobal_post( 'post_title', null ),
+					'locale' => wpcf7_superglobal_post( 'wpcf7-locale', null ),
+					'form' => wpcf7_superglobal_post( 'wpcf7-form', '' ),
+					'mail' => wpcf7_superglobal_post( 'wpcf7-mail', array() ),
+					'mail_2' => wpcf7_superglobal_post( 'wpcf7-mail-2', array() ),
+					'messages' => wpcf7_superglobal_post( 'wpcf7-messages', array() ),
+					'additional_settings' => wpcf7_superglobal_post( 'wpcf7-additional-settings', '' ),
 				)
 			)
 		);
@@ -268,7 +268,9 @@ function wpcf7_load_contact_form_admin() {
 
 		$query = array(
 			'post' => $contact_form ? $contact_form->id() : 0,
-			'active-tab' => wpcf7_canonicalize_name( $_POST['active-tab'] ?? '' ),
+			'active-tab' => wpcf7_canonicalize_name(
+				wpcf7_superglobal_post( 'active-tab' )
+			),
 		);
 
 		if ( ! $contact_form ) {
