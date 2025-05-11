@@ -521,7 +521,7 @@ function wpcf7_admin_add_new_page() {
 
 function wpcf7_load_integration_page() {
 	do_action( 'wpcf7_admin_load',
-		trim( $_GET['page'] ?? '' ),
+		wpcf7_superglobal_get( 'page' ),
 		wpcf7_current_action()
 	);
 
