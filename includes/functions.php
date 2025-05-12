@@ -686,6 +686,19 @@ function wpcf7_superglobal_post( $key, $default = '' ) {
 
 
 /**
+ * Retrieves a sanitized value from the $_REQUEST superglobal.
+ *
+ * @param string $key Array key.
+ * @param mixed $default The default value returned when
+ *              the specified superglobal is not set.
+ * @return mixed Sanitized value.
+ */
+function wpcf7_superglobal_request( $key, $default = '' ) {
+	return wpcf7_superglobal( 'request', $key ) ?? $default;
+}
+
+
+/**
  * Retrieves a sanitized value from the $_SERVER superglobal.
  *
  * @param string $key Array key.
@@ -709,6 +722,7 @@ function wpcf7_superglobal( $superglobal, $key ) {
 	$superglobals = array(
 		'get' => $_GET,
 		'post' => $_POST,
+		'request' => $_REQUEST,
 		'server' => $_SERVER,
 	);
 
