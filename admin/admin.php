@@ -314,15 +314,18 @@ function wpcf7_load_contact_form_admin() {
 	}
 
 	if ( 'delete' === $action ) {
-		if ( ! empty( $_POST['post_ID'] ) ) {
-			check_admin_referer( 'wpcf7-delete-contact-form_' . $_POST['post_ID'] );
-		} elseif ( ! is_array( $_REQUEST['post'] ) ) {
-			check_admin_referer( 'wpcf7-delete-contact-form_' . $_REQUEST['post'] );
-		} else {
-			check_admin_referer( 'bulk-posts' );
+		$nonce_action = 'bulk-posts';
+
+		if (
+			$post_id = wpcf7_superglobal_post( 'post_ID' ) or
+			! is_array( $post_id = wpcf7_superglobal_request( 'post', array() ) )
+		) {
+			$nonce_action = sprintf( 'wpcf7-delete-contact-form_%s', $post_id );
 		}
 
-		$posts = (array) ( $_POST['post_ID'] ?? $_REQUEST['post'] ?? array() );
+		check_admin_referer( $nonce_action );
+
+		$posts = array_filter( (array) $post_id );
 
 		$deleted = 0;
 
