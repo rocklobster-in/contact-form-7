@@ -630,46 +630,43 @@ function wpcf7_admin_updated_message( $page, $action, $object ) {
 		return;
 	}
 
+	$notice_type = 'success';
+
 	if ( 'created' === $message_type ) {
-		$message = __( "Contact form created.", 'contact-form-7' );
+		$message = __( 'Contact form created.', 'contact-form-7' );
 	} elseif ( 'saved' === $message_type ) {
-		$message = __( "Contact form saved.", 'contact-form-7' );
+		$message = __( 'Contact form saved.', 'contact-form-7' );
 	} elseif ( 'deleted' === $message_type ) {
-		$message = __( "Contact form deleted.", 'contact-form-7' );
-	}
-
-	if ( ! empty( $message ) ) {
-		wp_admin_notice( esc_html( $message ), array( 'type' => 'success' ) );
-	}
-
-	if ( 'failed' === $message_type ) {
-		$message =
-			__( "There was an error saving the contact form.", 'contact-form-7' );
-
-		wp_admin_notice( esc_html( $message ), array( 'type' => 'error' ) );
-	}
-
-	if ( 'validated' === $message_type ) {
+		$message = __( 'Contact form deleted.', 'contact-form-7' );
+	} elseif ( 'failed' === $message_type ) {
+		$notice_type = 'error';
+		$message = __( 'There was an error saving the contact form.', 'contact-form-7' );
+	} elseif ( 'validated' === $message_type ) {
 		$bulk_validate = WPCF7::get_option( 'bulk_validate', array() );
 		$count_invalid = absint( $bulk_validate['count_invalid'] ?? 0 );
 
 		if ( $count_invalid ) {
+			$notice_type = 'warning';
+
 			$message = sprintf(
 				/* translators: %s: number of contact forms */
 				_n(
-					"Configuration validation completed. %s invalid contact form was found.",
-					"Configuration validation completed. %s invalid contact forms were found.",
+					'Configuration validation completed. %s invalid contact form was found.',
+					'Configuration validation completed. %s invalid contact forms were found.',
 					$count_invalid, 'contact-form-7'
 				),
 				number_format_i18n( $count_invalid )
 			);
-
-			wp_admin_notice( esc_html( $message ), array( 'type' => 'warning' ) );
 		} else {
-			$message = __( "Configuration validation completed. No invalid contact form was found.", 'contact-form-7' );
-
-			wp_admin_notice( esc_html( $message ), array( 'type' => 'success' ) );
+			$message = __( 'Configuration validation completed. No invalid contact form was found.', 'contact-form-7' );
 		}
+	}
+
+	if ( ! empty( $message ) ) {
+		wp_admin_notice(
+			wp_kses_data( $message ),
+			array( 'type' => $notice_type )
+		);
 	}
 }
 
