@@ -492,7 +492,7 @@ function wpcf7_admin_management_page() {
 	$formatter->append_start_tag( 'input', array(
 		'type' => 'hidden',
 		'name' => 'page',
-		'value' => $_REQUEST['page'],
+		'value' => wpcf7_superglobal_request( 'page' ),
 	) );
 
 	$formatter->call_user_func( static function () use ( $list_table ) {
