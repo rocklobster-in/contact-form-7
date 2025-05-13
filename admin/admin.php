@@ -530,9 +530,11 @@ function wpcf7_load_integration_page() {
 
 	$integration = WPCF7_Integration::get_instance();
 
-	if ( isset( $_REQUEST['service'] )
-	and $integration->service_exists( $_REQUEST['service'] ) ) {
-		$service = $integration->get_service( $_REQUEST['service'] );
+	if (
+		$service_name = wpcf7_superglobal_request( 'service' ) and
+		$integration->service_exists( $service_name )
+	) {
+		$service = $integration->get_service( $service_name );
 		$service->load( wpcf7_current_action() );
 	}
 
@@ -544,9 +546,12 @@ function wpcf7_load_integration_page() {
 function wpcf7_admin_integration_page() {
 	$integration = WPCF7_Integration::get_instance();
 
-	$service = isset( $_REQUEST['service'] )
-		? $integration->get_service( $_REQUEST['service'] )
-		: null;
+	$service_name = wpcf7_superglobal_request( 'service' );
+	$service = null;
+
+	if ( $service_name and $integration->service_exists( $service_name ) ) {
+		$service = $integration->get_service( $service_name );
+	}
 
 	$formatter = new WPCF7_HTMLFormatter( array(
 		'allowed_html' => array_merge( wpcf7_kses_allowed_html(), array(
@@ -585,26 +590,28 @@ function wpcf7_admin_integration_page() {
 
 	$formatter->end_tag( 'p' );
 
-	$formatter->call_user_func( static function () use ( $integration, $service ) {
-		do_action( 'wpcf7_admin_warnings',
-			'wpcf7-integration', wpcf7_current_action(), $service
-		);
+	$formatter->call_user_func(
+		static function () use ( $integration, $service, $service_name ) {
+			do_action( 'wpcf7_admin_warnings',
+				'wpcf7-integration', wpcf7_current_action(), $service
+			);
 
-		do_action( 'wpcf7_admin_notices',
-			'wpcf7-integration', wpcf7_current_action(), $service
-		);
+			do_action( 'wpcf7_admin_notices',
+				'wpcf7-integration', wpcf7_current_action(), $service
+			);
 
-		if ( $service ) {
-			$message = $_REQUEST['message'] ?? '';
-			$service->admin_notice( $message );
+			if ( $service ) {
+				$message = $_REQUEST['message'] ?? '';
+				$service->admin_notice( $message );
 
-			$integration->list_services( array(
-				'include' => $_REQUEST['service'],
-			) );
-		} else {
-			$integration->list_services();
+				$integration->list_services( array(
+					'include' => $service_name,
+				) );
+			} else {
+				$integration->list_services();
+			}
 		}
-	} );
+	);
 
 	$formatter->print();
 }
