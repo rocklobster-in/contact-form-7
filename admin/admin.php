@@ -453,7 +453,7 @@ function wpcf7_admin_management_page() {
 		);
 	}
 
-	if ( ! empty( $_REQUEST['s'] ) ) {
+	if ( $search_keyword = wpcf7_superglobal_request( 's' ) ) {
 		$formatter->append_start_tag( 'span', array(
 			'class' => 'subtitle',
 		) );
@@ -462,7 +462,7 @@ function wpcf7_admin_management_page() {
 			esc_html( sprintf(
 				/* translators: %s: search keywords */
 				__( 'Search results for &#8220;%s&#8221;', 'contact-form-7' ),
-				$_REQUEST['s']
+				$search_keyword
 			) )
 		);
 
