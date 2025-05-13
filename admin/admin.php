@@ -601,7 +601,7 @@ function wpcf7_admin_integration_page() {
 			);
 
 			if ( $service ) {
-				$message = $_REQUEST['message'] ?? '';
+				$message = wpcf7_superglobal_request( 'message' );
 				$service->admin_notice( $message );
 
 				$integration->list_services( array(
