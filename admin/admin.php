@@ -624,15 +624,17 @@ function wpcf7_admin_updated_message( $page, $action, $object ) {
 		return;
 	}
 
-	if ( empty( $_REQUEST['message'] ) ) {
+	$message_type = wpcf7_superglobal_request( 'message' );
+
+	if ( ! $message_type ) {
 		return;
 	}
 
-	if ( 'created' === $_REQUEST['message'] ) {
+	if ( 'created' === $message_type ) {
 		$message = __( "Contact form created.", 'contact-form-7' );
-	} elseif ( 'saved' === $_REQUEST['message'] ) {
+	} elseif ( 'saved' === $message_type ) {
 		$message = __( "Contact form saved.", 'contact-form-7' );
-	} elseif ( 'deleted' === $_REQUEST['message'] ) {
+	} elseif ( 'deleted' === $message_type ) {
 		$message = __( "Contact form deleted.", 'contact-form-7' );
 	}
 
@@ -640,14 +642,14 @@ function wpcf7_admin_updated_message( $page, $action, $object ) {
 		wp_admin_notice( esc_html( $message ), array( 'type' => 'success' ) );
 	}
 
-	if ( 'failed' === $_REQUEST['message'] ) {
+	if ( 'failed' === $message_type ) {
 		$message =
 			__( "There was an error saving the contact form.", 'contact-form-7' );
 
 		wp_admin_notice( esc_html( $message ), array( 'type' => 'error' ) );
 	}
 
-	if ( 'validated' === $_REQUEST['message'] ) {
+	if ( 'validated' === $message_type ) {
 		$bulk_validate = WPCF7::get_option( 'bulk_validate', array() );
 		$count_invalid = absint( $bulk_validate['count_invalid'] ?? 0 );
 
