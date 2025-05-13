@@ -314,15 +314,18 @@ function wpcf7_load_contact_form_admin() {
 	}
 
 	if ( 'delete' === $action ) {
-		if ( ! empty( $_POST['post_ID'] ) ) {
-			check_admin_referer( 'wpcf7-delete-contact-form_' . $_POST['post_ID'] );
-		} elseif ( ! is_array( $_REQUEST['post'] ) ) {
-			check_admin_referer( 'wpcf7-delete-contact-form_' . $_REQUEST['post'] );
-		} else {
-			check_admin_referer( 'bulk-posts' );
+		$nonce_action = 'bulk-posts';
+
+		if (
+			$post_id = wpcf7_superglobal_post( 'post_ID' ) or
+			! is_array( $post_id = wpcf7_superglobal_request( 'post', array() ) )
+		) {
+			$nonce_action = sprintf( 'wpcf7-delete-contact-form_%s', $post_id );
 		}
 
-		$posts = (array) ( $_POST['post_ID'] ?? $_REQUEST['post'] ?? array() );
+		check_admin_referer( $nonce_action );
+
+		$posts = array_filter( (array) $post_id );
 
 		$deleted = 0;
 
@@ -450,7 +453,7 @@ function wpcf7_admin_management_page() {
 		);
 	}
 
-	if ( ! empty( $_REQUEST['s'] ) ) {
+	if ( $search_keyword = wpcf7_superglobal_request( 's' ) ) {
 		$formatter->append_start_tag( 'span', array(
 			'class' => 'subtitle',
 		) );
@@ -459,7 +462,7 @@ function wpcf7_admin_management_page() {
 			esc_html( sprintf(
 				/* translators: %s: search keywords */
 				__( 'Search results for &#8220;%s&#8221;', 'contact-form-7' ),
-				$_REQUEST['s']
+				$search_keyword
 			) )
 		);
 
@@ -489,7 +492,7 @@ function wpcf7_admin_management_page() {
 	$formatter->append_start_tag( 'input', array(
 		'type' => 'hidden',
 		'name' => 'page',
-		'value' => $_REQUEST['page'],
+		'value' => wpcf7_superglobal_request( 'page' ),
 	) );
 
 	$formatter->call_user_func( static function () use ( $list_table ) {
@@ -527,9 +530,11 @@ function wpcf7_load_integration_page() {
 
 	$integration = WPCF7_Integration::get_instance();
 
-	if ( isset( $_REQUEST['service'] )
-	and $integration->service_exists( $_REQUEST['service'] ) ) {
-		$service = $integration->get_service( $_REQUEST['service'] );
+	if (
+		$service_name = wpcf7_superglobal_request( 'service' ) and
+		$integration->service_exists( $service_name )
+	) {
+		$service = $integration->get_service( $service_name );
 		$service->load( wpcf7_current_action() );
 	}
 
@@ -541,9 +546,12 @@ function wpcf7_load_integration_page() {
 function wpcf7_admin_integration_page() {
 	$integration = WPCF7_Integration::get_instance();
 
-	$service = isset( $_REQUEST['service'] )
-		? $integration->get_service( $_REQUEST['service'] )
-		: null;
+	$service_name = wpcf7_superglobal_request( 'service' );
+	$service = null;
+
+	if ( $service_name and $integration->service_exists( $service_name ) ) {
+		$service = $integration->get_service( $service_name );
+	}
 
 	$formatter = new WPCF7_HTMLFormatter( array(
 		'allowed_html' => array_merge( wpcf7_kses_allowed_html(), array(
@@ -582,26 +590,28 @@ function wpcf7_admin_integration_page() {
 
 	$formatter->end_tag( 'p' );
 
-	$formatter->call_user_func( static function () use ( $integration, $service ) {
-		do_action( 'wpcf7_admin_warnings',
-			'wpcf7-integration', wpcf7_current_action(), $service
-		);
+	$formatter->call_user_func(
+		static function () use ( $integration, $service, $service_name ) {
+			do_action( 'wpcf7_admin_warnings',
+				'wpcf7-integration', wpcf7_current_action(), $service
+			);
 
-		do_action( 'wpcf7_admin_notices',
-			'wpcf7-integration', wpcf7_current_action(), $service
-		);
+			do_action( 'wpcf7_admin_notices',
+				'wpcf7-integration', wpcf7_current_action(), $service
+			);
 
-		if ( $service ) {
-			$message = $_REQUEST['message'] ?? '';
-			$service->admin_notice( $message );
+			if ( $service ) {
+				$message = wpcf7_superglobal_request( 'message' );
+				$service->admin_notice( $message );
 
-			$integration->list_services( array(
-				'include' => $_REQUEST['service'],
-			) );
-		} else {
-			$integration->list_services();
+				$integration->list_services( array(
+					'include' => $service_name,
+				) );
+			} else {
+				$integration->list_services();
+			}
 		}
-	} );
+	);
 
 	$formatter->print();
 }
@@ -614,50 +624,49 @@ function wpcf7_admin_updated_message( $page, $action, $object ) {
 		return;
 	}
 
-	if ( empty( $_REQUEST['message'] ) ) {
+	$message_type = wpcf7_superglobal_request( 'message' );
+
+	if ( ! $message_type ) {
 		return;
 	}
 
-	if ( 'created' === $_REQUEST['message'] ) {
-		$message = __( "Contact form created.", 'contact-form-7' );
-	} elseif ( 'saved' === $_REQUEST['message'] ) {
-		$message = __( "Contact form saved.", 'contact-form-7' );
-	} elseif ( 'deleted' === $_REQUEST['message'] ) {
-		$message = __( "Contact form deleted.", 'contact-form-7' );
-	}
+	$notice_type = 'success';
 
-	if ( ! empty( $message ) ) {
-		wp_admin_notice( esc_html( $message ), array( 'type' => 'success' ) );
-	}
-
-	if ( 'failed' === $_REQUEST['message'] ) {
-		$message =
-			__( "There was an error saving the contact form.", 'contact-form-7' );
-
-		wp_admin_notice( esc_html( $message ), array( 'type' => 'error' ) );
-	}
-
-	if ( 'validated' === $_REQUEST['message'] ) {
+	if ( 'created' === $message_type ) {
+		$message = __( 'Contact form created.', 'contact-form-7' );
+	} elseif ( 'saved' === $message_type ) {
+		$message = __( 'Contact form saved.', 'contact-form-7' );
+	} elseif ( 'deleted' === $message_type ) {
+		$message = __( 'Contact form deleted.', 'contact-form-7' );
+	} elseif ( 'failed' === $message_type ) {
+		$notice_type = 'error';
+		$message = __( 'There was an error saving the contact form.', 'contact-form-7' );
+	} elseif ( 'validated' === $message_type ) {
 		$bulk_validate = WPCF7::get_option( 'bulk_validate', array() );
 		$count_invalid = absint( $bulk_validate['count_invalid'] ?? 0 );
 
 		if ( $count_invalid ) {
+			$notice_type = 'warning';
+
 			$message = sprintf(
 				/* translators: %s: number of contact forms */
 				_n(
-					"Configuration validation completed. %s invalid contact form was found.",
-					"Configuration validation completed. %s invalid contact forms were found.",
+					'Configuration validation completed. %s invalid contact form was found.',
+					'Configuration validation completed. %s invalid contact forms were found.',
 					$count_invalid, 'contact-form-7'
 				),
 				number_format_i18n( $count_invalid )
 			);
-
-			wp_admin_notice( esc_html( $message ), array( 'type' => 'warning' ) );
 		} else {
-			$message = __( "Configuration validation completed. No invalid contact form was found.", 'contact-form-7' );
-
-			wp_admin_notice( esc_html( $message ), array( 'type' => 'success' ) );
+			$message = __( 'Configuration validation completed. No invalid contact form was found.', 'contact-form-7' );
 		}
+	}
+
+	if ( ! empty( $message ) ) {
+		wp_admin_notice(
+			wp_kses_data( $message ),
+			array( 'type' => $notice_type )
+		);
 	}
 }
 
