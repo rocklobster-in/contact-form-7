@@ -8,6 +8,8 @@
  * @return array|WP_Error Array of file paths, or WP_Error if validation fails.
  */
 function wpcf7_unship_uploaded_file( $file, $options = '' ) {
+	$filesystem = WPCF7_Filesystem::get_instance();
+
 	$options = wp_parse_args( $options, array(
 		'required' => false,
 		'filetypes' => '',
@@ -76,8 +78,8 @@ function wpcf7_unship_uploaded_file( $file, $options = '' ) {
 			);
 		}
 
-		// Make sure the uploaded file is only readable for the owner process
-		chmod( $new_file, 0400 );
+		// Make sure the uploaded file is only readable for the owner process.
+		$filesystem->chmod( $new_file, 0400 );
 
 		$uploaded_files[] = $new_file;
 	}

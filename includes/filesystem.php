@@ -84,6 +84,20 @@ class WPCF7_Filesystem {
 
 
 	/**
+	 * Changes filesystem permissions.
+	 *
+	 * @param string $file Path to the file.
+	 * @param int|false $mode Optional. The permissions as octal number.
+	 * @param bool $recursive Optional. If set to true,
+	 *             changes file permissions recursively. Default false.
+	 * @return bool True on success, false on failure.
+	 */
+	public function chmod( $file, $mode = false, $recursive = false ) {
+		return $this->filesystem->chmod( $file, $mode, $recursive );
+	}
+
+
+	/**
 	 * Deletes a file or directory.
 	 *
 	 * @param string $file Path to the file or directory.
