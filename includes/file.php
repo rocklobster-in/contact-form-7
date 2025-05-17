@@ -101,23 +101,23 @@ add_filter(
 function wpcf7_file_messages( $messages ) {
 	return array_merge( $messages, array(
 		'upload_failed' => array(
-			'description' => __( "Uploading a file fails for any reason", 'contact-form-7' ),
-			'default' => __( "There was an unknown error uploading the file.", 'contact-form-7' ),
+			'description' => __( 'Uploading a file fails for any reason', 'contact-form-7' ),
+			'default' => __( 'There was an unknown error uploading the file.', 'contact-form-7' ),
 		),
 
 		'upload_file_type_invalid' => array(
-			'description' => __( "Uploaded file is not allowed for file type", 'contact-form-7' ),
-			'default' => __( "You are not allowed to upload files of this type.", 'contact-form-7' ),
+			'description' => __( 'Uploaded file is not allowed for file type', 'contact-form-7' ),
+			'default' => __( 'You are not allowed to upload files of this type.', 'contact-form-7' ),
 		),
 
 		'upload_file_too_large' => array(
-			'description' => __( "Uploaded file is too large", 'contact-form-7' ),
-			'default' => __( "The uploaded file is too large.", 'contact-form-7' ),
+			'description' => __( 'Uploaded file is too large', 'contact-form-7' ),
+			'default' => __( 'The uploaded file is too large.', 'contact-form-7' ),
 		),
 
 		'upload_failed_php_error' => array(
-			'description' => __( "Uploading a file fails for PHP error", 'contact-form-7' ),
-			'default' => __( "There was an error uploading the file.", 'contact-form-7' ),
+			'description' => __( 'Uploading a file fails for PHP error', 'contact-form-7' ),
+			'default' => __( 'There was an error uploading the file.', 'contact-form-7' ),
 		),
 	) );
 }
@@ -162,8 +162,10 @@ function wpcf7_convert_mime_to_ext( $mime ) {
 
 	if ( preg_match( '%^([a-z]+)/([*]|[a-z0-9.+-]+)$%i', $mime, $matches ) ) {
 		foreach ( $mime_types as $key => $val ) {
-			if ( '*' === $matches[2] and str_starts_with( $val, $matches[1] . '/' )
-			or $val === $matches[0] ) {
+			if (
+				'*' === $matches[2] and str_starts_with( $val, $matches[1] . '/' ) or
+				$val === $matches[0]
+			) {
 				$results = array_merge( $results, explode( '|', $key ) );
 			}
 		}
@@ -211,7 +213,9 @@ function wpcf7_acceptable_filetypes( $types = 'default', $format = 'regex' ) {
 				if ( false === strpos( $type, '/' ) ) {
 					return sprintf( '.%s', trim( $type, '.' ) );
 				} elseif ( preg_match( '%^([a-z]+)/[*]$%i', $type, $matches ) ) {
-					if ( in_array( $matches[1], array( 'audio', 'video', 'image' ), true ) ) {
+					if (
+						in_array( $matches[1], array( 'audio', 'video', 'image' ), true )
+					) {
 						return $type;
 					} else {
 						return '';
@@ -354,9 +358,11 @@ add_action(
 function wpcf7_cleanup_upload_files( $seconds = 60, $max = 100 ) {
 	$dir = trailingslashit( wpcf7_upload_tmp_dir() );
 
-	if ( ! is_dir( $dir )
-	or ! is_readable( $dir )
-	or ! wp_is_writable( $dir ) ) {
+	if (
+		! is_dir( $dir ) or
+		! is_readable( $dir ) or
+		! wp_is_writable( $dir )
+	) {
 		return;
 	}
 
