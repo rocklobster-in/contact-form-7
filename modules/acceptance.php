@@ -110,8 +110,11 @@ function wpcf7_acceptance_form_tag_handler( $tag ) {
 
 /* Validation filter */
 
-add_filter( 'wpcf7_validate_acceptance',
-	'wpcf7_acceptance_validation_filter', 10, 2 );
+add_filter(
+	'wpcf7_validate_acceptance',
+	'wpcf7_acceptance_validation_filter',
+	10, 2
+);
 
 function wpcf7_acceptance_validation_filter( $result, $tag ) {
 	if ( ! wpcf7_acceptance_as_validation() ) {
@@ -122,13 +125,14 @@ function wpcf7_acceptance_validation_filter( $result, $tag ) {
 		return $result;
 	}
 
-	$name = $tag->name;
-	$value = ( ! empty( $_POST[$name] ) ? 1 : 0 );
+	$value = wpcf7_superglobal_post( $tag->name ) ? 1 : 0;
 
 	$invert = $tag->has_option( 'invert' );
 
-	if ( $invert and $value
-	or ! $invert and ! $value ) {
+	if (
+		$invert and $value or
+		! $invert and ! $value
+	) {
 		$result->invalidate( $tag, wpcf7_get_message( 'accept_terms' ) );
 	}
 
@@ -144,13 +148,11 @@ function wpcf7_acceptance_filter( $accepted, $submission ) {
 	$tags = wpcf7_scan_form_tags( array( 'type' => 'acceptance' ) );
 
 	foreach ( $tags as $tag ) {
-		$name = $tag->name;
-
-		if ( empty( $name ) ) {
+		if ( empty( $tag->name ) ) {
 			continue;
 		}
 
-		$value = ( ! empty( $_POST[$name] ) ? 1 : 0 );
+		$value = wpcf7_superglobal_post( $tag->name ) ? 1 : 0;
 
 		$content = empty( $tag->content )
 			? (string) reset( $tag->values )
@@ -159,7 +161,7 @@ function wpcf7_acceptance_filter( $accepted, $submission ) {
 		$content = trim( $content );
 
 		if ( $value and $content ) {
-			$submission->add_consent( $name, $content );
+			$submission->add_consent( $tag->name, $content );
 		}
 
 		if ( $tag->has_option( 'optional' ) ) {
@@ -168,8 +170,10 @@ function wpcf7_acceptance_filter( $accepted, $submission ) {
 
 		$invert = $tag->has_option( 'invert' );
 
-		if ( $invert and $value
-		or ! $invert and ! $value ) {
+		if (
+			$invert and $value or
+			! $invert and ! $value
+		) {
 			$accepted = false;
 		}
 	}
@@ -177,8 +181,12 @@ function wpcf7_acceptance_filter( $accepted, $submission ) {
 	return $accepted;
 }
 
-add_filter( 'wpcf7_form_class_attr',
-	'wpcf7_acceptance_form_class_attr', 10, 1 );
+
+add_filter(
+	'wpcf7_form_class_attr',
+	'wpcf7_acceptance_form_class_attr',
+	10, 1
+);
 
 function wpcf7_acceptance_form_class_attr( $class_attr ) {
 	if ( wpcf7_acceptance_as_validation() ) {
@@ -196,8 +204,12 @@ function wpcf7_acceptance_as_validation() {
 	return $contact_form->is_true( 'acceptance_as_validation' );
 }
 
-add_filter( 'wpcf7_mail_tag_replaced_acceptance',
-	'wpcf7_acceptance_mail_tag', 10, 4 );
+
+add_filter(
+	'wpcf7_mail_tag_replaced_acceptance',
+	'wpcf7_acceptance_mail_tag',
+	10, 4
+);
 
 function wpcf7_acceptance_mail_tag( $replaced, $submitted, $html, $mail_tag ) {
 	$form_tag = $mail_tag->corresponding_form_tag();
@@ -225,8 +237,7 @@ function wpcf7_acceptance_mail_tag( $replaced, $submitted, $html, $mail_tag ) {
 	if ( $content ) {
 		$replaced = sprintf(
 			/* translators: 1: 'Consented' or 'Not consented', 2: conditions */
-			_x( '%1$s: %2$s', 'mail output for acceptance checkboxes',
-				'contact-form-7' ),
+			_x( '%1$s: %2$s', 'mail output for acceptance checkboxes', 'contact-form-7' ),
 			$replaced,
 			$content
 		);
