@@ -33,8 +33,11 @@ function wpcf7_captchac_form_tag_handler( $tag ) {
 	if ( ! class_exists( 'ReallySimpleCaptcha' ) ) {
 		$error = sprintf(
 			/* translators: %s: link labeled 'Really Simple CAPTCHA' */
-			esc_html( __( "To use CAPTCHA, you need %s plugin installed.", 'contact-form-7' ) ),
-			wpcf7_link( 'https://wordpress.org/plugins/really-simple-captcha/', 'Really Simple CAPTCHA' )
+			esc_html( __( 'To use CAPTCHA, you need %s plugin installed.', 'contact-form-7' ) ),
+			wpcf7_link(
+				'https://wordpress.org/plugins/really-simple-captcha/',
+				'Really Simple CAPTCHA'
+			)
 		);
 
 		return sprintf( '<em>%s</em>', $error );
@@ -110,8 +113,11 @@ function wpcf7_captchar_form_tag_handler( $tag ) {
 	$atts['maxlength'] = $tag->get_maxlength_option();
 	$atts['minlength'] = $tag->get_minlength_option();
 
-	if ( $atts['maxlength'] and $atts['minlength']
-	and $atts['maxlength'] < $atts['minlength'] ) {
+	if (
+		$atts['maxlength'] and
+		$atts['minlength'] and
+		$atts['maxlength'] < $atts['minlength']
+	) {
 		unset( $atts['maxlength'], $atts['minlength'] );
 	}
 
@@ -135,8 +141,10 @@ function wpcf7_captchar_form_tag_handler( $tag ) {
 		$value = '';
 	}
 
-	if ( $tag->has_option( 'placeholder' )
-	or $tag->has_option( 'watermark' ) ) {
+	if (
+		$tag->has_option( 'placeholder' ) or
+		$tag->has_option( 'watermark' )
+	) {
 		$atts['placeholder'] = $value;
 		$value = '';
 	}
@@ -228,7 +236,7 @@ function wpcf7_captcha_messages( $messages ) {
 	$messages = array_merge( $messages, array(
 		'captcha_not_match' => array(
 			'description' =>
-				__( "The code that sender entered does not match the CAPTCHA", 'contact-form-7' ),
+				__( 'The code that sender entered does not match the CAPTCHA', 'contact-form-7' ),
 			'default' =>
 				__( 'Your entered code is incorrect.', 'contact-form-7' ),
 		),
@@ -240,8 +248,11 @@ function wpcf7_captcha_messages( $messages ) {
 
 /* Warning message */
 
-add_action( 'wpcf7_admin_warnings',
-	'wpcf7_captcha_display_warning_message', 10, 3 );
+add_action(
+	'wpcf7_admin_warnings',
+	'wpcf7_captcha_display_warning_message',
+	10, 3
+);
 
 function wpcf7_captcha_display_warning_message( $page, $action, $object ) {
 	if ( $object instanceof WPCF7_ContactForm ) {
@@ -251,7 +262,8 @@ function wpcf7_captcha_display_warning_message( $page, $action, $object ) {
 	}
 
 	$has_tags = (bool) $contact_form->scan_form_tags(
-		array( 'type' => array( 'captchac' ) ) );
+		array( 'type' => array( 'captchac' ) )
+	);
 
 	if ( ! $has_tags ) {
 		return;
@@ -278,7 +290,7 @@ function wpcf7_captcha_display_warning_message( $page, $action, $object ) {
 		! function_exists( 'imagecreatetruecolor' ) or
 		! function_exists( 'imagettftext' )
 	) {
-		$message = __( "This contact form contains CAPTCHA fields, but the necessary libraries (GD and FreeType) are not available on your server.", 'contact-form-7' );
+		$message = __( 'This contact form contains CAPTCHA fields, but the necessary libraries (GD and FreeType) are not available on your server.', 'contact-form-7' );
 
 		wp_admin_notice( esc_html( $message ), array( 'type' => 'warning' ) );
 	}
@@ -486,11 +498,15 @@ function wpcf7_cleanup_captcha_files() {
 
 	$dir = trailingslashit( wpcf7_captcha_tmp_dir() );
 
-	if ( ! is_dir( $dir )
-	or ! is_readable( $dir )
-	or ! wp_is_writable( $dir ) ) {
+	if (
+		! is_dir( $dir ) or
+		! is_readable( $dir ) or
+		! wp_is_writable( $dir )
+	) {
 		return false;
 	}
+
+	$filesystem = WPCF7_Filesystem::get_instance();
 
 	if ( $handle = opendir( $dir ) ) {
 		while ( false !== ( $file = readdir( $handle ) ) ) {
@@ -501,7 +517,7 @@ function wpcf7_cleanup_captcha_files() {
 			$stat = stat( path_join( $dir, $file ) );
 
 			if ( $stat['mtime'] + HOUR_IN_SECONDS < time() ) {
-				@unlink( path_join( $dir, $file ) );
+				$filesystem->delete( path_join( $dir, $file ) );
 			}
 		}
 
@@ -543,11 +559,16 @@ function wpcf7_captchac_options( $options ) {
 	}
 
 	$fg_color_array = preg_grep(
-		'%^fg:#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$%', $options );
+		'%^fg:#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$%',
+		$options
+	);
 
 	if ( $fg_color = array_shift( $fg_color_array ) ) {
-		preg_match( '%^fg:#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$%',
-			$fg_color, $fc_matches );
+		preg_match(
+			'%^fg:#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$%',
+			$fg_color,
+			$fc_matches
+		);
 
 		if ( 3 === strlen( $fc_matches[1] ) ) {
 			$r = substr( $fc_matches[1], 0, 1 );
@@ -573,11 +594,16 @@ function wpcf7_captchac_options( $options ) {
 	}
 
 	$bg_color_array = preg_grep(
-		'%^bg:#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$%', $options );
+		'%^bg:#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$%',
+		$options
+	);
 
 	if ( $bg_color = array_shift( $bg_color_array ) ) {
-		preg_match( '%^bg:#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$%',
-			$bg_color, $bc_matches );
+		preg_match(
+			'%^bg:#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$%',
+			$bg_color,
+			$bc_matches
+		);
 
 		if ( 3 === strlen( $bc_matches[1] ) ) {
 			$r = substr( $bc_matches[1], 0, 1 );

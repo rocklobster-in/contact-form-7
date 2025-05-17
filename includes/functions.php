@@ -464,7 +464,12 @@ function wpcf7_count_code_units( $text ) {
  */
 function wpcf7_is_localhost() {
 	$sitename = wp_parse_url( network_home_url(), PHP_URL_HOST );
-	return in_array( strtolower( $sitename ), array( 'localhost', '127.0.0.1' ), true );
+
+	return in_array(
+		strtolower( $sitename ),
+		array( 'localhost', '127.0.0.1' ),
+		true
+	);
 }
 
 
@@ -636,8 +641,10 @@ function wpcf7_log_remote_request( $url, $request, $response ) {
  * @return string|bool Anonymized IP address, or false on failure.
  */
 function wpcf7_anonymize_ip_addr( $ip_addr ) {
-	if ( ! function_exists( 'inet_ntop' )
-	or ! function_exists( 'inet_pton' ) ) {
+	if (
+		! function_exists( 'inet_ntop' ) or
+		! function_exists( 'inet_pton' )
+	) {
 		return $ip_addr;
 	}
 
