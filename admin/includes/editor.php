@@ -23,7 +23,7 @@ class WPCF7_Editor {
 			return;
 		}
 
-		$active_panel_id = trim( $_GET['active-tab'] ?? '' );
+		$active_panel_id = wpcf7_superglobal_get( 'active-tab' );
 
 		if ( ! array_key_exists( $active_panel_id, $this->panels ) ) {
 			$active_panel_id = array_key_first( $this->panels );
@@ -188,7 +188,7 @@ function wpcf7_editor_box_mail( $post, $options = '' ) {
 		) );
 
 		$formatter->append_preformatted(
-			esc_html( __( "Mail (2) is an additional mail template often used as an autoresponder.", 'contact-form-7' ) )
+			esc_html( __( 'Mail (2) is an additional mail template often used as an autoresponder.', 'contact-form-7' ) )
 		);
 
 		$formatter->end_tag( 'p' );
