@@ -117,7 +117,7 @@ if ( $post ) {
 		'type' => 'hidden',
 		'id' => 'active-tab',
 		'name' => 'active-tab',
-		'value' => $_GET['active-tab'] ?? '',
+		'value' => wpcf7_superglobal_get( 'active-tab' ),
 	) );
 
 	$formatter->append_start_tag( 'div', array(
