@@ -52,7 +52,8 @@ function wpcf7_stripe_enqueue_scripts() {
 		'stripe',
 		'https://js.stripe.com/v3/',
 		array(),
-		null
+		null,
+		array( 'in_footer' => true )
 	);
 
 	$assets = include wpcf7_plugin_path( 'modules/stripe/index.asset.php' );
@@ -245,7 +246,7 @@ function wpcf7_stripe_before_send_mail( $contact_form, &$abort, $submission ) {
 		$submission->set_status( 'payment_required' );
 
 		$submission->set_response(
-			__( "Payment is required. Please pay by credit card.", 'contact-form-7' )
+			__( 'Payment is required. Please pay by credit card.', 'contact-form-7' )
 		);
 	}
 
