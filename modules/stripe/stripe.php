@@ -131,9 +131,9 @@ function wpcf7_stripe_skip_spam_check( $skip_spam_check, $submission ) {
 			$submission->push( 'payment_intent', $pi_id );
 
 			$service->api()->update_payment_intent( $pi_id, array(
-				'metadata' => array(
+				'metadata' => array_merge( $payment_intent['metadata'], array(
 					'wpcf7_submission_timestamp' => $submission->get_meta( 'timestamp' ),
-				),
+				) ),
 			) );
 		}
 	}
