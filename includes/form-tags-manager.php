@@ -178,8 +178,10 @@ class WPCF7_FormTagsManager {
 		$output = array();
 
 		foreach ( $tag_types as $tag_type ) {
-			if ( ! $invert && $this->tag_type_supports( $tag_type, $features )
-			|| $invert && ! $this->tag_type_supports( $tag_type, $features ) ) {
+			if (
+				! $invert and $this->tag_type_supports( $tag_type, $features ) or
+				$invert and ! $this->tag_type_supports( $tag_type, $features )
+			) {
 				$output[] = $tag_type;
 			}
 		}
@@ -401,23 +403,29 @@ class WPCF7_FormTagsManager {
 			function ( $tag ) use ( $cond ) {
 				$tag = new WPCF7_FormTag( $tag );
 
-				if ( $cond['type']
-				and ! in_array( $tag->type, $cond['type'], true ) ) {
+				if (
+					$cond['type'] and
+					! in_array( $tag->type, $cond['type'], true )
+				) {
 					return false;
 				}
 
-				if ( $cond['basetype']
-				and ! in_array( $tag->basetype, $cond['basetype'], true ) ) {
+				if (
+					$cond['basetype'] and
+					! in_array( $tag->basetype, $cond['basetype'], true )
+				) {
 					return false;
 				}
 
-				if ( $cond['name']
-				and ! in_array( $tag->name, $cond['name'], true ) ) {
+				if (
+					$cond['name'] and
+					! in_array( $tag->name, $cond['name'], true )
+				) {
 					return false;
 				}
 
 				foreach ( $cond['feature'] as $feature ) {
-					if ( '!' === substr( $feature, 0, 1 ) ) { // Negation
+					if ( str_starts_with( $feature, '!' ) ) { // Negation
 						$feature = trim( substr( $feature, 1 ) );
 
 						if ( $this->tag_type_supports( $tag->type, $feature ) ) {

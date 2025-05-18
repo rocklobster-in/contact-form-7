@@ -415,15 +415,13 @@ class WPCF7_Submission {
 	 * Sanitizes user input data.
 	 */
 	private function sanitize_posted_data( $value ) {
-		if ( is_array( $value ) ) {
-			$value = array_map( array( $this, 'sanitize_posted_data' ), $value );
-		} elseif ( is_string( $value ) ) {
-			$value = wp_check_invalid_utf8( $value );
-			$value = wp_kses_no_null( $value );
-			$value = wpcf7_strip_whitespaces( $value );
-		}
-
-		return $value;
+		return map_deep( $value, static function ( $val ) {
+			$val = (string) $val;
+			$val = wp_check_invalid_utf8( $val );
+			$val = wp_kses_no_null( $val );
+			$val = wpcf7_strip_whitespaces( $val );
+			return $val;
+		} );
 	}
 
 
