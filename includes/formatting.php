@@ -94,7 +94,7 @@ function wpcf7_sanitize_query_var( $text ) {
  * @return string Processed output.
  */
 function wpcf7_strip_quote( $text ) {
-	$text = trim( $text );
+	$text = wpcf7_strip_whitespaces( $text );
 
 	if ( preg_match( '/^"(.*)"$/s', $text, $matches ) ) {
 		$text = $matches[1];
@@ -184,7 +184,7 @@ function wpcf7_normalize_newline_deep( $input, $to = "\n" ) {
 function wpcf7_strip_newline( $text ) {
 	$text = (string) $text;
 	$text = str_replace( array( "\r", "\n" ), '', $text );
-	return trim( $text );
+	return wpcf7_strip_whitespaces( $text );
 }
 
 
@@ -254,8 +254,7 @@ function wpcf7_canonicalize( $text, $options = '' ) {
 		}
 	}
 
-	$text = trim( $text );
-	return $text;
+	return wpcf7_strip_whitespaces( $text );
 }
 
 
