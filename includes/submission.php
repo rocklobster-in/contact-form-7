@@ -739,8 +739,10 @@ class WPCF7_Submission {
 		if ( $result ) {
 			$additional_mail = array();
 
-			if ( $mail_2 = $contact_form->prop( 'mail_2' )
-			and $mail_2['active'] ) {
+			if (
+				$mail_2 = $contact_form->prop( 'mail_2' ) and
+				$mail_2['active']
+			) {
 				$additional_mail['mail_2'] = $mail_2;
 			}
 
