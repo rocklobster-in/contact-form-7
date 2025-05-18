@@ -20,10 +20,10 @@ class WPCF7_Pipe {
 		$pipe_pos = strpos( $text, '|' );
 
 		if ( false === $pipe_pos ) {
-			$this->before = $this->after = trim( $text );
+			$this->before = $this->after = wpcf7_strip_whitespaces( $text );
 		} else {
-			$this->before = trim( substr( $text, 0, $pipe_pos ) );
-			$this->after = trim( substr( $text, $pipe_pos + 1 ) );
+			$this->before = wpcf7_strip_whitespaces( substr( $text, 0, $pipe_pos ) );
+			$this->after = wpcf7_strip_whitespaces( substr( $text, $pipe_pos + 1 ) );
 		}
 	}
 }
