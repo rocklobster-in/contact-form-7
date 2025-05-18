@@ -197,8 +197,11 @@ function wpcf7_strip_newline( $text ) {
  */
 function wpcf7_canonicalize( $text, $options = '' ) {
 	// for back-compat
-	if ( is_string( $options ) and '' !== $options
-	and false === strpos( $options, '=' ) ) {
+	if (
+		is_string( $options ) and
+		'' !== $options and
+		! str_contains( $options, '=' )
+	) {
 		$options = array(
 			'strto' => $options,
 		);
