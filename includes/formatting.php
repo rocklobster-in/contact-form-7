@@ -596,6 +596,19 @@ function wpcf7_format_atts( $atts ) {
 
 
 /**
+ * Returns the regular expression pattern that represents
+ * whitespace characters Unicode defines.
+ *
+ * @link https://www.unicode.org/Public/UCD/latest/ucd/PropList.txt
+ *
+ * @return string Regular expression pattern.
+ */
+function wpcf7_get_unicode_whitespaces() {
+	return '\x09-\x0D\x20\x85\xA0\x{1680}\x{2000}-\x{200A}\x{2028}\x{2029}\x{202F}\x{205F}\x{3000}';
+}
+
+
+/**
  * Strips surrounding whitespaces.
  *
  * @link https://contactform7.com/2024/07/13/consistent-handling-policy-of-surrounding-whitespaces/
@@ -615,9 +628,8 @@ function wpcf7_strip_whitespaces( $input, $side = 'both' ) {
 		);
 	}
 
-	// https://www.unicode.org/Public/UCD/latest/ucd/PropList.txt
 	// https://tc39.es/ecma262/multipage/ecmascript-language-lexical-grammar.html
-	$whitespaces = '\x09-\x0D\x20\x85\xA0\x{1680}\x{2000}-\x{200A}\x{2028}\x{2029}\x{202F}\x{205F}\x{3000}\x{FEFF}';
+	$whitespaces = wpcf7_get_unicode_whitespaces() . '\x{FEFF}';
 
 	if ( 'end' !== $side ) {
 		// Strip leading whitespaces
