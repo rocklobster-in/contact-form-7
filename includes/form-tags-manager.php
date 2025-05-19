@@ -218,7 +218,7 @@ class WPCF7_FormTagsManager {
 		}
 
 		$content = preg_replace_callback(
-			'/' . $this->tag_regex() . '/s',
+			'/' . $this->tag_regex() . '/su',
 			array( $this, 'normalize_callback' ),
 			$content
 		);
@@ -300,7 +300,7 @@ class WPCF7_FormTagsManager {
 		};
 
 		return preg_replace_callback(
-			'/' . $this->tag_regex() . '/s',
+			'/' . $this->tag_regex() . '/su',
 			$callback,
 			$content
 		);
@@ -352,7 +352,7 @@ class WPCF7_FormTagsManager {
 
 		if ( $replace ) {
 			$content = preg_replace_callback(
-				'/' . $this->tag_regex() . '/s',
+				'/' . $this->tag_regex() . '/su',
 				array( $this, 'replace_callback' ),
 				$content
 			);
@@ -360,7 +360,7 @@ class WPCF7_FormTagsManager {
 			return $content;
 		} else {
 			preg_replace_callback(
-				'/' . $this->tag_regex() . '/s',
+				'/' . $this->tag_regex() . '/su',
 				array( $this, 'scan_callback' ),
 				$content
 			);
@@ -450,11 +450,16 @@ class WPCF7_FormTagsManager {
 	 * Returns the regular expression for a form-tag.
 	 */
 	private function tag_regex() {
-		$tagnames = array_keys( $this->tag_types );
-		$tagregexp = implode( '|', array_map( 'preg_quote', $tagnames ) );
+		$tag_types = implode( '|',
+			array_map( 'preg_quote', array_keys( $this->tag_types ) )
+		);
+
+		$whitespaces = wpcf7_get_unicode_whitespaces();
 
 		return '(\[?)'
-			. '\[(' . $tagregexp . ')(?:[\r\n\t ](.*?))?(?:[\r\n\t ](\/))?\]'
+			. '\[(' . $tag_types . ')'
+			. '(?:[' . $whitespaces . ']+(.*?))?'
+			. '(?:[' . $whitespaces . ']+(\/))?\]'
 			. '(?:([^[]*?)\[\/\2\])?'
 			. '(\]?)';
 	}
