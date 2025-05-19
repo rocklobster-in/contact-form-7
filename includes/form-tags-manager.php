@@ -218,7 +218,7 @@ class WPCF7_FormTagsManager {
 		}
 
 		$content = preg_replace_callback(
-			'/' . $this->tag_regex() . '/s',
+			'/' . $this->tag_regex() . '/su',
 			array( $this, 'normalize_callback' ),
 			$content
 		);
@@ -300,7 +300,7 @@ class WPCF7_FormTagsManager {
 		};
 
 		return preg_replace_callback(
-			'/' . $this->tag_regex() . '/s',
+			'/' . $this->tag_regex() . '/su',
 			$callback,
 			$content
 		);
@@ -352,7 +352,7 @@ class WPCF7_FormTagsManager {
 
 		if ( $replace ) {
 			$content = preg_replace_callback(
-				'/' . $this->tag_regex() . '/s',
+				'/' . $this->tag_regex() . '/su',
 				array( $this, 'replace_callback' ),
 				$content
 			);
@@ -360,7 +360,7 @@ class WPCF7_FormTagsManager {
 			return $content;
 		} else {
 			preg_replace_callback(
-				'/' . $this->tag_regex() . '/s',
+				'/' . $this->tag_regex() . '/su',
 				array( $this, 'scan_callback' ),
 				$content
 			);
@@ -450,11 +450,16 @@ class WPCF7_FormTagsManager {
 	 * Returns the regular expression for a form-tag.
 	 */
 	private function tag_regex() {
-		$tagnames = array_keys( $this->tag_types );
-		$tagregexp = implode( '|', array_map( 'preg_quote', $tagnames ) );
+		$tag_types = implode( '|',
+			array_map( 'preg_quote', array_keys( $this->tag_types ) )
+		);
+
+		$whitespaces = wpcf7_get_unicode_whitespaces();
 
 		return '(\[?)'
-			. '\[(' . $tagregexp . ')(?:[\r\n\t ](.*?))?(?:[\r\n\t ](\/))?\]'
+			. '\[(' . $tag_types . ')'
+			. '(?:[' . $whitespaces . ']+(.*?))?'
+			. '(?:[' . $whitespaces . ']+(\/))?\]'
 			. '(?:([^[]*?)\[\/\2\])?'
 			. '(\]?)';
 	}
@@ -571,15 +576,29 @@ class WPCF7_FormTagsManager {
 	 *                      otherwise the input text itself.
 	 */
 	private function parse_atts( $text ) {
-		$atts = array( 'options' => array(), 'values' => array() );
-		$text = preg_replace( "/[\x{00a0}\x{200b}]+/u", " ", $text );
-		$text = trim( $text );
+		$atts = array(
+			'options' => array(),
+			'values' => array(),
+		);
 
-		$pattern = '%^([-+*=0-9a-zA-Z:.!?#$&@_/|\%\r\n\t ]*?)((?:[\r\n\t ]*"[^"]*"|[\r\n\t ]*\'[^\']*\')*)$%';
+		$whitespaces = wpcf7_get_unicode_whitespaces();
+
+		$text = preg_replace( '/[\x{00a0}\x{200b}]+/u', ' ', $text );
+		$text = wpcf7_strip_whitespaces( $text );
+
+		$pattern = '%^([-+*=0-9a-zA-Z:.!?#$&@_/|\%' . $whitespaces . ']*?)'
+			. '((?:'
+			. '[' . $whitespaces . ']*"[^"]*"'
+			. '|'
+			. '[' . $whitespaces . ']*\'[^\']*\''
+			. ')*)$%u';
 
 		if ( preg_match( $pattern, $text, $matches ) ) {
 			if ( ! empty( $matches[1] ) ) {
-				$atts['options'] = preg_split( '/[\r\n\t ]+/', trim( $matches[1] ) );
+				$atts['options'] = preg_split(
+					sprintf( '/[%s]+/u', $whitespaces ),
+					wpcf7_strip_whitespaces( $matches[1] )
+				);
 			}
 
 			if ( ! empty( $matches[2] ) ) {
