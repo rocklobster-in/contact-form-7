@@ -576,15 +576,29 @@ class WPCF7_FormTagsManager {
 	 *                      otherwise the input text itself.
 	 */
 	private function parse_atts( $text ) {
-		$atts = array( 'options' => array(), 'values' => array() );
-		$text = preg_replace( "/[\x{00a0}\x{200b}]+/u", " ", $text );
-		$text = trim( $text );
+		$atts = array(
+			'options' => array(),
+			'values' => array(),
+		);
 
-		$pattern = '%^([-+*=0-9a-zA-Z:.!?#$&@_/|\%\r\n\t ]*?)((?:[\r\n\t ]*"[^"]*"|[\r\n\t ]*\'[^\']*\')*)$%';
+		$whitespaces = wpcf7_get_unicode_whitespaces();
+
+		$text = preg_replace( '/[\x{00a0}\x{200b}]+/u', ' ', $text );
+		$text = wpcf7_strip_whitespaces( $text );
+
+		$pattern = '%^([-+*=0-9a-zA-Z:.!?#$&@_/|\%' . $whitespaces . ']*?)'
+			. '((?:'
+			. '[' . $whitespaces . ']*"[^"]*"'
+			. '|'
+			. '[' . $whitespaces . ']*\'[^\']*\''
+			. ')*)$%u';
 
 		if ( preg_match( $pattern, $text, $matches ) ) {
 			if ( ! empty( $matches[1] ) ) {
-				$atts['options'] = preg_split( '/[\r\n\t ]+/', trim( $matches[1] ) );
+				$atts['options'] = preg_split(
+					sprintf( '/[%s]+/u', $whitespaces ),
+					wpcf7_strip_whitespaces( $matches[1] )
+				);
 			}
 
 			if ( ! empty( $matches[2] ) ) {
