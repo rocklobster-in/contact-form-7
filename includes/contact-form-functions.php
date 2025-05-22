@@ -467,7 +467,7 @@ function wpcf7_sanitize_additional_settings( $input, $default_template = '' ) {
  * @return string SHA-1 hash.
  */
 function wpcf7_generate_contact_form_hash( $post_id ) {
-	return sha1( implode( '|', array(
+	return hash( 'sha256', implode( '|', array(
 		get_current_user_id(),
 		$post_id,
 		time(),
