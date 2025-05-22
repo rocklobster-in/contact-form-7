@@ -517,10 +517,14 @@ trait WPCF7_ConfigValidator_Mail {
 	 * @link https://contactform7.com/configuration-errors/unsafe-email-without-protection/
 	 */
 	public function detect_unsafe_email_without_protection( $section, $content ) {
+		if ( $this->contact_form->is_true( 'subscribers_only' ) ) {
+			return false;
+		}
+
 		static $is_recaptcha_active = null;
 
 		if ( null === $is_recaptcha_active ) {
-			$is_recaptcha_active = call_user_func( function () {
+			$is_recaptcha_active = call_user_func( static function () {
 				$service = WPCF7_RECAPTCHA::get_instance();
 				return $service->is_active();
 			} );

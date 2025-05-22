@@ -138,9 +138,11 @@ class WPCF7_ConfigValidator {
 				$key = sprintf( 'mail.%s', $matches[1] );
 			}
 
-			if ( $options['section']
-			and $key !== $options['section']
-			and preg_replace( '/\..*$/', '', $key, 1 ) !== $options['section'] ) {
+			if (
+				$options['section'] and
+				$key !== $options['section'] and
+				preg_replace( '/\..*$/', '', $key, 1 ) !== $options['section']
+			) {
 				continue;
 			}
 
@@ -226,7 +228,7 @@ class WPCF7_ConfigValidator {
 	 * is not specified.
 	 */
 	public function get_default_message( $code = '' ) {
-		return __( "Configuration error is detected.", 'contact-form-7' );
+		return __( 'Configuration error is detected.', 'contact-form-7' );
 	}
 
 
