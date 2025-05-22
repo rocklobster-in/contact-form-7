@@ -288,7 +288,7 @@ class WPCF7_FormTagsManager {
 			$placeholder = sprintf(
 				'<%1$s id="%2$s" />',
 				$placeholder_tag_name,
-				sha1( $tag )
+				hash( 'sha256', $tag )
 			);
 
 			list( $placeholder ) =

@@ -18,7 +18,7 @@ function wpcf7_autop( $input, $br = true ) {
 			$placeholder = sprintf(
 				'<%1$s id="%2$s" />',
 				WPCF7_HTMLFormatter::placeholder_inline,
-				sha1( $matches[0] )
+				hash( 'sha256', $matches[0] )
 			);
 
 			list( $placeholder ) =
