@@ -410,9 +410,11 @@ function wpcf7_admin_management_page() {
 		return;
 	}
 
-	if ( 'validate' === wpcf7_current_action()
-	and wpcf7_validate_configuration()
-	and current_user_can( 'wpcf7_edit_contact_forms' ) ) {
+	if (
+		'validate' === wpcf7_current_action() and
+		wpcf7_validate_configuration() and
+		current_user_can( 'wpcf7_edit_contact_forms' )
+	) {
 		wpcf7_admin_bulk_validate_page();
 		return;
 	}
