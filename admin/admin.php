@@ -48,8 +48,8 @@ function wpcf7_admin_menu() {
 	add_action( 'load-' . $edit, 'wpcf7_load_contact_form_admin', 10, 0 );
 
 	$addnew = add_submenu_page( 'wpcf7',
-		__( 'Add New Contact Form', 'contact-form-7' ),
-		__( 'Add New', 'contact-form-7' )
+		__( 'Add Contact Form', 'contact-form-7' ),
+		__( 'Add Contact Form', 'contact-form-7' )
 			. wpcf7_admin_menu_change_notice( 'wpcf7-new' ),
 		'wpcf7_edit_contact_forms',
 		'wpcf7-new',
@@ -447,7 +447,7 @@ function wpcf7_admin_management_page() {
 		$formatter->append_preformatted(
 			wpcf7_link(
 				menu_page_url( 'wpcf7-new', false ),
-				__( 'Add New', 'contact-form-7' ),
+				__( 'Add Contact Form', 'contact-form-7' ),
 				array( 'class' => 'page-title-action' )
 			)
 		);

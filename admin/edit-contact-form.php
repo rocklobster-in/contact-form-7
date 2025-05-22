@@ -38,7 +38,7 @@ $formatter->append_start_tag( 'h1', array(
 
 $formatter->append_preformatted(
 	esc_html( $post->initial()
-		? __( 'Add New Contact Form', 'contact-form-7' )
+		? __( 'Add Contact Form', 'contact-form-7' )
 		: __( 'Edit Contact Form', 'contact-form-7' )
 	)
 );
@@ -51,7 +51,7 @@ if ( ! $post->initial() and current_user_can( 'wpcf7_edit_contact_forms' ) ) {
 	$formatter->append_preformatted(
 		wpcf7_link(
 			menu_page_url( 'wpcf7-new', false ),
-			__( 'Add New', 'contact-form-7' ),
+			__( 'Add Contact Form', 'contact-form-7' ),
 			array( 'class' => 'page-title-action' )
 		)
 	);
