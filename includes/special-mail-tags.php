@@ -1,8 +1,8 @@
 <?php
 /**
-** Special Mail Tags
-** https://contactform7.com/special-mail-tags/
-**/
+ * Special Mail Tags
+ * https://contactform7.com/special-mail-tags/
+ */
 
 add_filter( 'wpcf7_special_mail_tags', 'wpcf7_special_mail_tag', 10, 4 );
 
