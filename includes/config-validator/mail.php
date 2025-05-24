@@ -521,16 +521,17 @@ trait WPCF7_ConfigValidator_Mail {
 			return false;
 		}
 
-		static $is_recaptcha_active = null;
+		static $is_captcha_active = null;
 
-		if ( null === $is_recaptcha_active ) {
-			$is_recaptcha_active = call_user_func( static function () {
-				$service = WPCF7_RECAPTCHA::get_instance();
-				return $service->is_active();
+		if ( null === $is_captcha_active ) {
+			$is_captcha_active = call_user_func( static function () {
+				$recaptcha = WPCF7_RECAPTCHA::get_instance();
+				$turnstile = WPCF7_Turnstile::get_instance();
+				return $recaptcha->is_active() || $turnstile->is_active();
 			} );
 		}
 
-		if ( $is_recaptcha_active ) {
+		if ( $is_captcha_active ) {
 			return false;
 		}
 
