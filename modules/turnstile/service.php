@@ -70,10 +70,10 @@ class WPCF7_Turnstile extends WPCF7_Service {
 	 * Returns a link to the service provider.
 	 */
 	public function link() {
-		echo wpcf7_link(
+		echo wp_kses_data( wpcf7_link(
 			'https://www.cloudflare.com/application-services/products/turnstile/',
 			'cloudflare.com'
-		);
+		) );
 	}
 
 
