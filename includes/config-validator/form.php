@@ -78,7 +78,7 @@ trait WPCF7_ConfigValidator_Form {
 			if ( $this->detect_upload_filesize_overlimit( $section, $form ) ) {
 				$this->add_error( $section, 'upload_filesize_overlimit',
 					array(
-						'message' => __( "Uploadable file size exceeds PHP’s maximum acceptable size.", 'contact-form-7' ),
+						'message' => __( 'Uploadable file size exceeds PHP&#8217;s maximum acceptable size.', 'contact-form-7' ),
 					)
 				);
 			} else {

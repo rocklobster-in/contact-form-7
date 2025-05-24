@@ -190,7 +190,9 @@ function wpcf7_admin_enqueue_scripts( $hook_suffix ) {
 			$wpcf7_obj['configValidator'] = array_merge(
 				$wpcf7_obj['configValidator'],
 				array(
-					'errors' => $config_validator->collect_error_messages(),
+					'errors' => $config_validator->collect_error_messages(
+						array( 'decodes_html_entities' => true )
+					),
 				)
 			);
 		}
