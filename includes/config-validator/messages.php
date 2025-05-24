@@ -26,7 +26,7 @@ trait WPCF7_ConfigValidator_Messages {
 				if ( $this->detect_html_in_message( $section, $message ) ) {
 					$this->add_error( $section, 'html_in_message',
 						array(
-							'message' => __( "HTML tags are used in a message.", 'contact-form-7' ),
+							'message' => __( 'HTML tags are used in a message.', 'contact-form-7' ),
 						)
 					);
 				} else {
