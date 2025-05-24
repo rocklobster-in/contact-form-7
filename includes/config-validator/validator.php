@@ -166,7 +166,11 @@ class WPCF7_ConfigValidator {
 	/**
 	 * Collects messages for detected errors.
 	 */
-	public function collect_error_messages() {
+	public function collect_error_messages( $options = '' ) {
+		$options = wp_parse_args( $options, array(
+			'decodes_html_entities' => false,
+		) );
+
 		$error_messages = array();
 
 		foreach ( $this->errors as $section => $errors ) {
@@ -182,6 +186,10 @@ class WPCF7_ConfigValidator {
 						$error['args']['message'],
 						$error['args']['params']
 					);
+				}
+
+				if ( $options['decodes_html_entities'] ) {
+					$message = html_entity_decode( $message, ENT_HTML5 );
 				}
 
 				$link = '';

@@ -224,7 +224,9 @@ class WPCF7_REST_Controller {
 			$config_validator = new WPCF7_ConfigValidator( $item );
 			$config_validator->validate();
 
-			$response['config_errors'] = $config_validator->collect_error_messages();
+			$response['config_errors'] = $config_validator->collect_error_messages(
+				array( 'decodes_html_entities' => true )
+			);
 
 			if ( 'save' === $context ) {
 				$config_validator->save();
@@ -291,7 +293,9 @@ class WPCF7_REST_Controller {
 			$config_validator = new WPCF7_ConfigValidator( $item );
 			$config_validator->validate();
 
-			$response['config_errors'] = $config_validator->collect_error_messages();
+			$response['config_errors'] = $config_validator->collect_error_messages(
+				array( 'decodes_html_entities' => true )
+			);
 
 			if ( 'save' === $context ) {
 				$config_validator->save();
