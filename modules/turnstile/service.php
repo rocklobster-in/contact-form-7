@@ -196,15 +196,18 @@ class WPCF7_Turnstile extends WPCF7_Service {
 	 * The loading process of the service configuration page.
 	 */
 	public function load( $action = '' ) {
-		if ( 'setup' === $action and 'POST' === $_SERVER['REQUEST_METHOD'] ) {
+		if (
+			'setup' === $action and
+			'POST' === wpcf7_superglobal_server( 'REQUEST_METHOD' )
+		) {
 			check_admin_referer( 'wpcf7-turnstile-setup' );
 
-			if ( ! empty( $_POST['reset'] ) ) {
+			if ( wpcf7_superglobal_post( 'reset' ) ) {
 				$this->reset_data();
 				$redirect_to = $this->menu_page_url( 'action=setup' );
 			} else {
-				$sitekey = trim( $_POST['sitekey'] ?? '' );
-				$secret = trim( $_POST['secret'] ?? '' );
+				$sitekey = wpcf7_superglobal_post( 'sitekey' );
+				$secret = wpcf7_superglobal_post( 'secret' );
 
 				if ( $sitekey and $secret ) {
 					$this->sitekeys = array( $sitekey => $secret );
