@@ -254,35 +254,67 @@ class WPCF7_Turnstile extends WPCF7_Service {
 	 * Displays the service configuration box.
 	 */
 	public function display( $action = '' ) {
-		echo sprintf(
-			'<p>%s</p>',
+		$formatter = new WPCF7_HTMLFormatter( array(
+			'allowed_html' => array_merge( wpcf7_kses_allowed_html(), array(
+				'form' => array(
+					'action' => true,
+					'method' => true,
+				),
+			) ),
+		) );
+
+		$formatter->append_start_tag( 'p' );
+
+		$formatter->append_preformatted(
 			esc_html( __( 'Eliminate the frustrating experience of CAPTCHAs with a simple snippet of free code. Cloudflare Turnstile confirms web visitors are real and blocks unwanted bots without slowing down web experiences for real users.', 'contact-form-7' ) )
 		);
 
-		echo sprintf(
-			'<p><strong>%s</strong></p>',
+		$formatter->end_tag( 'p' );
+
+		$formatter->append_start_tag( 'p' );
+		$formatter->append_start_tag( 'strong' );
+
+		$formatter->append_preformatted(
 			wpcf7_link(
 				__( 'https://contactform7.com/turnstile-integration/', 'contact-form-7' ),
 				__( 'Cloudflare Turnstile integration', 'contact-form-7' )
 			)
 		);
 
+		$formatter->end_tag( 'p' );
+
 		if ( $this->is_active() ) {
-			echo sprintf(
-				'<p class="dashicons-before dashicons-yes">%s</p>',
+			$formatter->append_start_tag( 'p', array(
+				'class' => 'dashicons-before dashicons-yes',
+			) );
+
+			$formatter->append_preformatted(
 				esc_html( __( 'Turnstile is active on this site.', 'contact-form-7' ) )
 			);
+
+			$formatter->end_tag( 'p' );
 		}
 
 		if ( 'setup' === $action ) {
-			$this->display_setup();
+			$formatter->call_user_func( function () {
+				$this->display_setup();
+			} );
 		} else {
-			echo sprintf(
-				'<p><a href="%1$s" class="button">%2$s</a></p>',
-				esc_url( $this->menu_page_url( 'action=setup' ) ),
-				esc_html( __( 'Setup Integration', 'contact-form-7' ) )
+			$formatter->append_start_tag( 'p' );
+
+			$formatter->append_start_tag( 'a', array(
+				'href' => esc_url( $this->menu_page_url( 'action=setup' ) ),
+				'class' => 'button',
+			) );
+
+			$formatter->append_preformatted(
+				esc_html( __( 'Setup integration', 'contact-form-7' ) )
 			);
+
+			$formatter->end_tag( 'p' );
 		}
+
+		$formatter->print();
 	}
 
 
