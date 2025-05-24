@@ -236,21 +236,14 @@ class WPCF7_Turnstile extends WPCF7_Service {
 	public function admin_notice( $message = '' ) {
 		if ( 'invalid' === $message ) {
 			wp_admin_notice(
-				wp_kses(
-					__( '<strong>Error:</strong> Invalid key values.', 'contact-form-7' ),
-					array(
-						'a' => array( 'href' => true ),
-						'strong' => array(),
-					),
-					array( 'http', 'https' )
-				),
+				wp_kses_data( __( '<strong>Error:</strong> Invalid key values.', 'contact-form-7' ) ),
 				array( 'type' => 'error' )
 			);
 		}
 
 		if ( 'success' === $message ) {
 			wp_admin_notice(
-				esc_html( __( 'Settings saved.', 'contact-form-7' ) ),
+				wp_kses_data( __( 'Settings saved.', 'contact-form-7' ) ),
 				array( 'type' => 'success' )
 			);
 		}
