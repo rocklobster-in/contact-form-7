@@ -185,7 +185,7 @@ if ( $post ) {
 				'type' => 'text',
 				'id' => 'wpcf7-shortcode',
 				'readonly' => true,
-				'class' => 'large-text code',
+				'class' => 'large-text code selectable',
 				'value' => $shortcode,
 			) );
 
@@ -217,7 +217,7 @@ if ( $post ) {
 				'type' => 'text',
 				'id' => 'wpcf7-shortcode-old',
 				'readonly' => true,
-				'class' => 'large-text code',
+				'class' => 'large-text code selectable',
 				'value' => $shortcode,
 			) );
 

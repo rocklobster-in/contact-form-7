@@ -581,7 +581,7 @@ class WPCF7_TagGeneratorGenerator {
 
 		$formatter->append_start_tag( 'input', array(
 			'type' => 'text',
-			'class' => 'code',
+			'class' => 'code selectable',
 			'readonly' => true,
 			'data-tag-part' => 'tag',
 			'aria-label' => __( 'The form-tag to be inserted into the form template', 'contact-form-7' ),
