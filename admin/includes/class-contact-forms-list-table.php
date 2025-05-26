@@ -207,9 +207,9 @@ class WPCF7_Contact_Form_List_Table extends WP_List_Table {
 
 		foreach ( $shortcodes as $shortcode ) {
 			$output .= "\n" . '<span class="shortcode"><input type="text"'
-				. ' onfocus="this.select();" readonly="readonly"'
+				. ' readonly="readonly"'
 				. ' value="' . esc_attr( $shortcode ) . '"'
-				. ' class="large-text code" /></span>';
+				. ' class="large-text code selectable" /></span>';
 		}
 
 		return trim( $output );

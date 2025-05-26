@@ -35,6 +35,7 @@ span.shortcode input {
 
 #wpcf7-contact-form-editor span.shortcode input {
 	color: #fff;
+	width: 100%;
 }
 
 #submitpost input.copy {
