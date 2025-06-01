@@ -728,17 +728,21 @@ class WPCF7_ContactForm {
 			'wpcf7_form_hidden_fields', array()
 		);
 
-		$content = '';
+		$formatter = new WPCF7_HTMLFormatter();
+
+		$formatter->append_start_tag( 'fieldset', array(
+			'class' => 'hidden-fields-container',
+		) );
 
 		foreach ( $hidden_fields as $name => $value ) {
-			$content .= sprintf(
-				'<input type="hidden" name="%1$s" value="%2$s" />',
-				esc_attr( $name ),
-				esc_attr( $value )
-			) . "\n";
+			$formatter->append_start_tag( 'input', array(
+				'type' => 'hidden',
+				'name' => $name,
+				'value' => $value,
+			) );
 		}
 
-		return '<div style="display: none;">' . "\n" . $content . '</div>' . "\n";
+		return $formatter->output() . "\n";
 	}
 
 
