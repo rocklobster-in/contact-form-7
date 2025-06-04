@@ -2,8 +2,8 @@
 Contributors: takayukister
 Donate link: https://contactform7.com/donate/
 Tags: contact form, schema-woven validation
-Tested up to: 6.7
-Requires at least: 6.6
+Tested up to: 6.8
+Requires at least: 6.7
 Requires PHP: 7.4
 Stable tag: 6.0.4
 License: GPLv2 or later
