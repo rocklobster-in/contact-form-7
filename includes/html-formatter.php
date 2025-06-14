@@ -471,10 +471,6 @@ class WPCF7_HTMLFormatter {
 					wp_json_encode( $html_disallowance, JSON_PRETTY_PRINT )
 				);
 
-				ob_start();
-				debug_print_backtrace( 0, 4 );
-				$notice .= "\n" . ob_get_clean();
-
 				wp_trigger_error( __METHOD__, $notice, E_USER_NOTICE );
 			}
 		}
