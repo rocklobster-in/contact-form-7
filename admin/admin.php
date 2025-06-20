@@ -756,3 +756,17 @@ function wpcf7_ctct_deprecated_warning( $page, $action, $object ) {
 		);
 	}
 }
+
+
+add_action( 'wpcf7_admin_warnings', 'wpcf7_captcha_future_warning', 10, 3 );
+
+function wpcf7_captcha_future_warning( $page, $action, $object ) {
+	$service = WPCF7_RECAPTCHA::get_instance();
+
+	if ( $service->is_active() ) {
+		wp_admin_notice(
+			wp_kses_data( __( '<strong>Attention reCAPTCHA users:</strong> Google plans to make all reCAPTCHA users migrate to reCAPTCHA Enterprise, meaning Google charges you for API calls exceeding the free tier. Contact Form 7 supports <a href="https://contactform7.com/turnstile-integration/">Cloudflare Turnstile</a>, and we recommend it unless you have reasons to use reCAPTCHA.', 'contact-form-7' ) ),
+			array( 'type' => 'warning' )
+		);
+	}
+}
