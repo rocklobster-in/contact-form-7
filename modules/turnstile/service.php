@@ -266,7 +266,7 @@ class WPCF7_Turnstile extends WPCF7_Service {
 		$formatter->append_start_tag( 'p' );
 
 		$formatter->append_preformatted(
-			esc_html( __( 'Eliminate the frustrating experience of CAPTCHAs with a simple snippet of free code. Cloudflare Turnstile confirms web visitors are real and blocks unwanted bots without slowing down web experiences for real users.', 'contact-form-7' ) )
+			esc_html( __( 'Turnstile is Cloudflare&#8217;s smart CAPTCHA alternative, which confirms web visitors are real and blocks unwanted bots without slowing down web experiences for real users.', 'contact-form-7' ) )
 		);
 
 		$formatter->end_tag( 'p' );
