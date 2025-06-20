@@ -59,15 +59,15 @@ class WPCF7_WelcomePanelColumn_AntiSpam extends WPCF7_WelcomePanelColumn {
 		return array(
 			esc_html( __( "Spammers target everything; your contact forms are not an exception. Before you get spammed, protect your contact forms with the powerful anti-spam features Contact Form 7 provides.", 'contact-form-7' ) ),
 			sprintf(
-				/* translators: links labeled 1: 'Akismet', 2: 'reCAPTCHA', 3: 'disallowed list' */
-				esc_html( __( 'Contact Form 7 supports spam-filtering with %1$s. Intelligent %2$s blocks annoying spambots. Plus, using %3$s, you can block messages containing specified keywords or those sent from specified IP addresses.', 'contact-form-7' ) ),
+				/* translators: links labeled 1: 'Akismet', 2: 'Cloudflare Turnstile', 3: 'disallowed list' */
+				esc_html( __( 'Contact Form 7 supports spam-filtering with %1$s. %2$s blocks annoying spambots. Plus, using %3$s, you can block messages containing specified keywords or those sent from specified IP addresses.', 'contact-form-7' ) ),
 				wpcf7_link(
 					__( 'https://contactform7.com/spam-filtering-with-akismet/', 'contact-form-7' ),
 					__( 'Akismet', 'contact-form-7' )
 				),
 				wpcf7_link(
-					__( 'https://contactform7.com/recaptcha/', 'contact-form-7' ),
-					__( 'reCAPTCHA', 'contact-form-7' )
+					__( 'https://contactform7.com/turnstile-integration/', 'contact-form-7' ),
+					__( 'Cloudflare Turnstile', 'contact-form-7' )
 				),
 				wpcf7_link(
 					__( 'https://contactform7.com/comment-blacklist/', 'contact-form-7' ),
@@ -158,11 +158,11 @@ class WPCF7_WelcomePanelColumn_Integration extends WPCF7_WelcomePanelColumn {
 				)
 			),
 			sprintf(
-				/* translators: 1: link labeled 'reCAPTCHA', 2: link labeled 'Stripe' */
+				/* translators: 1: link labeled 'Cloudflare Turnstile', 2: link labeled 'Stripe' */
 				esc_html( __( 'With help from cloud-based machine learning, anti-spam services will protect your forms (%1$s). Even payment services are natively supported (%2$s).', 'contact-form-7' ) ),
 				wpcf7_link(
-					__( 'https://contactform7.com/recaptcha/', 'contact-form-7' ),
-					__( 'reCAPTCHA', 'contact-form-7' )
+					__( 'https://contactform7.com/turnstile-integration/', 'contact-form-7' ),
+					__( 'Cloudflare Turnstile', 'contact-form-7' )
 				),
 				wpcf7_link(
 					__( 'https://contactform7.com/stripe-integration/', 'contact-form-7' ),
