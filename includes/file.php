@@ -72,6 +72,7 @@ function wpcf7_unship_uploaded_file( $file, $options = '' ) {
 		$filename = wp_unique_filename( $uploads_dir, $filename );
 		$new_file = path_join( $uploads_dir, $filename );
 
+		// phpcs:ignore Generic.PHP.ForbiddenFunctions.Found
 		if ( false === @move_uploaded_file( $tmp_name, $new_file ) ) {
 			return new WP_Error( 'wpcf7_upload_failed',
 				wpcf7_get_message( 'upload_failed' )
