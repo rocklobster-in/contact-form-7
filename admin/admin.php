@@ -765,7 +765,7 @@ function wpcf7_captcha_future_warning( $page, $action, $object ) {
 
 	if ( $service->is_active() ) {
 		wp_admin_notice(
-			wp_kses_data( __( '<strong>Attention reCAPTCHA users:</strong> Google plans to make all reCAPTCHA users migrate to reCAPTCHA Enterprise, meaning Google charges you for API calls exceeding the free tier. Contact Form 7 supports <a href="https://contactform7.com/turnstile-integration/">Cloudflare Turnstile</a>, and we recommend it unless you have reasons to use reCAPTCHA.', 'contact-form-7' ) ),
+			wp_kses_data( __( '<strong>Attention reCAPTCHA users:</strong> Google attempts to make all reCAPTCHA users migrate to reCAPTCHA Enterprise, meaning Google charges you for API calls exceeding the free tier. Contact Form 7 supports <a href="https://contactform7.com/turnstile-integration/">Cloudflare Turnstile</a>, and we recommend it unless you have reasons to use reCAPTCHA.', 'contact-form-7' ) ),
 			array( 'type' => 'warning' )
 		);
 	}

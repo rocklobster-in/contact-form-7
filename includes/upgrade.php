@@ -52,8 +52,10 @@ function wpcf7_convert_to_cpt( $new_ver, $old_ver ) {
 
 	if ( $wpdb->get_var( "SHOW TABLES LIKE '$table_name'" ) ) {
 		$old_rows = $wpdb->get_results( "SELECT * FROM $table_name" );
-	} elseif ( $opt = get_option( 'wpcf7' )
-	and ! empty( $opt['contact_forms'] ) ) {
+	} elseif (
+		$opt = get_option( 'wpcf7' ) and
+		! empty( $opt['contact_forms'] )
+	) {
 		foreach ( (array) $opt['contact_forms'] as $key => $value ) {
 			$old_rows[] = (object) array_merge(
 				$value,
@@ -63,10 +65,14 @@ function wpcf7_convert_to_cpt( $new_ver, $old_ver ) {
 	}
 
 	foreach ( (array) $old_rows as $row ) {
-		$q = "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = '_old_cf7_unit_id'"
-			. $wpdb->prepare( " AND meta_value = %d", $row->cf7_unit_id );
+		$var = $wpdb->get_var( $wpdb->prepare(
+			"SELECT post_id FROM %i WHERE meta_key = %s AND meta_value = %d",
+			$wpdb->postmeta,
+			'_old_cf7_unit_id',
+			$row->cf7_unit_id
+		) );
 
-		if ( $wpdb->get_var( $q ) ) {
+		if ( $var ) {
 			continue;
 		}
 
