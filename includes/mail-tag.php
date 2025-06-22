@@ -84,6 +84,7 @@ class WPCF7_MailTag {
 
 		if ( $submission = WPCF7_Submission::get_instance() ) {
 			$contact_form = $submission->get_contact_form();
+
 			$tags = $contact_form->scan_form_tags( array(
 				'name' => $this->field_name(),
 				'feature' => '! zero-controls-container',

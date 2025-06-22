@@ -22,8 +22,10 @@ class WPCF7_Stripe extends WPCF7_Service {
 	private function __construct() {
 		$option = WPCF7::get_option( 'stripe' );
 
-		if ( isset( $option['api_keys']['publishable'] )
-		and isset( $option['api_keys']['secret'] ) ) {
+		if (
+			isset( $option['api_keys']['publishable'] ) and
+			isset( $option['api_keys']['secret'] )
+		) {
 			$this->api_keys = array(
 				'publishable' => $option['api_keys']['publishable'],
 				'secret' => $option['api_keys']['secret'],
@@ -118,6 +120,7 @@ class WPCF7_Stripe extends WPCF7_Service {
 						'publishable' => $publishable,
 						'secret' => $secret,
 					);
+
 					$this->save_data();
 
 					$redirect_to = $this->menu_page_url( array(
@@ -140,18 +143,18 @@ class WPCF7_Stripe extends WPCF7_Service {
 	public function admin_notice( $message = '' ) {
 		if ( 'invalid' === $message ) {
 			wp_admin_notice(
-				sprintf(
+				wp_kses_data( sprintf(
 					'<strong>%1$s</strong>: %2$s',
-					esc_html( __( "Error", 'contact-form-7' ) ),
-					esc_html( __( "Invalid key values.", 'contact-form-7' ) )
-				),
+					__( 'Error', 'contact-form-7' ),
+					__( 'Invalid key values.', 'contact-form-7' )
+				) ),
 				array( 'type' => 'error' )
 			);
 		}
 
 		if ( 'success' === $message ) {
 			wp_admin_notice(
-				esc_html( __( "Settings saved.", 'contact-form-7' ) ),
+				wp_kses_data( __( 'Settings saved.', 'contact-form-7' ) ),
 				array( 'type' => 'success' )
 			);
 		}

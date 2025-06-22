@@ -51,13 +51,13 @@ class WPCF7_WelcomePanelColumn_AntiSpam extends WPCF7_WelcomePanelColumn {
 
 	protected function title() {
 		return esc_html(
-			__( "Getting spammed? You have protection.", 'contact-form-7' )
+			__( 'Getting spammed? You have protection.', 'contact-form-7' )
 		);
 	}
 
 	protected function content() {
 		return array(
-			esc_html( __( "Spammers target everything; your contact forms are not an exception. Before you get spammed, protect your contact forms with the powerful anti-spam features Contact Form 7 provides.", 'contact-form-7' ) ),
+			esc_html( __( 'Spammers target everything; your contact forms are not an exception. Before you get spammed, protect your contact forms with the powerful anti-spam features Contact Form 7 provides.', 'contact-form-7' ) ),
 			sprintf(
 				/* translators: links labeled 1: 'Akismet', 2: 'Cloudflare Turnstile', 3: 'disallowed list' */
 				esc_html( __( 'Contact Form 7 supports spam-filtering with %1$s. %2$s blocks annoying spambots. Plus, using %3$s, you can block messages containing specified keywords or those sent from specified IP addresses.', 'contact-form-7' ) ),
@@ -87,13 +87,13 @@ class WPCF7_WelcomePanelColumn_Donation extends WPCF7_WelcomePanelColumn {
 
 	protected function title() {
 		return esc_html(
-			__( "Contact Form 7 needs your support.", 'contact-form-7' )
+			__( 'Contact Form 7 needs your support.', 'contact-form-7' )
 		);
 	}
 
 	protected function content() {
 		return array(
-			esc_html( __( "It is hard to continue to maintain this plugin without support from users like you.", 'contact-form-7' ) ),
+			esc_html( __( 'It is hard to continue to maintain this plugin without support from users like you.', 'contact-form-7' ) ),
 			sprintf(
 				/* translators: %s: link labeled 'contribute to the project' */
 				esc_html( __( 'There are several ways for you to %s: testing, coding, translating it into your local languages, helping other users, financial donations, etc, etc. We equally welcome you regardless of the way you contribute.', 'contact-form-7' ) ),
@@ -115,13 +115,13 @@ class WPCF7_WelcomePanelColumn_Flamingo extends WPCF7_WelcomePanelColumn {
 
 	protected function title() {
 		return esc_html(
-			__( "Before you cry over spilt mail&#8230;", 'contact-form-7' )
+			__( 'Before you cry over spilt mail&#8230;', 'contact-form-7' )
 		);
 	}
 
 	protected function content() {
 		return array(
-			esc_html( __( "Contact Form 7 does not store submitted messages anywhere. Therefore, you may lose important messages forever if your mail server has issues or you make a mistake in mail configuration.", 'contact-form-7' ) ),
+			esc_html( __( 'Contact Form 7 does not store submitted messages anywhere. Therefore, you may lose important messages forever if your mail server has issues or you make a mistake in mail configuration.', 'contact-form-7' ) ),
 			sprintf(
 				/* translators: %s: link labeled 'Flamingo' */
 				esc_html( __( 'Install a message storage plugin before this happens to you. %s saves all messages through contact forms into the database. Flamingo is a free WordPress plugin created by the same author as Contact Form 7.', 'contact-form-7' ) ),
@@ -143,7 +143,7 @@ class WPCF7_WelcomePanelColumn_Integration extends WPCF7_WelcomePanelColumn {
 
 	protected function title() {
 		return esc_html(
-			__( "You have strong allies to back you up.", 'contact-form-7' )
+			__( 'You have strong allies to back you up.', 'contact-form-7' )
 		);
 	}
 
@@ -181,8 +181,10 @@ function wpcf7_welcome_panel() {
 
 	$sendinblue_is_active = false;
 
-	if ( class_exists( 'WPCF7_Sendinblue' )
-	and $sendinblue = WPCF7_Sendinblue::get_instance() ) {
+	if (
+		class_exists( 'WPCF7_Sendinblue' ) and
+		$sendinblue = WPCF7_Sendinblue::get_instance()
+	) {
 		$sendinblue_is_active = $sendinblue->is_active();
 	}
 

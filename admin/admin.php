@@ -379,8 +379,7 @@ function wpcf7_load_contact_form_admin() {
 
 	$help_tabs = new WPCF7_Help_Tabs( $current_screen );
 
-	if ( $post
-	and current_user_can( 'wpcf7_edit_contact_form', $post->id() ) ) {
+	if ( $post and current_user_can( 'wpcf7_edit_contact_form', $post->id() ) ) {
 		$help_tabs->set_help_tabs( 'edit' );
 	} else {
 		$help_tabs->set_help_tabs( 'list' );
@@ -703,15 +702,16 @@ function wpcf7_old_wp_version_error( $page, $action, $object ) {
 	$wp_version = get_bloginfo( 'version' );
 
 	if ( version_compare( $wp_version, WPCF7_REQUIRED_WP_VERSION, '<' ) ) {
-		$message = sprintf(
-			/* translators: 1: version of Contact Form 7, 2: version of WordPress, 3: URL */
-			__( '<strong>Contact Form 7 %1$s requires WordPress %2$s or higher.</strong> Please <a href="%3$s">update WordPress</a> first.', 'contact-form-7' ),
-			WPCF7_VERSION,
-			WPCF7_REQUIRED_WP_VERSION,
-			admin_url( 'update-core.php' )
+		wp_admin_notice(
+			wp_kses_data( sprintf(
+				/* translators: 1: version of Contact Form 7, 2: version of WordPress, 3: URL */
+				__( '<strong>Contact Form 7 %1$s requires WordPress %2$s or higher.</strong> Please <a href="%3$s">update WordPress</a> first.', 'contact-form-7' ),
+				WPCF7_VERSION,
+				WPCF7_REQUIRED_WP_VERSION,
+				admin_url( 'update-core.php' )
+			) ),
+			array( 'type' => 'warning' )
 		);
-
-		wp_admin_notice( $message, array( 'type' => 'warning' ) );
 	}
 }
 
@@ -726,20 +726,10 @@ function wpcf7_not_allowed_to_edit( $page, $action, $object ) {
 	}
 
 	if ( ! current_user_can( 'wpcf7_edit_contact_form', $contact_form->id() ) ) {
-		$message = __( "You are not allowed to edit this contact form.", 'contact-form-7' );
-
-		wp_admin_notice( esc_html( $message ), array( 'type' => 'warning' ) );
-	}
-}
-
-
-add_action( 'wpcf7_admin_warnings', 'wpcf7_outdated_php_warning', 10, 3 );
-
-function wpcf7_outdated_php_warning( $page, $action, $object ) {
-	if ( version_compare( PHP_VERSION, '7.4', '<' ) ) {
-		$message = __( "The next major release of Contact Form 7 will discontinue support for outdated PHP versions. If you don't upgrade PHP, you will not be able to upgrade the plugin.", 'contact-form-7' );
-
-		wp_admin_notice( esc_html( $message ), array( 'type' => 'warning' ) );
+		wp_admin_notice(
+			wp_kses_data( __( 'You are not allowed to edit this contact form.', 'contact-form-7' ) ),
+			array( 'type' => 'warning' )
+		);
 	}
 }
 

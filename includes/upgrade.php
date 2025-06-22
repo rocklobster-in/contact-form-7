@@ -48,10 +48,16 @@ function wpcf7_convert_to_cpt( $new_ver, $old_ver ) {
 
 	$old_rows = array();
 
-	$table_name = $wpdb->prefix . "contact_form_7";
+	$table_exists = $wpdb->get_var( $wpdb->prepare(
+		"SHOW TABLES LIKE %s",
+		$wpdb->prefix . 'contact_form_7'
+	) );
 
-	if ( $wpdb->get_var( "SHOW TABLES LIKE '$table_name'" ) ) {
-		$old_rows = $wpdb->get_results( "SELECT * FROM $table_name" );
+	if ( $table_exists ) {
+		$old_rows = $wpdb->get_results( $wpdb->prepare(
+			"SELECT * FROM %i",
+			$wpdb->prefix . 'contact_form_7'
+		) );
 	} elseif (
 		$opt = get_option( 'wpcf7' ) and
 		! empty( $opt['contact_forms'] )

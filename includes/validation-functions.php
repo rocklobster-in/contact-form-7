@@ -42,9 +42,10 @@ function wpcf7_is_tel( $text ) {
 	$text = preg_replace( '/[#*].*$/', '', $text ); // Remove extension
 	$text = preg_replace( '%[()/.*#\s-]+%', '', $text );
 
-	$is_international = false ||
+	$is_international = (
 		str_starts_with( $text, '+' ) ||
-		str_starts_with( $text, '00' );
+		str_starts_with( $text, '00' )
+	);
 
 	if ( $is_international ) {
 		$text = '+' . preg_replace( '/^[+0]+/', '', $text );
@@ -125,9 +126,11 @@ function wpcf7_is_time( $text ) {
 		$minute = (int) $matches[2];
 		$second = empty( $matches[3] ) ? 0 : (int) $matches[3];
 
-		$result = 0 <= $hour && $hour <= 23 &&
+		$result = (
+			0 <= $hour && $hour <= 23 &&
 			0 <= $minute && $minute <= 59 &&
-			0 <= $second && $second <= 59;
+			0 <= $second && $second <= 59
+		);
 	}
 
 	return apply_filters( 'wpcf7_is_time', $result, $text );
