@@ -379,8 +379,7 @@ function wpcf7_load_contact_form_admin() {
 
 	$help_tabs = new WPCF7_Help_Tabs( $current_screen );
 
-	if ( $post
-	and current_user_can( 'wpcf7_edit_contact_form', $post->id() ) ) {
+	if ( $post and current_user_can( 'wpcf7_edit_contact_form', $post->id() ) ) {
 		$help_tabs->set_help_tabs( 'edit' );
 	} else {
 		$help_tabs->set_help_tabs( 'list' );
