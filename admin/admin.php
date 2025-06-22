@@ -733,17 +733,6 @@ function wpcf7_not_allowed_to_edit( $page, $action, $object ) {
 }
 
 
-add_action( 'wpcf7_admin_warnings', 'wpcf7_outdated_php_warning', 10, 3 );
-
-function wpcf7_outdated_php_warning( $page, $action, $object ) {
-	if ( version_compare( PHP_VERSION, '7.4', '<' ) ) {
-		$message = __( "The next major release of Contact Form 7 will discontinue support for outdated PHP versions. If you don't upgrade PHP, you will not be able to upgrade the plugin.", 'contact-form-7' );
-
-		wp_admin_notice( esc_html( $message ), array( 'type' => 'warning' ) );
-	}
-}
-
-
 add_action( 'wpcf7_admin_warnings', 'wpcf7_ctct_deprecated_warning', 10, 3 );
 
 function wpcf7_ctct_deprecated_warning( $page, $action, $object ) {
