@@ -414,8 +414,10 @@ function wpcf7_mail_replace_tags( $content, $options = '' ) {
 		if ( $options['exclude_blank'] ) {
 			$replaced_tags = $line->get_replaced_tags();
 
-			if ( empty( $replaced_tags )
-			or array_filter( $replaced_tags, 'strlen' ) ) {
+			if (
+				empty( $replaced_tags ) or
+				array_filter( $replaced_tags, 'strlen' )
+			) {
 				$content[$num] = $replaced;
 			} else {
 				unset( $content[$num] ); // Remove a line.
@@ -482,8 +484,10 @@ class WPCF7_MailTaggedText {
 
 		$this->html = (bool) $options['html'];
 
-		if ( null !== $options['callback']
-		and is_callable( $options['callback'] ) ) {
+		if (
+			null !== $options['callback'] and
+			is_callable( $options['callback'] )
+		) {
 			$this->callback = $options['callback'];
 		} elseif ( $this->html ) {
 			$this->callback = array( $this, 'replace_tags_callback_html' );
