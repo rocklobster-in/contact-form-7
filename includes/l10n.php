@@ -24,14 +24,15 @@ function wpcf7_l10n() {
 		'version' => WPCF7_VERSION,
 	) );
 
-	if ( is_wp_error( $api )
-	or empty( $api['translations'] ) ) {
+	if ( is_wp_error( $api ) or empty( $api['translations'] ) ) {
 		return $l10n;
 	}
 
 	foreach ( (array) $api['translations'] as $translation ) {
-		if ( ! empty( $translation['language'] )
-		and ! empty( $translation['english_name'] ) ) {
+		if (
+			! empty( $translation['language'] ) and
+			! empty( $translation['english_name'] )
+		) {
 			$l10n[$translation['language']] = $translation['english_name'];
 		}
 	}
@@ -70,8 +71,7 @@ function wpcf7_is_rtl( $locale = '' ) {
 		'ug_CN' => 'Uighur',
 	);
 
-	if ( empty( $locale )
-	and function_exists( 'is_rtl' ) ) {
+	if ( empty( $locale ) and function_exists( 'is_rtl' ) ) {
 		return is_rtl();
 	}
 
