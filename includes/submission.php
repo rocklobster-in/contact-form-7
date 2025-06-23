@@ -787,7 +787,7 @@ class WPCF7_Submission {
 		foreach ( $paths as $path ) {
 			if ( @is_file( $path ) and @is_readable( $path ) ) {
 				$uploaded_files[] = $path;
-				$hash_strings[] = md5_file( $path );
+				$hash_strings[] = hash_file( 'sha256', $path );
 			}
 		}
 
