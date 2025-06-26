@@ -67,6 +67,10 @@ Do you have questions or issues with Contact Form 7? Use these support channels 
 
 For more information, see [Releases](https://contactform7.com/category/releases/).
 
+= 6.1 =
+
+[https://contactform7.com/contact-form-7-61/](https://contactform7.com/contact-form-7-61/)
+
 = 6.0.5 =
 
 [https://contactform7.com/contact-form-7-605/](https://contactform7.com/contact-form-7-605/)
@@ -92,33 +96,5 @@ For more information, see [Releases](https://contactform7.com/category/releases/
 = 6.0 =
 
 [https://contactform7.com/contact-form-7-60/](https://contactform7.com/contact-form-7-60/)
-
-= 5.9.7 =
-
-[https://contactform7.com/contact-form-7-597/](https://contactform7.com/contact-form-7-597/)
-
-= 5.9.6 =
-
-[https://contactform7.com/contact-form-7-596/](https://contactform7.com/contact-form-7-596/)
-
-= 5.9.5 =
-
-[https://contactform7.com/contact-form-7-595/](https://contactform7.com/contact-form-7-595/)
-
-= 5.9.4 =
-
-[https://contactform7.com/contact-form-7-594/](https://contactform7.com/contact-form-7-594/)
-
-= 5.9.3 =
-
-[https://contactform7.com/contact-form-7-593/](https://contactform7.com/contact-form-7-593/)
-
-= 5.9.2 =
-
-[https://contactform7.com/contact-form-7-592/](https://contactform7.com/contact-form-7-592/)
-
-= 5.9 =
-
-[https://contactform7.com/contact-form-7-59/](https://contactform7.com/contact-form-7-59/)
 
 == Upgrade Notice ==
