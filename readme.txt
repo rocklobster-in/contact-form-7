@@ -38,6 +38,7 @@ If you activate certain features in this plugin, the contact form submitter's pe
 * Akismet ([Automattic](https://automattic.com/privacy/))
 * [Brevo](https://www.brevo.com/legal/privacypolicy/)
 * [Stripe](https://stripe.com/privacy)
+* Turnstile ([Cloudflare](https://www.cloudflare.com/turnstile-privacy-policy/))
 
 == Installation ==
 
