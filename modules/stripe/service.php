@@ -216,7 +216,7 @@ class WPCF7_Stripe extends WPCF7_Service {
 			) );
 
 			$formatter->append_preformatted(
-				esc_html( __( 'Setup Integration', 'contact-form-7' ) )
+				esc_html( __( 'Setup integration', 'contact-form-7' ) )
 			);
 
 			$formatter->end_tag( 'p' );
