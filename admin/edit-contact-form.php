@@ -458,7 +458,7 @@ if ( $post ) {
 		}
 
 		$editor->display();
-	} ) ;
+	} );
 
 	$formatter->end_tag( 'div' ); // #contact-form-editor
 
