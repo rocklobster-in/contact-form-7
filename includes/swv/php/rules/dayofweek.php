@@ -4,7 +4,7 @@ namespace Contactable\SWV;
 
 class DayofweekRule extends Rule {
 
-	const rule_name = 'dayofweek';
+	public const rule_name = 'dayofweek';
 
 	public function matches( $context ) {
 		if ( false === parent::matches( $context ) ) {

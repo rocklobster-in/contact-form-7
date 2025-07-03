@@ -6,27 +6,27 @@
 class WPCF7_HTMLFormatter {
 
 	// HTML component types.
-	const text = 0;
-	const start_tag = 1;
-	const end_tag = 2;
-	const comment = 3;
+	public const text = 0;
+	public const start_tag = 1;
+	public const end_tag = 2;
+	public const comment = 3;
 
 	/**
 	 * Tag name reserved for a custom HTML element used as a block placeholder.
 	 */
-	const placeholder_block = 'placeholder:block';
+	public const placeholder_block = 'placeholder:block';
 
 	/**
 	 * Tag name reserved for a custom HTML element used as an inline placeholder.
 	 */
-	const placeholder_inline = 'placeholder:inline';
+	public const placeholder_inline = 'placeholder:inline';
 
 	/**
 	 * The void elements in HTML.
 	 *
 	 * @link https://developer.mozilla.org/en-US/docs/Glossary/Void_element
 	 */
-	const void_elements = array(
+	public const void_elements = array(
 		'area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input',
 		'keygen', 'link', 'meta', 'param', 'source', 'track', 'wbr',
 		self::placeholder_block, self::placeholder_inline,
@@ -35,14 +35,14 @@ class WPCF7_HTMLFormatter {
 	/**
 	 * HTML elements that can be a direct child of the same element.
 	 */
-	const nestable_elements = array(
+	public const nestable_elements = array(
 		'article', 'aside', 'blockquote', 'div', 'fieldset', 'section', 'span',
 	);
 
 	/**
 	 * HTML elements that can contain flow content.
 	 */
-	const p_parent_elements = array(
+	public const p_parent_elements = array(
 		'address', 'article', 'aside', 'blockquote', 'body', 'caption',
 		'dd', 'details', 'dialog', 'div', 'dt', 'fieldset', 'figcaption',
 		'figure', 'footer', 'form', 'header', 'li', 'main', 'nav',
@@ -53,7 +53,7 @@ class WPCF7_HTMLFormatter {
 	 * HTML elements that can be neither the parent nor a child of
 	 * a paragraph element.
 	 */
-	const p_nonparent_elements = array(
+	public const p_nonparent_elements = array(
 		'colgroup', 'dl', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'head',
 		'hgroup', 'html', 'legend', 'menu', 'ol', 'pre', 'style', 'summary',
 		'table', 'tbody', 'template', 'tfoot', 'thead', 'title', 'tr', 'ul',
@@ -63,7 +63,7 @@ class WPCF7_HTMLFormatter {
 	 * HTML elements in the phrasing content category, plus non-phrasing
 	 * content elements that can be grandchildren of a paragraph element.
 	 */
-	const p_child_elements = array(
+	public const p_child_elements = array(
 		'a', 'abbr', 'area', 'audio', 'b', 'bdi', 'bdo', 'br', 'button',
 		'canvas', 'cite', 'code', 'data', 'datalist', 'del', 'dfn',
 		'em', 'embed', 'i', 'iframe', 'img', 'input', 'ins', 'kbd',
@@ -79,7 +79,7 @@ class WPCF7_HTMLFormatter {
 	/**
 	 * HTML elements that can contain phrasing content.
 	 */
-	const br_parent_elements = array(
+	public const br_parent_elements = array(
 		'a', 'abbr', 'address', 'article', 'aside', 'audio', 'b', 'bdi',
 		'bdo', 'blockquote', 'button', 'canvas', 'caption', 'cite', 'code',
 		'data', 'datalist', 'dd', 'del', 'details', 'dfn', 'dialog', 'div',

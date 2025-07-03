@@ -4,7 +4,7 @@ namespace Contactable\SWV;
 
 class TimeRule extends Rule {
 
-	const rule_name = 'time';
+	public const rule_name = 'time';
 
 	public function matches( $context ) {
 		if ( false === parent::matches( $context ) ) {

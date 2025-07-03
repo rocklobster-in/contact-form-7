@@ -4,7 +4,7 @@ namespace Contactable\SWV;
 
 class MinDateRule extends Rule {
 
-	const rule_name = 'mindate';
+	public const rule_name = 'mindate';
 
 	public function matches( $context ) {
 		if ( false === parent::matches( $context ) ) {

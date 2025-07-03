@@ -4,7 +4,7 @@ namespace Contactable\SWV;
 
 class AnyRule extends CompositeRule {
 
-	const rule_name = 'any';
+	public const rule_name = 'any';
 
 	public function matches( $context ) {
 		if ( false === parent::matches( $context ) ) {

@@ -4,7 +4,7 @@ namespace Contactable\SWV;
 
 class MaxNumberRule extends Rule {
 
-	const rule_name = 'maxnumber';
+	public const rule_name = 'maxnumber';
 
 	public function matches( $context ) {
 		if ( false === parent::matches( $context ) ) {

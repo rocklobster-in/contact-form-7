@@ -4,7 +4,7 @@ namespace Contactable\SWV;
 
 class MinLengthRule extends Rule {
 
-	const rule_name = 'minlength';
+	public const rule_name = 'minlength';
 
 	public function matches( $context ) {
 		if ( false === parent::matches( $context ) ) {

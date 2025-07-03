@@ -4,7 +4,7 @@ namespace Contactable\SWV;
 
 class NumberRule extends Rule {
 
-	const rule_name = 'number';
+	public const rule_name = 'number';
 
 	public function matches( $context ) {
 		if ( false === parent::matches( $context ) ) {

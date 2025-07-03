@@ -4,7 +4,7 @@ namespace Contactable\SWV;
 
 class MaxFileSizeRule extends Rule {
 
-	const rule_name = 'maxfilesize';
+	public const rule_name = 'maxfilesize';
 
 	public function matches( $context ) {
 		if ( false === parent::matches( $context ) ) {

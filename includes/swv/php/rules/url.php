@@ -4,7 +4,7 @@ namespace Contactable\SWV;
 
 class URLRule extends Rule {
 
-	const rule_name = 'url';
+	public const rule_name = 'url';
 
 	public function matches( $context ) {
 		if ( false === parent::matches( $context ) ) {

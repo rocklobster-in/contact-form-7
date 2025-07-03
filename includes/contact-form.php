@@ -5,7 +5,7 @@ class WPCF7_ContactForm {
 	use WPCF7_SWV_SchemaHolder;
 	use WPCF7_PipesHolder;
 
-	const post_type = 'wpcf7_contact_form';
+	public const post_type = 'wpcf7_contact_form';
 
 	private static $found_items = 0;
 	private static $current = null;

@@ -4,7 +4,7 @@ namespace Contactable\SWV;
 
 class FileRule extends Rule {
 
-	const rule_name = 'file';
+	public const rule_name = 'file';
 
 	public function matches( $context ) {
 		if ( false === parent::matches( $context ) ) {

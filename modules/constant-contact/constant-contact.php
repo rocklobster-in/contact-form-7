@@ -27,7 +27,7 @@ function wpcf7_constant_contact_register_service() {
  * The WPCF7_Service subclass for Constant Contact.
  */
 class WPCF7_ConstantContact extends WPCF7_Service {
-	const service_name = 'constant_contact';
+	public const service_name = 'constant_contact';
 
 	private static $instance;
 

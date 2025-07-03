@@ -4,7 +4,7 @@ namespace Contactable\SWV;
 
 class EmailRule extends Rule {
 
-	const rule_name = 'email';
+	public const rule_name = 'email';
 
 	public function matches( $context ) {
 		if ( false === parent::matches( $context ) ) {

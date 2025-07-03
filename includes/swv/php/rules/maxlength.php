@@ -4,7 +4,7 @@ namespace Contactable\SWV;
 
 class MaxLengthRule extends Rule {
 
-	const rule_name = 'maxlength';
+	public const rule_name = 'maxlength';
 
 	public function matches( $context ) {
 		if ( false === parent::matches( $context ) ) {

@@ -4,7 +4,7 @@ namespace Contactable\SWV;
 
 class EnumRule extends Rule {
 
-	const rule_name = 'enum';
+	public const rule_name = 'enum';
 
 	public function matches( $context ) {
 		if ( false === parent::matches( $context ) ) {

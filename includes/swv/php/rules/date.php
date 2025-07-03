@@ -4,7 +4,7 @@ namespace Contactable\SWV;
 
 class DateRule extends Rule {
 
-	const rule_name = 'date';
+	public const rule_name = 'date';
 
 	public function matches( $context ) {
 		if ( false === parent::matches( $context ) ) {

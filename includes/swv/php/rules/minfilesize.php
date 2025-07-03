@@ -4,7 +4,7 @@ namespace Contactable\SWV;
 
 class MinFileSizeRule extends Rule {
 
-	const rule_name = 'minfilesize';
+	public const rule_name = 'minfilesize';
 
 	public function matches( $context ) {
 		if ( false === parent::matches( $context ) ) {

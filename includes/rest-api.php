@@ -12,7 +12,7 @@ add_action(
 
 class WPCF7_REST_Controller {
 
-	const route_namespace = 'contact-form-7/v1';
+	public const route_namespace = 'contact-form-7/v1';
 
 	public function register_routes() {
 

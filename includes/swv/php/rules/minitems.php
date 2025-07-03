@@ -4,7 +4,7 @@ namespace Contactable\SWV;
 
 class MinItemsRule extends Rule {
 
-	const rule_name = 'minitems';
+	public const rule_name = 'minitems';
 
 	public function matches( $context ) {
 		if ( false === parent::matches( $context ) ) {

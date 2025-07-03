@@ -4,7 +4,7 @@ namespace Contactable\SWV;
 
 class AllRule extends CompositeRule {
 
-	const rule_name = 'all';
+	public const rule_name = 'all';
 
 	public function matches( $context ) {
 		if ( false === parent::matches( $context ) ) {

@@ -108,9 +108,9 @@ use Contactable\SWV;
  */
 class WPCF7_MailTag_OutputCalculator {
 
-	const email = 0b100;
-	const text = 0b010;
-	const blank = 0b001;
+	public const email = 0b100;
+	public const text = 0b010;
+	public const blank = 0b001;
 
 	private $contact_form;
 

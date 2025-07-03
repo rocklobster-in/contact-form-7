@@ -17,9 +17,9 @@ class WPCF7_ConfigValidator {
 	/**
 	 * The plugin version in which important updates happened last time.
 	 */
-	const last_important_update = '5.8.1';
+	public const last_important_update = '5.8.1';
 
-	const error_codes = array(
+	public const error_codes = array(
 		'maybe_empty',
 		'invalid_mailbox_syntax',
 		'email_not_in_site_domain',

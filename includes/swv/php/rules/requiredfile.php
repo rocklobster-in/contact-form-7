@@ -4,7 +4,7 @@ namespace Contactable\SWV;
 
 class RequiredFileRule extends Rule {
 
-	const rule_name = 'requiredfile';
+	public const rule_name = 'requiredfile';
 
 	public function matches( $context ) {
 		if ( false === parent::matches( $context ) ) {

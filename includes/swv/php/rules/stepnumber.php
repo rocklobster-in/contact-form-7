@@ -4,7 +4,7 @@ namespace Contactable\SWV;
 
 class StepNumberRule extends Rule {
 
-	const rule_name = 'stepnumber';
+	public const rule_name = 'stepnumber';
 
 	public function matches( $context ) {
 		if ( false === parent::matches( $context ) ) {
