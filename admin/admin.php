@@ -465,7 +465,7 @@ function wpcf7_admin_management_page() {
 			sprintf(
 				/* translators: %s: Search query. */
 				__( 'Search results for: <strong>%s</strong>', 'contact-form-7' ),
-				$search_keyword
+				esc_html( $search_keyword )
 			)
 		);
 
