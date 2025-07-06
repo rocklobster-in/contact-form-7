@@ -462,11 +462,11 @@ function wpcf7_admin_management_page() {
 		) );
 
 		$formatter->append_preformatted(
-			esc_html( sprintf(
-				/* translators: %s: search keywords */
-				__( 'Search results for &#8220;%s&#8221;', 'contact-form-7' ),
+			sprintf(
+				/* translators: %s: Search query. */
+				__( 'Search results for: <strong>%s</strong>', 'contact-form-7' ),
 				$search_keyword
-			) )
+			)
 		);
 
 		$formatter->end_tag( 'span' );
