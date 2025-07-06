@@ -532,6 +532,15 @@ class WPCF7_Submission {
 	 * Retrieves the request URL of this submission.
 	 */
 	private function get_request_url() {
+		// 1. Prioritize the URL from the hidden field for reliability.
+		$posted_from_url = wpcf7_superglobal_post( '_wpcf7_posted_from_url' );
+
+		if ( $posted_from_url ) {
+			return sanitize_url( $posted_from_url );
+		}
+
+		// 2. Fallback to HTTP_REFERER for REST requests, as it was done before.
+
 		$home_url = untrailingslashit( home_url() );
 
 		if ( self::is_restful() ) {
@@ -542,6 +551,7 @@ class WPCF7_Submission {
 			}
 		}
 
+		// 3. Last resort: build from request URI for non-AJAX submissions.
 		$url = preg_replace( '%(?<!:|/)/.*$%', '', $home_url )
 			. wpcf7_get_request_uri();
 

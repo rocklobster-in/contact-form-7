@@ -702,6 +702,21 @@ class WPCF7_ContactForm {
 		return $class;
 	}
 
+	/**
+	 *
+	 * Returns the URL of the current page.
+	 */
+
+	private function get_page_url() {
+		$url = ( is_ssl ? 'https://' : 'http://' )
+			. wpcf7_superglobal_server( 'HTTP_HOST' )
+			. strtok( wpcf7_superglobal_server( 'REQUEST_URI' ), '?' );
+
+			$url = esc_url_raw( $url );
+
+			return apply_filters( 'wpcf7_page_url', $url );
+	}
+
 
 	/**
 	 * Returns a set of hidden fields.
@@ -713,6 +728,7 @@ class WPCF7_ContactForm {
 			'_wpcf7_locale' => $this->locale(),
 			'_wpcf7_unit_tag' => $this->unit_tag(),
 			'_wpcf7_container_post' => 0,
+			'_wpcf7_posted_from_url' => wpcf7_get_request_uri(),
 			'_wpcf7_posted_data_hash' => '',
 		);
 
