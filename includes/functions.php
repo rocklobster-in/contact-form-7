@@ -310,8 +310,8 @@ function wpcf7_version( $options = '' ) {
 
 	$ver = WPCF7_VERSION;
 	$ver = strtr( $ver, '_-+', '...' );
-	$ver = preg_replace( '/[^0-9.]+/', ".$0.", $ver );
-	$ver = preg_replace( '/[.]+/', ".", $ver );
+	$ver = preg_replace( '/[^0-9.]+/', '.$0.', $ver );
+	$ver = preg_replace( '/[.]+/', '.', $ver );
 	$ver = trim( $ver, '.' );
 	$ver = explode( '.', $ver );
 
