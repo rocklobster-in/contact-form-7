@@ -177,18 +177,18 @@ add_filter( 'wpcf7_messages', 'wpcf7_number_messages', 10, 1 );
 function wpcf7_number_messages( $messages ) {
 	return array_merge( $messages, array(
 		'invalid_number' => array(
-			'description' => __( "Number format that the sender entered is invalid", 'contact-form-7' ),
-			'default' => __( "Please enter a number.", 'contact-form-7' ),
+			'description' => __( 'Number format that the sender entered is invalid', 'contact-form-7' ),
+			'default' => __( 'Please enter a number.', 'contact-form-7' ),
 		),
 
 		'number_too_small' => array(
-			'description' => __( "Number is smaller than minimum limit", 'contact-form-7' ),
-			'default' => __( "This field has a too small number.", 'contact-form-7' ),
+			'description' => __( 'Number is smaller than minimum limit', 'contact-form-7' ),
+			'default' => __( 'This field has a too small number.', 'contact-form-7' ),
 		),
 
 		'number_too_large' => array(
-			'description' => __( "Number is larger than maximum limit", 'contact-form-7' ),
-			'default' => __( "This field has a too large number.", 'contact-form-7' ),
+			'description' => __( 'Number is larger than maximum limit', 'contact-form-7' ),
+			'default' => __( 'This field has a too large number.', 'contact-form-7' ),
 		),
 	) );
 }
