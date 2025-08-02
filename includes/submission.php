@@ -807,10 +807,12 @@ class WPCF7_Submission {
 
 		foreach ( (array) $this->uploaded_files as $file_path ) {
 			foreach ( (array) $file_path as $path ) {
-				wpcf7_rmdir_p( $path );
+				if ( wpcf7_is_file_path_in_content_dir( $path ) ) {
+					wpcf7_rmdir_p( $path );
 
-				// Remove parent dir if empty.
-				$filesystem->delete( dirname( $path ), false );
+					// Remove parent dir if empty.
+					$filesystem->delete( dirname( $path ), false );
+				}
 			}
 		}
 	}
