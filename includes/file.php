@@ -428,12 +428,13 @@ function wpcf7_file_display_warning_message( $page, $action, $object ) {
 	$uploads_dir = wpcf7_upload_tmp_dir();
 
 	if ( ! is_dir( $uploads_dir ) or ! wp_is_writable( $uploads_dir ) ) {
-		$message = sprintf(
-			/* translators: %s: the path of the temporary folder */
-			__( 'This contact form has file uploading fields, but the temporary folder for the files (%s) does not exist or is not writable. You can create the folder or change its permission manually.', 'contact-form-7' ),
-			$uploads_dir
+		wp_admin_notice(
+			sprintf(
+				/* translators: %s: the path of the temporary folder */
+				__( 'This contact form has file uploading fields, but the temporary folder for the files (%s) does not exist or is not writable. You can create the folder or change its permission manually.', 'contact-form-7' ),
+				$uploads_dir
+			),
+			array( 'type' => 'warning' )
 		);
-
-		wp_admin_notice( esc_html( $message ), array( 'type' => 'warning' ) );
 	}
 }
