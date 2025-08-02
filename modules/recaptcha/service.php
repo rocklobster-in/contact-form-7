@@ -259,18 +259,14 @@ class WPCF7_RECAPTCHA extends WPCF7_Service {
 	public function admin_notice( $message = '' ) {
 		if ( 'invalid' === $message ) {
 			wp_admin_notice(
-				sprintf(
-					'<strong>%1$s</strong>: %2$s',
-					esc_html( __( "Error", 'contact-form-7' ) ),
-					esc_html( __( "Invalid key values.", 'contact-form-7' ) )
-				),
+				__( '<strong>Error:</strong> Invalid key values.', 'contact-form-7' ),
 				array( 'type' => 'error' )
 			);
 		}
 
 		if ( 'success' === $message ) {
 			wp_admin_notice(
-				esc_html( __( "Settings saved.", 'contact-form-7' ) ),
+				__( 'Settings saved.', 'contact-form-7' ),
 				array( 'type' => 'success' )
 			);
 		}
