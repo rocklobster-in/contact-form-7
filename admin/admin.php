@@ -667,7 +667,7 @@ function wpcf7_admin_updated_message( $page, $action, $object ) {
 
 	if ( ! empty( $message ) ) {
 		wp_admin_notice(
-			wp_kses_data( $message ),
+			$message,
 			array( 'type' => $notice_type )
 		);
 	}
@@ -703,13 +703,13 @@ function wpcf7_old_wp_version_error( $page, $action, $object ) {
 
 	if ( version_compare( $wp_version, WPCF7_REQUIRED_WP_VERSION, '<' ) ) {
 		wp_admin_notice(
-			wp_kses_data( sprintf(
+			sprintf(
 				/* translators: 1: version of Contact Form 7, 2: version of WordPress, 3: URL */
 				__( '<strong>Contact Form 7 %1$s requires WordPress %2$s or higher.</strong> Please <a href="%3$s">update WordPress</a> first.', 'contact-form-7' ),
 				WPCF7_VERSION,
 				WPCF7_REQUIRED_WP_VERSION,
 				admin_url( 'update-core.php' )
-			) ),
+			),
 			array( 'type' => 'warning' )
 		);
 	}
@@ -727,7 +727,7 @@ function wpcf7_not_allowed_to_edit( $page, $action, $object ) {
 
 	if ( ! current_user_can( 'wpcf7_edit_contact_form', $contact_form->id() ) ) {
 		wp_admin_notice(
-			wp_kses_data( __( 'You are not allowed to edit this contact form.', 'contact-form-7' ) ),
+			__( 'You are not allowed to edit this contact form.', 'contact-form-7' ),
 			array( 'type' => 'warning' )
 		);
 	}
@@ -741,7 +741,7 @@ function wpcf7_ctct_deprecated_warning( $page, $action, $object ) {
 
 	if ( $service->is_active() ) {
 		wp_admin_notice(
-			wp_kses_data( __( 'Contact Form 7 has completed the <a href="https://contactform7.com/2025/01/08/complete-removal-of-constant-contact-integration/">removal of the Constant Contact integration</a>. We recommend <a href="https://contactform7.com/sendinblue-integration/">Brevo</a> as an alternative.', 'contact-form-7' ) ),
+			__( 'Contact Form 7 has completed the <a href="https://contactform7.com/2025/01/08/complete-removal-of-constant-contact-integration/">removal of the Constant Contact integration</a>. We recommend <a href="https://contactform7.com/sendinblue-integration/">Brevo</a> as an alternative.', 'contact-form-7' ),
 			array( 'type' => 'warning' )
 		);
 	}
@@ -755,7 +755,7 @@ function wpcf7_captcha_future_warning( $page, $action, $object ) {
 
 	if ( $service->is_active() ) {
 		wp_admin_notice(
-			wp_kses_data( __( '<strong>Attention reCAPTCHA users:</strong> Google attempts to make all reCAPTCHA users migrate to reCAPTCHA Enterprise, meaning Google charges you for API calls exceeding the free tier. Contact Form 7 supports <a href="https://contactform7.com/turnstile-integration/">Cloudflare Turnstile</a>, and we recommend it unless you have reasons to use reCAPTCHA.', 'contact-form-7' ) ),
+			__( '<strong>Attention reCAPTCHA users:</strong> Google attempts to make all reCAPTCHA users migrate to reCAPTCHA Enterprise, meaning Google charges you for API calls exceeding the free tier. Contact Form 7 supports <a href="https://contactform7.com/turnstile-integration/">Cloudflare Turnstile</a>, and we recommend it unless you have reasons to use reCAPTCHA.', 'contact-form-7' ),
 			array( 'type' => 'warning' )
 		);
 	}
