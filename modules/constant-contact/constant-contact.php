@@ -110,7 +110,7 @@ class WPCF7_ConstantContact extends WPCF7_Service {
 		switch ( $message ) {
 			case 'reset':
 				wp_admin_notice(
-					esc_html( __( 'API configuration cleared.', 'contact-form-7' ) ),
+					__( 'API configuration cleared.', 'contact-form-7' ),
 					array( 'type' => 'success' )
 				);
 
