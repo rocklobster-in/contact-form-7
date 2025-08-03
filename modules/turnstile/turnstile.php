@@ -95,11 +95,14 @@ function wpcf7_turnstile_form_tag_handler( $tag ) {
 		wpcf7_format_atts( array(
 			'class' => 'wpcf7-turnstile cf-turnstile',
 			'data-sitekey' => $service->get_sitekey(),
+			'data-response-field-name' => '_wpcf7_turnstile_response',
 			'data-action' =>
 				$tag->get_option( 'action', '[-0-9a-zA-Z_]{1,32}', true ),
 			'data-size' =>
 				$tag->get_option( 'size', '(normal|flexible|compact)', true ),
-			'data-response-field-name' => '_wpcf7_turnstile_response',
+			'data-theme' => $tag->get_option( 'theme', '(light|dark|auto)', true ),
+			'data-language' => $tag->get_option( 'language', '[a-z-]{2,5}', true ),
+			'data-tabindex' => $tag->get_option( 'tabindex', 'signed_int', true ),
 		) )
 	);
 }
