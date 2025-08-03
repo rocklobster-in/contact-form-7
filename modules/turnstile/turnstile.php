@@ -102,6 +102,7 @@ function wpcf7_turnstile_form_tag_handler( $tag ) {
 				$tag->get_option( 'size', '(normal|flexible|compact)', true ),
 			'data-theme' => $tag->get_option( 'theme', '(light|dark|auto)', true ),
 			'data-language' => $tag->get_option( 'language', '[a-z-]{2,5}', true ),
+			'data-tabindex' => $tag->get_option( 'tabindex', 'signed_int', true ),
 		) )
 	);
 }
