@@ -428,7 +428,7 @@ function wpcf7_build_query( $data, $key = '' ) {
  * @link http://www.w3.org/TR/html5/infrastructure.html#code-unit-length
  *
  * @param string $text Input string.
- * @return int|bool The number of code units, or false if
+ * @return int|false The number of code units, or false if
  *                  mb_convert_encoding is not available.
  */
 function wpcf7_count_code_units( $text ) {
@@ -443,19 +443,20 @@ function wpcf7_count_code_units( $text ) {
 	}
 
 	$text = (string) $text;
-	$text = str_replace( "\r\n", "\n", $text );
 
-	$encoding = mb_detect_encoding( $text, mb_detect_order(), true );
-
-	if ( $encoding ) {
-		$text = mb_convert_encoding( $text, 'UTF-16', $encoding );
-	} else {
-		$text = mb_convert_encoding( $text, 'UTF-16', 'UTF-8' );
+	if ( '' === $text ) {
+		return 0;
 	}
 
-	$byte_count = mb_strlen( $text, '8bit' );
+	$text = str_replace( "\r\n", "\n", $text );
 
-	return floor( $byte_count / 2 );
+	$text = mb_convert_encoding(
+		$text,
+		'UTF-16',
+		mb_detect_encoding( $text, mb_detect_order(), true ) ?: 'UTF-8'
+	);
+
+	return intdiv( mb_strlen( $text, '8bit' ), 2 );
 }
 
 
