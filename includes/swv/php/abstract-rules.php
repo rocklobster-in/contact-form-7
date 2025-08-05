@@ -92,7 +92,7 @@ abstract class Rule {
 	/**
 	 * Returns the default user upload file from $_FILES.
 	 *
-	 * @return stdClass Default user upload file.
+	 * @return object Default user upload file.
 	 */
 	public function get_default_upload() {
 		$field = $this->get_property( 'field' );

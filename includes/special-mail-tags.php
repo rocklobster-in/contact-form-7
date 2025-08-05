@@ -71,7 +71,7 @@ function wpcf7_special_mail_tag( $output, $name, $html, $mail_tag = null ) {
 	}
 
 	if ( '_invalid_fields' === $name ) {
-		return count( $submission->get_invalid_fields() );
+		return (string) count( $submission->get_invalid_fields() );
 	}
 
 	if ( '_contact_form_title' === $name ) {
@@ -264,7 +264,7 @@ function wpcf7_user_related_smt( $output, $name, $html, $mail_tag = null ) {
 	$user = new WP_User( $user_id );
 
 	if ( $user->has_prop( $opt ) ) {
-		return $user->get( $opt );
+		return (string) $user->get( $opt );
 	}
 
 	return '';
