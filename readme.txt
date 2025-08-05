@@ -68,6 +68,10 @@ Do you have questions or issues with Contact Form 7? Use these support channels 
 
 For more information, see [Releases](https://contactform7.com/category/releases/).
 
+= 6.1.1 =
+
+[https://contactform7.com/contact-form-7-611/](https://contactform7.com/contact-form-7-611/)
+
 = 6.1 =
 
 [https://contactform7.com/contact-form-7-61/](https://contactform7.com/contact-form-7-61/)
