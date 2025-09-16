@@ -22,8 +22,10 @@ class WPCF7_Validation implements ArrayAccess {
 	 * @param WPCF7_FormTag|array|string $context Context representing the
 	 *                                   target field.
 	 * @param WP_Error|string $error The error of the field.
+	 * @param bool $override Allow to override existing message value in
+	 *                                   invalid_fields.
 	 */
-	public function invalidate( $context, $error ) {
+	public function invalidate( $context, $error, $override=false ) {
 		if ( $context instanceof WPCF7_FormTag ) {
 			$tag = $context;
 		} elseif ( is_array( $context ) ) {
@@ -45,7 +47,7 @@ class WPCF7_Validation implements ArrayAccess {
 			$message = $error;
 		}
 
-		if ( $this->is_valid( $name ) ) {
+		if ( $this->is_valid( $name ) || $override ) {
 			$id = (string) $tag->get_option( 'id', 'id', true );
 
 			if ( ! wpcf7_is_name( $id ) or str_starts_with( $id, 'wpcf7' ) ) {
