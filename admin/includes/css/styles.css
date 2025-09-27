@@ -87,7 +87,7 @@ ul.config-error li {
 	border-color: #dc3232;
 }
 
-#contact-form-editor-tabs li a .icon-in-circle,
+#contact-form-editor-tabs .icon-in-circle,
 #contact-form-editor .config-error .icon-in-circle,
 .wp-list-table .config-error .icon-in-circle,
 .icon-in-circle {
@@ -112,44 +112,34 @@ ul.config-error li {
  */
 #contact-form-editor-tabs {
 	border-bottom: 1px solid #aaa;
-	padding: 9px 15px 0 10px;
+	padding: 9px 10px 0;
 	margin: 0;
 }
 
-#contact-form-editor-tabs li {
+#contact-form-editor-tabs button {
 	display: inline-block;
-	list-style: none;
 	border: 1px solid #ccc;
 	border-bottom: 1px solid #aaa;
-	padding: 0;
+	padding: 6px 10px;
 	margin: 0 4px -1px;
+	color: #333;
 	background-color: #e4e4e4;
+	font-size: 14px;
+	font-weight: normal;
+	line-height: 20px;
 }
 
-#contact-form-editor-tabs li.active {
+#contact-form-editor-tabs button[aria-selected="true"] {
 	border-top: 1px solid #aaa;
 	border-right: 1px solid #aaa;
 	border-left: 1px solid #aaa;
 	border-bottom: 1px solid #f5f5f5;
-	background-color: #f5f5f5;
-}
-
-#contact-form-editor-tabs li a {
-	padding: 6px 10px;
-	font-size: 14px;
-	font-weight: normal;
-	line-height: 30px;
-	color: #333;
-	text-decoration: none;
-}
-
-#contact-form-editor-tabs li.active a {
 	color: #000;
-	font-size: 14px;
+	background-color: #f5f5f5;
 	font-weight: bold;
 }
 
-#contact-form-editor-tabs li a:hover {
+#contact-form-editor-tabs button:hover {
 	color: #000;
 }
 
@@ -157,7 +147,7 @@ ul.config-error li {
 	margin-bottom: 1.4em;
 }
 
-#contact-form-editor-tabs li.active a .icon-in-circle {
+#contact-form-editor-tabs button[aria-selected="true"] .icon-in-circle {
 	display: none;
 }
 

@@ -405,7 +405,6 @@ if ( $post ) {
 
 	$formatter->append_start_tag( 'div', array(
 		'id' => 'contact-form-editor',
-		'data-active-tab' => '',
 	) );
 
 	$formatter->call_user_func( static function () use ( $post, $post_id ) {

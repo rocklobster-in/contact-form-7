@@ -31,24 +31,25 @@ class WPCF7_Editor {
 
 		$formatter = new WPCF7_HTMLFormatter();
 
-		$formatter->append_start_tag( 'nav' );
-
-		$formatter->append_start_tag( 'ul', array(
+		$formatter->append_start_tag( 'nav', array(
 			'id' => 'contact-form-editor-tabs',
+			'role' => 'tablist',
+			'aria-label' => __( 'Contact form editor tabs', 'contact-form-7' ),
+			'data-active-tab' => absint( array_search(
+				$active_panel_id, array_keys( $this->panels ), true
+			) ),
 		) );
 
 		foreach ( $this->panels as $panel_id => $panel ) {
 			$active = $panel_id === $active_panel_id;
 
-			$formatter->append_start_tag( 'li', array(
+			$formatter->append_start_tag( 'button', array(
+				'type' => 'button',
+				'role' => 'tab',
+				'aria-selected' => $active ? 'true' : 'false',
+				'aria-controls' => $panel_id,
 				'id' => sprintf( '%s-tab', $panel_id ),
-				'class' => $active ? 'active' : null,
 				'tabindex' => $active ? '0' : '-1',
-				'data-panel' => $panel_id,
-			) );
-
-			$formatter->append_start_tag( 'a', array(
-				'href' => sprintf( '#%s', $panel_id ),
 			) );
 
 			$formatter->append_preformatted( esc_html( $panel['title'] ) );
@@ -60,8 +61,12 @@ class WPCF7_Editor {
 			$active = $panel_id === $active_panel_id;
 
 			$formatter->append_start_tag( 'section', array(
+				'role' => 'tabpanel',
+				'aria-labelledby' => sprintf( '%s-tab', $panel_id ),
 				'id' => $panel_id,
-				'class' => 'contact-form-editor-panel' . ( $active ? ' active' : '' ),
+				'class' => 'contact-form-editor-panel',
+				'tabindex' => '0',
+				'hidden' => ! $active,
 			) );
 
 			if ( is_callable( $panel['callback'] ) ) {
