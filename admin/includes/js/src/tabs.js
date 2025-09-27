@@ -1,87 +1,93 @@
+const scope = document.querySelector( '#contact-form-editor' );
+
 const init = () => {
-	document.querySelectorAll(
-		'#contact-form-editor-tabs li'
-	).forEach( tab => {
-		tab.addEventListener( 'click', event => {
-			switchTab( tab.dataset?.panel );
-			event.preventDefault();
-		} );
 
-		tab.addEventListener( 'keyup', event => {
-			if ( [ 'ArrowDown', 'ArrowRight' ].includes( event.key ) ) {
-				const nextTab = tab.nextElementSibling;
-
-				if ( nextTab ) {
-					switchTab( nextTab.dataset?.panel );
-				}
-			}
-
-			if ( [ 'ArrowUp', 'ArrowLeft' ].includes( event.key ) ) {
-				const prevTab = tab.previousElementSibling;
-
-				if ( prevTab ) {
-					switchTab( prevTab.dataset?.panel );
-				}
-			}
-		} );
-	} );
-
-	document.querySelectorAll(
-		'.contact-form-editor-panel'
-	).forEach( panel => {
-		if ( panel.classList.contains( 'active' ) ) {
-			document.querySelector(
-				'#contact-form-editor'
-			)?.setAttribute( 'data-active-tab', panel.id );
-		} else {
-			panel.style.setProperty( 'display', 'none' );
-		}
-	} );
-};
-
-
-const switchTab = id => {
-	if ( ! id ) {
+	if ( ! scope ) {
 		return;
 	}
 
-	if ( ! document.querySelector( `.contact-form-editor-panel#${ id }` ) ) {
-		return;
-	}
+	const tabLists = scope.querySelectorAll( '[role="tablist"]' );
 
-	document.querySelector(
-		'#contact-form-editor'
-	)?.setAttribute( 'data-active-tab', id );
+	tabLists.forEach( tabList => {
+		const tabs = tabList.querySelectorAll( ':scope > [role="tab"]' );
 
-	document.querySelectorAll(
-		'input[name="active-tab"]'
-	).forEach( input => {
-		input.value = id;
-	} );
+		let tabFocus = parseInt( tabList.dataset.activeTab );
 
-	document.querySelectorAll(
-		'#contact-form-editor-tabs li'
-	).forEach( tab => {
-		if ( tab.dataset?.panel === id ) {
-			tab.classList.add( 'active' );
-			tab.setAttribute( 'tabindex', '0' );
-			tab.focus();
-		} else {
-			tab.classList.remove( 'active' );
-			tab.setAttribute( 'tabindex', '-1' );
-		}
-	} );
+		tabList.addEventListener( 'keydown', event => {
+			if ( [ 'ArrowLeft', 'ArrowRight' ].includes( event.key ) ) {
+				tabs[ tabFocus ].setAttribute( 'tabindex', '-1' );
 
-	document.querySelectorAll(
-		'.contact-form-editor-panel'
-	).forEach( panel => {
-		if ( panel.id === id ) {
-			panel.classList.add( 'active' );
-			panel.style.setProperty( 'display', 'block' );
-		} else {
-			panel.classList.remove( 'active' );
-			panel.style.setProperty( 'display', 'none' );
-		}
+				if ( 'ArrowLeft' === event.key ) {
+					tabFocus -= 1;
+
+					if ( tabFocus < 0 ) {
+						tabFocus = tabs.length - 1;
+					}
+				}
+
+				if ( 'ArrowRight' === event.key ) {
+					tabFocus += 1;
+
+					if ( tabs.length <= tabFocus ) {
+						tabFocus = 0;
+					}
+				}
+
+				tabs[ tabFocus ].setAttribute( 'tabindex', '0' );
+				tabs[ tabFocus ].focus();
+
+				tabList.dataset.activeTab = tabFocus;
+			}
+		} );
+
+		tabs.forEach( tab => {
+			tab.addEventListener( 'click', event => {
+				const controls = tab.getAttribute( 'aria-controls' );
+
+				if ( ! controls ) {
+					return;
+				}
+
+				const activePanel = controls.split( ' ' ).reduceRight(
+					( accumulator, currentValue ) => {
+						const control = scope.querySelector( `#${ currentValue }` );
+
+						if ( control ) {
+							accumulator = control;
+						}
+
+						return accumulator;
+					},
+					null
+				);
+
+				if ( ! activePanel ) {
+					return;
+				}
+
+				tabList.querySelectorAll(
+					':scope > [aria-selected="true"]'
+				).forEach( tab => {
+					tab.setAttribute( 'aria-selected', 'false' );
+				} );
+
+				tab.setAttribute( 'aria-selected', 'true' );
+
+				scope.querySelectorAll(
+					':scope > [role="tabpanel"]'
+				).forEach( panel => {
+					panel.setAttribute( 'hidden', 'hidden' );
+				} );
+
+				activePanel.removeAttribute( 'hidden' );
+
+				document.querySelectorAll(
+					'input[name="active-tab"]'
+				).forEach( input => {
+					input.value = activePanel.id;
+				} );
+			} );
+		} );
 	} );
 };
 
