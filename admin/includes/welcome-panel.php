@@ -7,17 +7,6 @@ abstract class WPCF7_WelcomePanelColumn {
 	abstract protected function content();
 
 	public function print_content() {
-		$icon = sprintf(
-			'<span class="dashicons dashicons-%s" aria-hidden="true"></span>',
-			esc_attr( $this->icon() )
-		);
-
-		$title = sprintf(
-			'<h3>%1$s %2$s</h3>',
-			$icon,
-			$this->title()
-		);
-
 		$content = $this->content();
 
 		if ( is_array( $content ) ) {
@@ -35,7 +24,21 @@ abstract class WPCF7_WelcomePanelColumn {
 			'class' => 'welcome-panel-column',
 		) );
 
-		$formatter->append_preformatted( $title );
+		$formatter->append_start_tag( 'h3' );
+
+		$formatter->append_start_tag( 'span', array(
+			'class' => sprintf( 'dashicons dashicons-%s', $this->icon() ),
+			'aria-hidden' => 'true',
+		) );
+
+		$formatter->end_tag( 'span' );
+
+		$formatter->append_whitespace();
+
+		$formatter->append_preformatted( $this->title() );
+
+		$formatter->end_tag( 'h3' );
+
 		$formatter->append_preformatted( $content );
 
 		$formatter->print();
@@ -50,29 +53,18 @@ class WPCF7_WelcomePanelColumn_AntiSpam extends WPCF7_WelcomePanelColumn {
 	}
 
 	protected function title() {
-		return esc_html(
-			__( 'Getting spammed? You have protection.', 'contact-form-7' )
-		);
+		return __( 'Getting spammed? You have protection.', 'contact-form-7' );
 	}
 
 	protected function content() {
 		return array(
-			esc_html( __( 'Spammers target everything; your contact forms are not an exception. Before you get spammed, protect your contact forms with the powerful anti-spam features Contact Form 7 provides.', 'contact-form-7' ) ),
+			__( 'Spammers target everything; your contact forms are not an exception. Before you get spammed, protect your contact forms with the powerful anti-spam features Contact Form 7 provides.', 'contact-form-7' ),
 			sprintf(
-				/* translators: links labeled 1: 'Akismet', 2: 'Cloudflare Turnstile', 3: 'disallowed list' */
-				esc_html( __( 'Contact Form 7 supports spam-filtering with %1$s. %2$s blocks annoying spambots. Plus, using %3$s, you can block messages containing specified keywords or those sent from specified IP addresses.', 'contact-form-7' ) ),
-				wpcf7_link(
-					__( 'https://contactform7.com/spam-filtering-with-akismet/', 'contact-form-7' ),
-					__( 'Akismet', 'contact-form-7' )
-				),
-				wpcf7_link(
-					__( 'https://contactform7.com/turnstile-integration/', 'contact-form-7' ),
-					__( 'Cloudflare Turnstile', 'contact-form-7' )
-				),
-				wpcf7_link(
-					__( 'https://contactform7.com/comment-blacklist/', 'contact-form-7' ),
-					__( 'disallowed list', 'contact-form-7' )
-				)
+				/* translators: 1: URL to support page about Akismet, 2: Cloudflare Turnstile, 3: Disallowed list */
+				__( 'Contact Form 7 supports spam-filtering with <a href="%1$s">Akismet</a>. <a href="%2$s">Cloudflare Turnstile</a> blocks annoying spambots. Plus, using <a href="%3$s">disallowed list</a>, you can block messages containing specified keywords or those sent from specified IP addresses.', 'contact-form-7' ),
+				__( 'https://contactform7.com/spam-filtering-with-akismet/', 'contact-form-7' ),
+				__( 'https://contactform7.com/turnstile-integration/', 'contact-form-7' ),
+				__( 'https://contactform7.com/comment-blacklist/', 'contact-form-7' )
 			),
 		);
 	}
@@ -86,21 +78,16 @@ class WPCF7_WelcomePanelColumn_Donation extends WPCF7_WelcomePanelColumn {
 	}
 
 	protected function title() {
-		return esc_html(
-			__( 'Contact Form 7 needs your support.', 'contact-form-7' )
-		);
+		return __( 'Contact Form 7 needs your support.', 'contact-form-7' );
 	}
 
 	protected function content() {
 		return array(
-			esc_html( __( 'It is hard to continue to maintain this plugin without support from users like you.', 'contact-form-7' ) ),
+			__( 'It is hard to continue to maintain this plugin without support from users like you.', 'contact-form-7' ),
 			sprintf(
-				/* translators: %s: link labeled 'contribute to the project' */
-				esc_html( __( 'There are several ways for you to %s: testing, coding, translating it into your local languages, helping other users, financial donations, etc, etc. We equally welcome you regardless of the way you contribute.', 'contact-form-7' ) ),
-				wpcf7_link(
-					__( 'https://contactform7.com/contributing/', 'contact-form-7' ),
-					__( 'contribute to the project', 'contact-form-7' )
-				)
+				/* translators: %s: URL to support page about ways to contribute */
+				__( 'There are several ways for you to <a href="%s">contribute to the project</a>: testing, coding, translating it into your local languages, helping other users, financial donations, etc, etc. We equally welcome you regardless of the way you contribute.', 'contact-form-7' ),
+				__( 'https://contactform7.com/contributing/', 'contact-form-7' )
 			),
 		);
 	}
@@ -114,21 +101,16 @@ class WPCF7_WelcomePanelColumn_Flamingo extends WPCF7_WelcomePanelColumn {
 	}
 
 	protected function title() {
-		return esc_html(
-			__( 'Before you cry over spilt mail&#8230;', 'contact-form-7' )
-		);
+		return __( 'Before you cry over spilt mail&#8230;', 'contact-form-7' );
 	}
 
 	protected function content() {
 		return array(
-			esc_html( __( 'Contact Form 7 does not store submitted messages anywhere. Therefore, you may lose important messages forever if your mail server has issues or you make a mistake in mail configuration.', 'contact-form-7' ) ),
+			__( 'Contact Form 7 does not store submitted messages anywhere. Therefore, you may lose important messages forever if your mail server has issues or you make a mistake in mail configuration.', 'contact-form-7' ),
 			sprintf(
-				/* translators: %s: link labeled 'Flamingo' */
-				esc_html( __( 'Install a message storage plugin before this happens to you. %s saves all messages through contact forms into the database. Flamingo is a free WordPress plugin created by the same author as Contact Form 7.', 'contact-form-7' ) ),
-				wpcf7_link(
-					__( 'https://contactform7.com/save-submitted-messages-with-flamingo/', 'contact-form-7' ),
-					__( 'Flamingo', 'contact-form-7' )
-				)
+				/* translators: %s: URL to support page about the Flamingo plugin */
+				__( 'Install a message storage plugin before this happens to you. <a href="%s">Flamingo</a> saves all messages through contact forms into the database. Flamingo is a free WordPress plugin created by the same author as Contact Form 7.', 'contact-form-7' ),
+				__( 'https://contactform7.com/save-submitted-messages-with-flamingo/', 'contact-form-7' )
 			),
 		);
 	}
@@ -142,32 +124,21 @@ class WPCF7_WelcomePanelColumn_Integration extends WPCF7_WelcomePanelColumn {
 	}
 
 	protected function title() {
-		return esc_html(
-			__( 'You have strong allies to back you up.', 'contact-form-7' )
-		);
+		return __( 'You have strong allies to back you up.', 'contact-form-7' );
 	}
 
 	protected function content() {
 		return array(
 			sprintf(
-				/* translators: 1: link labeled 'Brevo' */
-				esc_html( __( 'Your contact forms will become more powerful and versatile by integrating them with external APIs. With CRM and email marketing services, you can build your own contact lists (%1$s).', 'contact-form-7' ) ),
-				wpcf7_link(
-					__( 'https://contactform7.com/sendinblue-integration/', 'contact-form-7' ),
-					__( 'Brevo', 'contact-form-7' )
-				)
+				/* translators: %s: URL to support page about the Brevo integration */
+				__( 'Your contact forms will become more powerful and versatile by integrating them with external APIs. With CRM and email marketing services, you can build your own contact lists (<a href="%s">Brevo</a>).', 'contact-form-7' ),
+				__( 'https://contactform7.com/sendinblue-integration/', 'contact-form-7' )
 			),
 			sprintf(
-				/* translators: 1: link labeled 'Cloudflare Turnstile', 2: link labeled 'Stripe' */
-				esc_html( __( 'With help from cloud-based machine learning, anti-spam services will protect your forms (%1$s). Even payment services are natively supported (%2$s).', 'contact-form-7' ) ),
-				wpcf7_link(
-					__( 'https://contactform7.com/turnstile-integration/', 'contact-form-7' ),
-					__( 'Cloudflare Turnstile', 'contact-form-7' )
-				),
-				wpcf7_link(
-					__( 'https://contactform7.com/stripe-integration/', 'contact-form-7' ),
-					__( 'Stripe', 'contact-form-7' )
-				)
+				/* translators: 1: URL to support page about Cloudflare Turnstile, 2: Stripe */
+				__( 'With help from cloud-based machine learning, anti-spam services will protect your forms (<a href="%1$s">Cloudflare Turnstile</a>). Even payment services are natively supported (<a href="%2$s">Stripe</a>).', 'contact-form-7' ),
+				__( 'https://contactform7.com/turnstile-integration/', 'contact-form-7' ),
+				__( 'https://contactform7.com/stripe-integration/', 'contact-form-7' )
 			),
 		);
 	}
