@@ -7,17 +7,6 @@ abstract class WPCF7_WelcomePanelColumn {
 	abstract protected function content();
 
 	public function print_content() {
-		$icon = sprintf(
-			'<span class="dashicons dashicons-%s" aria-hidden="true"></span>',
-			esc_attr( $this->icon() )
-		);
-
-		$title = sprintf(
-			'<h3>%1$s %2$s</h3>',
-			$icon,
-			$this->title()
-		);
-
 		$content = $this->content();
 
 		if ( is_array( $content ) ) {
@@ -35,7 +24,21 @@ abstract class WPCF7_WelcomePanelColumn {
 			'class' => 'welcome-panel-column',
 		) );
 
-		$formatter->append_preformatted( $title );
+		$formatter->append_start_tag( 'h3' );
+
+		$formatter->append_start_tag( 'span', array(
+			'class' => sprintf( 'dashicons dashicons-%s', $this->icon() ),
+			'aria-hidden' => 'true',
+		) );
+
+		$formatter->end_tag( 'span' );
+
+		$formatter->append_whitespace();
+
+		$formatter->append_preformatted( $this->title() );
+
+		$formatter->end_tag( 'h3' );
+
 		$formatter->append_preformatted( $content );
 
 		$formatter->print();
@@ -50,29 +53,18 @@ class WPCF7_WelcomePanelColumn_AntiSpam extends WPCF7_WelcomePanelColumn {
 	}
 
 	protected function title() {
-		return esc_html(
-			__( 'Getting spammed? You have protection.', 'contact-form-7' )
-		);
+		return __( 'Getting spammed? You have protection.', 'contact-form-7' );
 	}
 
 	protected function content() {
 		return array(
-			esc_html( __( 'Spammers target everything; your contact forms are not an exception. Before you get spammed, protect your contact forms with the powerful anti-spam features Contact Form 7 provides.', 'contact-form-7' ) ),
+			__( 'Spammers target everything; your contact forms are not an exception. Before you get spammed, protect your contact forms with the powerful anti-spam features Contact Form 7 provides.', 'contact-form-7' ),
 			sprintf(
-				/* translators: links labeled 1: 'Akismet', 2: 'Cloudflare Turnstile', 3: 'disallowed list' */
-				esc_html( __( 'Contact Form 7 supports spam-filtering with %1$s. %2$s blocks annoying spambots. Plus, using %3$s, you can block messages containing specified keywords or those sent from specified IP addresses.', 'contact-form-7' ) ),
-				wpcf7_link(
-					__( 'https://contactform7.com/spam-filtering-with-akismet/', 'contact-form-7' ),
-					__( 'Akismet', 'contact-form-7' )
-				),
-				wpcf7_link(
-					__( 'https://contactform7.com/turnstile-integration/', 'contact-form-7' ),
-					__( 'Cloudflare Turnstile', 'contact-form-7' )
-				),
-				wpcf7_link(
-					__( 'https://contactform7.com/comment-blacklist/', 'contact-form-7' ),
-					__( 'disallowed list', 'contact-form-7' )
-				)
+				/* translators: 1: URL to support page about Akismet, 2: Cloudflare Turnstile, 3: Disallowed list */
+				__( 'Contact Form 7 supports spam-filtering with <a href="%1$s">Akismet</a>. <a href="%2$s">Cloudflare Turnstile</a> blocks annoying spambots. Plus, using <a href="%3$s">disallowed list</a>, you can block messages containing specified keywords or those sent from specified IP addresses.', 'contact-form-7' ),
+				__( 'https://contactform7.com/spam-filtering-with-akismet/', 'contact-form-7' ),
+				__( 'https://contactform7.com/turnstile-integration/', 'contact-form-7' ),
+				__( 'https://contactform7.com/comment-blacklist/', 'contact-form-7' )
 			),
 		);
 	}
