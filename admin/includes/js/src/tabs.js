@@ -6,7 +6,7 @@ const init = () => {
 		return;
 	}
 
-	const tabLists = scope.querySelectorAll( '[role="tablist"]' );
+	const tabLists = scope.querySelectorAll( ':scope > [role="tablist"]' );
 
 	tabLists.forEach( tabList => {
 		const tabs = tabList.querySelectorAll( ':scope > [role="tab"]' );
