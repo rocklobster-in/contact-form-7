@@ -82,12 +82,9 @@ class WPCF7_Editor {
 
 function wpcf7_editor_panel_form( $post ) {
 	$description = sprintf(
-		/* translators: %s: link labeled 'Editing form template' */
-		esc_html( __( 'You can edit the form template here. For details, see %s.', 'contact-form-7' ) ),
-		wpcf7_link(
-			__( 'https://contactform7.com/editing-form-template/', 'contact-form-7' ),
-			__( 'Editing form template', 'contact-form-7' )
-		)
+		/* translators: %s: URL to support page about the form template */
+		__( 'You can edit the form template here. For details, see <a href="%s">Editing form template</a>.', 'contact-form-7' ),
+		__( 'https://contactform7.com/editing-form-template/', 'contact-form-7' )
 	);
 
 	$formatter = new WPCF7_HTMLFormatter();
