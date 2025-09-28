@@ -82,12 +82,9 @@ class WPCF7_Editor {
 
 function wpcf7_editor_panel_form( $post ) {
 	$description = sprintf(
-		/* translators: %s: link labeled 'Editing form template' */
-		esc_html( __( 'You can edit the form template here. For details, see %s.', 'contact-form-7' ) ),
-		wpcf7_link(
-			__( 'https://contactform7.com/editing-form-template/', 'contact-form-7' ),
-			__( 'Editing form template', 'contact-form-7' )
-		)
+		/* translators: %s: URL to support page about the form template */
+		__( 'You can edit the form template here. For details, see <a href="%s">Editing form template</a>.', 'contact-form-7' ),
+		__( 'https://contactform7.com/editing-form-template/', 'contact-form-7' )
 	);
 
 	$formatter = new WPCF7_HTMLFormatter();
@@ -206,12 +203,9 @@ function wpcf7_editor_box_mail( $post, $options = '' ) {
 	$formatter->append_start_tag( 'legend' );
 
 	$description = sprintf(
-		/* translators: %s: link labeled 'Setting up mail' */
-		esc_html( __( 'You can edit the mail template here. For details, see %s.', 'contact-form-7' ) ),
-		wpcf7_link(
-			__( 'https://contactform7.com/setting-up-mail/', 'contact-form-7' ),
-			__( 'Setting up mail', 'contact-form-7' )
-		)
+		/* translators: %s: URL to support page about the email template */
+		__( 'You can edit the email template here. For details, see <a href="%s">Setting up mail</a>.', 'contact-form-7' ),
+		__( 'https://contactform7.com/setting-up-mail/', 'contact-form-7' )
 	);
 
 	$formatter->append_preformatted( $description );
@@ -461,12 +455,9 @@ function wpcf7_editor_box_mail( $post, $options = '' ) {
 
 function wpcf7_editor_panel_messages( $post ) {
 	$description = sprintf(
-		/* translators: %s: link labeled 'Editing messages' */
-		esc_html( __( 'You can edit messages used in various situations here. For details, see %s.', 'contact-form-7' ) ),
-		wpcf7_link(
-			__( 'https://contactform7.com/editing-messages/', 'contact-form-7' ),
-			__( 'Editing messages', 'contact-form-7' )
-		)
+		/* translators: %s: URL to support page about the messages editor */
+		__( 'You can edit messages used in various situations here. For details, see <a href="%s">Editing messages</a>.', 'contact-form-7' ),
+		__( 'https://contactform7.com/editing-messages/', 'contact-form-7' )
 	);
 
 	$messages = wpcf7_messages();
@@ -525,12 +516,9 @@ function wpcf7_editor_panel_messages( $post ) {
 
 function wpcf7_editor_panel_additional_settings( $post ) {
 	$description = sprintf(
-		/* translators: %s: link labeled 'Additional settings' */
-		esc_html( __( 'You can add customization code snippets here. For details, see %s.', 'contact-form-7' ) ),
-		wpcf7_link(
-			__( 'https://contactform7.com/additional-settings/', 'contact-form-7' ),
-			__( 'Additional settings', 'contact-form-7' )
-		)
+		/* translators: %s: URL to support page about the additional settings editor */
+		__( 'You can add customization code snippets here. For details, see <a href="%s">Additional settings</a>.', 'contact-form-7' ),
+		__( 'https://contactform7.com/additional-settings/', 'contact-form-7' )
 	);
 
 	$formatter = new WPCF7_HTMLFormatter();
