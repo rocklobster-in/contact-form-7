@@ -516,12 +516,9 @@ function wpcf7_editor_panel_messages( $post ) {
 
 function wpcf7_editor_panel_additional_settings( $post ) {
 	$description = sprintf(
-		/* translators: %s: link labeled 'Additional settings' */
-		esc_html( __( 'You can add customization code snippets here. For details, see %s.', 'contact-form-7' ) ),
-		wpcf7_link(
-			__( 'https://contactform7.com/additional-settings/', 'contact-form-7' ),
-			__( 'Additional settings', 'contact-form-7' )
-		)
+		/* translators: %s: URL to support page about the additional settings editor */
+		__( 'You can add customization code snippets here. For details, see <a href="%s">Additional settings</a>.', 'contact-form-7' ),
+		__( 'https://contactform7.com/additional-settings/', 'contact-form-7' )
 	);
 
 	$formatter = new WPCF7_HTMLFormatter();
