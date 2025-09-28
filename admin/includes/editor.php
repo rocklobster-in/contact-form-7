@@ -203,12 +203,9 @@ function wpcf7_editor_box_mail( $post, $options = '' ) {
 	$formatter->append_start_tag( 'legend' );
 
 	$description = sprintf(
-		/* translators: %s: link labeled 'Setting up mail' */
-		esc_html( __( 'You can edit the mail template here. For details, see %s.', 'contact-form-7' ) ),
-		wpcf7_link(
-			__( 'https://contactform7.com/setting-up-mail/', 'contact-form-7' ),
-			__( 'Setting up mail', 'contact-form-7' )
-		)
+		/* translators: %s: URL to support page about the email template */
+		__( 'You can edit the email template here. For details, see <a href="%s">Setting up mail</a>.', 'contact-form-7' ),
+		__( 'https://contactform7.com/setting-up-mail/', 'contact-form-7' )
 	);
 
 	$formatter->append_preformatted( $description );
