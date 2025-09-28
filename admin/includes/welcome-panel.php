@@ -78,21 +78,16 @@ class WPCF7_WelcomePanelColumn_Donation extends WPCF7_WelcomePanelColumn {
 	}
 
 	protected function title() {
-		return esc_html(
-			__( 'Contact Form 7 needs your support.', 'contact-form-7' )
-		);
+		return __( 'Contact Form 7 needs your support.', 'contact-form-7' );
 	}
 
 	protected function content() {
 		return array(
-			esc_html( __( 'It is hard to continue to maintain this plugin without support from users like you.', 'contact-form-7' ) ),
+			__( 'It is hard to continue to maintain this plugin without support from users like you.', 'contact-form-7' ),
 			sprintf(
-				/* translators: %s: link labeled 'contribute to the project' */
-				esc_html( __( 'There are several ways for you to %s: testing, coding, translating it into your local languages, helping other users, financial donations, etc, etc. We equally welcome you regardless of the way you contribute.', 'contact-form-7' ) ),
-				wpcf7_link(
-					__( 'https://contactform7.com/contributing/', 'contact-form-7' ),
-					__( 'contribute to the project', 'contact-form-7' )
-				)
+				/* translators: %s: URL to support page about ways to contribute */
+				__( 'There are several ways for you to <a href="%s">contribute to the project</a>: testing, coding, translating it into your local languages, helping other users, financial donations, etc, etc. We equally welcome you regardless of the way you contribute.', 'contact-form-7' ),
+				__( 'https://contactform7.com/contributing/', 'contact-form-7' )
 			),
 		);
 	}
