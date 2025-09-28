@@ -124,32 +124,21 @@ class WPCF7_WelcomePanelColumn_Integration extends WPCF7_WelcomePanelColumn {
 	}
 
 	protected function title() {
-		return esc_html(
-			__( 'You have strong allies to back you up.', 'contact-form-7' )
-		);
+		return __( 'You have strong allies to back you up.', 'contact-form-7' );
 	}
 
 	protected function content() {
 		return array(
 			sprintf(
-				/* translators: 1: link labeled 'Brevo' */
-				esc_html( __( 'Your contact forms will become more powerful and versatile by integrating them with external APIs. With CRM and email marketing services, you can build your own contact lists (%1$s).', 'contact-form-7' ) ),
-				wpcf7_link(
-					__( 'https://contactform7.com/sendinblue-integration/', 'contact-form-7' ),
-					__( 'Brevo', 'contact-form-7' )
-				)
+				/* translators: %s: URL to support page about the Brevo integration */
+				__( 'Your contact forms will become more powerful and versatile by integrating them with external APIs. With CRM and email marketing services, you can build your own contact lists (<a href="%s">Brevo</a>).', 'contact-form-7' ),
+				__( 'https://contactform7.com/sendinblue-integration/', 'contact-form-7' )
 			),
 			sprintf(
-				/* translators: 1: link labeled 'Cloudflare Turnstile', 2: link labeled 'Stripe' */
-				esc_html( __( 'With help from cloud-based machine learning, anti-spam services will protect your forms (%1$s). Even payment services are natively supported (%2$s).', 'contact-form-7' ) ),
-				wpcf7_link(
-					__( 'https://contactform7.com/turnstile-integration/', 'contact-form-7' ),
-					__( 'Cloudflare Turnstile', 'contact-form-7' )
-				),
-				wpcf7_link(
-					__( 'https://contactform7.com/stripe-integration/', 'contact-form-7' ),
-					__( 'Stripe', 'contact-form-7' )
-				)
+				/* translators: 1: URL to support page about Cloudflare Turnstile, 2: Stripe */
+				__( 'With help from cloud-based machine learning, anti-spam services will protect your forms (<a href="%1$s">Cloudflare Turnstile</a>). Even payment services are natively supported (<a href="%2$s">Stripe</a>).', 'contact-form-7' ),
+				__( 'https://contactform7.com/turnstile-integration/', 'contact-form-7' ),
+				__( 'https://contactform7.com/stripe-integration/', 'contact-form-7' )
 			),
 		);
 	}
