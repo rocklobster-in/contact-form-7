@@ -455,12 +455,9 @@ function wpcf7_editor_box_mail( $post, $options = '' ) {
 
 function wpcf7_editor_panel_messages( $post ) {
 	$description = sprintf(
-		/* translators: %s: link labeled 'Editing messages' */
-		esc_html( __( 'You can edit messages used in various situations here. For details, see %s.', 'contact-form-7' ) ),
-		wpcf7_link(
-			__( 'https://contactform7.com/editing-messages/', 'contact-form-7' ),
-			__( 'Editing messages', 'contact-form-7' )
-		)
+		/* translators: %s: URL to support page about the messages editor */
+		__( 'You can edit messages used in various situations here. For details, see <a href="%s">Editing messages</a>.', 'contact-form-7' ),
+		__( 'https://contactform7.com/editing-messages/', 'contact-form-7' )
 	);
 
 	$messages = wpcf7_messages();
