@@ -3,8 +3,8 @@
  * Plugin Name: Contact Form 7
  * Plugin URI: https://contactform7.com/
  * Description: Just another contact form plugin. Simple but flexible.
- * Author: Takayuki Miyoshi
- * Author URI: https://ideasilo.wordpress.com/
+ * Author: Rock Lobster Inc.
+ * Author URI: https://github.com/rocklobster-in/
  * License: GPL v2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Version: 6.1.1
