@@ -299,7 +299,7 @@ form.tag-generator-panel[data-version="2"] {
 
 	.insert-box .mail-tag-tip::before {
 		font: 1.2rem dashicons;
-		content: "\f348";
+		content: "\f348" / '';
 		color: #646970;
 		padding-inline-end: 4px;
 		vertical-align: top;
@@ -507,7 +507,7 @@ form.tag-generator-panel[data-version="1"] {
 .wpcf7-welcome-panel .welcome-panel-close::before {
 	background: 0 0;
 	color: #787c82;
-	content: "\f153";
+	content: "\f153" / '';
 	display: block;
 	font: normal 16px/20px dashicons;
 	speak: never;
