@@ -1,5 +1,5 @@
 === Contact Form 7 ===
-Contributors: takayukister
+Contributors: rocklobsterinc, takayukister
 Donate link: https://contactform7.com/donate/
 Tags: contact form, schema-woven validation
 Tested up to: 6.8
