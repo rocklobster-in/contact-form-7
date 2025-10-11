@@ -393,7 +393,7 @@ function wpcf7_editor_box_mail( $post, $options = '' ) {
 	$formatter->append_whitespace();
 
 	$formatter->append_preformatted(
-		esc_html( __( 'Exclude lines with blank mail-tags from output', 'contact-form-7' ) )
+		esc_html( __( 'Exclude a line from output if all of its mail-tags are blank', 'contact-form-7' ) )
 	);
 
 	$formatter->append_start_tag( 'p' );
