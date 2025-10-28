@@ -162,6 +162,39 @@ class WPCF7_FormTag implements ArrayAccess {
 
 
 	/**
+	 * Retrieves the autocomplete option value from the form-tag.
+	 *
+	 * @return string|bool A whitespace-separated list of tokens.
+	 *                     False if there is no token to return.
+	 */
+	public function get_autocomplete_option() {
+		$options = (array) $this->get_option( 'autocomplete', '[-0-9a-zA-Z|]+' );
+
+		$options = array_reduce( $options, static function ( $carry, $item ) {
+			return array_merge( $carry,
+				array_map( 'strtolower', explode( '|', $item ) )
+			);
+		}, array() );
+
+		$options = array_filter( $options, static function ( $item ) {
+			return preg_match( '/^[a-z]+(?:-[0-9a-z]+)*$/', $item );
+		} );
+
+		$options = array_unique( $options );
+
+		if ( empty( $options ) ) {
+			return false;
+		} elseif ( in_array( 'off', $options, true ) ) {
+			return 'off';
+		} elseif ( in_array( 'on', $options, true ) ) {
+			return 'on';
+		} else {
+			return implode( ' ', $options );
+		}
+	}
+
+
+	/**
 	 * Retrieves the size option value from the form-tag.
 	 *
 	 * @param string $default_value Optional default value.
