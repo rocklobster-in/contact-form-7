@@ -35,10 +35,7 @@ function wpcf7_select_form_tag_handler( $tag ) {
 	$atts['class'] = $tag->get_class_option( $class );
 	$atts['id'] = $tag->get_id_option();
 	$atts['tabindex'] = $tag->get_option( 'tabindex', 'signed_int', true );
-
-	$atts['autocomplete'] = $tag->get_option(
-		'autocomplete', '[-0-9a-zA-Z]+', true
-	);
+	$atts['autocomplete'] = $tag->get_autocomplete_option();
 
 	if ( $tag->is_required() ) {
 		$atts['aria-required'] = 'true';
@@ -81,8 +78,7 @@ function wpcf7_select_form_tag_handler( $tag ) {
 		'multiple' => $multiple,
 	) );
 
-	if ( $include_blank
-	or empty( $values ) ) {
+	if ( $include_blank or empty( $values ) ) {
 		array_unshift(
 			$labels,
 			__( '&#8212;Please choose an option&#8212;', 'contact-form-7' )

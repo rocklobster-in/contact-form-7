@@ -33,8 +33,10 @@ function wpcf7_textarea_form_tag_handler( $tag ) {
 	$atts['maxlength'] = $tag->get_maxlength_option( '2000' );
 	$atts['minlength'] = $tag->get_minlength_option();
 
-	if ( $atts['maxlength'] and $atts['minlength']
-	and $atts['maxlength'] < $atts['minlength'] ) {
+	if (
+		$atts['maxlength'] and $atts['minlength'] and
+		$atts['maxlength'] < $atts['minlength']
+	) {
 		unset( $atts['maxlength'], $atts['minlength'] );
 	}
 
@@ -42,10 +44,7 @@ function wpcf7_textarea_form_tag_handler( $tag ) {
 	$atts['id'] = $tag->get_id_option();
 	$atts['tabindex'] = $tag->get_option( 'tabindex', 'signed_int', true );
 	$atts['readonly'] = $tag->has_option( 'readonly' );
-
-	$atts['autocomplete'] = $tag->get_option(
-		'autocomplete', '[-0-9a-zA-Z]+', true
-	);
+	$atts['autocomplete'] = $tag->get_autocomplete_option();
 
 	if ( $tag->is_required() ) {
 		$atts['aria-required'] = 'true';
@@ -64,8 +63,7 @@ function wpcf7_textarea_form_tag_handler( $tag ) {
 		? (string) reset( $tag->values )
 		: $tag->content;
 
-	if ( $tag->has_option( 'placeholder' )
-	or $tag->has_option( 'watermark' ) ) {
+	if ( $tag->has_option( 'placeholder' ) or $tag->has_option( 'watermark' ) ) {
 		$atts['placeholder'] = $value;
 		$value = '';
 	}
