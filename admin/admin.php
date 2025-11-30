@@ -582,12 +582,9 @@ function wpcf7_admin_integration_page() {
 
 	$formatter->append_preformatted(
 		sprintf(
-			/* translators: %s: link labeled 'Integration with external APIs' */
-			esc_html( __( 'You can expand the possibilities of your contact forms by integrating them with external services. For details, see %s.', 'contact-form-7' ) ),
-			wpcf7_link(
-				__( 'https://contactform7.com/integration-with-external-apis/', 'contact-form-7' ),
-				__( 'Integration with external APIs', 'contact-form-7' )
-			)
+			/* translators: %s: URL to support page about integration with external APIs */
+			__( 'You can expand the possibilities of your contact forms by integrating them with external services. For details, see <a href="%s">Integration with external APIs</a>.', 'contact-form-7' ),
+			__( 'https://contactform7.com/integration-with-external-apis/', 'contact-form-7' )
 		)
 	);
 

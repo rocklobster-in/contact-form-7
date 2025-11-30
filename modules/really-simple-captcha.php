@@ -31,16 +31,11 @@ function wpcf7_add_form_tag_captcha() {
 
 function wpcf7_captchac_form_tag_handler( $tag ) {
 	if ( ! class_exists( 'ReallySimpleCaptcha' ) ) {
-		$error = sprintf(
-			/* translators: %s: link labeled 'Really Simple CAPTCHA' */
-			esc_html( __( 'To use CAPTCHA, you need %s plugin installed.', 'contact-form-7' ) ),
-			wpcf7_link(
-				'https://wordpress.org/plugins/really-simple-captcha/',
-				'Really Simple CAPTCHA'
-			)
-		);
-
-		return sprintf( '<em>%s</em>', $error );
+		return wp_kses_data( sprintf(
+			/* translators: %s: URL to the Really Simple CAPTCHA plugin page */
+			__( '<strong>Warning:</strong> The <a href="%s">Really Simple CAPTCHA</a> plugin is not active.', 'contact-form-7' ),
+			'https://wordpress.org/plugins/really-simple-captcha/'
+		) );
 	}
 
 	if ( empty( $tag->name ) ) {
@@ -418,8 +413,10 @@ function wpcf7_generate_captcha( $options = null ) {
 		return false;
 	}
 
-	if ( ! is_dir( $captcha->tmp_dir )
-	or ! wp_is_writable( $captcha->tmp_dir ) ) {
+	if (
+		! is_dir( $captcha->tmp_dir ) or
+		! wp_is_writable( $captcha->tmp_dir )
+	) {
 		return false;
 	}
 
