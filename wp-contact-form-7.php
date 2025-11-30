@@ -7,12 +7,12 @@
  * Author URI: https://github.com/rocklobster-in/
  * License: GPL v2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
- * Version: 6.1.3
+ * Version: 6.1.4
  * Requires at least: 6.7
  * Requires PHP: 7.4
  */
 
-define( 'WPCF7_VERSION', '6.1.3' );
+define( 'WPCF7_VERSION', '6.1.4' );
 
 define( 'WPCF7_REQUIRED_WP_VERSION', '6.7' );
 
