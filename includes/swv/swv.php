@@ -5,9 +5,8 @@
 
 use RockLobsterInc\Swv\{ AbstractRule, CompositeRule };
 
-require_once WPCF7_PLUGIN_DIR . '/includes/swv/schema-holder.php';
-require_once WPCF7_PLUGIN_DIR . '/includes/swv/script-loader.php';
-require_once WPCF7_PLUGIN_DIR . '/includes/swv/php/abstract-rules.php';
+require_once 'schema-holder.php';
+require_once 'script-loader.php';
 
 
 /**
