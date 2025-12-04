@@ -101,7 +101,7 @@ class WPCF7_MailTag {
 }
 
 
-use Contactable\SWV;
+use RockLobsterInc\Swv;
 
 /**
  * Mail-tag output calculator.
@@ -125,9 +125,9 @@ class WPCF7_MailTag_OutputCalculator {
 		);
 	}
 
-	private function calc_swv_result( WPCF7_MailTag $mail_tag, SWV\Rule $rule ) {
+	private function calc_swv_result( WPCF7_MailTag $mail_tag, Swv\AbstractRule $rule ) {
 
-		if ( $rule instanceof SWV\AnyRule ) {
+		if ( $rule instanceof Swv\AnyRule ) {
 			$result = 0b000;
 
 			foreach ( $rule->rules() as $child_rule ) {
@@ -137,7 +137,7 @@ class WPCF7_MailTag_OutputCalculator {
 			return $result;
 		}
 
-		if ( $rule instanceof SWV\CompositeRule ) {
+		if ( $rule instanceof Swv\CompositeRule ) {
 			$result = 0b111;
 
 			foreach ( $rule->rules() as $child_rule ) {
@@ -153,15 +153,15 @@ class WPCF7_MailTag_OutputCalculator {
 			return self::email | self::text | self::blank;
 		}
 
-		if ( $rule instanceof SWV\RequiredRule ) {
+		if ( $rule instanceof Swv\RequiredRule ) {
 			return ~ self::blank;
 		}
 
-		if ( $rule instanceof SWV\EmailRule ) {
+		if ( $rule instanceof Swv\EmailRule ) {
 			return self::email | self::blank;
 		}
 
-		if ( $rule instanceof SWV\EnumRule ) {
+		if ( $rule instanceof Swv\EnumRule ) {
 			$acceptable_values = (array) $rule->get_property( 'accept' );
 			$acceptable_values = array_map( 'strval', $acceptable_values );
 			$acceptable_values = array_filter( $acceptable_values );

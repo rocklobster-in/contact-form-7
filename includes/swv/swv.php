@@ -3,6 +3,8 @@
  * Schema-Woven Validation API
  */
 
+use RockLobsterInc\Swv\{ AbstractRule, CompositeRule };
+
 require_once WPCF7_PLUGIN_DIR . '/includes/swv/schema-holder.php';
 require_once WPCF7_PLUGIN_DIR . '/includes/swv/script-loader.php';
 require_once WPCF7_PLUGIN_DIR . '/includes/swv/php/abstract-rules.php';
@@ -13,30 +15,30 @@ require_once WPCF7_PLUGIN_DIR . '/includes/swv/php/abstract-rules.php';
  */
 function wpcf7_swv_available_rules() {
 	$rules = array(
-		'required' => 'Contactable\SWV\RequiredRule',
-		'requiredfile' => 'Contactable\SWV\RequiredFileRule',
-		'email' => 'Contactable\SWV\EmailRule',
-		'url' => 'Contactable\SWV\URLRule',
-		'tel' => 'Contactable\SWV\TelRule',
-		'number' => 'Contactable\SWV\NumberRule',
-		'date' => 'Contactable\SWV\DateRule',
-		'time' => 'Contactable\SWV\TimeRule',
-		'file' => 'Contactable\SWV\FileRule',
-		'enum' => 'Contactable\SWV\EnumRule',
-		'dayofweek' => 'Contactable\SWV\DayofweekRule',
-		'minitems' => 'Contactable\SWV\MinItemsRule',
-		'maxitems' => 'Contactable\SWV\MaxItemsRule',
-		'minlength' => 'Contactable\SWV\MinLengthRule',
-		'maxlength' => 'Contactable\SWV\MaxLengthRule',
-		'minnumber' => 'Contactable\SWV\MinNumberRule',
-		'maxnumber' => 'Contactable\SWV\MaxNumberRule',
-		'mindate' => 'Contactable\SWV\MinDateRule',
-		'maxdate' => 'Contactable\SWV\MaxDateRule',
-		'minfilesize' => 'Contactable\SWV\MinFileSizeRule',
-		'maxfilesize' => 'Contactable\SWV\MaxFileSizeRule',
-		'stepnumber' => 'Contactable\SWV\StepNumberRule',
-		'all' => 'Contactable\SWV\AllRule',
-		'any' => 'Contactable\SWV\AnyRule',
+		'required' => 'RockLobsterInc\Swv\RequiredRule',
+		'requiredfile' => 'RockLobsterInc\Swv\RequiredFileRule',
+		'email' => 'RockLobsterInc\Swv\EmailRule',
+		'url' => 'RockLobsterInc\Swv\URLRule',
+		'tel' => 'RockLobsterInc\Swv\TelRule',
+		'number' => 'RockLobsterInc\Swv\NumberRule',
+		'date' => 'RockLobsterInc\Swv\DateRule',
+		'time' => 'RockLobsterInc\Swv\TimeRule',
+		'file' => 'RockLobsterInc\Swv\FileRule',
+		'enum' => 'RockLobsterInc\Swv\EnumRule',
+		'dayofweek' => 'RockLobsterInc\Swv\DayofweekRule',
+		'minitems' => 'RockLobsterInc\Swv\MinItemsRule',
+		'maxitems' => 'RockLobsterInc\Swv\MaxItemsRule',
+		'minlength' => 'RockLobsterInc\Swv\MinLengthRule',
+		'maxlength' => 'RockLobsterInc\Swv\MaxLengthRule',
+		'minnumber' => 'RockLobsterInc\Swv\MinNumberRule',
+		'maxnumber' => 'RockLobsterInc\Swv\MaxNumberRule',
+		'mindate' => 'RockLobsterInc\Swv\MinDateRule',
+		'maxdate' => 'RockLobsterInc\Swv\MaxDateRule',
+		'minfilesize' => 'RockLobsterInc\Swv\MinFileSizeRule',
+		'maxfilesize' => 'RockLobsterInc\Swv\MaxFileSizeRule',
+		'stepnumber' => 'RockLobsterInc\Swv\StepNumberRule',
+		'all' => 'RockLobsterInc\Swv\AllRule',
+		'any' => 'RockLobsterInc\Swv\AnyRule',
 	);
 
 	return apply_filters( 'wpcf7_swv_available_rules', $rules );
@@ -67,7 +69,7 @@ function wpcf7_swv_load_rules() {
  *
  * @param string $rule_name Rule name.
  * @param string|array $properties Optional. Rule properties.
- * @return \Contactable\SWV\Rule|null The rule object, or null if it failed.
+ * @return AbstractRule|null The rule object, or null if it failed.
  */
 function wpcf7_swv_create_rule( $rule_name, $properties = '' ) {
 	$rules = wpcf7_swv_available_rules();
@@ -138,7 +140,7 @@ function wpcf7_swv_get_meta_schema() {
 /**
  * The schema class as a composite rule.
  */
-class WPCF7_SWV_Schema extends \Contactable\SWV\CompositeRule {
+class WPCF7_SWV_Schema extends CompositeRule {
 
 	/**
 	 * The human-readable version of the schema.
