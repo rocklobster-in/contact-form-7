@@ -44,25 +44,6 @@ function wpcf7_swv_available_rules() {
 }
 
 
-add_action( 'wpcf7_init', 'wpcf7_swv_load_rules', 10, 0 );
-
-/**
- * Loads SWV fules.
- */
-function wpcf7_swv_load_rules() {
-	$rules = wpcf7_swv_available_rules();
-
-	foreach ( array_keys( $rules ) as $rule ) {
-		$file = sprintf( '%s.php', $rule );
-		$path = path_join( WPCF7_PLUGIN_DIR . '/includes/swv/php/rules', $file );
-
-		if ( file_exists( $path ) ) {
-			include_once $path;
-		}
-	}
-}
-
-
 /**
  * Creates an SWV rule object.
  *
