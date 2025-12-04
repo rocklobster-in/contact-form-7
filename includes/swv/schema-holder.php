@@ -1,5 +1,7 @@
 <?php
 
+use RockLobsterInc\FormDataTree\{ FormDataTree };
+
 trait WPCF7_SWV_SchemaHolder {
 
 	protected $schema;
@@ -31,14 +33,17 @@ trait WPCF7_SWV_SchemaHolder {
 	public function validate_schema( $context, WPCF7_Validation $validity ) {
 		$schema = $this->get_schema();
 
-		foreach ( $schema->validate( $context ) as $result ) {
-			if ( is_wp_error( $result ) ) {
-				$rule = $result->get_error_data();
-				$field = $rule->get_property( 'field' );
+		$form_data = new FormDataTree();
 
-				if ( isset( $field ) and $validity->is_valid( $field ) ) {
-					$validity->invalidate( $field, $result );
-				}
+		foreach ( $schema->validate( $form_data, $context ) as $error ) {
+			if ( ! is_wp_error( $error ) ) {
+				continue;
+			}
+
+			$rule = $error->rule;
+
+			if ( isset( $rule->field ) and $validity->is_valid( $rule->field ) ) {
+				$validity->invalidate( $rule->field, $error );
 			}
 		}
 	}

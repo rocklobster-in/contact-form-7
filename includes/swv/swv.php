@@ -3,7 +3,9 @@
  * Schema-Woven Validation API
  */
 
-use RockLobsterInc\Swv\{ AbstractRule, CompositeRule };
+use RockLobsterInc\Swv\{ AbstractRule, CompositeRule, Rules };
+use RockLobsterInc\Swv\{ InvalidityException as Invalidity };
+use RockLobsterInc\FormDataTree\{ FormDataTreeInterface as FormDataTree };
 
 require_once 'schema-holder.php';
 require_once 'script-loader.php';
@@ -14,30 +16,30 @@ require_once 'script-loader.php';
  */
 function wpcf7_swv_available_rules() {
 	$rules = array(
-		'all' => 'RockLobsterInc\Swv\AllRule',
-		'any' => 'RockLobsterInc\Swv\AnyRule',
-		'date' => 'RockLobsterInc\Swv\DateRule',
-		'dayofweek' => 'RockLobsterInc\Swv\DayofweekRule',
-		'email' => 'RockLobsterInc\Swv\EmailRule',
-		'enum' => 'RockLobsterInc\Swv\EnumRule',
-		'file' => 'RockLobsterInc\Swv\FileRule',
-		'maxdate' => 'RockLobsterInc\Swv\MaxDateRule',
-		'maxfilesize' => 'RockLobsterInc\Swv\MaxFileSizeRule',
-		'maxitems' => 'RockLobsterInc\Swv\MaxItemsRule',
-		'maxlength' => 'RockLobsterInc\Swv\MaxLengthRule',
-		'maxnumber' => 'RockLobsterInc\Swv\MaxNumberRule',
-		'mindate' => 'RockLobsterInc\Swv\MinDateRule',
-		'minfilesize' => 'RockLobsterInc\Swv\MinFileSizeRule',
-		'minitems' => 'RockLobsterInc\Swv\MinItemsRule',
-		'minlength' => 'RockLobsterInc\Swv\MinLengthRule',
-		'minnumber' => 'RockLobsterInc\Swv\MinNumberRule',
-		'number' => 'RockLobsterInc\Swv\NumberRule',
-		'required' => 'RockLobsterInc\Swv\RequiredRule',
-		'requiredfile' => 'RockLobsterInc\Swv\RequiredFileRule',
-		'stepnumber' => 'RockLobsterInc\Swv\StepNumberRule',
-		'tel' => 'RockLobsterInc\Swv\TelRule',
-		'time' => 'RockLobsterInc\Swv\TimeRule',
-		'url' => 'RockLobsterInc\Swv\URLRule',
+		'all' => 'Rules\AllRule',
+		'any' => 'Rules\AnyRule',
+		'date' => 'Rules\DateRule',
+		'dayofweek' => 'Rules\DayofweekRule',
+		'email' => 'Rules\EmailRule',
+		'enum' => 'Rules\EnumRule',
+		'file' => 'Rules\FileRule',
+		'maxdate' => 'Rules\MaxDateRule',
+		'maxfilesize' => 'Rules\MaxFileSizeRule',
+		'maxitems' => 'Rules\MaxItemsRule',
+		'maxlength' => 'Rules\MaxLengthRule',
+		'maxnumber' => 'Rules\MaxNumberRule',
+		'mindate' => 'Rules\MinDateRule',
+		'minfilesize' => 'Rules\MinFileSizeRule',
+		'minitems' => 'Rules\MinItemsRule',
+		'minlength' => 'Rules\MinLengthRule',
+		'minnumber' => 'Rules\MinNumberRule',
+		'number' => 'Rules\NumberRule',
+		'required' => 'Rules\RequiredRule',
+		'requiredfile' => 'Rules\RequiredFileRule',
+		'stepnumber' => 'Rules\StepNumberRule',
+		'tel' => 'Rules\TelRule',
+		'time' => 'Rules\TimeRule',
+		'url' => 'Rules\URLRule',
 	);
 
 	return apply_filters( 'wpcf7_swv_available_rules', $rules );
@@ -129,26 +131,39 @@ class WPCF7_SWV_Schema extends CompositeRule {
 
 
 	/**
-	 * Constructor.
+	 * Rule properties.
 	 */
-	public function __construct( $properties = '' ) {
-		$this->properties = wp_parse_args( $properties, array(
-			'version' => self::version,
-		) );
+	public readonly string $locale;
+
+
+	/**
+	 * Constructor.
+	 *
+	 * @param iterable $properties Rule properties.
+	 */
+	public function __construct( iterable $properties = [] ) {
+		$this->locale = $properties[ 'locale' ] ?? '';
 	}
 
 
 	/**
-	 * Validates with this schema.
-	 *
-	 * @param array $context Context.
-	 */
-	public function validate( $context ) {
+ 	 * Validates the form data according to the logic defined by this rule.
+ 	 *
+ 	 * @param FormDataTree $form_data Form data.
+ 	 * @param iterable $context Optional context.
+ 	 */
+	public function validate( FormDataTree $form_data, iterable $context = [] ) {
 		foreach ( $this->rules() as $rule ) {
 			if ( $rule->matches( $context ) ) {
-				yield $rule->validate( $context );
+				try {
+					$rule->validate( $form_data, $context );
+				} catch ( Invalidity $error ) {
+					yield new WP_Error( 'swv', $error->getMessage(), $error );
+				}
 			}
 		}
+
+		return true;
 	}
 
 }
