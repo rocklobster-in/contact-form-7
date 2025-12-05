@@ -3,7 +3,7 @@
  * Schema-Woven Validation API
  */
 
-use RockLobsterInc\Swv\{ AbstractRule, CompositeRule, Rules };
+use RockLobsterInc\Swv\{ AbstractRule, CompositeRule };
 use RockLobsterInc\Swv\{ InvalidityException as Invalidity };
 use RockLobsterInc\FormDataTree\{ FormDataTreeInterface as FormDataTree };
 
@@ -16,30 +16,30 @@ require_once 'script-loader.php';
  */
 function wpcf7_swv_available_rules() {
 	$rules = array(
-		'all' => 'Rules\AllRule',
-		'any' => 'Rules\AnyRule',
-		'date' => 'Rules\DateRule',
-		'dayofweek' => 'Rules\DayofweekRule',
-		'email' => 'Rules\EmailRule',
-		'enum' => 'Rules\EnumRule',
-		'file' => 'Rules\FileRule',
-		'maxdate' => 'Rules\MaxDateRule',
-		'maxfilesize' => 'Rules\MaxFileSizeRule',
-		'maxitems' => 'Rules\MaxItemsRule',
-		'maxlength' => 'Rules\MaxLengthRule',
-		'maxnumber' => 'Rules\MaxNumberRule',
-		'mindate' => 'Rules\MinDateRule',
-		'minfilesize' => 'Rules\MinFileSizeRule',
-		'minitems' => 'Rules\MinItemsRule',
-		'minlength' => 'Rules\MinLengthRule',
-		'minnumber' => 'Rules\MinNumberRule',
-		'number' => 'Rules\NumberRule',
-		'required' => 'Rules\RequiredRule',
-		'requiredfile' => 'Rules\RequiredFileRule',
-		'stepnumber' => 'Rules\StepNumberRule',
-		'tel' => 'Rules\TelRule',
-		'time' => 'Rules\TimeRule',
-		'url' => 'Rules\URLRule',
+		'all' => '\RockLobsterInc\Swv\Rules\AllRule',
+		'any' => '\RockLobsterInc\Swv\Rules\AnyRule',
+		'date' => '\RockLobsterInc\Swv\Rules\DateRule',
+		'dayofweek' => '\RockLobsterInc\Swv\Rules\DayofweekRule',
+		'email' => '\RockLobsterInc\Swv\Rules\EmailRule',
+		'enum' => '\RockLobsterInc\Swv\Rules\EnumRule',
+		'file' => '\RockLobsterInc\Swv\Rules\FileRule',
+		'maxdate' => '\RockLobsterInc\Swv\Rules\MaxDateRule',
+		'maxfilesize' => '\RockLobsterInc\Swv\Rules\MaxFileSizeRule',
+		'maxitems' => '\RockLobsterInc\Swv\Rules\MaxItemsRule',
+		'maxlength' => '\RockLobsterInc\Swv\Rules\MaxLengthRule',
+		'maxnumber' => '\RockLobsterInc\Swv\Rules\MaxNumberRule',
+		'mindate' => '\RockLobsterInc\Swv\Rules\MinDateRule',
+		'minfilesize' => '\RockLobsterInc\Swv\Rules\MinFileSizeRule',
+		'minitems' => '\RockLobsterInc\Swv\Rules\MinItemsRule',
+		'minlength' => '\RockLobsterInc\Swv\Rules\MinLengthRule',
+		'minnumber' => '\RockLobsterInc\Swv\Rules\MinNumberRule',
+		'number' => '\RockLobsterInc\Swv\Rules\NumberRule',
+		'required' => '\RockLobsterInc\Swv\Rules\RequiredRule',
+		'requiredfile' => '\RockLobsterInc\Swv\Rules\RequiredFileRule',
+		'stepnumber' => '\RockLobsterInc\Swv\Rules\StepNumberRule',
+		'tel' => '\RockLobsterInc\Swv\Rules\TelRule',
+		'time' => '\RockLobsterInc\Swv\Rules\TimeRule',
+		'url' => '\RockLobsterInc\Swv\Rules\URLRule',
 	);
 
 	return apply_filters( 'wpcf7_swv_available_rules', $rules );
@@ -164,6 +164,36 @@ class WPCF7_SWV_Schema extends CompositeRule {
 		}
 
 		return true;
+	}
+
+
+	/**
+ 	 * Wrapper function for addRule.
+	 *
+	 * @param AbstractRule $rule Sub-rule to be added.
+ 	 */
+	public function add_rule( AbstractRule $rule ) {
+		return $this->addRule( $rule );
+	}
+
+
+	/**
+	 * Wrapper function for toArray.
+	 *
+	 * @return iterable Array of rule properties.
+	 */
+	public function to_array() {
+		$rules_arrays = array();
+
+		foreach ( $this->rules() as $rule ) {
+			$rules_arrays[] = $rule->toArray();
+		}
+
+		return array(
+			'version' => self::version,
+			'locale' => $this->locale,
+			'rules' => $rules_arrays,
+		);
 	}
 
 }
