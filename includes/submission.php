@@ -826,12 +826,21 @@ class WPCF7_Submission {
 	private function unship_uploaded_files() {
 		$result = new WPCF7_Validation();
 
+		$this->contact_form->validate_schema( array(
+			'text' => false,
+			'file' => true,
+			'field' => array(),
+		), $result );
+
 		$tags = $this->contact_form->scan_form_tags( array(
 			'feature' => 'file-uploading',
 		) );
 
 		foreach ( $tags as $tag ) {
-			if ( empty( $_FILES[$tag->name] ) ) {
+			if (
+				! $result->is_valid( $tag->name ) or
+				empty( $_FILES[$tag->name] )
+			) {
 				continue;
 			}
 
@@ -843,15 +852,12 @@ class WPCF7_Submission {
 				'required' => $tag->is_required(),
 				'filetypes' => $tag->get_option( 'filetypes' ),
 				'limit' => $tag->get_limit_option(),
-				'schema' => $this->contact_form->get_schema(),
 			);
 
 			$new_files = wpcf7_unship_uploaded_file( $file, $options );
 
 			if ( is_wp_error( $new_files ) ) {
 				$result->invalidate( $tag, $new_files );
-			} else {
-				$this->add_uploaded_file( $tag->name, $new_files );
 			}
 
 			$result = apply_filters(
@@ -861,6 +867,10 @@ class WPCF7_Submission {
 					'uploaded_files' => $new_files,
 				)
 			);
+
+			if ( $result->is_valid( $tag->name ) ) {
+				$this->add_uploaded_file( $tag->name, $new_files );
+			}
 		}
 
 		$this->invalid_fields = $result->get_invalid_fields();

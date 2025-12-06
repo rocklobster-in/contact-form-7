@@ -35,19 +35,6 @@ function wpcf7_unship_uploaded_file( $file, $options = '' ) {
 		}
 	}
 
-	if ( isset( $options['schema'] ) and isset( $options['name'] ) ) {
-		$context = array(
-			'file' => true,
-			'field' => $options['name'],
-		);
-
-		foreach ( $options['schema']->validate( $context ) as $result ) {
-			if ( is_wp_error( $result ) ) {
-				return $result;
-			}
-		}
-	}
-
 	// Move uploaded file to tmp dir
 	$uploads_dir = wpcf7_upload_tmp_dir();
 	$uploads_dir = wpcf7_maybe_add_random_dir( $uploads_dir );

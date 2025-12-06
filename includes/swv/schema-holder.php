@@ -40,7 +40,7 @@ trait WPCF7_SWV_SchemaHolder {
 				continue;
 			}
 
-			$rule = $error->rule;
+			$rule = $error->get_error_data();
 
 			if ( isset( $rule->field ) and $validity->is_valid( $rule->field ) ) {
 				$validity->invalidate( $rule->field, $error );
