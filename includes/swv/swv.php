@@ -3,9 +3,12 @@
  * Schema-Woven Validation API
  */
 
-require_once WPCF7_PLUGIN_DIR . '/includes/swv/schema-holder.php';
-require_once WPCF7_PLUGIN_DIR . '/includes/swv/script-loader.php';
-require_once WPCF7_PLUGIN_DIR . '/includes/swv/php/abstract-rules.php';
+use RockLobsterInc\Swv\{ AbstractRule, CompositeRule };
+use RockLobsterInc\Swv\{ InvalidityException as Invalidity };
+use RockLobsterInc\FormDataTree\{ FormDataTreeInterface as FormDataTree };
+
+require_once 'schema-holder.php';
+require_once 'script-loader.php';
 
 
 /**
@@ -13,52 +16,33 @@ require_once WPCF7_PLUGIN_DIR . '/includes/swv/php/abstract-rules.php';
  */
 function wpcf7_swv_available_rules() {
 	$rules = array(
-		'required' => 'Contactable\SWV\RequiredRule',
-		'requiredfile' => 'Contactable\SWV\RequiredFileRule',
-		'email' => 'Contactable\SWV\EmailRule',
-		'url' => 'Contactable\SWV\URLRule',
-		'tel' => 'Contactable\SWV\TelRule',
-		'number' => 'Contactable\SWV\NumberRule',
-		'date' => 'Contactable\SWV\DateRule',
-		'time' => 'Contactable\SWV\TimeRule',
-		'file' => 'Contactable\SWV\FileRule',
-		'enum' => 'Contactable\SWV\EnumRule',
-		'dayofweek' => 'Contactable\SWV\DayofweekRule',
-		'minitems' => 'Contactable\SWV\MinItemsRule',
-		'maxitems' => 'Contactable\SWV\MaxItemsRule',
-		'minlength' => 'Contactable\SWV\MinLengthRule',
-		'maxlength' => 'Contactable\SWV\MaxLengthRule',
-		'minnumber' => 'Contactable\SWV\MinNumberRule',
-		'maxnumber' => 'Contactable\SWV\MaxNumberRule',
-		'mindate' => 'Contactable\SWV\MinDateRule',
-		'maxdate' => 'Contactable\SWV\MaxDateRule',
-		'minfilesize' => 'Contactable\SWV\MinFileSizeRule',
-		'maxfilesize' => 'Contactable\SWV\MaxFileSizeRule',
-		'stepnumber' => 'Contactable\SWV\StepNumberRule',
-		'all' => 'Contactable\SWV\AllRule',
-		'any' => 'Contactable\SWV\AnyRule',
+		'all' => '\RockLobsterInc\Swv\Rules\AllRule',
+		'any' => '\RockLobsterInc\Swv\Rules\AnyRule',
+		'date' => '\RockLobsterInc\Swv\Rules\DateRule',
+		'dayofweek' => '\RockLobsterInc\Swv\Rules\DayofweekRule',
+		'email' => '\RockLobsterInc\Swv\Rules\EmailRule',
+		'enum' => '\RockLobsterInc\Swv\Rules\EnumRule',
+		'file' => '\RockLobsterInc\Swv\Rules\FileRule',
+		'maxdate' => '\RockLobsterInc\Swv\Rules\MaxDateRule',
+		'maxfilesize' => '\RockLobsterInc\Swv\Rules\MaxFileSizeRule',
+		'maxitems' => '\RockLobsterInc\Swv\Rules\MaxItemsRule',
+		'maxlength' => '\RockLobsterInc\Swv\Rules\MaxLengthRule',
+		'maxnumber' => '\RockLobsterInc\Swv\Rules\MaxNumberRule',
+		'mindate' => '\RockLobsterInc\Swv\Rules\MinDateRule',
+		'minfilesize' => '\RockLobsterInc\Swv\Rules\MinFileSizeRule',
+		'minitems' => '\RockLobsterInc\Swv\Rules\MinItemsRule',
+		'minlength' => '\RockLobsterInc\Swv\Rules\MinLengthRule',
+		'minnumber' => '\RockLobsterInc\Swv\Rules\MinNumberRule',
+		'number' => '\RockLobsterInc\Swv\Rules\NumberRule',
+		'required' => '\RockLobsterInc\Swv\Rules\RequiredRule',
+		'requiredfile' => '\RockLobsterInc\Swv\Rules\RequiredFileRule',
+		'stepnumber' => '\RockLobsterInc\Swv\Rules\StepNumberRule',
+		'tel' => '\RockLobsterInc\Swv\Rules\TelRule',
+		'time' => '\RockLobsterInc\Swv\Rules\TimeRule',
+		'url' => '\RockLobsterInc\Swv\Rules\URLRule',
 	);
 
 	return apply_filters( 'wpcf7_swv_available_rules', $rules );
-}
-
-
-add_action( 'wpcf7_init', 'wpcf7_swv_load_rules', 10, 0 );
-
-/**
- * Loads SWV fules.
- */
-function wpcf7_swv_load_rules() {
-	$rules = wpcf7_swv_available_rules();
-
-	foreach ( array_keys( $rules ) as $rule ) {
-		$file = sprintf( '%s.php', $rule );
-		$path = path_join( WPCF7_PLUGIN_DIR . '/includes/swv/php/rules', $file );
-
-		if ( file_exists( $path ) ) {
-			include_once $path;
-		}
-	}
 }
 
 
@@ -67,7 +51,7 @@ function wpcf7_swv_load_rules() {
  *
  * @param string $rule_name Rule name.
  * @param string|array $properties Optional. Rule properties.
- * @return \Contactable\SWV\Rule|null The rule object, or null if it failed.
+ * @return AbstractRule|null The rule object, or null if it failed.
  */
 function wpcf7_swv_create_rule( $rule_name, $properties = '' ) {
 	$rules = wpcf7_swv_available_rules();
@@ -138,7 +122,7 @@ function wpcf7_swv_get_meta_schema() {
 /**
  * The schema class as a composite rule.
  */
-class WPCF7_SWV_Schema extends \Contactable\SWV\CompositeRule {
+class WPCF7_SWV_Schema extends CompositeRule {
 
 	/**
 	 * The human-readable version of the schema.
@@ -147,26 +131,69 @@ class WPCF7_SWV_Schema extends \Contactable\SWV\CompositeRule {
 
 
 	/**
-	 * Constructor.
+	 * Rule properties.
 	 */
-	public function __construct( $properties = '' ) {
-		$this->properties = wp_parse_args( $properties, array(
-			'version' => self::version,
-		) );
+	public readonly string $locale;
+
+
+	/**
+	 * Constructor.
+	 *
+	 * @param array $properties Rule properties.
+	 */
+	public function __construct( array $properties = [] ) {
+		$this->locale = $properties[ 'locale' ] ?? '';
 	}
 
 
 	/**
-	 * Validates with this schema.
-	 *
-	 * @param array $context Context.
-	 */
-	public function validate( $context ) {
+ 	 * Validates the form data according to the logic defined by this rule.
+ 	 *
+ 	 * @param FormDataTree $form_data Form data.
+ 	 * @param array $context Optional context.
+ 	 */
+	public function validate( FormDataTree $form_data, array $context = [] ) {
 		foreach ( $this->rules() as $rule ) {
 			if ( $rule->matches( $context ) ) {
-				yield $rule->validate( $context );
+				try {
+					$rule->validate( $form_data, $context );
+				} catch ( Invalidity $error ) {
+					yield new WP_Error( 'swv', $error->getMessage(), $error );
+				}
 			}
 		}
+
+		return true;
+	}
+
+
+	/**
+ 	 * Wrapper function for addRule.
+	 *
+	 * @param AbstractRule $rule Sub-rule to be added.
+ 	 */
+	public function add_rule( AbstractRule $rule ) {
+		return $this->addRule( $rule );
+	}
+
+
+	/**
+	 * Wrapper function for toArray.
+	 *
+	 * @return array Array of rule properties.
+	 */
+	public function to_array() {
+		$rules_arrays = array();
+
+		foreach ( $this->rules() as $rule ) {
+			$rules_arrays[] = $rule->toArray();
+		}
+
+		return array(
+			'version' => self::version,
+			'locale' => $this->locale,
+			'rules' => $rules_arrays,
+		);
 	}
 
 }
