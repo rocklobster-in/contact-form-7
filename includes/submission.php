@@ -858,6 +858,8 @@ class WPCF7_Submission {
 
 			if ( is_wp_error( $new_files ) ) {
 				$result->invalidate( $tag, $new_files );
+			} else {
+				$this->add_uploaded_file( $tag->name, $new_files );
 			}
 
 			$result = apply_filters(
@@ -867,10 +869,6 @@ class WPCF7_Submission {
 					'uploaded_files' => $new_files,
 				)
 			);
-
-			if ( $result->is_valid( $tag->name ) ) {
-				$this->add_uploaded_file( $tag->name, $new_files );
-			}
 		}
 
 		$this->invalid_fields = $result->get_invalid_fields();
