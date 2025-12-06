@@ -139,9 +139,9 @@ class WPCF7_SWV_Schema extends CompositeRule {
 	/**
 	 * Constructor.
 	 *
-	 * @param iterable $properties Rule properties.
+	 * @param array $properties Rule properties.
 	 */
-	public function __construct( iterable $properties = [] ) {
+	public function __construct( array $properties = [] ) {
 		$this->locale = $properties[ 'locale' ] ?? '';
 	}
 
@@ -150,9 +150,9 @@ class WPCF7_SWV_Schema extends CompositeRule {
  	 * Validates the form data according to the logic defined by this rule.
  	 *
  	 * @param FormDataTree $form_data Form data.
- 	 * @param iterable $context Optional context.
+ 	 * @param array $context Optional context.
  	 */
-	public function validate( FormDataTree $form_data, iterable $context = [] ) {
+	public function validate( FormDataTree $form_data, array $context = [] ) {
 		foreach ( $this->rules() as $rule ) {
 			if ( $rule->matches( $context ) ) {
 				try {
@@ -180,7 +180,7 @@ class WPCF7_SWV_Schema extends CompositeRule {
 	/**
 	 * Wrapper function for toArray.
 	 *
-	 * @return iterable Array of rule properties.
+	 * @return array Array of rule properties.
 	 */
 	public function to_array() {
 		$rules_arrays = array();
