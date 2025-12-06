@@ -101,7 +101,7 @@ class WPCF7_MailTag {
 }
 
 
-use RockLobsterInc\Swv;
+use RockLobsterInc\Swv\{ AbstractRule, CompositeRule, Rules };
 
 /**
  * Mail-tag output calculator.
@@ -125,9 +125,9 @@ class WPCF7_MailTag_OutputCalculator {
 		);
 	}
 
-	private function calc_swv_result( WPCF7_MailTag $mail_tag, Swv\AbstractRule $rule ) {
+	private function calc_swv_result( WPCF7_MailTag $mail_tag, AbstractRule $rule ) {
 
-		if ( $rule instanceof Swv\AnyRule ) {
+		if ( $rule instanceof Rules\AnyRule ) {
 			$result = 0b000;
 
 			foreach ( $rule->rules() as $child_rule ) {
@@ -137,7 +137,7 @@ class WPCF7_MailTag_OutputCalculator {
 			return $result;
 		}
 
-		if ( $rule instanceof Swv\CompositeRule ) {
+		if ( $rule instanceof CompositeRule ) {
 			$result = 0b111;
 
 			foreach ( $rule->rules() as $child_rule ) {
@@ -147,22 +147,22 @@ class WPCF7_MailTag_OutputCalculator {
 			return $result;
 		}
 
-		$field_prop = $rule->get_property( 'field' );
+		$field = $rule->field ?? '';
 
-		if ( empty( $field_prop ) or $field_prop !== $mail_tag->field_name() ) {
+		if ( empty( $field ) or $field !== $mail_tag->field_name() ) {
 			return self::email | self::text | self::blank;
 		}
 
-		if ( $rule instanceof Swv\RequiredRule ) {
+		if ( $rule instanceof Rules\RequiredRule ) {
 			return ~ self::blank;
 		}
 
-		if ( $rule instanceof Swv\EmailRule ) {
+		if ( $rule instanceof Rules\EmailRule ) {
 			return self::email | self::blank;
 		}
 
-		if ( $rule instanceof Swv\EnumRule ) {
-			$acceptable_values = (array) $rule->get_property( 'accept' );
+		if ( $rule instanceof Rules\EnumRule ) {
+			$acceptable_values = $rule->accept ?? array();
 			$acceptable_values = array_map( 'strval', $acceptable_values );
 			$acceptable_values = array_filter( $acceptable_values );
 			$acceptable_values = array_unique( $acceptable_values );
