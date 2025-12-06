@@ -35,15 +35,16 @@ trait WPCF7_SWV_SchemaHolder {
 
 		$form_data = new FormDataTree();
 
-		foreach ( $schema->validate( $form_data, $context ) as $error ) {
-			if ( ! is_wp_error( $error ) ) {
+		foreach ( $schema->validate( $form_data, $context ) as $wp_error ) {
+			if ( ! is_wp_error( $wp_error ) ) {
 				continue;
 			}
 
-			$rule = $error->get_error_data();
+			$error = $wp_error->get_error_data();
+			$rule = $error->rule;
 
 			if ( isset( $rule->field ) and $validity->is_valid( $rule->field ) ) {
-				$validity->invalidate( $rule->field, $error );
+				$validity->invalidate( $rule->field, $wp_error );
 			}
 		}
 	}
