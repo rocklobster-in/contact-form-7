@@ -170,6 +170,24 @@ class WPCF7_SWV_Schema extends CompositeRule {
 
 
 	/**
+	 * Returns an array that represents the rule properties.
+	 *
+	 * @return array Array of rule properties.
+	 */
+	public function toArray(): array {
+		$rules_arrays = array_map( static function ( $item ) {
+			return $item->toArray();
+		}, $this->rules() );
+
+		return array(
+			'version' => self::version,
+			'locale' => $this->locale,
+			'rules' => $rules_arrays,
+		);
+	}
+
+
+	/**
  	 * Wrapper function for addRule.
 	 *
 	 * @param AbstractRule $rule Sub-rule to be added.
@@ -185,17 +203,7 @@ class WPCF7_SWV_Schema extends CompositeRule {
 	 * @return array Array of rule properties.
 	 */
 	public function to_array() {
-		$rules_arrays = array();
-
-		foreach ( $this->rules() as $rule ) {
-			$rules_arrays[] = $rule->toArray();
-		}
-
-		return array(
-			'version' => self::version,
-			'locale' => $this->locale,
-			'rules' => $rules_arrays,
-		);
+		return $this->toArray();
 	}
 
 }
