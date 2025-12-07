@@ -124,7 +124,7 @@ function wpcf7_swv_get_meta_schema() {
 /**
  * The schema class as a composite rule.
  */
-class WPCF7_SWV_Schema extends CompositeRule {
+final class WPCF7_SWV_Schema extends CompositeRule {
 
 	/**
 	 * The human-readable version of the schema.
