@@ -35,6 +35,8 @@ trait WPCF7_SWV_SchemaHolder {
 
 		$form_data = new FormDataTree();
 
+		$context = wp_parse_args( $context );
+
 		foreach ( $schema->validate( $form_data, $context ) as $wp_error ) {
 			if ( ! is_wp_error( $wp_error ) ) {
 				continue;
