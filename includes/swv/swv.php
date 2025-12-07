@@ -54,9 +54,11 @@ function wpcf7_swv_available_rules() {
  * @return AbstractRule|null The rule object, or null if it failed.
  */
 function wpcf7_swv_create_rule( $rule_name, $properties = '' ) {
+	$properties = wp_parse_args( $properties );
+
 	$rules = wpcf7_swv_available_rules();
 
-	if ( isset( $rules[$rule_name] ) ) {
+	if ( isset( $rules[$rule_name] ) and class_exists( $rules[$rule_name] ) ) {
 		return new $rules[$rule_name]( $properties );
 	}
 }
