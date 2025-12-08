@@ -54,9 +54,11 @@ function wpcf7_swv_available_rules() {
  * @return AbstractRule|null The rule object, or null if it failed.
  */
 function wpcf7_swv_create_rule( $rule_name, $properties = '' ) {
+	$properties = wp_parse_args( $properties );
+
 	$rules = wpcf7_swv_available_rules();
 
-	if ( isset( $rules[$rule_name] ) ) {
+	if ( isset( $rules[$rule_name] ) and class_exists( $rules[$rule_name] ) ) {
 		return new $rules[$rule_name]( $properties );
 	}
 }
@@ -122,7 +124,7 @@ function wpcf7_swv_get_meta_schema() {
 /**
  * The schema class as a composite rule.
  */
-class WPCF7_SWV_Schema extends CompositeRule {
+final class WPCF7_SWV_Schema extends CompositeRule {
 
 	/**
 	 * The human-readable version of the schema.
@@ -168,6 +170,24 @@ class WPCF7_SWV_Schema extends CompositeRule {
 
 
 	/**
+	 * Returns an array that represents the rule properties.
+	 *
+	 * @return array Array of rule properties.
+	 */
+	public function toArray(): array {
+		$rules_arrays = array_map( static function ( $item ) {
+			return $item->toArray();
+		}, $this->rules() );
+
+		return array(
+			'version' => self::version,
+			'locale' => $this->locale,
+			'rules' => $rules_arrays,
+		);
+	}
+
+
+	/**
  	 * Wrapper function for addRule.
 	 *
 	 * @param AbstractRule $rule Sub-rule to be added.
@@ -183,17 +203,7 @@ class WPCF7_SWV_Schema extends CompositeRule {
 	 * @return array Array of rule properties.
 	 */
 	public function to_array() {
-		$rules_arrays = array();
-
-		foreach ( $this->rules() as $rule ) {
-			$rules_arrays[] = $rule->toArray();
-		}
-
-		return array(
-			'version' => self::version,
-			'locale' => $this->locale,
-			'rules' => $rules_arrays,
-		);
+		return $this->toArray();
 	}
 
 }

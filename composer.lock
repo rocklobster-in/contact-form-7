@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "36d591c8d3b1209cc98c0cc93652e691",
+    "content-hash": "0829e2692de3052d6c16d1b1ca7a57d8",
     "packages": [
         {
             "name": "rocklobsterinc/form-data-tree",
@@ -92,16 +92,16 @@
         },
         {
             "name": "rocklobsterinc/swv",
-            "version": "v2.0.1",
+            "version": "v2.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rocklobster-in/swv-php.git",
-                "reference": "257a439f44d68a21e8e92409fca6ce7e6e9694d6"
+                "reference": "d8508842cf66f76a27af2bb6d0d29a82c1686025"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rocklobster-in/swv-php/zipball/257a439f44d68a21e8e92409fca6ce7e6e9694d6",
-                "reference": "257a439f44d68a21e8e92409fca6ce7e6e9694d6",
+                "url": "https://api.github.com/repos/rocklobster-in/swv-php/zipball/d8508842cf66f76a27af2bb6d0d29a82c1686025",
+                "reference": "d8508842cf66f76a27af2bb6d0d29a82c1686025",
                 "shasum": ""
             },
             "require": {
@@ -131,9 +131,9 @@
             "description": "Schema-Woven Validation for PHP",
             "support": {
                 "issues": "https://github.com/rocklobster-in/swv-php/issues",
-                "source": "https://github.com/rocklobster-in/swv-php/tree/v2.0.1"
+                "source": "https://github.com/rocklobster-in/swv-php/tree/v2.0.2"
             },
-            "time": "2025-12-06T08:28:47+00:00"
+            "time": "2025-12-08T02:52:11+00:00"
         }
     ],
     "packages-dev": [],
