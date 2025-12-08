@@ -564,7 +564,7 @@ class WPCF7_Submission {
 		$this->contact_form->validate_schema(
 			array(
 				'text' => true,
-				'file' => false,
+				'file' => true,
 				'field' => array(),
 			),
 			$result
@@ -826,12 +826,6 @@ class WPCF7_Submission {
 	private function unship_uploaded_files() {
 		$result = new WPCF7_Validation();
 
-		$this->contact_form->validate_schema( array(
-			'text' => false,
-			'file' => true,
-			'field' => array(),
-		), $result );
-
 		$tags = $this->contact_form->scan_form_tags( array(
 			'feature' => 'file-uploading',
 		) );
@@ -844,17 +838,13 @@ class WPCF7_Submission {
 				continue;
 			}
 
-			$file = $_FILES[$tag->name];
-
-			$options = array(
+			$new_files = wpcf7_unship_uploaded_file( $_FILES[$tag->name], array(
 				'tag' => $tag,
 				'name' => $tag->name,
 				'required' => $tag->is_required(),
 				'filetypes' => $tag->get_option( 'filetypes' ),
 				'limit' => $tag->get_limit_option(),
-			);
-
-			$new_files = wpcf7_unship_uploaded_file( $file, $options );
+			) );
 
 			if ( is_wp_error( $new_files ) ) {
 				$result->invalidate( $tag, $new_files );
@@ -862,9 +852,8 @@ class WPCF7_Submission {
 				$this->add_uploaded_file( $tag->name, $new_files );
 			}
 
-			$result = apply_filters(
-				"wpcf7_validate_{$tag->type}",
-				$result, $tag,
+			$result = apply_filters( "wpcf7_validate_{$tag->type}", $result,
+				$tag,
 				array(
 					'uploaded_files' => $new_files,
 				)
