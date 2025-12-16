@@ -1,6 +1,6 @@
 {
 	"require": {
-		"rocklobsterinc/functions": "^v1.0.3",
-		"rocklobsterinc/swv": "^v2.0.2"
+		"rocklobsterinc/functions": "^v1.0.4",
+		"rocklobsterinc/swv": "^v2.0.3"
 	}
 }
