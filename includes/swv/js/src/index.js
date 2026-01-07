@@ -1,28 +1,40 @@
+import FormDataTree from '@rocklobsterinc/form-data-tree';
+
 import {
 	InvalidityException,
 	AbstractRule,
 	CompositeRule,
-	rules as availableRules,
+	rules as ruleDictionary,
 } from '@rocklobsterinc/swv';
 
 
-function WPCF7Schema( properties ) {
-	for ( const rule of properties.rules ) {
-		if ( availableRules.has( rule.rule ) ) {
-			const Constructor = availableRules.get( rule.rule );
-			this.addRule( new Constructor( rule ) );
-		}
-	}
-}
+const constructRule = properties => {
+	const { ruleName: rule, rules, ...remainingProperties } = properties;
 
-Object.setPrototypeOf( WPCF7Schema.prototype, CompositeRule.prototype );
+	if ( ruleDictionary.has( ruleName ) ) {
+		const constructor = ruleDictionary.get( ruleName );
+		const ruleObj = new constructor( remainingProperties );
+
+		if ( ruleObj instanceof CompositeRule ) {
+			rules.forEach( subRuleProperties => {
+				const subRuleObj = constructRule( subRuleProperties );
+
+				if ( subRuleObj ) {
+					ruleObj.addRule( subRuleObj );
+				}
+			} );
+		}
+
+		return ruleObj;
+	}
+};
 
 
 window.swv = {
 	InvalidityException,
 	AbstractRule,
 	CompositeRule,
-	availableRules,
-	WPCF7Schema,
+	ruleDictionary,
+	constructRule,
 	...( window.swv ?? {} ),
 };
