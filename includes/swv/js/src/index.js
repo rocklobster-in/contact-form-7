@@ -20,8 +20,16 @@ const validate = ( schema, formData, context ) => {
 				ruleObj.validate( formDataTree, context );
 			} catch ( error ) {
 				if ( error instanceof Invalidity ) {
-					if ( error.rule.field && ! result.has( error.rule.field ) ) {
-						result.set( error.rule.field, error.message );
+					if ( error.cause instanceof Invalidity ) {
+						const field = error.cause.rule.field;
+						const message = error.cause.message;
+					} else {
+						const field = error.rule.field;
+						const message = error.message;
+					}
+
+					if ( field && ! result.has( field ) ) {
+						result.set( field, message );
 					}
 				} else {
 					throw error;
