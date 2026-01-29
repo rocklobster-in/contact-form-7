@@ -179,6 +179,23 @@ class WPCF7_Contact_Form_List_Table extends WP_List_Table {
 			$actions = array_merge( $actions, array(
 				'copy' => wpcf7_link( $copy_link, __( 'Duplicate', 'contact-form-7' ) ),
 			) );
+
+			$export_link = add_query_arg(
+				array(
+					'post' => absint( $item->id() ),
+					'action' => 'export',
+				),
+				menu_page_url( 'wpcf7', false )
+			);
+
+			$export_link = wp_nonce_url(
+				$export_link,
+				'wpcf7-export-contact-form_' . absint( $item->id() )
+			);
+
+			$actions = array_merge( $actions, array(
+				'export' => wpcf7_link( $export_link, __( 'Export', 'contact-form-7' ) ),
+			) );
 		}
 
 		return $this->row_actions( $actions );
