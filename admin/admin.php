@@ -5,6 +5,7 @@ require_once WPCF7_PLUGIN_DIR . '/admin/includes/help-tabs.php';
 require_once WPCF7_PLUGIN_DIR . '/admin/includes/tag-generator.php';
 require_once WPCF7_PLUGIN_DIR . '/admin/includes/welcome-panel.php';
 require_once WPCF7_PLUGIN_DIR . '/admin/includes/config-validator.php';
+require_once WPCF7_PLUGIN_DIR . '/admin/includes/export.php';
 
 
 add_action(
@@ -363,6 +364,29 @@ function wpcf7_load_contact_form_admin() {
 
 		wp_safe_redirect( $redirect_to );
 		exit();
+	}
+
+	if ( 'export' === $action ) {
+		$post_id = absint( wpcf7_superglobal_request( 'post' ) );
+
+		check_admin_referer( 'wpcf7-export-contact-form_' . $post_id );
+
+		if ( ! current_user_can( 'wpcf7_edit_contact_form', $post_id ) ) {
+			wp_die(
+				esc_html( __( 'You are not allowed to export this item.', 'contact-form-7' ) )
+			);
+		}
+
+		$contact_form = wpcf7_contact_form( $post_id );
+
+		if ( ! $contact_form ) {
+			wp_die(
+				esc_html( __( 'Contact form not found.', 'contact-form-7' ) )
+			);
+		}
+
+		// Export the form
+		wpcf7_export_contact_form( $contact_form );
 	}
 
 	$post = null;
