@@ -12,6 +12,10 @@
  * Requires PHP: 8.3
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly
+}
+
 define( 'WPCF7_VERSION', '6.2-dev' );
 
 define( 'WPCF7_REQUIRED_WP_VERSION', '6.9' );
