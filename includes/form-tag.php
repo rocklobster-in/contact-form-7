@@ -361,6 +361,48 @@ class WPCF7_FormTag implements ArrayAccess {
 
 
 	/**
+	 * Retrieves a datetime-type option value from the form-tag.
+	 *
+	 * @param string $option_name A datetime-type option name, such as 'min' or 'max'.
+	 * @return string|bool The option value in YYYY-MM-DDTHH:MM format. False if the
+	 *                     option does not exist or the datetime value is invalid.
+	 */
+	public function get_datetime_option( $option_name ) {
+		$option_value = $this->get_option( $option_name, '', true );
+
+		if ( empty( $option_value ) ) {
+			return false;
+		}
+
+		$datetime = apply_filters( 'wpcf7_form_tag_datetime_option',
+			null,
+			array( $option_name => $option_value )
+		);
+
+		if ( $datetime ) {
+			$datetime_pattern = '/^([0-9]{4})-([0-9]{2})-([0-9]{2})T([0-9]{2}):([0-9]{2})$/';
+
+			if ( preg_match( $datetime_pattern, $datetime, $matches ) ) {
+				if ( checkdate( $matches[2], $matches[3], $matches[1] ) ) {
+					return $datetime;
+				}
+			}
+		} else {
+			$datetime_obj = date_create_immutable(
+				preg_replace( '/[_]+/', ' ', $option_value ),
+				wp_timezone()
+			);
+
+			if ( $datetime_obj ) {
+				return $datetime_obj->format( 'Y-m-d\TH:i' );
+			}
+		}
+
+		return false;
+	}
+
+
+	/**
 	 * Retrieves the default option value from the form-tag.
 	 *
 	 * @param string|array $default_value Optional default value.
