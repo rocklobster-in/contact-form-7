@@ -1,55 +1,53 @@
 import FormDataTree from '@rocklobsterinc/form-data-tree';
 
 import {
-	InvalidityException,
-	AbstractRule,
 	CompositeRule,
 	rulesDictionary,
+	InvalidityException as Invalidity
 } from '@rocklobsterinc/swv';
 
+function Schema( properties ) {
+	CompositeRule.call( this );
 
-const validate = ( schema, formData, context ) => {
-	const rules = schema.rules ?? [];
-	const formDataTree = new FormDataTree( formData );
+	properties.rules.forEach( rule => {
+		const ruleObj = Schema.createRule( rule );
 
-	const result = rules.reduce( ( result, rule ) => {
-		const ruleObj = constructRule( rule );
+		if ( ruleObj ) {
+			this.addRule( ruleObj );
+		}
+	} );
+}
 
-		if ( ruleObj.matches( context ) ) {
+Schema.prototype = {
+
+	*validate( formDataTree, context ) {
+		const rules = this.rules.filter( rule => rule.matches( context ) );
+
+		for ( const rule of rules ) {
 			try {
-				ruleObj.validate( formDataTree, context );
+				rule.validate( formDataTree, context );
 			} catch ( error ) {
 				if ( error instanceof Invalidity ) {
-					if ( error.cause instanceof Invalidity ) {
-						error = error.cause;
-					}
-
-					if ( error.rule.field && ! result.has( error.rule.field ) ) {
-						result.set( error.rule.field, error.message );
-					}
+					yield { field: error.field, message: error.message };
 				} else {
 					throw error;
 				}
 			}
 		}
+	},
 
-		return result;
-	}, new Map() );
-
-	return result;
 };
 
+Object.setPrototypeOf( Schema.prototype, CompositeRule.prototype );
 
-const constructRule = properties => {
-	const { ruleName: rule, rules, ...remainingProperties } = properties;
-
-	if ( rulesDictionary.has( ruleName ) ) {
-		const constructor = rulesDictionary.get( ruleName );
-		const ruleObj = new constructor( remainingProperties );
+Schema.createRule = properties => {
+	if ( rulesDictionary.has( properties.rule ) ) {
+		const ruleConstructor = rulesDictionary.get( properties.rule );
+		const ruleObj = new ruleConstructor( properties );
 
 		if ( ruleObj instanceof CompositeRule ) {
-			rules.forEach( subRuleProperties => {
-				const subRuleObj = constructRule( subRuleProperties );
+			properties.rules.forEach( subRule => {
+				const subRuleObj = Schema.createRule( subRule );
 
 				if ( subRuleObj ) {
 					ruleObj.addRule( subRuleObj );
@@ -61,12 +59,7 @@ const constructRule = properties => {
 	}
 };
 
-
 window.swv = {
-	InvalidityException,
-	AbstractRule,
-	CompositeRule,
+	Schema,
 	rulesDictionary,
-	constructRule,
-	...( window.swv ?? {} ),
 };
