@@ -5,7 +5,7 @@ Tags: contact form, schema-woven validation
 Tested up to: 6.9
 Requires at least: 6.7
 Requires PHP: 7.4
-Stable tag: 6.1.3
+Stable tag: 6.1.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -67,6 +67,10 @@ Do you have questions or issues with Contact Form 7? Use these support channels 
 == Changelog ==
 
 For more information, see [Releases](https://contactform7.com/category/releases/).
+
+= 6.1.5 =
+
+[https://contactform7.com/contact-form-7-615/](https://contactform7.com/contact-form-7-615/)
 
 = 6.1.4 =
 
