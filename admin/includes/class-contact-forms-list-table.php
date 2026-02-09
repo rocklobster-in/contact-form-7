@@ -181,6 +181,25 @@ class WPCF7_Contact_Form_List_Table extends WP_List_Table {
 			) );
 		}
 
+		if ( current_user_can( 'wpcf7_delete_contact_form', $item->id() ) ) {
+			$delete_link = add_query_arg(
+				array(
+					'post' => absint( $item->id() ),
+					'action' => 'delete',
+				),
+				menu_page_url( 'wpcf7', false )
+			);
+
+			$delete_link = wp_nonce_url(
+				$delete_link,
+				'wpcf7-delete-contact-form_' . absint( $item->id() )
+			);
+
+			$actions = array_merge( $actions, array(
+				'delete' => wpcf7_link( $delete_link, __( 'Delete', 'contact-form-7' ) ),
+			) );
+		}
+
 		return $this->row_actions( $actions );
 	}
 
