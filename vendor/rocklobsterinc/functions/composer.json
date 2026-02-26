@@ -1,0 +1,19 @@
+{
+	"name": "rocklobsterinc/functions",
+	"description": "Rock Lobster's PHP function library",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Takayuki Miyoshi",
+			"role": "Developer"
+		}
+	],
+	"require": {
+		"php": ">=8.3"
+	},
+	"autoload": {
+		"files": [
+			"src/functions.php"
+		]
+	}
+}
