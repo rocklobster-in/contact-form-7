@@ -530,22 +530,50 @@ class WPCF7_Submission {
 
 	/**
 	 * Retrieves the request URL of this submission.
+	 *
+	 * Uses a fallback chain to determine the URL:
+	 * 1. Container post permalink (most reliable for forms in posts/pages)
+	 * 2. Explicitly submitted page URL from JavaScript hidden field
+	 * 3. HTTP_REFERER (for REST API requests)
+	 * 4. Current request URI (fallback)
+	 *
+	 * @return string The URL of the page where the form was submitted.
 	 */
 	private function get_request_url() {
 		$home_url = untrailingslashit( home_url() );
+		$url = '';
 
-		if ( self::is_restful() ) {
-			$referer = wpcf7_superglobal_server( 'HTTP_REFERER' );
+		// Priority 1: Container post permalink (most reliable for posts/pages)
+		$container_post_id = $this->get_meta( 'container_post_id' );
 
-			if ( $referer and str_starts_with( $referer, $home_url ) ) {
-				return sanitize_url( $referer );
+		if ( $container_post_id && $post = get_post( $container_post_id ) ) {
+			$url = get_permalink( $post->ID );
+		}
+
+		// Priority 2: Explicitly submitted page URL from JavaScript
+		if ( empty( $url ) ) {
+			$page_url = wpcf7_superglobal_post( '_wpcf7_page_url' );
+
+			if ( $page_url && str_starts_with( $page_url, $home_url ) ) {
+				$url = $page_url;
 			}
 		}
 
-		$url = preg_replace( '%(?<!:|/)/.*$%', '', $home_url )
-			. wpcf7_get_request_uri();
+		// Priority 3: HTTP_REFERER for REST API requests
+		if ( empty( $url ) && self::is_restful() ) {
+			$referer = wpcf7_superglobal_server( 'HTTP_REFERER' );
 
-		return $url;
+			if ( $referer && str_starts_with( $referer, $home_url ) ) {
+				$url = $referer;
+			}
+		}
+
+		// Fallback: Current request URI
+		if ( empty( $url ) ) {
+			$url = $home_url . wpcf7_get_request_uri();
+		}
+
+		return sanitize_url( $url );
 	}
 
 

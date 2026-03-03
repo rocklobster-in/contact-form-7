@@ -27,6 +27,35 @@ export default function init( form ) {
 
 	wpcf7.schemas.set( form.wpcf7.id, undefined );
 
+	// Add hidden field for current page URL
+	// This provides a reliable fallback for [_url] special mail tag
+	// when HTTP_REFERER is not available due to referrer policies
+	let pageUrlField = form.querySelector( 'input[name="_wpcf7_page_url"]' );
+
+	if ( ! pageUrlField ) {
+		pageUrlField = document.createElement( 'input' );
+		pageUrlField.type = 'hidden';
+		pageUrlField.name = '_wpcf7_page_url';
+		pageUrlField.value = window.location.href;
+		form.appendChild( pageUrlField );
+	} else {
+		pageUrlField.value = window.location.href;
+	}
+
+	// Update page URL on SPA navigation
+	const originalPushState = history.pushState;
+	const originalReplaceState = history.replaceState;
+
+	history.pushState = function() {
+		originalPushState.apply( this, arguments );
+		updatePageUrlField( form );
+	};
+
+	history.replaceState = function() {
+		originalReplaceState.apply( this, arguments );
+		updatePageUrlField( form );
+	};
+
 	form.querySelectorAll( '.has-spinner' ).forEach( element => {
 		element.insertAdjacentHTML(
 			'afterend',
@@ -95,4 +124,13 @@ export default function init( form ) {
 			elm.classList.add( 'active-on-any' );
 		} );
 	} );
+}
+
+// Helper function to update page URL field
+function updatePageUrlField( form ) {
+	const pageUrlField = form.querySelector( 'input[name="_wpcf7_page_url"]' );
+
+	if ( pageUrlField ) {
+		pageUrlField.value = window.location.href;
+	}
 }
