@@ -281,6 +281,33 @@ if ( $post ) {
 				'class' => 'copy button',
 				'value' => __( 'Duplicate', 'contact-form-7' ),
 			) );
+
+			// Add space between buttons
+			$formatter->append_preformatted( ' ' );
+
+			$export_link = add_query_arg(
+				array(
+					'post' => absint( $post_id ),
+					'action' => 'export',
+				),
+				menu_page_url( 'wpcf7', false )
+			);
+
+			$export_link = wp_nonce_url(
+				$export_link,
+				'wpcf7-export-contact-form_' . absint( $post_id )
+			);
+
+			$formatter->append_start_tag( 'a', array(
+				'href' => $export_link,
+				'class' => 'button',
+			) );
+
+			$formatter->append_preformatted(
+				esc_html( __( 'Export', 'contact-form-7' ) )
+			);
+
+			$formatter->end_tag( 'a' );
 		}
 
 		$formatter->end_tag( 'div' ); // #minor-publishing-actions

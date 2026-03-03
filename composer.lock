@@ -4,25 +4,25 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0829e2692de3052d6c16d1b1ca7a57d8",
+    "content-hash": "27c201be9094077d3b395360b57f7528",
     "packages": [
         {
             "name": "rocklobsterinc/form-data-tree",
-            "version": "v2.0.1",
+            "version": "v2.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rocklobster-in/form-data-tree-php.git",
-                "reference": "a934b17bac691890067b05771e9b3df1ebb758e7"
+                "reference": "1afbe57c9060c34adbbda08bb2439c4cf4258a8f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rocklobster-in/form-data-tree-php/zipball/a934b17bac691890067b05771e9b3df1ebb758e7",
-                "reference": "a934b17bac691890067b05771e9b3df1ebb758e7",
+                "url": "https://api.github.com/repos/rocklobster-in/form-data-tree-php/zipball/1afbe57c9060c34adbbda08bb2439c4cf4258a8f",
+                "reference": "1afbe57c9060c34adbbda08bb2439c4cf4258a8f",
                 "shasum": ""
             },
             "require": {
                 "php": ">=8.3",
-                "rocklobsterinc/functions": "^v1.0.3"
+                "rocklobsterinc/functions": "^v1.0.4"
             },
             "type": "library",
             "autoload": {
@@ -46,22 +46,22 @@
             "description": "FormDataTree for PHP",
             "support": {
                 "issues": "https://github.com/rocklobster-in/form-data-tree-php/issues",
-                "source": "https://github.com/rocklobster-in/form-data-tree-php/tree/v2.0.1"
+                "source": "https://github.com/rocklobster-in/form-data-tree-php/tree/v2.0.2"
             },
-            "time": "2025-11-25T08:49:37+00:00"
+            "time": "2025-12-16T10:16:39+00:00"
         },
         {
             "name": "rocklobsterinc/functions",
-            "version": "v1.0.3",
+            "version": "v1.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rocklobster-in/functions-php.git",
-                "reference": "8181c7db63cf3a16af414e7ced19836eef991f12"
+                "reference": "99b4b63a044d57156dd9e2b96b1260775f00563c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rocklobster-in/functions-php/zipball/8181c7db63cf3a16af414e7ced19836eef991f12",
-                "reference": "8181c7db63cf3a16af414e7ced19836eef991f12",
+                "url": "https://api.github.com/repos/rocklobster-in/functions-php/zipball/99b4b63a044d57156dd9e2b96b1260775f00563c",
+                "reference": "99b4b63a044d57156dd9e2b96b1260775f00563c",
                 "shasum": ""
             },
             "require": {
@@ -86,28 +86,28 @@
             "description": "Rock Lobster's PHP function library",
             "support": {
                 "issues": "https://github.com/rocklobster-in/functions-php/issues",
-                "source": "https://github.com/rocklobster-in/functions-php/tree/v1.0.3"
+                "source": "https://github.com/rocklobster-in/functions-php/tree/v1.0.4"
             },
-            "time": "2025-11-25T07:56:04+00:00"
+            "time": "2025-12-16T09:37:26+00:00"
         },
         {
             "name": "rocklobsterinc/swv",
-            "version": "v2.0.2",
+            "version": "v2.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rocklobster-in/swv-php.git",
-                "reference": "d8508842cf66f76a27af2bb6d0d29a82c1686025"
+                "reference": "8613fe1d7a83a32d96e0b3d769aea46c9af5147e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rocklobster-in/swv-php/zipball/d8508842cf66f76a27af2bb6d0d29a82c1686025",
-                "reference": "d8508842cf66f76a27af2bb6d0d29a82c1686025",
+                "url": "https://api.github.com/repos/rocklobster-in/swv-php/zipball/8613fe1d7a83a32d96e0b3d769aea46c9af5147e",
+                "reference": "8613fe1d7a83a32d96e0b3d769aea46c9af5147e",
                 "shasum": ""
             },
             "require": {
                 "php": ">=8.3",
-                "rocklobsterinc/form-data-tree": "^v2.0.1",
-                "rocklobsterinc/functions": "^v1.0.3"
+                "rocklobsterinc/form-data-tree": "^v2.0.2",
+                "rocklobsterinc/functions": "^v1.0.4"
             },
             "type": "library",
             "autoload": {
@@ -131,9 +131,9 @@
             "description": "Schema-Woven Validation for PHP",
             "support": {
                 "issues": "https://github.com/rocklobster-in/swv-php/issues",
-                "source": "https://github.com/rocklobster-in/swv-php/tree/v2.0.2"
+                "source": "https://github.com/rocklobster-in/swv-php/tree/v2.0.3"
             },
-            "time": "2025-12-08T02:52:11+00:00"
+            "time": "2025-12-16T10:20:09+00:00"
         }
     ],
     "packages-dev": [],
@@ -144,5 +144,5 @@
     "prefer-lowest": false,
     "platform": {},
     "platform-dev": {},
-    "plugin-api-version": "2.9.0"
+    "plugin-api-version": "2.6.0"
 }
