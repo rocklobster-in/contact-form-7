@@ -1,5 +1,7 @@
 import FormDataTree from '@rocklobsterinc/form-data-tree';
 
+import { flatten } from '@rocklobsterinc/functions';
+
 import {
 	CompositeRule,
 	rulesDictionary,
@@ -59,7 +61,38 @@ Schema.createRule = properties => {
 	}
 };
 
+const validate = ( schema, formData, context ) => {
+	const schemaObj = new Schema( schema );
+	const formDataTree = FormDataTree.from( formData );
+
+	const result = {};
+
+	for ( const { field, message } of schemaObj.validate( formDataTree ) ) {
+		result[ field ] ??= { error: message };
+	}
+
+	for ( const field in formDataTree.trunk ) {
+		if ( undefined === result[ field ] ) {
+			const values = flatten( formDataTree.getAll( field ) );
+
+			if ( values.length ) {
+				result[ field ] = { validInputs: values };
+			}
+		}
+
+		if ( undefined === result[ field ] ) {
+			const files = flatten( formDataTree.getAllFiles( field ) );
+
+			if ( files.length ) {
+				result[ field ] = { validInputs: files };
+			}
+		}
+	}
+
+	return result;
+};
+
 window.swv = {
-	Schema,
 	rulesDictionary,
+	validate,
 };
