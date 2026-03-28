@@ -6,7 +6,7 @@ use RockLobsterInc\FormDataTree\{ FormDataTreeInterface as FormDataTree };
 use RockLobsterInc\Swv\{ AbstractRule, InvalidityException as Invalidity };
 use function RockLobsterInc\Functions\{ array_flatten };
 
-final class MinFileSizeRule extends AbstractRule {
+final class MinFilesizeRule extends AbstractRule {
 
 	const RULE_NAME = 'minfilesize';
 

@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit27c201be9094077d3b395360b57f7528
+class ComposerStaticInit476a2e4b99cdf55b441eb10b23e7de9f
 {
     public static $files = array (
         'ae18b6324ebdb023b82dfb6b6ec743e6' => __DIR__ . '/..' . '/rocklobsterinc/functions/src/functions.php',
@@ -38,9 +38,9 @@ class ComposerStaticInit27c201be9094077d3b395360b57f7528
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit27c201be9094077d3b395360b57f7528::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit27c201be9094077d3b395360b57f7528::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit27c201be9094077d3b395360b57f7528::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit476a2e4b99cdf55b441eb10b23e7de9f::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit476a2e4b99cdf55b441eb10b23e7de9f::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit476a2e4b99cdf55b441eb10b23e7de9f::$classMap;
 
         }, null, ClassLoader::class);
     }

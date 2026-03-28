@@ -6,7 +6,7 @@ use RockLobsterInc\FormDataTree\{ FormDataTreeInterface as FormDataTree };
 use RockLobsterInc\Swv\{ AbstractRule, InvalidityException as Invalidity };
 use function RockLobsterInc\Functions\{ array_flatten };
 
-final class MaxFileSizeRule extends AbstractRule {
+final class MaxFilesizeRule extends AbstractRule {
 
 	const RULE_NAME = 'maxfilesize';
 
