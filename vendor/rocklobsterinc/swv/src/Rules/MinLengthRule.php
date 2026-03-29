@@ -77,7 +77,7 @@ final class MinLengthRule extends AbstractRule {
 		}
 
 		if ( $total < (int) $this->threshold ) {
-			throw new Invalidity( $this );
+			throw new Invalidity( $this, [ 'cause' => $total ] );
 		}
 
 		return true;

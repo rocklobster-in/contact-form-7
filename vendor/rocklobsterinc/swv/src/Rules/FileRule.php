@@ -317,13 +317,13 @@ final class FileRule extends AbstractRule {
 			$last_period_pos = strrpos( $file_name, '.' );
 
 			if ( false === $last_period_pos ) { // No period.
-				throw new Invalidity( $this );
+				throw new Invalidity( $this, [ 'cause' => $file ] );
 			}
 
 			$suffix = strtolower( substr( $file_name, $last_period_pos ) );
 
 			if ( ! in_array( $suffix, $acceptable_filetypes, true ) ) {
-				throw new Invalidity( $this );
+				throw new Invalidity( $this, [ 'cause' => $file ] );
 			}
 		}
 

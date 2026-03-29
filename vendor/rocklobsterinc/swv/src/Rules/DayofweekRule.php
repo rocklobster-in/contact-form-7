@@ -71,7 +71,7 @@ final class DayofweekRule extends AbstractRule {
 				$day_of_week = (int) $datetime->format( 'N' );
 
 				if ( ! in_array( $day_of_week, $acceptable_values, true ) ) {
-					throw new Invalidity( $this );
+					throw new Invalidity( $this, [ 'cause' => $value ] );
 				}
 			}
 		}

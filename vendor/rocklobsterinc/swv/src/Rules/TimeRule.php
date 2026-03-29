@@ -89,7 +89,7 @@ final class TimeRule extends AbstractRule {
 
 		foreach ( $values as $value ) {
 			if ( ! self::isTime( $value ) ) {
-				throw new Invalidity( $this );
+				throw new Invalidity( $this, [ 'cause' => $value ] );
 			}
 		}
 

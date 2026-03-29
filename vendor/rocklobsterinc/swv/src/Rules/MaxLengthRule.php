@@ -77,7 +77,7 @@ final class MaxLengthRule extends AbstractRule {
 		}
 
 		if ( (int) $this->threshold < $total ) {
-			throw new Invalidity( $this );
+			throw new Invalidity( $this, [ 'cause' => $total ] );
 		}
 
 		return true;

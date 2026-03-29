@@ -54,11 +54,7 @@ final class AllRule extends CompositeRule {
 				try {
 					$rule->validate( $form_data, $context );
 				} catch ( Invalidity $error ) {
-					if ( '' === $error->getMessage() ) {
-						$error->setMessage( $this->error );
-					}
-
-					throw $error;
+					throw new Invalidity( $this, [ 'cause' => $error ] );
 				}
 			}
 		}

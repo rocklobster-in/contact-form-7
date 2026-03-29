@@ -65,7 +65,7 @@ final class MaxDateRule extends AbstractRule {
 
 		foreach ( $values as $value ) {
 			if ( DateRule::isDate( $value ) and $this->threshold < $value ) {
-				throw new Invalidity( $this );
+				throw new Invalidity( $this, [ 'cause' => $value ] );
 			}
 		}
 

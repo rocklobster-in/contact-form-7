@@ -86,7 +86,7 @@ final class NumberRule extends AbstractRule {
 
 		foreach ( $values as $value ) {
 			if ( ! self::isNumber( $value ) ) {
-				throw new Invalidity( $this );
+				throw new Invalidity( $this, [ 'cause' => $value ] );
 			}
 		}
 

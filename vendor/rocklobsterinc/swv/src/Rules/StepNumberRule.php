@@ -82,7 +82,7 @@ final class StepNumberRule extends AbstractRule {
 				continue;
 			}
 
-			throw new Invalidity( $this );
+			throw new Invalidity( $this, [ 'cause' => $value ] );
 		}
 
 		return true;

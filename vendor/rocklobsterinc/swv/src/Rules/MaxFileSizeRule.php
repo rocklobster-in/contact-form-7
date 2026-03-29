@@ -69,7 +69,7 @@ final class MaxFilesizeRule extends AbstractRule {
 		}, 0 );
 
 		if ( (int) $this->threshold < $file_size ) {
-			throw new Invalidity( $this );
+			throw new Invalidity( $this, [ 'cause' => $file_size ] );
 		}
 
 		return true;

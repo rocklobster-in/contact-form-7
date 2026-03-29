@@ -69,7 +69,7 @@ final class EnumRule extends AbstractRule {
 			$value = canonicalize_newline( $value );
 
 			if ( ! in_array( $value, $acceptable_values, true ) ) {
-				throw new Invalidity( $this );
+				throw new Invalidity( $this, [ 'cause' => $value ] );
 			}
 		}
 

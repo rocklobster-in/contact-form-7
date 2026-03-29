@@ -68,7 +68,7 @@ final class MaxNumberRule extends AbstractRule {
 				NumberRule::isNumber( $value ) and
 				(float) $this->threshold < (float) $value
 			) {
-				throw new Invalidity( $this );
+				throw new Invalidity( $this, [ 'cause' => $value ] );
 			}
 		}
 

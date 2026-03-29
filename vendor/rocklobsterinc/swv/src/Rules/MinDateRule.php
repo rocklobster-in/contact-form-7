@@ -65,7 +65,7 @@ final class MinDateRule extends AbstractRule {
 
 		foreach ( $values as $value ) {
 			if ( DateRule::isDate( $value ) and $value < $this->threshold ) {
-				throw new Invalidity( $this );
+				throw new Invalidity( $this, [ 'cause' => $value ] );
 			}
 		}
 

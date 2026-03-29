@@ -77,7 +77,7 @@ final class UrlRule extends AbstractRule {
 
 		foreach ( $values as $value ) {
 			if ( ! self::isUrl( $value ) ) {
-				throw new Invalidity( $this );
+				throw new Invalidity( $this, [ 'cause' => $value ] );
 			}
 		}
 

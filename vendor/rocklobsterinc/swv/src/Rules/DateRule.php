@@ -84,7 +84,7 @@ final class DateRule extends AbstractRule {
 
 		foreach ( $values as $value ) {
 			if ( ! self::isDate( $value ) ) {
-				throw new Invalidity( $this );
+				throw new Invalidity( $this, [ 'cause' => $value ] );
 			}
 		}
 

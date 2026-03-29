@@ -64,7 +64,7 @@ final class MinItemsRule extends AbstractRule {
 		}
 
 		if ( count( $values ) < (int) $this->threshold ) {
-			throw new Invalidity( $this );
+			throw new Invalidity( $this, [ 'cause' => count( $values ) ] );
 		}
 
 		return true;

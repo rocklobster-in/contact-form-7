@@ -64,7 +64,7 @@ final class MaxItemsRule extends AbstractRule {
 		}
 
 		if ( (int) $this->threshold < count( $values ) ) {
-			throw new Invalidity( $this );
+			throw new Invalidity( $this, [ 'cause' => count( $values ) ] );
 		}
 
 		return true;

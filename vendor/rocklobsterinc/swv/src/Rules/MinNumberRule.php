@@ -68,7 +68,7 @@ final class MinNumberRule extends AbstractRule {
 				NumberRule::isNumber( $value ) and
 				(float) $value < (float) $this->threshold
 			) {
-				throw new Invalidity( $this );
+				throw new Invalidity( $this, [ 'cause' => $value ] );
 			}
 		}
 

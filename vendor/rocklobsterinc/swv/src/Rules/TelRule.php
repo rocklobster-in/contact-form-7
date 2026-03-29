@@ -93,7 +93,7 @@ final class TelRule extends AbstractRule {
 
 		foreach ( $values as $value ) {
 			if ( ! self::isTel( $value ) ) {
-				throw new Invalidity( $this );
+				throw new Invalidity( $this, [ 'cause' => $value ] );
 			}
 		}
 

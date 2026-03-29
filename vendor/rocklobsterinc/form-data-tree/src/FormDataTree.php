@@ -25,11 +25,14 @@ class FormDataTree implements FormDataTreeInterface {
 		$posted_value = $_POST;
 
 		while ( $next = array_shift( $name_parts ) ) {
-			if ( isset( $posted_value[ $next ] ) ) {
-				$posted_value = $posted_value[ $next ];
-			} else {
+			if (
+				preg_match( '/^[0-9]*$/', $next ) or
+				! isset( $posted_value[ $next ] )
+			) {
 				return [];
 			}
+
+			$posted_value = $posted_value[ $next ];
 		}
 
 		if ( ! is_array( $posted_value ) ) {
@@ -59,11 +62,14 @@ class FormDataTree implements FormDataTreeInterface {
 		$files_tree = File::buildTree();
 
 		while ( $next = array_shift( $name_parts ) ) {
-			if ( isset( $files_tree[ $next ] ) ) {
-				$files_tree = $files_tree[ $next ];
-			} else {
+			if (
+				preg_match( '/^[0-9]*$/', $next ) or
+				! isset( $files_tree[ $next ] )
+			) {
 				return [];
 			}
+
+			$files_tree = $files_tree[ $next ];
 		}
 
 		if ( ! is_array( $files_tree ) ) {

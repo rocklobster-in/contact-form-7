@@ -11,7 +11,7 @@
 	"require": {
 		"php": ">=8.3",
 		"rocklobsterinc/functions": "^v1.0.4",
-		"rocklobsterinc/form-data-tree": "^v2.0.2"
+		"rocklobsterinc/form-data-tree": "^v2.0.3"
 	},
 	"autoload": {
 		"psr-4": {

@@ -69,7 +69,7 @@ final class MinFilesizeRule extends AbstractRule {
 		}, 0 );
 
 		if ( $file_size < (int) $this->threshold ) {
-			throw new Invalidity( $this );
+			throw new Invalidity( $this, [ 'cause' => $file_size ] );
 		}
 
 		return true;
