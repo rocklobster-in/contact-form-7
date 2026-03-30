@@ -19,6 +19,7 @@ node_modules/
 
 # ignore Composer files and directories
 composer.phar
+vendor/
 
 # ignore log files and databases
 *.log
