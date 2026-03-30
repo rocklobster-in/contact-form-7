@@ -1,2 +1,2 @@
 # form-data-tree-php
-FormDataTree for PHP.
+FormDataTree standardizes form data for compatibility.

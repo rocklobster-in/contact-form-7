@@ -2,24 +2,24 @@
     "packages": [
         {
             "name": "rocklobsterinc/form-data-tree",
-            "version": "v2.0.3",
-            "version_normalized": "2.0.3.0",
+            "version": "v2.0.4",
+            "version_normalized": "2.0.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rocklobster-in/form-data-tree-php.git",
-                "reference": "0d6694bdab1640e7bd1b88884661d8b93187350a"
+                "reference": "bc112129cd6958342a5219332002d9dae3b8cedd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rocklobster-in/form-data-tree-php/zipball/0d6694bdab1640e7bd1b88884661d8b93187350a",
-                "reference": "0d6694bdab1640e7bd1b88884661d8b93187350a",
+                "url": "https://api.github.com/repos/rocklobster-in/form-data-tree-php/zipball/bc112129cd6958342a5219332002d9dae3b8cedd",
+                "reference": "bc112129cd6958342a5219332002d9dae3b8cedd",
                 "shasum": ""
             },
             "require": {
                 "php": ">=8.3",
                 "rocklobsterinc/functions": "^v1.0.4"
             },
-            "time": "2026-03-28T09:04:12+00:00",
+            "time": "2026-03-30T02:57:09+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -43,7 +43,7 @@
             "description": "FormDataTree for PHP",
             "support": {
                 "issues": "https://github.com/rocklobster-in/form-data-tree-php/issues",
-                "source": "https://github.com/rocklobster-in/form-data-tree-php/tree/v2.0.3"
+                "source": "https://github.com/rocklobster-in/form-data-tree-php/tree/v2.0.4"
             },
             "install-path": "../rocklobsterinc/form-data-tree"
         },
