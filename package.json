@@ -31,9 +31,6 @@
 	"homepage": "https://github.com/rocklobster-in/contact-form-7#readme",
 	"devDependencies": {
 		"@contactable/swv": "^1.4.1",
-		"@rocklobsterinc/form-data-tree": "^2.1.0",
-		"@rocklobsterinc/functions": "^1.0.1",
-		"@rocklobsterinc/swv": "^2.0.0",
 		"@wordpress/scripts": "^31.6.0"
 	}
 }
