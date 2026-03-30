@@ -87,8 +87,8 @@ export default function validate( form, options = {} ) {
 
 					const field = wrap.dataset.name;
 
-					if ( result.has( field ) ) {
-						const { error, validInputs } = result.get( field );
+					if ( undefined !== result[ field ] ) {
+						const { error, validInputs } = result[ field ];
 
 						removeValidationError( form, field );
 

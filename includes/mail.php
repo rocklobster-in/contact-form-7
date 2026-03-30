@@ -146,8 +146,7 @@ class WPCF7_Mail {
 		$use_html = ( $this->use_html && 'body' === $component );
 		$exclude_blank = ( $this->exclude_blank && 'body' === $component );
 
-		$template = $this->template;
-		$component = isset( $template[$component] ) ? $template[$component] : '';
+		$component = $this->template[$component] ?? '';
 
 		if ( $replace_tags ) {
 			$component = $this->replace_tags( $component, array(
@@ -233,7 +232,7 @@ class WPCF7_Mail {
 			'sender' => $this->get( 'sender', true ),
 			'body' => $this->get( 'body', true ),
 			'recipient' => $this->get( 'recipient', true ),
-			'additional_headers' => $this->get( 'additional_headers', true ),
+			'additional_headers' => $this->additional_headers(),
 			'attachments' => $this->attachments(),
 		);
 
@@ -248,20 +247,24 @@ class WPCF7_Mail {
 		$subject = wpcf7_strip_newline( $components['subject'] );
 		$sender = wpcf7_strip_newline( $components['sender'] );
 		$recipient = wpcf7_strip_newline( $components['recipient'] );
+		$additional_headers = $components['additional_headers'];
 		$body = $components['body'];
-		$additional_headers = trim( $components['additional_headers'] );
 
-		$headers = "From: $sender\n";
+		$headers = array();
+
+		$headers[] = sprintf( 'From: %s', $sender );
 
 		if ( $this->use_html ) {
-			$headers .= "Content-Type: text/html\n";
-			$headers .= "X-WPCF7-Content-Type: text/html\n";
+			$headers[] = 'Content-Type: text/html';
+			$headers[] = 'X-WPCF7-Content-Type: text/html';
 		} else {
-			$headers .= "X-WPCF7-Content-Type: text/plain\n";
+			$headers[] = 'X-WPCF7-Content-Type: text/plain';
 		}
 
-		if ( $additional_headers ) {
-			$headers .= $additional_headers . "\n";
+		$additional_headers = str_replace( "\r\n", "\n", $additional_headers );
+
+		foreach ( explode( "\n", $additional_headers ) as $additional_header ) {
+			$headers[] = trim( $additional_header );
 		}
 
 		$attachments = array_filter(
@@ -339,6 +342,33 @@ class WPCF7_Mail {
 		) );
 
 		return wpcf7_mail_replace_tags( $content, $options );
+	}
+
+
+	/**
+	 * Retrieves additional headers from the template.
+	 */
+	private function additional_headers( $template = null ) {
+		if ( ! $template ) {
+			$template = $this->get( 'additional_headers' );
+		}
+
+		$headers = array();
+
+		foreach ( explode( "\n", $template ) as $line ) {
+			if ( ! str_contains( $line, ':' ) ) {
+				continue;
+			}
+
+			$line = $this->replace_tags( $line );
+			$line = str_replace( "\r\n", "\n", $line );
+
+			list( $header ) = explode( "\n", $line, 2 );
+
+			$headers[] = $header;
+		}
+
+		return implode( "\n", $headers );
 	}
 
 
