@@ -516,7 +516,7 @@ function wpcf7_apply_filters_deprecated( $hook_name, $args, $version, $replaceme
 		return $args[0];
 	}
 
-	if ( WP_DEBUG and apply_filters( 'deprecated_hook_trigger_error', true ) ) {
+	if ( WP_DEBUG and apply_filters( 'deprecated_hook_trigger_error', true ) ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 		if ( $replacement ) {
 			wp_trigger_error(
 				'',
@@ -543,7 +543,7 @@ function wpcf7_apply_filters_deprecated( $hook_name, $args, $version, $replaceme
 		}
 	}
 
-	return apply_filters_ref_array( $hook_name, $args );
+	return apply_filters_ref_array( $hook_name, $args ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound -- dynamic hook name, passed as parameter
 }
 
 
@@ -728,9 +728,9 @@ function wpcf7_superglobal_server( $key, $default = '' ) {
  */
 function wpcf7_superglobal( $superglobal, $key ) {
 	$superglobals = array(
-		'get' => $_GET,
-		'post' => $_POST,
-		'request' => $_REQUEST,
+		'get' => $_GET, // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		'post' => $_POST, // phpcs:ignore WordPress.Security.NonceVerification.Missing
+		'request' => $_REQUEST, // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		'server' => $_SERVER,
 	);
 

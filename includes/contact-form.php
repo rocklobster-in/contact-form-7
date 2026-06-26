@@ -973,7 +973,7 @@ class WPCF7_ContactForm {
 
 		$options = wp_parse_args( $options, array(
 			'include' => array(),
-			'exclude' => $manager->collect_tag_types( 'not-for-mail' ),
+			'exclude' => $manager->collect_tag_types( 'not-for-mail' ), // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude
 		) );
 
 		$tags = $this->scan_form_tags();

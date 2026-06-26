@@ -350,6 +350,7 @@ class WPCF7_Submission {
 	 */
 	private function setup_posted_data() {
 		$posted_data = array_filter(
+			// phpcs:ignore WordPress.Security.NonceVerification.Missing -- sanitize_posted_data() applied immediately below
 			(array) $_POST,
 			static function ( $key ) {
 				return ! str_starts_with( $key, '_' );
@@ -833,11 +834,13 @@ class WPCF7_Submission {
 		foreach ( $tags as $tag ) {
 			if (
 				! $result->is_valid( $tag->name ) or
+				// phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce verified in proceed()
 				empty( $_FILES[$tag->name] )
 			) {
 				continue;
 			}
 
+			// phpcs:ignore WordPress.Security.NonceVerification.Missing,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- nonce verified in proceed(); validated by wpcf7_unship_uploaded_file()
 			$new_files = wpcf7_unship_uploaded_file( $_FILES[$tag->name], array(
 				'tag' => $tag,
 				'name' => $tag->name,

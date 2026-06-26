@@ -73,7 +73,7 @@ class WPCF7_ConfigValidator {
 	public function __construct( WPCF7_ContactForm $contact_form, $options = '' ) {
 		$options = wp_parse_args( $options, array(
 			'include' => null,
-			'exclude' => null,
+			'exclude' => null, // phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams.PostNotIn_exclude
 		) );
 
 		$this->contact_form = $contact_form;

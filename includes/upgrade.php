@@ -48,16 +48,20 @@ function wpcf7_convert_to_cpt( $new_ver, $old_ver ) {
 
 	$old_rows = array();
 
-	$table_exists = $wpdb->get_var( $wpdb->prepare(
-		"SHOW TABLES LIKE %s",
-		$wpdb->prefix . 'contact_form_7'
-	) );
+	$table_exists = $wpdb->get_var( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+		$wpdb->prepare(
+			"SHOW TABLES LIKE %s",
+			$wpdb->prefix . 'contact_form_7'
+		)
+	);
 
 	if ( $table_exists ) {
-		$old_rows = $wpdb->get_results( $wpdb->prepare(
-			"SELECT * FROM %i",
-			$wpdb->prefix . 'contact_form_7'
-		) );
+		$old_rows = $wpdb->get_results( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+			$wpdb->prepare(
+				"SELECT * FROM %i",
+				$wpdb->prefix . 'contact_form_7'
+			)
+		);
 	} elseif (
 		$opt = get_option( 'wpcf7' ) and
 		! empty( $opt['contact_forms'] )
@@ -71,12 +75,14 @@ function wpcf7_convert_to_cpt( $new_ver, $old_ver ) {
 	}
 
 	foreach ( (array) $old_rows as $row ) {
-		$var = $wpdb->get_var( $wpdb->prepare(
-			"SELECT post_id FROM %i WHERE meta_key = %s AND meta_value = %d",
-			$wpdb->postmeta,
-			'_old_cf7_unit_id',
-			$row->cf7_unit_id
-		) );
+		$var = $wpdb->get_var( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+			$wpdb->prepare(
+				"SELECT post_id FROM %i WHERE meta_key = %s AND meta_value = %d",
+				$wpdb->postmeta,
+				'_old_cf7_unit_id',
+				$row->cf7_unit_id
+			)
+		);
 
 		if ( $var ) {
 			continue;

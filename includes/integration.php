@@ -283,7 +283,19 @@ class WPCF7_Service_OAuth2 extends WPCF7_Service {
 			$this->authorization_endpoint
 		);
 
-		if ( wp_redirect( sanitize_url( $endpoint ) ) ) {
+		$scheme = wp_parse_url( $endpoint, PHP_URL_SCHEME );
+
+		if ( 'https' === $scheme ) {
+			add_filter(
+				'allowed_redirect_hosts',
+				function ( $hosts ) use ( $endpoint ) {
+					$hosts[] = wp_parse_url( $endpoint, PHP_URL_HOST );
+					return $hosts;
+				}
+			);
+		}
+
+		if ( wp_safe_redirect( sanitize_url( $endpoint ) ) ) {
 			exit();
 		}
 	}

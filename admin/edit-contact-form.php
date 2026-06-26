@@ -5,7 +5,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( '-1' );
 }
 
-$save_button = sprintf(
+$save_button = sprintf( // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- file-scoped template variable
 	'<input %s />',
 	wpcf7_format_atts( array(
 		'type' => 'submit',
@@ -15,7 +15,7 @@ $save_button = sprintf(
 	) )
 );
 
-$formatter = new WPCF7_HTMLFormatter( array(
+$formatter = new WPCF7_HTMLFormatter( array( // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- file-scoped template variable
 	'allowed_html' => array_merge( wpcf7_kses_allowed_html(), array(
 		'form' => array(
 			'method' => true,
@@ -160,7 +160,7 @@ if ( $post ) {
 	) );
 
 	if ( ! $post->initial() ) {
-		if ( $shortcode = $post->shortcode() ) {
+		if ( $shortcode = $post->shortcode() ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- file-scoped template variable
 			$formatter->append_start_tag( 'p', array(
 				'class' => 'description',
 			) );
@@ -192,7 +192,7 @@ if ( $post ) {
 			$formatter->end_tag( 'p' );
 		}
 
-		if ( $shortcode = $post->shortcode( array( 'use_old_format' => true ) ) ) {
+		if ( $shortcode = $post->shortcode( array( 'use_old_format' => true ) ) ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- file-scoped template variable
 			$formatter->append_start_tag( 'p', array(
 				'class' => 'description',
 			) );
@@ -478,7 +478,7 @@ $formatter->end_tag( 'div' ); // .wrap
 
 $formatter->print();
 
-$tag_generator = WPCF7_TagGenerator::get_instance();
+$tag_generator = WPCF7_TagGenerator::get_instance(); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- file-scoped template variable
 $tag_generator->print_panels( $post );
 
 do_action( 'wpcf7_admin_footer', $post );

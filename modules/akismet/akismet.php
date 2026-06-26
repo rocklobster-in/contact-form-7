@@ -131,6 +131,7 @@ function wpcf7_akismet_submitted_params() {
 		'content' => '',
 	);
 
+	// phpcs:ignore WordPress.Security.NonceVerification.Missing -- runs inside wpcf7_spam filter, after nonce check
 	foreach ( (array) $_POST as $key => $val ) {
 		if ( str_starts_with( $key, '_wpcf7' ) or '_wpnonce' === $key ) {
 			continue;

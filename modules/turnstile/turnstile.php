@@ -36,7 +36,7 @@ function wpcf7_turnstile_enqueue_scripts() {
 		'cloudflare-turnstile',
 		'https://challenges.cloudflare.com/turnstile/v0/api.js',
 		array(),
-		null,
+		WPCF7_VERSION,
 		array(
 			'strategy' => 'async',
 		)

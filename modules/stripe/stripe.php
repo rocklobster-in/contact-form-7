@@ -52,7 +52,7 @@ function wpcf7_stripe_enqueue_scripts() {
 		'stripe',
 		'https://js.stripe.com/v3/',
 		array(),
-		null,
+		WPCF7_VERSION,
 		array( 'in_footer' => true )
 	);
 

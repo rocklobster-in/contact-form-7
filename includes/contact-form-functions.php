@@ -23,7 +23,7 @@ function wpcf7_contact_form( $post ) {
  */
 function wpcf7_get_contact_form_by_old_id( $old_id ) {
 	$contact_forms = WPCF7_ContactForm::find( array(
-		'meta_query' => array(
+		'meta_query' => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
 			array(
 				'key' => '_old_cf7_unit_id',
 				'type' => 'DECIMAL',
@@ -51,7 +51,7 @@ function wpcf7_get_contact_form_by_hash( $hash ) {
 	}
 
 	$contact_forms = WPCF7_ContactForm::find( array(
-		'meta_query' => array(
+		'meta_query' => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
 			array(
 				'key' => '_hash',
 				'compare' => 'REGEXP',

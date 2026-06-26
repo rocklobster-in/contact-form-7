@@ -21,10 +21,12 @@ function wpcf7_delete_plugin() {
 		wp_delete_post( $post->ID, true );
 	}
 
-	$wpdb->query( $wpdb->prepare(
-		"DROP TABLE IF EXISTS %i",
-		$wpdb->prefix . 'contact_form_7'
-	) );
+	$wpdb->query( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+		$wpdb->prepare(
+			"DROP TABLE IF EXISTS %i", // phpcs:ignore WordPress.DB.DirectDatabaseQuery.SchemaChange -- intentional cleanup on uninstall
+			$wpdb->prefix . 'contact_form_7'
+		)
+	);
 
 	return true;
 }
