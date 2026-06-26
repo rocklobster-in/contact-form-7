@@ -1,5 +1,6 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit;
 add_action( 'wpcf7_upgrade', 'wpcf7_upgrade_58', 10, 2 );
 
 /**

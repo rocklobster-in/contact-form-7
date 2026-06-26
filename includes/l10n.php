@@ -1,5 +1,7 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 /**
  * Retrieves an associative array of languages to which
  * this plugin is translated.

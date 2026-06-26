@@ -1,4 +1,5 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit;
 /**
 ** A base module for the following types of tags:
 ** 	[date] and [date*]		# Date

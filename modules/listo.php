@@ -1,4 +1,5 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit;
 /**
 ** Retrieve list data from the Listo plugin.
 ** Listo http://wordpress.org/plugins/listo/

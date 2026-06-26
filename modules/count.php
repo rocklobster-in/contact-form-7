@@ -1,4 +1,5 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit;
 /**
 ** A base module for [count], Twitter-like character count
 **/

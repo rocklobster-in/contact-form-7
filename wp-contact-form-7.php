@@ -1,4 +1,5 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit;
 /*
  * Plugin Name: Contact Form 7
  * Plugin URI: https://contactform7.com/

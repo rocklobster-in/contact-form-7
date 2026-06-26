@@ -1,5 +1,6 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit;
 add_action(
 	'init',
 	'wpcf7_init_block_editor_assets',

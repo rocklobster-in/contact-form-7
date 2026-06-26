@@ -1,5 +1,6 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit;
 /**
  * Wrapper function of WPCF7_FormTagsManager::add().
  */

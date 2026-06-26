@@ -1,5 +1,6 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit;
 class WPCF7_ContactFormTemplate {
 
 	public static function get_default( $prop = 'form' ) {

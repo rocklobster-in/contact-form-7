@@ -1,4 +1,5 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit;
 /**
 ** Special Mail Tags
 ** https://contactform7.com/special-mail-tags/

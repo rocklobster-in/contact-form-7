@@ -1,5 +1,6 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit;
 require_once path_join( __DIR__, 'form.php' );
 require_once path_join( __DIR__, 'mail.php' );
 require_once path_join( __DIR__, 'messages.php' );

@@ -1,5 +1,6 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit;
 require 'vendor/autoload.php';
 
 require_once WPCF7_PLUGIN_DIR . '/includes/l10n.php';

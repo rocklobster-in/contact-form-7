@@ -1,4 +1,5 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit;
 /**
  * All the functions and classes in this file are deprecated.
  * You should not use them. The functions and classes will be

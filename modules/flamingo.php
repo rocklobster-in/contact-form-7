@@ -1,4 +1,5 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit;
 /**
 ** Module for Flamingo plugin.
 ** http://wordpress.org/extend/plugins/flamingo/

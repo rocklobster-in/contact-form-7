@@ -1,5 +1,6 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit;
 add_filter( 'map_meta_cap', 'wpcf7_map_meta_cap', 10, 4 );
 
 function wpcf7_map_meta_cap( $caps, $cap, $user_id, $args ) {

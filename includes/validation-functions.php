@@ -1,5 +1,7 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 /**
  * Checks whether a string is a valid NAME token.
  *

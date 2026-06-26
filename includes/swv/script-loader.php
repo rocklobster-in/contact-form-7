@@ -1,5 +1,6 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit;
 add_action(
 	'wp_enqueue_scripts',
 	static function () {

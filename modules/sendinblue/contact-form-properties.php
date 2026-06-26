@@ -1,5 +1,6 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit;
 add_filter(
 	'wpcf7_pre_construct_contact_form_properties',
 	'wpcf7_sendinblue_register_property',

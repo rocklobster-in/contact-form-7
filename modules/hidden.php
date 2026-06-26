@@ -1,5 +1,6 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit;
 add_action( 'wpcf7_init', 'wpcf7_add_form_tag_hidden', 10, 0 );
 
 function wpcf7_add_form_tag_hidden() {

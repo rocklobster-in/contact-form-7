@@ -1,5 +1,6 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit;
 /**
  * Replaces double line breaks with paragraph elements.
  *

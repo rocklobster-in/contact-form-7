@@ -1,5 +1,6 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit;
 class WPCF7_Editor {
 
 	private $contact_form;

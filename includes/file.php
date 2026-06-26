@@ -1,5 +1,6 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit;
 /**
  * Validates uploaded files and moves them to the temporary directory.
  *
