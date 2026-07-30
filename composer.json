@@ -1,7 +1,7 @@
 {
 	"require": {
-		"rocklobsterinc/form-data-tree": "^v2.0.4",
-		"rocklobsterinc/functions": "^v1.0.4",
-		"rocklobsterinc/swv": "^v2.0.5"
+		"rocklobsterinc/form-data-tree": "^v2.0",
+		"rocklobsterinc/functions": "^v1.0",
+		"rocklobsterinc/swv": "^v2.0"
 	}
 }
