@@ -63,6 +63,25 @@ class WPCF7_TagGenerator {
 		return true;
 	}
 
+	/**
+	 * Removes a form-tag generator instance.
+	 */
+	public function remove( $id ) {
+		$id = trim( $id );
+
+		if (
+			'' === $id or
+			! wpcf7_is_name( $id ) or
+			! array_key_exists( $id, $this->panels )
+		) {
+			return false;
+		}
+
+		unset( $this->panels[$id] );
+
+		return true;
+	}
+
 
 	/**
 	 * Renders form-tag generator calling buttons.
