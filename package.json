@@ -17,7 +17,8 @@
 		"build:stripe": "wp-scripts build modules/stripe/src/index.js --output-path=modules/stripe",
 		"start:admin": "wp-scripts start admin/includes/js/src/index.js --output-path=admin/includes/js",
 		"build:admin": "wp-scripts build admin/includes/js/src/index.js --output-path=admin/includes/js",
-		"packages-update": "wp-scripts packages-update"
+		"packages-update": "wp-scripts packages-update",
+		"packages-update:php": "php composer.phar update"
 	},
 	"repository": {
 		"type": "git",
