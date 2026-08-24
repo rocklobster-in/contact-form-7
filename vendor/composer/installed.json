@@ -1,14 +1,9 @@
 {
-    "_readme": [
-        "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
-        "This file is @generated automatically"
-    ],
-    "content-hash": "f850b4a531317914b9045752ab7ba3f8",
     "packages": [
         {
             "name": "rocklobsterinc/form-data-tree",
             "version": "v2.0.7",
+            "version_normalized": "2.0.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rocklobster-in/form-data-tree-php.git",
@@ -27,7 +22,9 @@
             "require-dev": {
                 "php-parallel-lint/php-parallel-lint": "^1.4"
             },
+            "time": "2026-08-14T07:18:32+00:00",
             "type": "library",
+            "installation-source": "dist",
             "autoload": {
                 "files": [
                     "src/functions.php"
@@ -51,11 +48,12 @@
                 "issues": "https://github.com/rocklobster-in/form-data-tree-php/issues",
                 "source": "https://github.com/rocklobster-in/form-data-tree-php/tree/v2.0.7"
             },
-            "time": "2026-08-14T07:18:32+00:00"
+            "install-path": "../rocklobsterinc/form-data-tree"
         },
         {
             "name": "rocklobsterinc/functions",
             "version": "v1.0.6",
+            "version_normalized": "1.0.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rocklobster-in/functions-php.git",
@@ -73,7 +71,9 @@
             "require-dev": {
                 "php-parallel-lint/php-parallel-lint": "^1.4"
             },
+            "time": "2026-08-14T06:28:00+00:00",
             "type": "library",
+            "installation-source": "dist",
             "autoload": {
                 "files": [
                     "src/functions.php"
@@ -94,11 +94,12 @@
                 "issues": "https://github.com/rocklobster-in/functions-php/issues",
                 "source": "https://github.com/rocklobster-in/functions-php/tree/v1.0.6"
             },
-            "time": "2026-08-14T06:28:00+00:00"
+            "install-path": "../rocklobsterinc/functions"
         },
         {
             "name": "rocklobsterinc/swv",
             "version": "v2.0.7",
+            "version_normalized": "2.0.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rocklobster-in/swv-php.git",
@@ -119,7 +120,9 @@
                 "php-parallel-lint/php-parallel-lint": "^1.4",
                 "phpunit/phpunit": "^12.5"
             },
+            "time": "2026-08-14T08:23:16+00:00",
             "type": "library",
+            "installation-source": "dist",
             "autoload": {
                 "files": [
                     "src/functions.php"
@@ -143,16 +146,9 @@
                 "issues": "https://github.com/rocklobster-in/swv-php/issues",
                 "source": "https://github.com/rocklobster-in/swv-php/tree/v2.0.7"
             },
-            "time": "2026-08-14T08:23:16+00:00"
+            "install-path": "../rocklobsterinc/swv"
         }
     ],
-    "packages-dev": [],
-    "aliases": [],
-    "minimum-stability": "stable",
-    "stability-flags": {},
-    "prefer-stable": false,
-    "prefer-lowest": false,
-    "platform": {},
-    "platform-dev": {},
-    "plugin-api-version": "2.9.0"
+    "dev": true,
+    "dev-package-names": []
 }

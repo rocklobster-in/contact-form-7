@@ -1,0 +1,36 @@
+{
+  "name": "rocklobsterinc/form-data-tree",
+  "description": "FormDataTree for PHP",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Takayuki Miyoshi",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": ">=8.3",
+    "rocklobsterinc/functions": "^v1.0"
+  },
+  "archive": {
+    "exclude": [
+      "/.*",
+      "/package-lock.json",
+      "/package.json"
+    ]
+  },
+  "autoload": {
+    "psr-4": {
+      "RockLobsterInc\\FormDataTree\\": "src/"
+    },
+    "files": [
+      "src/functions.php"
+    ]
+  },
+  "scripts": {
+    "lint": "parallel-lint src/"
+  },
+  "require-dev": {
+    "php-parallel-lint/php-parallel-lint": "^1.4"
+  }
+}

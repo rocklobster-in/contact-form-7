@@ -1,0 +1,32 @@
+{
+  "name": "rocklobsterinc/swv",
+  "description": "Schema-Woven Validation for PHP",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Takayuki Miyoshi",
+      "role": "Developer"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "RockLobsterInc\\Swv\\": "src/"
+    },
+    "files": [
+      "src/functions.php"
+    ]
+  },
+  "scripts": {
+    "lint": "parallel-lint src/ tests/",
+    "test": "phpunit"
+  },
+  "require": {
+    "php": ">=8.3",
+    "rocklobsterinc/functions": "^v1.0",
+    "rocklobsterinc/form-data-tree": "^v2.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^12.5",
+    "php-parallel-lint/php-parallel-lint": "^1.4"
+  }
+}
