@@ -1,10 +1,10 @@
 import { __ } from '@wordpress/i18n';
 
-import init from './init';
-import submit from './submit';
-import reset from './reset';
-import validate from './validate';
-import { apiFetch } from './api-fetch';
+import init from './init.js';
+import submit from './submit.js';
+import reset from './reset.js';
+import validate from './validate.js';
+import { apiFetch } from './api-fetch.js';
 
 document.addEventListener( 'DOMContentLoaded', event => {
 
