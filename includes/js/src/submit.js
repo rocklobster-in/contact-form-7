@@ -1,7 +1,7 @@
-import { setStatus } from './status';
-import { triggerEvent } from './event';
-import { apiFetch } from './api-fetch';
-import { setValidationError, removeValidationError } from './validate';
+import { setStatus } from './status.js';
+import { triggerEvent } from './event.js';
+import { apiFetch } from './api-fetch.js';
+import { setValidationError, removeValidationError } from './validate.js';
 
 export default function submit( form, options = {} ) {
 
