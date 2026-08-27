@@ -1,5 +1,7 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 add_filter( 'wpcf7_spam', 'wpcf7_disallowed_list', 10, 2 );
 
 function wpcf7_disallowed_list( $spam, $submission ) {

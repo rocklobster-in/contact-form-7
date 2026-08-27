@@ -4,6 +4,8 @@
 ** Listo http://wordpress.org/plugins/listo/
 **/
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 add_filter( 'wpcf7_form_tag_data_option', 'wpcf7_listo', 10, 3 );
 
 function wpcf7_listo( $data, $options, $args ) {

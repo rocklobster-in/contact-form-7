@@ -5,6 +5,8 @@
  * @link https://contactform7.com/constant-contact-integration/
  */
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 add_action(
 	'wpcf7_init',
 	'wpcf7_constant_contact_register_service',

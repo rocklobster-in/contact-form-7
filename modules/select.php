@@ -3,6 +3,8 @@
 ** A base module for [select] and [select*]
 **/
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 /* form_tag handler */
 
 add_action( 'wpcf7_init', 'wpcf7_add_form_tag_select', 10, 0 );

@@ -5,6 +5,8 @@
  * @link https://contactform7.com/recaptcha/
  */
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 wpcf7_include_module_file( 'recaptcha/service.php' );
 
 
