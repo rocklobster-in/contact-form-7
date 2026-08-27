@@ -1,6 +1,8 @@
 <?php
 /**
  * Turnstile module main file
+ *
+ * @link https://contactform7.com/turnstile-integration/
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
