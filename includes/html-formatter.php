@@ -158,9 +158,9 @@ class WPCF7_HTMLFormatter {
 				);
 			}
 
-			if ( '<!' === substr( $next_tag, 0, 2 ) ) {
+			if ( str_starts_with( $next_tag, '<!' ) ) {
 				$next_tag_type = self::comment;
-			} elseif ( '</' === substr( $next_tag, 0, 2 ) ) {
+			} elseif ( str_starts_with( $next_tag, '</' ) ) {
 				$next_tag_type = self::end_tag;
 			} else {
 				$next_tag_type = self::start_tag;
