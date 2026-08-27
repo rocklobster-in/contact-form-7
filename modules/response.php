@@ -1,7 +1,9 @@
 <?php
 /**
-** A base module for [response]
-**/
+ * Response message box
+ *
+ * @link https://contactform7.com/locating-response-message-box-anywhere/
+ */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
