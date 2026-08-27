@@ -1,7 +1,9 @@
 <?php
 /**
-** A base module for [file] and [file*]
-**/
+ * File uploading field
+ *
+ * @link https://contactform7.com/file-uploading-and-attachment/
+ */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
