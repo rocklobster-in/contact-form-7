@@ -1,5 +1,7 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 use RockLobsterInc\FormDataTree\{ FormDataTree };
 
 trait WPCF7_SWV_SchemaHolder {

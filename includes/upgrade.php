@@ -1,5 +1,7 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 add_action( 'wpcf7_upgrade', 'wpcf7_upgrade_58', 10, 2 );
 
 /**
