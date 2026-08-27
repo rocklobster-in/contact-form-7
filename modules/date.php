@@ -1,8 +1,9 @@
 <?php
 /**
-** A base module for the following types of tags:
-** 	[date] and [date*]		# Date
-**/
+ * Date field
+ *
+ * @link https://contactform7.com/date-field/
+ */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
