@@ -1,4 +1,4 @@
-import { absInt } from './utils';
+import { absInt } from './utils.js';
 
 export const exclusiveCheckboxHelper = form => {
 	form.querySelectorAll( '.wpcf7-exclusive-checkbox' ).forEach( element => {

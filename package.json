@@ -2,7 +2,18 @@
 	"name": "contact-form-7",
 	"version": "6.2.0",
 	"description": "JavaScript packages for Contact Form 7.",
+	"author": "takayukister",
+	"license": "GPL-2.0-only",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/rocklobster-in/contact-form-7.git"
+	},
+	"bugs": {
+		"url": "https://github.com/rocklobster-in/contact-form-7/issues"
+	},
+	"homepage": "https://github.com/rocklobster-in/contact-form-7#readme",
 	"private": true,
+	"type": "module",
 	"scripts": {
 		"build:all": "npm run build:front && npm run build:block && npm run build:swv && npm run build:recaptcha && npm run build:stripe && npm run build:admin",
 		"start:front": "wp-scripts start includes/js/src/index.js --output-path=includes/js",
@@ -20,16 +31,6 @@
 		"packages-update": "wp-scripts packages-update",
 		"packages-update:php": "php composer.phar update"
 	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/rocklobster-in/contact-form-7.git"
-	},
-	"author": "takayukister",
-	"license": "GPL-2.0-only",
-	"bugs": {
-		"url": "https://github.com/rocklobster-in/contact-form-7/issues"
-	},
-	"homepage": "https://github.com/rocklobster-in/contact-form-7#readme",
 	"devDependencies": {
 		"@rocklobsterinc/form-data-tree": "^2.1.3",
 		"@rocklobsterinc/functions": "^1.0.5",

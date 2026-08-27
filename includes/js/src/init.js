@@ -1,5 +1,5 @@
-import { absInt } from './utils';
-import { resetCaptcha, resetQuiz } from './reset';
+import { absInt } from './utils.js';
+import { resetCaptcha, resetQuiz } from './reset.js';
 
 import {
 	exclusiveCheckboxHelper,
@@ -7,7 +7,7 @@ import {
 	urlInputHelper,
 	initSubmitButton,
 	initCharacterCount,
-} from './helpers';
+} from './helpers.js';
 
 export default function init( form ) {
 	const formData = new FormData( form );

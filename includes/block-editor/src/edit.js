@@ -9,8 +9,8 @@ import {
 	TextControl,
 } from '@wordpress/components';
 
-import fetchContactForms from './fetch';
-import { getContactFormEditorLink } from './helpers';
+import fetchContactForms from './fetch.js';
+import { getContactFormEditorLink } from './helpers.js';
 
 export default function ContactFormSelectorEdit( { attributes, setAttributes } ) {
 	const createMap = array => {

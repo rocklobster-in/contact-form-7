@@ -1,4 +1,4 @@
-import { triggerEvent } from './event';
+import { triggerEvent } from './event.js';
 
 export const setStatus = ( form, status ) => {
 	const defaultStatuses = new Map( [

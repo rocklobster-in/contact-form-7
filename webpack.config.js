@@ -1,8 +1,7 @@
-const DependencyExtractionWebpackPlugin = require( '@wordpress/dependency-extraction-webpack-plugin' );
-const defaultConfig = require( '@wordpress/scripts/config/webpack.config' );
+import defaultConfig from '@wordpress/scripts/config/webpack.config.js';
 
-module.exports = {
-	...defaultConfig,
+export default {
+ 	...defaultConfig,
 	output: {
 		...defaultConfig.output,
 		clean: false,

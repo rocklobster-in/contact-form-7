@@ -1,5 +1,5 @@
-import { init as v1Init } from './tag-generator-v1';
-import { init as v2Init } from './tag-generator-v2';
+import { init as v1Init } from './tag-generator-v1.js';
+import { init as v2Init } from './tag-generator-v2.js';
 
 const init = () => {
 	document.querySelectorAll(

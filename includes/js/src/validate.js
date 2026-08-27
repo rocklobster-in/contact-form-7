@@ -1,4 +1,4 @@
-import { setStatus } from './status';
+import { setStatus } from './status.js';
 
 
 export default function validate( form, options = {} ) {

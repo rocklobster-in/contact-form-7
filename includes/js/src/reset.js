@@ -1,7 +1,7 @@
-import { setStatus } from './status';
-import { triggerEvent } from './event';
-import { clearResponse } from './submit';
-import { apiFetch } from './api-fetch';
+import { setStatus } from './status.js';
+import { triggerEvent } from './event.js';
+import { clearResponse } from './submit.js';
+import { apiFetch } from './api-fetch.js';
 
 export default function reset( form ) {
 	const formData = new FormData( form );
