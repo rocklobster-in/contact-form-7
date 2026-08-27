@@ -1,5 +1,7 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 add_action( 'wpcf7_admin_menu', 'wpcf7_admin_init_bulk_cv', 10, 0 );
 
 function wpcf7_admin_init_bulk_cv() {

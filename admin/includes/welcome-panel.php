@@ -1,5 +1,7 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 abstract class WPCF7_WelcomePanelColumn {
 
 	abstract protected function icon();
