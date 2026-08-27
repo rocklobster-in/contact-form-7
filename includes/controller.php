@@ -3,6 +3,7 @@
  * Controller for front-end requests, scripts, and styles
  */
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 add_action(
 	'parse_request',

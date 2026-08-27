@@ -5,6 +5,8 @@
  * @link https://contactform7.com/integration-with-external-apis/
  */
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 class WPCF7_Integration {
 
 	private static $instance;

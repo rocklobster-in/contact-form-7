@@ -1,5 +1,7 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 add_filter(
 	'wpcf7_pre_construct_contact_form_properties',
 	'wpcf7_sendinblue_register_property',

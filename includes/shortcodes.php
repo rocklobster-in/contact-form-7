@@ -5,6 +5,8 @@
  * removed in a later version.
  */
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 function wpcf7_add_shortcode( $tag, $callback, $has_name = false ) {
 	wpcf7_deprecated_function( __FUNCTION__, '4.6', 'wpcf7_add_form_tag' );
 

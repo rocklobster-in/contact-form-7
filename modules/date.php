@@ -4,6 +4,8 @@
 ** 	[date] and [date*]		# Date
 **/
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 /* form_tag handler */
 
 add_action( 'wpcf7_init', 'wpcf7_add_form_tag_date', 10, 0 );

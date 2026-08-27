@@ -1,5 +1,7 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 add_filter( 'wpcf7_mail_html_body', 'wpcf7_mail_html_body_autop', 10, 1 );
 
 /**

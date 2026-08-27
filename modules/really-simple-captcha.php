@@ -3,6 +3,8 @@
 ** A base module for [captchac] and [captchar]
 **/
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 /* form_tag handler */
 
 add_action( 'wpcf7_init', 'wpcf7_add_form_tag_captcha', 10, 0 );

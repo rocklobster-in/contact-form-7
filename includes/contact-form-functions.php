@@ -3,6 +3,7 @@
  * Contact form helper functions
  */
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 /**
  * Wrapper function of WPCF7_ContactForm::get_instance().

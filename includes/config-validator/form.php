@@ -1,5 +1,7 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 trait WPCF7_ConfigValidator_Form {
 
 	/**

@@ -1,8 +1,11 @@
 <?php
 /**
-** Special Mail Tags
-** https://contactform7.com/special-mail-tags/
-**/
+ * Special mail-tags
+ *
+ * @link https://contactform7.com/special-mail-tags/
+ */
+
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 add_filter( 'wpcf7_special_mail_tags', 'wpcf7_special_mail_tag', 10, 4 );
 

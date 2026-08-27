@@ -1,10 +1,11 @@
 <?php
 /**
- * Pipe-related classes.
+ * Pipe-related classes
  *
  * @link https://contactform7.com/selectable-recipient-with-pipes/
  */
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 /**
  * Class representing a pair of pipe.

@@ -5,6 +5,8 @@
  * @link https://contactform7.com/stripe-integration/
  */
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 wpcf7_include_module_file( 'stripe/service.php' );
 wpcf7_include_module_file( 'stripe/api.php' );
 

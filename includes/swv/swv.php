@@ -3,6 +3,8 @@
  * Schema-Woven Validation API
  */
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 use RockLobsterInc\Swv\{ AbstractRule, CompositeRule };
 use RockLobsterInc\Swv\{ InvalidityException as Invalidity };
 use RockLobsterInc\FormDataTree\{ FormDataTreeInterface as FormDataTree };

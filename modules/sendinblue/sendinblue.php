@@ -5,6 +5,8 @@
  * @link https://contactform7.com/sendinblue-integration/
  */
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 wpcf7_include_module_file( 'sendinblue/service.php' );
 wpcf7_include_module_file( 'sendinblue/contact-form-properties.php' );
 wpcf7_include_module_file( 'sendinblue/doi.php' );

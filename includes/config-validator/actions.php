@@ -1,5 +1,7 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 add_action(
 	'wpcf7_update_option',
 	'wpcf7_config_validator_update_option',

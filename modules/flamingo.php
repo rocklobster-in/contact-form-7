@@ -4,6 +4,8 @@
 ** http://wordpress.org/extend/plugins/flamingo/
 **/
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 add_action( 'wpcf7_submit', 'wpcf7_flamingo_submit', 10, 2 );
 
 function wpcf7_flamingo_submit( $contact_form, $result ) {
