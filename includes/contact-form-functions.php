@@ -90,14 +90,14 @@ function wpcf7_get_contact_form_by_title( $title ) {
 
 
 /**
- * Wrapper function of WPCF7_ContactForm::get_current().
+ * Returns the contact form that is currently processed.
  *
- * @return WPCF7_ContactForm Contact form object.
+ * This is a wrapper for WPCF7_ContactForm::get_current().
+ *
+ * @return WPCF7_ContactForm|null Contact form object, or null if none is set.
  */
-function wpcf7_get_current_contact_form() {
-	if ( $current = WPCF7_ContactForm::get_current() ) {
-		return $current;
-	}
+function wpcf7_get_current_contact_form(): ?WPCF7_ContactForm {
+	return WPCF7_ContactForm::get_current();
 }
 
 
