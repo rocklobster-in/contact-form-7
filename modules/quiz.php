@@ -1,7 +1,9 @@
 <?php
 /**
-** A base module for [quiz]
-**/
+ * Quiz
+ *
+ * @link https://contactform7.com/quiz/
+ */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
