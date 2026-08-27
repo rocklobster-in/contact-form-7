@@ -1,7 +1,9 @@
 <?php
 /**
-** A base module for [submit]
-**/
+ * Submit button
+ *
+ * @link https://contactform7.com/submit-button/
+ */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
