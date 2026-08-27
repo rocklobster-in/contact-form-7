@@ -1,4 +1,9 @@
 <?php
+/**
+ * Disallowed list
+ *
+ * @link https://contactform7.com/comment-blacklist/
+ */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 

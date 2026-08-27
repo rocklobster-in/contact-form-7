@@ -1,7 +1,9 @@
 <?php
 /**
-** A base module for [select] and [select*]
-**/
+ * Drop-down menu
+ *
+ * @link https://contactform7.com/checkboxes-radio-buttons-and-menus/
+ */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 

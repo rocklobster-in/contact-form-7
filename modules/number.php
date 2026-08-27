@@ -1,9 +1,9 @@
 <?php
 /**
-** A base module for the following types of tags:
-** 	[number] and [number*]		# Number
-** 	[range] and [range*]		# Range
-**/
+ * Number fields
+ *
+ * @link https://contactform7.com/number-fields/
+ */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 

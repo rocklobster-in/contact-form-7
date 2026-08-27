@@ -1,4 +1,9 @@
 <?php
+/**
+ * Hidden field
+ *
+ * @link https://contactform7.com/hidden-field/
+ */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
