@@ -1,11 +1,11 @@
 import { __ } from '@wordpress/i18n';
 
-import { init as initTabs } from './tabs';
-import { init as initConfigFields } from './config-errors';
-import { init as initWelcomePanel } from './welcome-panel';
-import { init as initTagGenerator } from './tag-generator';
-import { init as initBeforeUnload } from './before-unload';
-import { toggleFieldset } from './utils';
+import { init as initTabs } from './tabs.js';
+import { init as initConfigFields } from './config-errors.js';
+import { init as initWelcomePanel } from './welcome-panel.js';
+import { init as initTagGenerator } from './tag-generator.js';
+import { init as initBeforeUnload } from './before-unload.js';
+import { toggleFieldset } from './utils.js';
 
 
 document.addEventListener( 'DOMContentLoaded', event => {

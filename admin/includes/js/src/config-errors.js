@@ -4,7 +4,7 @@ import { sprintf, _n, __ } from '@wordpress/i18n';
 import {
 	iconInCircle,
  	canonicalizeName,
-} from './utils';
+} from './utils.js';
 
 
 const init = () => {
