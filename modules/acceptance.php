@@ -1,7 +1,9 @@
 <?php
 /**
-** A base module for [acceptance]
-**/
+ * Acceptance checkbox
+ *
+ * @link https://contactform7.com/acceptance-checkbox/
+ */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
