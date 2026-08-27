@@ -1,6 +1,6 @@
 import { createBlock } from '@wordpress/blocks';
 
-import { createShortcode } from './helpers';
+import { createShortcode } from './helpers.js';
 
 const transforms = {
 	from: [
