@@ -1,7 +1,9 @@
 <?php
 /**
-** A base module for [textarea] and [textarea*]
-**/
+ * Textarea
+ *
+ * @link https://contactform7.com/text-fields/
+ */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
