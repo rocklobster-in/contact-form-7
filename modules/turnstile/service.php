@@ -278,7 +278,7 @@ class WPCF7_Turnstile extends WPCF7_Service {
 
 		$formatter->append_preformatted(
 			wpcf7_link(
-				__( 'https://contactform7.com/turnstile-integration/', 'contact-form-7' ),
+				'https://contactform7.com/turnstile-integration/',
 				__( 'Cloudflare Turnstile integration', 'contact-form-7' )
 			)
 		);
