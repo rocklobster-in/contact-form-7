@@ -175,7 +175,7 @@ class WPCF7_Sendinblue extends WPCF7_Service {
 
 		$formatter->append_preformatted(
 			wpcf7_link(
-				__( 'https://contactform7.com/sendinblue-integration/', 'contact-form-7' ),
+				'https://contactform7.com/sendinblue-integration/',
 				__( 'Brevo integration', 'contact-form-7' )
 			)
 		);
