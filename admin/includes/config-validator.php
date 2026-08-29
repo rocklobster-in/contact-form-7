@@ -173,7 +173,7 @@ function wpcf7_admin_bulk_validate_page() {
 
 	$formatter->append_preformatted(
 		wpcf7_link(
-			__( 'https://contactform7.com/configuration-validator-faq/', 'contact-form-7' ),
+			'https://contactform7.com/configuration-validator-faq/',
 			__( 'FAQ about Configuration Validator', 'contact-form-7' )
 		)
 	);
