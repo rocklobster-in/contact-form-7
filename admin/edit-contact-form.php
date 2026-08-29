@@ -361,8 +361,8 @@ if ( $post ) {
 		sprintf(
 			/* translators: 1: URL to FAQ, 2: URL to docs */
 			'<a href="%1$s">FAQ</a> and <a href="%2$s">docs</a>',
-			__( 'https://contactform7.com/faq/', 'contact-form-7' ),
-			__( 'https://contactform7.com/docs/', 'contact-form-7' )
+			'https://contactform7.com/faq/',
+			'https://contactform7.com/docs/'
 		)
 	);
 
@@ -379,7 +379,7 @@ if ( $post ) {
 
 	$formatter->append_preformatted(
 		wpcf7_link(
-			__( 'https://contactform7.com/custom-development/', 'contact-form-7' ),
+			'https://contactform7.com/custom-development/',
 			__( 'Professional services', 'contact-form-7' )
 		)
 	);

@@ -55,9 +55,7 @@ class WPCF7_ConfigValidator {
 	 * Returns a URL linking to the documentation page for the error type.
 	 */
 	public static function get_doc_link( $child_page = '' ) {
-		$url = __( 'https://contactform7.com/configuration-errors/',
-			'contact-form-7'
-		);
+		$url = 'https://contactform7.com/configuration-errors/';
 
 		if ( '' !== $child_page ) {
 			$child_page = strtr( $child_page, '_', '-' );

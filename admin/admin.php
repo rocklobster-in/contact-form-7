@@ -586,7 +586,7 @@ function wpcf7_admin_integration_page() {
 		sprintf(
 			/* translators: %s: URL to support page about integration with external APIs */
 			__( 'You can expand the possibilities of your contact forms by integrating them with external services. For details, see <a href="%s">Integration with external APIs</a>.', 'contact-form-7' ),
-			__( 'https://contactform7.com/integration-with-external-apis/', 'contact-form-7' )
+			'https://contactform7.com/integration-with-external-apis/'
 		)
 	);
 

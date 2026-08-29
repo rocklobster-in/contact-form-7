@@ -96,7 +96,7 @@ function wpcf7_sendinblue_editor_panels( $panels ) {
 				__( 'You can set up the Brevo integration here. For details, see %s.', 'contact-form-7' )
 			),
 			wpcf7_link(
-				__( 'https://contactform7.com/sendinblue-integration/', 'contact-form-7' ),
+				'https://contactform7.com/sendinblue-integration/',
 				__( 'Brevo integration', 'contact-form-7' )
 			)
 		);

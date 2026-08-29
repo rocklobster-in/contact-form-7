@@ -64,9 +64,9 @@ class WPCF7_WelcomePanelColumn_AntiSpam extends WPCF7_WelcomePanelColumn {
 			sprintf(
 				/* translators: 1: URL to support page about Akismet, 2: Cloudflare Turnstile, 3: Disallowed list */
 				__( 'Contact Form 7 supports spam-filtering with <a href="%1$s">Akismet</a>. <a href="%2$s">Cloudflare Turnstile</a> blocks annoying spambots. Plus, using <a href="%3$s">disallowed list</a>, you can block messages containing specified keywords or those sent from specified IP addresses.', 'contact-form-7' ),
-				__( 'https://contactform7.com/spam-filtering-with-akismet/', 'contact-form-7' ),
-				__( 'https://contactform7.com/turnstile-integration/', 'contact-form-7' ),
-				__( 'https://contactform7.com/comment-blacklist/', 'contact-form-7' )
+				'https://contactform7.com/spam-filtering-with-akismet/',
+				'https://contactform7.com/turnstile-integration/',
+				'https://contactform7.com/comment-blacklist/'
 			),
 		);
 	}
@@ -89,7 +89,7 @@ class WPCF7_WelcomePanelColumn_Donation extends WPCF7_WelcomePanelColumn {
 			sprintf(
 				/* translators: %s: URL to support page about ways to contribute */
 				__( 'There are several ways for you to <a href="%s">contribute to the project</a>: testing, coding, translating it into your local languages, helping other users, financial donations, etc, etc. We equally welcome you regardless of the way you contribute.', 'contact-form-7' ),
-				__( 'https://contactform7.com/contributing/', 'contact-form-7' )
+				'https://contactform7.com/contributing/'
 			),
 		);
 	}
@@ -112,7 +112,7 @@ class WPCF7_WelcomePanelColumn_Flamingo extends WPCF7_WelcomePanelColumn {
 			sprintf(
 				/* translators: %s: URL to support page about the Flamingo plugin */
 				__( 'Install a message storage plugin before this happens to you. <a href="%s">Flamingo</a> saves all messages through contact forms into the database. Flamingo is a free WordPress plugin created by the same author as Contact Form 7.', 'contact-form-7' ),
-				__( 'https://contactform7.com/save-submitted-messages-with-flamingo/', 'contact-form-7' )
+				'https://contactform7.com/save-submitted-messages-with-flamingo/'
 			),
 		);
 	}
@@ -134,13 +134,13 @@ class WPCF7_WelcomePanelColumn_Integration extends WPCF7_WelcomePanelColumn {
 			sprintf(
 				/* translators: %s: URL to support page about the Brevo integration */
 				__( 'Your contact forms will become more powerful and versatile by integrating them with external APIs. With CRM and email marketing services, you can build your own contact lists (<a href="%s">Brevo</a>).', 'contact-form-7' ),
-				__( 'https://contactform7.com/sendinblue-integration/', 'contact-form-7' )
+				'https://contactform7.com/sendinblue-integration/'
 			),
 			sprintf(
 				/* translators: 1: URL to support page about Cloudflare Turnstile, 2: Stripe */
 				__( 'With help from cloud-based machine learning, anti-spam services will protect your forms (<a href="%1$s">Cloudflare Turnstile</a>). Even payment services are natively supported (<a href="%2$s">Stripe</a>).', 'contact-form-7' ),
-				__( 'https://contactform7.com/turnstile-integration/', 'contact-form-7' ),
-				__( 'https://contactform7.com/stripe-integration/', 'contact-form-7' )
+				'https://contactform7.com/turnstile-integration/',
+				'https://contactform7.com/stripe-integration/'
 			),
 		);
 	}

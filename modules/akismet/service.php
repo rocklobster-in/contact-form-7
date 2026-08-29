@@ -63,7 +63,7 @@ class WPCF7_Akismet extends WPCF7_Service {
 
 		$formatter->append_preformatted(
 			wpcf7_link(
-				__( 'https://contactform7.com/spam-filtering-with-akismet/', 'contact-form-7' ),
+				'https://contactform7.com/spam-filtering-with-akismet/',
 				__( 'Spam filtering with Akismet', 'contact-form-7' )
 			)
 		);

@@ -134,7 +134,7 @@ class WPCF7_ConstantContact extends WPCF7_Service {
 
 		$formatter->append_preformatted(
 			wpcf7_link(
-				__( 'https://contactform7.com/2024/02/02/we-end-the-constant-contact-integration/', 'contact-form-7' ),
+				'https://contactform7.com/2024/02/02/we-end-the-constant-contact-integration/',
 				__( 'The Constant Contact integration has been removed.', 'contact-form-7' )
 			)
 		);
