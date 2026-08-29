@@ -86,7 +86,7 @@ function wpcf7_editor_panel_form( $post ) {
 	$description = sprintf(
 		/* translators: %s: URL to support page about the form template */
 		__( 'You can edit the form template here. For details, see <a href="%s">Editing form template</a>.', 'contact-form-7' ),
-		__( 'https://contactform7.com/editing-form-template/', 'contact-form-7' )
+		'https://contactform7.com/editing-form-template/'
 	);
 
 	$formatter = new WPCF7_HTMLFormatter();
@@ -207,7 +207,7 @@ function wpcf7_editor_box_mail( $post, $options = '' ) {
 	$description = sprintf(
 		/* translators: %s: URL to support page about the email template */
 		__( 'You can edit the email template here. For details, see <a href="%s">Setting up mail</a>.', 'contact-form-7' ),
-		__( 'https://contactform7.com/setting-up-mail/', 'contact-form-7' )
+		'https://contactform7.com/setting-up-mail/'
 	);
 
 	$formatter->append_preformatted( $description );
@@ -459,7 +459,7 @@ function wpcf7_editor_panel_messages( $post ) {
 	$description = sprintf(
 		/* translators: %s: URL to support page about the messages editor */
 		__( 'You can edit messages used in various situations here. For details, see <a href="%s">Editing messages</a>.', 'contact-form-7' ),
-		__( 'https://contactform7.com/editing-messages/', 'contact-form-7' )
+		'https://contactform7.com/editing-messages/'
 	);
 
 	$messages = wpcf7_messages();
@@ -520,7 +520,7 @@ function wpcf7_editor_panel_additional_settings( $post ) {
 	$description = sprintf(
 		/* translators: %s: URL to support page about the additional settings editor */
 		__( 'You can add customization code snippets here. For details, see <a href="%s">Additional settings</a>.', 'contact-form-7' ),
-		__( 'https://contactform7.com/additional-settings/', 'contact-form-7' )
+		'https://contactform7.com/additional-settings/'
 	);
 
 	$formatter = new WPCF7_HTMLFormatter();
