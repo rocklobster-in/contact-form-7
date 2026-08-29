@@ -298,7 +298,7 @@ class WPCF7_RECAPTCHA extends WPCF7_Service {
 
 		$formatter->append_preformatted(
 			wpcf7_link(
-				__( 'https://contactform7.com/recaptcha/', 'contact-form-7' ),
+				'https://contactform7.com/recaptcha/',
 				__( 'reCAPTCHA (v3)', 'contact-form-7' )
 			)
 		);
