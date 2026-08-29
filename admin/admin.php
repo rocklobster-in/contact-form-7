@@ -740,7 +740,12 @@ function wpcf7_ctct_deprecated_warning( $page, $action, $object ) {
 
 	if ( $service->is_active() ) {
 		wp_admin_notice(
-			__( 'Contact Form 7 has completed the <a href="https://contactform7.com/2025/01/08/complete-removal-of-constant-contact-integration/">removal of the Constant Contact integration</a>. We recommend <a href="https://contactform7.com/sendinblue-integration/">Brevo</a> as an alternative.', 'contact-form-7' ),
+			sprintf(
+				/* translators: 1: URL to announcement post, 2: URL to Brevo integration doc */
+				__( 'Contact Form 7 has completed the <a href="%1$s">removal of the Constant Contact integration</a>. We recommend <a href="%2$s">Brevo</a> as an alternative.', 'contact-form-7' ),
+				'https://contactform7.com/2025/01/08/complete-removal-of-constant-contact-integration/',
+				'https://contactform7.com/sendinblue-integration/'
+			),
 			array( 'type' => 'warning' )
 		);
 	}
@@ -754,7 +759,11 @@ function wpcf7_captcha_future_warning( $page, $action, $object ) {
 
 	if ( $service->is_active() ) {
 		wp_admin_notice(
-			__( '<strong>Attention reCAPTCHA users:</strong> Google attempts to make all reCAPTCHA users migrate to reCAPTCHA Enterprise, meaning Google charges you for API calls exceeding the free tier. Contact Form 7 supports <a href="https://contactform7.com/turnstile-integration/">Cloudflare Turnstile</a>, and we recommend it unless you have reasons to use reCAPTCHA.', 'contact-form-7' ),
+			sprintf(
+				/* translators: %s: URL to Turnstile integration doc */
+				__( '<strong>Attention reCAPTCHA users:</strong> Google attempts to make all reCAPTCHA users migrate to reCAPTCHA Enterprise, meaning Google charges you for API calls exceeding the free tier. Contact Form 7 supports <a href="%s">Cloudflare Turnstile</a>, and we recommend it unless you have reasons to use reCAPTCHA.', 'contact-form-7' ),
+				'https://contactform7.com/turnstile-integration/'
+			),
 			array( 'type' => 'warning' )
 		);
 	}
