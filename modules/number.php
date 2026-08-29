@@ -210,7 +210,11 @@ function wpcf7_tag_generator_number( $contact_form, $options ) {
 		'number' => array(
 			'display_name' => __( 'Number field', 'contact-form-7' ),
 			'heading' => __( 'Number field form-tag generator', 'contact-form-7' ),
-			'description' => __( 'Generates a form-tag for a <a href="https://contactform7.com/number-fields/">number input field</a>.', 'contact-form-7' ),
+			'description' => sprintf(
+				/* translators: %s: URL to number field doc */
+				__( 'Generates a form-tag for a <a href="%s">number input field</a>.', 'contact-form-7' ),
+				'https://contactform7.com/number-fields/'
+			),
 		),
 	);
 

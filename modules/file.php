@@ -154,7 +154,11 @@ function wpcf7_tag_generator_file( $contact_form, $options ) {
 		'file' => array(
 			'display_name' => __( 'File uploading field', 'contact-form-7' ),
 			'heading' => __( 'File uploading field form-tag generator', 'contact-form-7' ),
-			'description' => __( 'Generates a form-tag for a <a href="https://contactform7.com/file-uploading-and-attachment/">file uploading field</a>.', 'contact-form-7' ),
+			'description' => sprintf(
+				/* translators: %s: URL to file uploading field doc */
+				__( 'Generates a form-tag for a <a href="%s">file uploading field</a>.', 'contact-form-7' ),
+				'https://contactform7.com/file-uploading-and-attachment/'
+			),
 		),
 	);
 

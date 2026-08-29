@@ -269,7 +269,11 @@ function wpcf7_tag_generator_acceptance( $contact_form, $options ) {
 		'acceptance' => array(
 			'display_name' => __( 'Acceptance checkbox', 'contact-form-7' ),
 			'heading' => __( 'Acceptance checkbox form-tag generator', 'contact-form-7' ),
-			'description' => __( 'Generates a form-tag for an <a href="https://contactform7.com/acceptance-checkbox/">acceptance checkbox</a>.', 'contact-form-7' ),
+			'description' => sprintf(
+				/* translators: %s: URL to acceptance checkbox doc */
+				__( 'Generates a form-tag for an <a href="%s">acceptance checkbox</a>.', 'contact-form-7' ),
+				'https://contactform7.com/acceptance-checkbox/'
+			),
 		),
 	);
 
