@@ -182,7 +182,7 @@ class WPCF7_Stripe extends WPCF7_Service {
 
 		$formatter->append_preformatted(
 			wpcf7_link(
-				__( 'https://contactform7.com/stripe-integration/', 'contact-form-7' ),
+				'https://contactform7.com/stripe-integration/',
 				__( 'Stripe integration', 'contact-form-7' )
 			)
 		);
