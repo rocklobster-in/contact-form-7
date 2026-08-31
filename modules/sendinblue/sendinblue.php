@@ -177,7 +177,7 @@ function wpcf7_sendinblue_collect_parameters() {
 	foreach ( (array) $submission->get_posted_data() as $name => $val ) {
 		$name = strtoupper( $name );
 
-		if ( 'YOUR-' === substr( $name, 0, 5 ) ) {
+		if ( str_starts_with( $name, 'YOUR-' ) ) {
 			$name = substr( $name, 5 );
 		}
 

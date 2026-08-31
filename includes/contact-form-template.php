@@ -137,7 +137,7 @@ class WPCF7_ContactFormTemplate {
 		$sitename = wp_parse_url( network_home_url(), PHP_URL_HOST );
 		$sitename = strtolower( $sitename );
 
-		if ( 'www.' === substr( $sitename, 0, 4 ) ) {
+		if ( str_starts_with( $sitename, 'www.' ) ) {
 			$sitename = substr( $sitename, 4 );
 		}
 

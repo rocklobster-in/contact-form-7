@@ -113,7 +113,7 @@ add_action(
 );
 
 function wpcf7_admin_enqueue_scripts( $hook_suffix ) {
-	if ( false === strpos( $hook_suffix, 'wpcf7' ) ) {
+	if ( ! str_contains( $hook_suffix, 'wpcf7' ) ) {
 		return;
 	}
 

@@ -76,7 +76,7 @@ function wpcf7_sanitize_query_var( $text ) {
 	$text = wp_unslash( $text );
 	$text = wp_check_invalid_utf8( $text );
 
-	if ( false !== strpos( $text, '<' ) ) {
+	if ( str_contains( $text, '<' ) ) {
 		$text = wp_pre_kses_less_than( $text );
 		$text = wp_strip_all_tags( $text );
 	}

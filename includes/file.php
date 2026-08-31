@@ -200,7 +200,7 @@ function wpcf7_acceptable_filetypes( $types = 'default', $format = 'regex' ) {
 	if ( 'attr' === $format or 'attribute' === $format ) {
 		$types = array_map(
 			static function ( $type ) {
-				if ( false === strpos( $type, '/' ) ) {
+				if ( ! str_contains( $type, '/' ) ) {
 					return sprintf( '.%s', trim( $type, '.' ) );
 				} elseif ( preg_match( '%^([a-z]+)/[*]$%i', $type, $matches ) ) {
 					if (
@@ -224,7 +224,7 @@ function wpcf7_acceptable_filetypes( $types = 'default', $format = 'regex' ) {
 	} elseif ( 'regex' === $format ) {
 		$types = array_map(
 			static function ( $type ) {
-				if ( false === strpos( $type, '/' ) ) {
+				if ( ! str_contains( $type, '/' ) ) {
 					return preg_quote( trim( $type, '.' ) );
 				} elseif ( $type = wpcf7_convert_mime_to_ext( $type ) ) {
 					return $type;

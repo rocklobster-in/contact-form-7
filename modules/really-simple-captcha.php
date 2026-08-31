@@ -405,7 +405,7 @@ function wpcf7_captcha_tmp_url() {
 function wpcf7_captcha_url( $filename ) {
 	$url = path_join( wpcf7_captcha_tmp_url(), $filename );
 
-	if ( is_ssl() and 'http:' === substr( $url, 0, 5 ) ) {
+	if ( is_ssl() and str_starts_with( $url, 'http:' ) ) {
 		$url = 'https:' . substr( $url, 5 );
 	}
 
