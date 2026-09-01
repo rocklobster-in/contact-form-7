@@ -244,7 +244,17 @@ function wpcf7_user_related_smt( $output, $name, $html, $mail_tag = null ) {
 		);
 	}
 
-	if ( ! str_starts_with( $name, '_user_' ) or '_user_agent' === $name ) {
+	$available_names = array(
+		'_user_login',
+		'_user_email',
+		'_user_url',
+		'_user_first_name',
+		'_user_last_name',
+		'_user_nickname',
+		'_user_display_name',
+	);
+
+	if ( ! in_array( $name, $available_names, true ) ) {
 		return $output;
 	}
 
@@ -260,14 +270,17 @@ function wpcf7_user_related_smt( $output, $name, $html, $mail_tag = null ) {
 		return '';
 	}
 
-	$primary_props = array( 'user_login', 'user_email', 'user_url' );
-	$opt = ltrim( $name, '_' );
-	$opt = in_array( $opt, $primary_props, true ) ? $opt : substr( $opt, 5 );
-
 	$user = new WP_User( $user_id );
 
-	if ( $user->has_prop( $opt ) ) {
-		return (string) $user->get( $opt );
+	$prop_key = ltrim( $name, '_' );
+	$primary_props = array( 'user_login', 'user_email', 'user_url' );
+
+	if ( ! in_array( $prop_key, $primary_props, true ) ) {
+		$prop_key = substr( $prop_key, 5 );
+	}
+
+	if ( $user->has_prop( $prop_key ) ) {
+		return (string) $user->get( $prop_key );
 	}
 
 	return '';
