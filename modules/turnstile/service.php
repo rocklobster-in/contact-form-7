@@ -19,9 +19,7 @@ class WPCF7_Turnstile extends WPCF7_Service {
 	 * Returns the singleton instance of the class.
 	 */
 	public static function get_instance() {
-		if ( empty( self::$instance ) ) {
-			self::$instance = new self();
-		}
+		self::$instance ??= new self();
 
 		return self::$instance;
 	}

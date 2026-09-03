@@ -13,9 +13,7 @@ class WPCF7_Sendinblue extends WPCF7_Service {
 	private $api_key;
 
 	public static function get_instance() {
-		if ( empty( self::$instance ) ) {
-			self::$instance = new self();
-		}
+		self::$instance ??= new self();
 
 		return self::$instance;
 	}

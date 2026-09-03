@@ -26,9 +26,7 @@ class WPCF7_Filesystem {
 	 * Retrieves the singleton instance.
 	 */
 	public static function get_instance() {
-		if ( empty( self::$instance ) ) {
-			self::$instance = new self();
-		}
+		self::$instance ??= new self();
 
 		return self::$instance;
 	}
