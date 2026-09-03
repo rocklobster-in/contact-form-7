@@ -22,6 +22,14 @@ document.addEventListener( 'DOMContentLoaded', event => {
 	}
 
 	document.querySelector(
+		'#wpcf7-shortcode-wrap .toggle-shortcode'
+	)?.addEventListener( 'click', event => {
+		document.querySelector(
+			'#wpcf7-shortcode-wrap'
+		)?.classList.toggle( 'hide-shortcode' );
+	} );
+
+	document.querySelector(
 		'#wpcf7-admin-form-element'
 	)?.addEventListener( 'submit', event => {
 		const inputAction = document.querySelector(

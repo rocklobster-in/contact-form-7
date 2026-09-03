@@ -157,6 +157,26 @@ if ( $post ) {
 	) );
 
 	if ( ! $post->initial() ) {
+		$formatter->append_start_tag( 'div', array(
+			'id' => 'wpcf7-shortcode-wrap',
+			'class' => 'hide-shortcode',
+		) );
+
+		$formatter->append_start_tag( 'button', array(
+			'class' => 'toggle-shortcode alignright button-link',
+			'type' => 'button',
+		) );
+
+		$formatter->append_preformatted(
+			esc_html( __( 'Toggle shortcode', 'contact-form-7' ) )
+		);
+
+		$formatter->end_tag( 'button' );
+
+		$formatter->append_start_tag( 'div', array(
+			'id' => 'wpcf7-shortcode-inside',
+		) );
+
 		if ( $shortcode = $post->shortcode() ) {
 			$formatter->append_start_tag( 'p', array(
 				'class' => 'description',
@@ -220,6 +240,9 @@ if ( $post ) {
 
 			$formatter->end_tag( 'p' );
 		}
+
+		$formatter->end_tag( 'div' ); // #wpcf7-shortcode-inside
+		$formatter->end_tag( 'div' ); // #wpcf7-shortcode-wrap
 	}
 
 	$formatter->end_tag( 'div' ); // .inside
