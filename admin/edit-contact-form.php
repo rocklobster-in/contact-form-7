@@ -151,14 +151,8 @@ if ( $post ) {
 	) );
 
 	$formatter->end_tag( 'div' ); // #titlewrap
-	$formatter->end_tag( 'div' ); // #titlediv
-	$formatter->end_tag( 'div' ); // #post-body-content
 
 	$formatter->append_start_tag( 'div', array(
-		'id' => 'wpcf7-shortcode-wrap',
-	) );
-
-	$formatter->append_start_tag( 'dialog', array(
 		'class' => 'inside',
 	) );
 
@@ -228,9 +222,9 @@ if ( $post ) {
 		}
 	}
 
-	$formatter->end_tag( 'dialog' );
-
-	$formatter->end_tag( 'div' ); // #wpcf7-shortcode-wrap
+	$formatter->end_tag( 'div' ); // .inside
+	$formatter->end_tag( 'div' ); // #titlediv
+	$formatter->end_tag( 'div' ); // #post-body-content
 
 	$formatter->append_start_tag( 'div', array(
 		'id' => 'postbox-container-1',
