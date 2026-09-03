@@ -1,8 +1,8 @@
-#titlediv .inside p.description {
+#wpcf7-shortcode-wrap p.description {
 	margin: 8px 2px 0;
 }
 
-#titlediv .inside p.description label {
+#wpcf7-shortcode-wrap p.description label {
 	cursor: pointer;
 }
 
