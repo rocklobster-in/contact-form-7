@@ -12,7 +12,6 @@ class WPCF7_Contact_Form_List_Table extends WP_List_Table {
 		$columns = array(
 			'cb' => '<input type="checkbox" />',
 			'title' => __( 'Title', 'contact-form-7' ),
-			'shortcode' => __( 'Shortcode', 'contact-form-7' ),
 			'author' => __( 'Author', 'contact-form-7' ),
 			'date' => __( 'Date', 'contact-form-7' ),
 		);
@@ -200,26 +199,6 @@ class WPCF7_Contact_Form_List_Table extends WP_List_Table {
 		}
 
 		return esc_html( $author->display_name );
-	}
-
-	public function column_shortcode( $item ) {
-		$shortcodes = array( $item->shortcode() );
-
-		$output = '';
-
-		foreach ( $shortcodes as $shortcode ) {
-			$output .= "\n" . sprintf(
-				'<span class="shortcode"><input %s /></span>',
-				wpcf7_format_atts( array(
-					'type' => 'text',
-					'readonly' => true,
-					'value' => $shortcode,
-					'class' => 'large-text code selectable',
-				) )
-			);
-		}
-
-		return trim( $output );
 	}
 
 	public function column_date( $item ) {
