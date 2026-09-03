@@ -1,39 +1,36 @@
-#titlediv .inside p.description {
+#wpcf7-shortcode-wrap {
+    margin-top: 1ex;
+}
+
+#wpcf7-shortcode-wrap.hide-shortcode #wpcf7-shortcode-inside {
+    display: none;
+}
+
+#wpcf7-shortcode-wrap p.description {
 	margin: 8px 2px 0;
 }
 
-#titlediv .inside p.description label {
+#wpcf7-shortcode-wrap p.description label {
 	cursor: pointer;
 }
 
-span.shortcode {
+#wpcf7-shortcode-wrap span.shortcode {
 	display: block;
 	margin: 2px 0;
 }
 
-span.shortcode.old {
+#wpcf7-shortcode-wrap span.shortcode.old {
 	background: #777;
 	color: #fff;
 }
 
-span.shortcode input {
+#wpcf7-shortcode-wrap span.shortcode input {
 	font-size: 12px;
 	border: none;
 	box-shadow: none;
 	padding: 4px 8px;
 	margin: 0;
-}
-
-#wpcf7-contact-form-list-table span.shortcode input,
-#wpcf7-contact-form-editor span.shortcode input {
 	background: transparent;
-}
-
-#wpcf7-contact-form-list-table span.shortcode input {
-	color: #444;
-}
-
-#wpcf7-contact-form-editor span.shortcode input {
 	color: #fff;
 	width: 100%;
 }
