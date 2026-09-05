@@ -726,7 +726,8 @@ function wpcf7_superglobal_server( $key, $default = '' ) {
  *
  * @param string $superglobal A superglobal type.
  * @param string $key Array key.
- * @return string|array|null Sanitized value.
+ * @return string|array|null Sanitized value. Null if the array key
+ *                           doesn't exist.
  */
 function wpcf7_superglobal( $superglobal, $key ) {
 	$superglobals = array(
@@ -748,4 +749,6 @@ function wpcf7_superglobal( $superglobal, $key ) {
 			}
 		);
 	}
+
+	return null;
 }
