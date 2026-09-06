@@ -8,18 +8,15 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
 
 class WPCF7_Contact_Form_List_Table extends WP_List_Table {
 
-	public static function define_columns() {
-		$columns = array(
-			'cb' => '<input type="checkbox" />',
-			'title' => __( 'Title', 'contact-form-7' ),
-			'author' => __( 'Author', 'contact-form-7' ),
-			'date' => __( 'Date', 'contact-form-7' ),
-		);
+	private static $instance;
 
-		return $columns;
+	public static function get_instance() {
+		self::$instance ??= new self();
+
+		return self::$instance;
 	}
 
-	public function __construct() {
+	private function __construct() {
 		parent::__construct( array(
 			'singular' => 'post',
 			'plural' => 'posts',
@@ -66,7 +63,14 @@ class WPCF7_Contact_Form_List_Table extends WP_List_Table {
 	}
 
 	public function get_columns() {
-		return get_column_headers( get_current_screen() );
+		$columns = array(
+			'cb' => '<input type="checkbox" />',
+			'title' => __( 'Title', 'contact-form-7' ),
+			'author' => __( 'Author', 'contact-form-7' ),
+			'date' => __( 'Date', 'contact-form-7' ),
+		);
+
+		return $columns;
 	}
 
 	protected function get_sortable_columns() {
