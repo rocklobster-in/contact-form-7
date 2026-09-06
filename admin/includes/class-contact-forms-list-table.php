@@ -116,11 +116,32 @@ class WPCF7_Contact_Form_List_Table extends WP_List_Table {
 			return '';
 		}
 
-		return sprintf(
-			'<input type="checkbox" name="%1$s[]" value="%2$s" />',
-			$this->_args['singular'],
-			$item->id()
+		$formatter = new WPCF7_HTMLFormatter();
+
+		$formatter->append_start_tag( 'input', array(
+			'id' => sprintf( 'cb-select-%d', $item->id() ),
+			'type' => 'checkbox',
+			'name' => sprintf( '%s[]', $this->_args['singular'] ),
+			'value' => $item->id(),
+		) );
+
+		$formatter->append_start_tag( 'label', array(
+			'for' => sprintf( 'cb-select-%d', $item->id() ),
+		) );
+
+		$formatter->append_start_tag( 'span', array(
+			'class' => 'screen-reader-text',
+		) );
+
+		$formatter->append_preformatted(
+			esc_html( sprintf(
+				/* translators: %s: contact form title */
+				__( 'Select %s', 'contact-form-7' ),
+				$item->title()
+			) )
 		);
+
+		return $formatter->output();
 	}
 
 	public function column_title( $item ) {
