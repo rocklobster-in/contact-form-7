@@ -26,8 +26,8 @@ class WPCF7_Contact_Form_List_Table extends WP_List_Table {
 
 	public function prepare_items() {
 		$per_page = $this->get_items_per_page( 'wpcf7_contact_forms_per_page' );
-		$order = wpcf7_superglobal_request( 'order' ) ?? '';
-		$orderby = wpcf7_superglobal_request( 'orderby' ) ?? '';
+		$order = wpcf7_superglobal_get( 'order' );
+		$orderby = wpcf7_superglobal_get( 'orderby' );
 
 		if ( '' === $orderby ) {
 			$orderby = 'date';
@@ -42,7 +42,7 @@ class WPCF7_Contact_Form_List_Table extends WP_List_Table {
 			'order' => $order,
 			'orderby' => $orderby,
 			'offset' => ( $this->get_pagenum() - 1 ) * $per_page,
-			's' => wpcf7_superglobal_request( 's' ) ?? '',
+			's' => wpcf7_superglobal_get( 's' ),
 		);
 
 		$this->items = WPCF7_ContactForm::find( $args );
