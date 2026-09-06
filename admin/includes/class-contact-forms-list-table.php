@@ -145,6 +145,10 @@ class WPCF7_Contact_Form_List_Table extends WP_List_Table {
 	}
 
 	public function column_title( $item ) {
+		$formatter = new WPCF7_HTMLFormatter();
+
+		$formatter->append_start_tag( 'strong' );
+
 		$edit_link = add_query_arg(
 			array(
 				'post' => absint( $item->id() ),
@@ -153,21 +157,26 @@ class WPCF7_Contact_Form_List_Table extends WP_List_Table {
 			menu_page_url( 'wpcf7', false )
 		);
 
-		$output = sprintf(
-			'<a class="row-title" href="%1$s" aria-label="%2$s">%3$s</a>',
-			esc_url( $edit_link ),
-			esc_attr( sprintf(
+		$formatter->append_start_tag( 'a', array(
+			'class' => 'row-title',
+			'href' => esc_url( $edit_link ),
+			'aria-label' => sprintf(
 				/* translators: %s: title of contact form */
 				__( 'Edit &#8220;%s&#8221;', 'contact-form-7' ),
 				$item->title()
-			) ),
-			esc_html( $item->title() )
-		);
+			),
+		) );
 
-		$output = sprintf( '<strong>%s</strong>', $output );
+		$formatter->append_preformatted( esc_html( $item->title() ) );
 
-		if ( wpcf7_validate_configuration()
-		and current_user_can( 'wpcf7_edit_contact_form', $item->id() ) ) {
+		$formatter->end_tag( 'strong' );
+
+		$post_type_obj = get_post_type_object( WPCF7_ContactForm::post_type );
+
+		if (
+			wpcf7_validate_configuration() and
+			current_user_can( $post_type_obj->cap->edit_post, $item->id() )
+		) {
 			$config_validator = new WPCF7_ConfigValidator( $item );
 			$config_validator->restore();
 
@@ -177,18 +186,34 @@ class WPCF7_Contact_Form_List_Table extends WP_List_Table {
 					_n(
 						'%s configuration error detected',
 						'%s configuration errors detected',
-						$count_errors, 'contact-form-7' ),
+						$count_errors,
+						'contact-form-7'
+					),
 					number_format_i18n( $count_errors )
 				);
 
-				$output .= sprintf(
-					'<div class="config-error"><span class="icon-in-circle" aria-hidden="true">!</span> %s</div>',
-					$error_notice
-				);
+				$formatter->append_start_tag( 'div', array(
+					'class' => 'config-error',
+				) );
+
+				$formatter->append_start_tag( 'span', array(
+					'class' => 'icon-in-circle',
+					'aria-hidden' => 'true',
+				) );
+
+				$formatter->append_preformatted( '!' );
+
+				$formatter->end_tag( 'span' );
+
+				$formatter->append_whitespace();
+
+				$formatter->append_preformatted( $error_notice );
+
+				$formatter->end_tag( 'div' );
 			}
 		}
 
-		return $output;
+		return $formatter->output();
 	}
 
 	protected function handle_row_actions( $item, $column_name, $primary ) {
