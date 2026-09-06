@@ -441,17 +441,6 @@ form.tag-generator-panel[data-version="1"] {
 }
 
 /*
- * List Table
- */
-.fixed .column-title {
-	width: 38%;
-}
-
-.fixed .column-shortcode {
-	width: 38%;
-}
-
-/*
  * Welcome Panel
  */
 .wpcf7-welcome-panel {
