@@ -25,30 +25,16 @@ class WPCF7_Contact_Form_List_Table extends WP_List_Table {
 	}
 
 	public function prepare_items() {
-		$current_screen = get_current_screen();
 		$per_page = $this->get_items_per_page( 'wpcf7_contact_forms_per_page' );
+		$order = wpcf7_superglobal_request( 'order' ) ?? '';
 
 		$args = array(
 			'posts_per_page' => $per_page,
-			'orderby' => 'title',
-			'order' => 'ASC',
+			'order' => 'desc' === strtolower( $order ) ? 'DESC' : 'ASC',
+			'orderby' => wpcf7_superglobal_request( 'orderby' ) ?? 'title',
 			'offset' => ( $this->get_pagenum() - 1 ) * $per_page,
+			's' => wpcf7_superglobal_request( 's' ) ?? '',
 		);
-
-		if ( $search_keyword = wpcf7_superglobal_request( 's' ) ) {
-			$args['s'] = $search_keyword;
-		}
-
-		if ( $order_by = wpcf7_superglobal_request( 'orderby' ) ) {
-			$args['orderby'] = $order_by;
-		}
-
-		if (
-			$order = wpcf7_superglobal_request( 'order' ) and
-			'desc' === strtolower( $order )
-		) {
-			$args['order'] = 'DESC';
-		}
 
 		$this->items = WPCF7_ContactForm::find( $args );
 
