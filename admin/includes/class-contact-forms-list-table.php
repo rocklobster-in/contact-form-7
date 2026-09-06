@@ -27,11 +27,20 @@ class WPCF7_Contact_Form_List_Table extends WP_List_Table {
 	public function prepare_items() {
 		$per_page = $this->get_items_per_page( 'wpcf7_contact_forms_per_page' );
 		$order = wpcf7_superglobal_request( 'order' ) ?? '';
+		$orderby = wpcf7_superglobal_request( 'orderby' ) ?? '';
+
+		if ( '' === $orderby ) {
+			$orderby = 'date';
+		}
+
+		if ( '' === $order ) {
+			$order = ( 'date' === $orderby ) ? 'desc' : 'asc';
+		}
 
 		$args = array(
 			'posts_per_page' => $per_page,
-			'order' => 'desc' === strtolower( $order ) ? 'DESC' : 'ASC',
-			'orderby' => wpcf7_superglobal_request( 'orderby' ) ?? 'title',
+			'order' => $order,
+			'orderby' => $orderby,
 			'offset' => ( $this->get_pagenum() - 1 ) * $per_page,
 			's' => wpcf7_superglobal_request( 's' ) ?? '',
 		);
@@ -49,24 +58,20 @@ class WPCF7_Contact_Form_List_Table extends WP_List_Table {
 	}
 
 	public function get_columns() {
-		$columns = array(
+		return array(
 			'cb' => '<input type="checkbox" />',
 			'title' => __( 'Title', 'contact-form-7' ),
 			'author' => __( 'Author', 'contact-form-7' ),
 			'date' => __( 'Date', 'contact-form-7' ),
 		);
-
-		return $columns;
 	}
 
 	protected function get_sortable_columns() {
-		$columns = array(
-			'title' => array( 'title', true ),
+		return array(
+			'title' => array( 'title', false ),
 			'author' => array( 'author', false ),
-			'date' => array( 'date', false ),
+			'date' => array( 'date', true ),
 		);
-
-		return $columns;
 	}
 
 	protected function get_bulk_actions() {
