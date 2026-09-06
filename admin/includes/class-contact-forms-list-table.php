@@ -93,11 +93,15 @@ class WPCF7_Contact_Form_List_Table extends WP_List_Table {
 	}
 
 	protected function get_bulk_actions() {
-		$actions = array(
-			'delete' => __( 'Delete', 'contact-form-7' ),
-		);
+		$post_type_obj = get_post_type_object( WPCF7_ContactForm::post_type );
 
-		return $actions;
+		if ( current_user_can( $post_type_obj->cap->edit_posts ) ) {
+			return array(
+				'delete' => __( 'Delete', 'contact-form-7' ),
+			);
+		} else {
+			return array();
+		}
 	}
 
 	protected function column_default( $item, $column_name ) {
@@ -105,6 +109,13 @@ class WPCF7_Contact_Form_List_Table extends WP_List_Table {
 	}
 
 	public function column_cb( $item ) {
+		$post_type_obj = get_post_type_object( WPCF7_ContactForm::post_type );
+		$show = current_user_can( $post_type_obj->cap->edit_post, $item->id() );
+
+		if ( ! $show ) {
+			return '';
+		}
+
 		return sprintf(
 			'<input type="checkbox" name="%1$s[]" value="%2$s" />',
 			$this->_args['singular'],
