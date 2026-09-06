@@ -68,9 +68,27 @@ class WPCF7_Contact_Form_List_Table extends WP_List_Table {
 
 	protected function get_sortable_columns() {
 		return array(
-			'title' => array( 'title', false ),
-			'author' => array( 'author', false ),
-			'date' => array( 'date', true ),
+			'title' => array(
+				'title',
+				false,
+				__( 'Title', 'contact-form-7' ),
+				__( 'Table ordered by Title.', 'contact-form-7' ),
+				'asc'
+			),
+			'author' => array(
+				'author',
+				false,
+				__( 'Author', 'contact-form-7' ),
+				__( 'Table ordered by Author.', 'contact-form-7' ),
+				'asc'
+			),
+			'date' => array(
+				'date',
+				false,
+				__( 'Date', 'contact-form-7' ),
+				__( 'Table ordered by Date.', 'contact-form-7' ),
+				'desc'
+			),
 		);
 	}
 
