@@ -384,12 +384,12 @@ function wpcf7_load_contact_form_admin() {
 	if ( $post and current_user_can( 'wpcf7_edit_contact_form', $post->id() ) ) {
 		$help_tabs->set_help_tabs( 'edit' );
 	} else {
-		if ( ! class_exists( 'WPCF7_Contact_Form_List_Table' ) ) {
+		if ( ! class_exists( 'WPCF7_List_Table' ) ) {
 			require_once WPCF7_PLUGIN_DIR . '/admin/includes/class-contact-forms-list-table.php';
 		}
 
 		// Construct a list table before get_column_headers() is called.
-		WPCF7_Contact_Form_List_Table::get_instance();
+		WPCF7_List_Table::get_instance();
 
 		add_screen_option( 'per_page', array(
 			'default' => 20,
@@ -419,7 +419,7 @@ function wpcf7_admin_management_page() {
 		return;
 	}
 
-	$list_table = WPCF7_Contact_Form_List_Table::get_instance();
+	$list_table = WPCF7_List_Table::get_instance();
 	$list_table->prepare_items();
 
 	$formatter = new WPCF7_HTMLFormatter( array(
