@@ -3,6 +3,7 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 require_once WPCF7_PLUGIN_DIR . '/admin/includes/admin-functions.php';
+require_once WPCF7_PLUGIN_DIR . '/admin/includes/list-table.php';
 require_once WPCF7_PLUGIN_DIR . '/admin/includes/help-tabs.php';
 require_once WPCF7_PLUGIN_DIR . '/admin/includes/tag-generator.php';
 require_once WPCF7_PLUGIN_DIR . '/admin/includes/welcome-panel.php';
@@ -384,10 +385,6 @@ function wpcf7_load_contact_form_admin() {
 	if ( $post and current_user_can( 'wpcf7_edit_contact_form', $post->id() ) ) {
 		$help_tabs->set_help_tabs( 'edit' );
 	} else {
-		if ( ! class_exists( 'WPCF7_List_Table' ) ) {
-			require_once WPCF7_PLUGIN_DIR . '/admin/includes/class-contact-forms-list-table.php';
-		}
-
 		// Construct a list table before get_column_headers() is called.
 		WPCF7_List_Table::get_instance();
 
