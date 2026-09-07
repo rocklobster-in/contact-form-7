@@ -248,7 +248,10 @@ class WPCF7_Contact_Form_List_Table extends WP_List_Table {
 			);
 
 			$actions = array_merge( $actions, array(
-				'copy' => wpcf7_link( $copy_link, __( 'Duplicate', 'contact-form-7' ) ),
+				'copy' => wpcf7_link(
+					$copy_link,
+					__( 'Duplicate', 'contact-form-7' )
+				),
 			) );
 		}
 
@@ -268,7 +271,7 @@ class WPCF7_Contact_Form_List_Table extends WP_List_Table {
 			return;
 		}
 
-		return esc_html( $author->display_name );
+		echo esc_html( $author->display_name );
 	}
 
 	public function column_date( $item ) {
@@ -287,6 +290,6 @@ class WPCF7_Contact_Form_List_Table extends WP_List_Table {
 			$datetime->format( __( 'g:i a', 'contact-form-7' ) )
 		);
 
-		return $t_time;
+		echo $t_time;
 	}
 }
