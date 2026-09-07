@@ -105,7 +105,7 @@ class WPCF7_List_Table extends WP_List_Table {
 	}
 
 	public function column_default( $item, $column_name ) {
-		return '';
+		do_action( 'wpcf7_manage_custom_column', $column_name, $item->id() );
 	}
 
 	public function column_cb( $item ) {
