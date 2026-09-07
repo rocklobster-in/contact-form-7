@@ -104,7 +104,7 @@ class WPCF7_Contact_Form_List_Table extends WP_List_Table {
 		}
 	}
 
-	protected function column_default( $item, $column_name ) {
+	public function column_default( $item, $column_name ) {
 		return '';
 	}
 
@@ -141,7 +141,7 @@ class WPCF7_Contact_Form_List_Table extends WP_List_Table {
 			) )
 		);
 
-		return $formatter->output();
+		$formatter->print();
 	}
 
 	public function column_title( $item ) {
@@ -213,7 +213,7 @@ class WPCF7_Contact_Form_List_Table extends WP_List_Table {
 			}
 		}
 
-		return $formatter->output();
+		$formatter->print();
 	}
 
 	protected function handle_row_actions( $item, $column_name, $primary ) {
