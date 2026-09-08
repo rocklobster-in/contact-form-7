@@ -181,35 +181,15 @@ class WPCF7_List_Table extends WP_List_Table {
 			$config_validator->restore();
 
 			if ( $count_errors = $config_validator->count_errors() ) {
-				$error_notice = sprintf(
-					/* translators: %s: number of errors detected */
-					_n(
-						'%s configuration error detected',
-						'%s configuration errors detected',
-						$count_errors,
-						'contact-form-7'
-					),
-					number_format_i18n( $count_errors )
+				$formatter->append_start_tag( 'span', array(
+					'class' => 'tag warning',
+				) );
+
+				$formatter->append_preformatted(
+					esc_html( __( 'has config errors', 'contact-form-7' ) )
 				);
 
-				$formatter->append_start_tag( 'div', array(
-					'class' => 'config-error',
-				) );
-
-				$formatter->append_start_tag( 'span', array(
-					'class' => 'icon-in-circle',
-					'aria-hidden' => 'true',
-				) );
-
-				$formatter->append_preformatted( '!' );
-
 				$formatter->end_tag( 'span' );
-
-				$formatter->append_whitespace();
-
-				$formatter->append_preformatted( $error_notice );
-
-				$formatter->end_tag( 'div' );
 			}
 		}
 

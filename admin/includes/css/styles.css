@@ -441,6 +441,24 @@ form.tag-generator-panel[data-version="1"] {
 }
 
 /*
+ * List Table
+ */
+
+#wpcf7-contact-form-list-table .column-title .tag {
+    display: inline-block;
+    margin: 4px 4px 4px 0;
+    padding: 4px 8px;
+    background: #3858e9;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+}
+
+#wpcf7-contact-form-list-table .column-title .tag.warning {
+    background: #f0b849;
+}
+
+/*
  * Welcome Panel
  */
 .wpcf7-welcome-panel {
