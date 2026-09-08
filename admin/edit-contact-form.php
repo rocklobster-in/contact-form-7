@@ -295,12 +295,18 @@ if ( $post ) {
 		$formatter->end_tag( 'div' ); // .hidden
 
 		if ( ! $post->initial() ) {
-			$formatter->append_start_tag( 'input', array(
+			$formatter->append_start_tag( 'button', array(
 				'type' => 'submit',
 				'name' => 'wpcf7-copy',
-				'class' => 'copy button',
+				'class' => 'copy button-link',
 				'value' => __( 'Duplicate', 'contact-form-7' ),
 			) );
+
+			$formatter->append_preformatted(
+				esc_html( __( 'Duplicate', 'contact-form-7' ) )
+			);
+
+			$formatter->end_tag( 'button' );
 		}
 
 		$formatter->end_tag( 'div' ); // #minor-publishing-actions
