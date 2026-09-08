@@ -459,6 +459,10 @@ form.tag-generator-panel[data-version="1"] {
     color: #000;
 }
 
+#wpcf7-contact-form-list-table .column-title .tag a {
+    color: inherit;
+}
+
 /*
  * Welcome Panel
  */
