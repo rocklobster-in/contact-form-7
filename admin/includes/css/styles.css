@@ -443,12 +443,24 @@ form.tag-generator-panel[data-version="1"] {
 /*
  * List Table
  */
-.fixed .column-title {
-	width: 38%;
+
+#wpcf7-contact-form-list-table .column-title .tag {
+    display: inline-block;
+    margin: 4px 8px 4px 0;
+    padding: 4px 8px;
+    background: #3858e9;
+    color: #fff;
+    border: none;
+    border-radius: 12px;
 }
 
-.fixed .column-shortcode {
-	width: 38%;
+#wpcf7-contact-form-list-table .column-title .tag.warning {
+    background: #f0b849;
+    color: #000;
+}
+
+#wpcf7-contact-form-list-table .column-title .tag a {
+    color: inherit;
 }
 
 /*
