@@ -2,16 +2,6 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-$save_button = sprintf(
-	'<input %s />',
-	wpcf7_format_atts( array(
-		'type' => 'submit',
-		'class' => 'button-primary',
-		'name' => 'wpcf7-save',
-		'value' => __( 'Save', 'contact-form-7' ),
-	) )
-);
-
 $formatter = new WPCF7_HTMLFormatter( array(
 	'allowed_html' => array_merge( wpcf7_kses_allowed_html(), array(
 		'form' => array(
@@ -285,22 +275,32 @@ if ( $post ) {
 			'class' => 'hidden',
 		) );
 
-		$formatter->append_start_tag( 'input', array(
+		$formatter->append_start_tag( 'button', array(
 			'type' => 'submit',
 			'class' => 'button-primary',
 			'name' => 'wpcf7-save',
 			'value' => __( 'Save', 'contact-form-7' ),
 		) );
 
+		$formatter->append_preformatted(
+			esc_html( __( 'Save', 'contact-form-7' ) )
+		);
+
 		$formatter->end_tag( 'div' ); // .hidden
 
 		if ( ! $post->initial() ) {
-			$formatter->append_start_tag( 'input', array(
+			$formatter->append_start_tag( 'button', array(
 				'type' => 'submit',
 				'name' => 'wpcf7-copy',
-				'class' => 'copy button',
+				'class' => 'copy button-link',
 				'value' => __( 'Duplicate', 'contact-form-7' ),
 			) );
+
+			$formatter->append_preformatted(
+				esc_html( __( 'Duplicate', 'contact-form-7' ) )
+			);
+
+			$formatter->end_tag( 'button' );
 		}
 
 		$formatter->end_tag( 'div' ); // #minor-publishing-actions
@@ -324,12 +324,16 @@ if ( $post ) {
 				'id' => 'delete-action',
 			) );
 
-			$formatter->append_start_tag( 'input', array(
+			$formatter->append_start_tag( 'button', array(
 				'type' => 'submit',
 				'name' => 'wpcf7-delete',
 				'class' => 'delete submitdelete',
 				'value' => __( 'Delete', 'contact-form-7' ),
 			) );
+
+			$formatter->append_preformatted(
+				esc_html( __( 'Delete', 'contact-form-7' ) )
+			);
 
 			$formatter->end_tag( 'div' ); // #delete-action
 		}
@@ -339,7 +343,17 @@ if ( $post ) {
 		) );
 
 		$formatter->append_preformatted( '<span class="spinner"></span>' );
-		$formatter->append_preformatted( $save_button );
+
+		$formatter->append_start_tag( 'button', array(
+			'type' => 'submit',
+			'class' => 'button-primary',
+			'name' => 'wpcf7-save',
+			'value' => __( 'Save', 'contact-form-7' ),
+		) );
+
+		$formatter->append_preformatted(
+			esc_html( __( 'Save', 'contact-form-7' ) )
+		);
 
 		$formatter->end_tag( 'div' ); // #publishing-action
 
@@ -474,17 +488,6 @@ if ( $post ) {
 	} );
 
 	$formatter->end_tag( 'div' ); // #contact-form-editor
-
-	if ( current_user_can( 'wpcf7_edit_contact_form', $post_id ) ) {
-		$formatter->append_start_tag( 'p', array(
-			'class' => 'submit',
-		) );
-
-		$formatter->append_preformatted( $save_button );
-
-		$formatter->end_tag( 'p' );
-	}
-
 	$formatter->end_tag( 'div' ); // #postbox-container-2
 	$formatter->end_tag( 'div' ); // #post-body
 
