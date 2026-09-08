@@ -446,16 +446,17 @@ form.tag-generator-panel[data-version="1"] {
 
 #wpcf7-contact-form-list-table .column-title .tag {
     display: inline-block;
-    margin: 4px 4px 4px 0;
+    margin: 4px 8px 4px 0;
     padding: 4px 8px;
     background: #3858e9;
     color: #fff;
     border: none;
-    border-radius: 8px;
+    border-radius: 12px;
 }
 
 #wpcf7-contact-form-list-table .column-title .tag.warning {
     background: #f0b849;
+    color: #000;
 }
 
 /*

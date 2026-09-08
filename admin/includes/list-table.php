@@ -173,6 +173,54 @@ class WPCF7_List_Table extends WP_List_Table {
 
 		$post_type_obj = get_post_type_object( WPCF7_ContactForm::post_type );
 
+		if ( $item->is_true( 'subscribers_only' ) ) {
+			$formatter->append_start_tag( 'span', array(
+				'class' => 'tag info',
+			) );
+
+			$formatter->append_preformatted(
+				esc_html( __( 'subscribers only', 'contact-form-7' ) )
+			);
+
+			$formatter->end_tag( 'span' );
+		}
+
+		if ( $item->is_true( 'demo_mode' ) ) {
+			$formatter->append_start_tag( 'span', array(
+				'class' => 'tag info',
+			) );
+
+			$formatter->append_preformatted(
+				esc_html( __( 'demo mode', 'contact-form-7' ) )
+			);
+
+			$formatter->end_tag( 'span' );
+		}
+
+		if ( $item->is_true( 'skip_mail' ) ) {
+			$formatter->append_start_tag( 'span', array(
+				'class' => 'tag info',
+			) );
+
+			$formatter->append_preformatted(
+				esc_html( __( 'skip mail', 'contact-form-7' ) )
+			);
+
+			$formatter->end_tag( 'span' );
+		}
+
+		if ( $item->is_true( 'do_not_store' ) ) {
+			$formatter->append_start_tag( 'span', array(
+				'class' => 'tag info',
+			) );
+
+			$formatter->append_preformatted(
+				esc_html( __( 'do not store', 'contact-form-7' ) )
+			);
+
+			$formatter->end_tag( 'span' );
+		}
+
 		if (
 			wpcf7_validate_configuration() and
 			current_user_can( $post_type_obj->cap->edit_post, $item->id() )
