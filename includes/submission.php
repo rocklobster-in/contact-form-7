@@ -419,7 +419,7 @@ class WPCF7_Submission {
 	private function sanitize_posted_data( $value ) {
 		return map_deep( $value, static function ( $val ) {
 			$val = (string) $val;
-			$val = wp_check_invalid_utf8( $val );
+			$val = wp_scrub_utf8( $val );
 			$val = wp_kses_no_null( $val );
 			$val = wpcf7_strip_whitespaces( $val );
 			return $val;
