@@ -51,16 +51,16 @@ const update = () => {
 	} );
 
 	document.querySelectorAll(
+		'#contact-form-editor-tabs [data-panel] .icon-in-circle'
+	).forEach( icon => {
+		icon.remove();
+	} );
+
+	document.querySelectorAll(
 		'#contact-form-editor-tabs [data-panel]'
 	).forEach( tab => {
-		tab.querySelectorAll(
-			'.icon-in-circle'
-		).forEach( icon => {
-			icon.remove();
-		} );
-
 		if ( countErrors( tab.dataset.panel ) ) {
-			tab.querySelector( 'a' )?.append( iconInCircle( '!' ) );
+			tab.append( iconInCircle( '!' ) );
 		}
 	} );
 
