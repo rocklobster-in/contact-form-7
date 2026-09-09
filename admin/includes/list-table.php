@@ -173,20 +173,9 @@ class WPCF7_List_Table extends WP_List_Table {
 
 		$post_type_obj = get_post_type_object( WPCF7_ContactForm::post_type );
 
-		$edit_link_additional_settings = add_query_arg(
-			array(
-				'active-tab' => 'additional-settings-panel',
-			),
-			$edit_link
-		);
-
 		if ( $item->is_true( 'subscribers_only' ) ) {
 			$formatter->append_start_tag( 'span', array(
 				'class' => 'tag info',
-			) );
-
-			$formatter->append_start_tag( 'a', array(
-				'href' => esc_url( $edit_link_additional_settings ),
 			) );
 
 			$formatter->append_preformatted(
@@ -201,10 +190,6 @@ class WPCF7_List_Table extends WP_List_Table {
 				'class' => 'tag info',
 			) );
 
-			$formatter->append_start_tag( 'a', array(
-				'href' => esc_url( $edit_link_additional_settings ),
-			) );
-
 			$formatter->append_preformatted(
 				esc_html( __( 'demo mode', 'contact-form-7' ) )
 			);
@@ -217,10 +202,6 @@ class WPCF7_List_Table extends WP_List_Table {
 				'class' => 'tag info',
 			) );
 
-			$formatter->append_start_tag( 'a', array(
-				'href' => esc_url( $edit_link_additional_settings ),
-			) );
-
 			$formatter->append_preformatted(
 				esc_html( __( 'skip mail', 'contact-form-7' ) )
 			);
@@ -231,10 +212,6 @@ class WPCF7_List_Table extends WP_List_Table {
 		if ( $item->is_true( 'do_not_store' ) ) {
 			$formatter->append_start_tag( 'span', array(
 				'class' => 'tag info',
-			) );
-
-			$formatter->append_start_tag( 'a', array(
-				'href' => esc_url( $edit_link_additional_settings ),
 			) );
 
 			$formatter->append_preformatted(
@@ -254,10 +231,6 @@ class WPCF7_List_Table extends WP_List_Table {
 			if ( $count_errors = $config_validator->count_errors() ) {
 				$formatter->append_start_tag( 'span', array(
 					'class' => 'tag warning',
-				) );
-
-				$formatter->append_start_tag( 'a', array(
-					'href' => esc_url( $edit_link ),
 				) );
 
 				$formatter->append_preformatted(
