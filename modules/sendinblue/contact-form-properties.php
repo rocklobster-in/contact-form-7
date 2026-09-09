@@ -91,14 +91,9 @@ function wpcf7_sendinblue_editor_panels( $panels ) {
 	$editor_panel = static function () use ( $prop, $service ) {
 
 		$description = sprintf(
-			esc_html(
-				/* translators: %s: link labeled 'Brevo integration' */
-				__( 'You can set up the Brevo integration here. For details, see %s.', 'contact-form-7' )
-			),
-			wpcf7_link(
-				'https://contactform7.com/sendinblue-integration/',
-				__( 'Brevo integration', 'contact-form-7' )
-			)
+			/* translators: %s: URL to support page about Brevo integration */
+			__( 'You can set up the Brevo integration here. For details, see <a href="%s">Brevo integration</a>.', 'contact-form-7' ),
+			'https://contactform7.com/sendinblue-integration/'
 		);
 
 		$lists = wpcf7_sendinblue_get_lists();
