@@ -250,12 +250,9 @@ function wpcf7_admin_warnings_recaptcha_v2_v3( $page, $action, $object ) {
 
 	wp_admin_notice(
 		sprintf(
-			/* translators: %s: link labeled 'reCAPTCHA (v3)' */
-			__( 'API keys for reCAPTCHA v3 are different from those for v2; keys for v2 do not work with the v3 API. You need to register your sites again to get new keys for v3. For details, see %s.', 'contact-form-7' ),
-			wpcf7_link(
-				'https://contactform7.com/recaptcha/',
-				__( 'reCAPTCHA (v3)', 'contact-form-7' )
-			)
+			/* translators: %s: URL to support page about reCAPTCHA */
+			__( 'API keys for reCAPTCHA v3 are different from those for v2; keys for v2 do not work with the v3 API. You need to register your sites again to get new keys for v3. For details, see <a href="%s">reCAPTCHA (v3)</a>.', 'contact-form-7' ),
+			'https://contactform7.com/recaptcha/'
 		),
 		array( 'type' => 'warning' )
 	);
