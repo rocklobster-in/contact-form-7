@@ -22,7 +22,7 @@ function wpcf7_plugin_path( $path = '' ) {
 function wpcf7_plugin_url( $path = '' ) {
 	$url = plugins_url( $path, WPCF7_PLUGIN );
 
-	if ( is_ssl() and 'http:' === substr( $url, 0, 5 ) ) {
+	if ( is_ssl() and str_starts_with( $url, 'http:' ) ) {
 		$url = 'https:' . substr( $url, 5 );
 	}
 
