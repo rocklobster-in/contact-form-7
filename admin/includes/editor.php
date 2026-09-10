@@ -52,6 +52,7 @@ class WPCF7_Editor {
 				'aria-controls' => $panel_id,
 				'id' => sprintf( '%s-tab', $panel_id ),
 				'tabindex' => $active ? '0' : '-1',
+				'data-panel' => $panel_id,
 			) );
 
 			$formatter->append_preformatted( esc_html( $panel['title'] ) );

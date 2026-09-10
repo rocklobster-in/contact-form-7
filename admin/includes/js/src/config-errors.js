@@ -26,7 +26,7 @@ const init = () => {
 
 const update = () => {
 	document.querySelectorAll(
-		'#contact-form-editor .config-error, #misc-publishing-actions .config-error'
+		'#contact-form-editor .config-error'
 	).forEach( error => {
 		error.remove();
 	} );
@@ -51,16 +51,16 @@ const update = () => {
 	} );
 
 	document.querySelectorAll(
+		'#contact-form-editor-tabs [data-panel] .icon-in-circle'
+	).forEach( icon => {
+		icon.remove();
+	} );
+
+	document.querySelectorAll(
 		'#contact-form-editor-tabs [data-panel]'
 	).forEach( tab => {
-		tab.querySelectorAll(
-			'.icon-in-circle'
-		).forEach( icon => {
-			icon.remove();
-		} );
-
 		if ( countErrors( tab.dataset.panel ) ) {
-			tab.querySelector( 'a' )?.append( iconInCircle( '!' ) );
+			tab.append( iconInCircle( '!' ) );
 		}
 	} );
 
@@ -90,29 +90,6 @@ const update = () => {
 			panel.prepend( errMsg );
 		}
 	} );
-
-	if ( errorsCountTotal ) {
-		const errMsg = document.createElement( 'div' );
-		errMsg.classList.add( 'misc-pub-section', 'config-error' );
-
-		const howtoLink = document.createElement( 'a' );
-		howtoLink.setAttribute( 'href', wpcf7.configValidator.docUrl );
-		howtoLink.append( __( "How to resolve?", 'contact-form-7' ) );
-
-		errMsg.append(
-			iconInCircle( '!' ),
-			sprintf( _n(
-				'%d configuration error detected.',
-				'%d configuration errors detected.',
-				errorsCountTotal,
-				'contact-form-7'
-			), errorsCountTotal ),
-			document.createElement( 'br' ),
-			howtoLink
-		);
-
-		document.querySelector( '#misc-publishing-actions' )?.append( errMsg );
-	}
 };
 
 
