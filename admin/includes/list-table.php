@@ -25,22 +25,31 @@ class WPCF7_List_Table extends WP_List_Table {
 	}
 
 	public function prepare_items() {
+		$current_orderby = wpcf7_superglobal_get( 'orderby' );
+		$current_order = wpcf7_superglobal_get( 'order' );
+
+		list( $columns, $hidden, $sortable ) = $this->get_column_info();
+
+		foreach ( array_keys( $columns ) as $column_key ) {
+			if ( isset( $sortable[$column_key] ) ) {
+				$orderby = $sortable[$column_key][0] ?? '';
+				$initial_order = $sortable[$column_key][4] ?? '';
+
+				if ( '' === $current_orderby and $initial_order ) {
+					$current_orderby = $orderby;
+					$current_order = $initial_order;
+
+					break;
+				}
+			}
+		}
+
 		$per_page = $this->get_items_per_page( 'wpcf7_contact_forms_per_page' );
-		$order = wpcf7_superglobal_get( 'order' );
-		$orderby = wpcf7_superglobal_get( 'orderby' );
-
-		if ( '' === $orderby ) {
-			$orderby = 'title';
-		}
-
-		if ( '' === $order ) {
-			$order = ( 'date' === $orderby ) ? 'desc' : 'asc';
-		}
 
 		$args = array(
 			'posts_per_page' => $per_page,
-			'order' => $order,
-			'orderby' => $orderby,
+			'orderby' => $current_orderby,
+			'order' => $current_order,
 			'offset' => ( $this->get_pagenum() - 1 ) * $per_page,
 			's' => wpcf7_superglobal_get( 's' ),
 		);
@@ -73,21 +82,19 @@ class WPCF7_List_Table extends WP_List_Table {
 				false,
 				__( 'Title', 'contact-form-7' ),
 				__( 'Table ordered by Title.', 'contact-form-7' ),
-				'asc'
+				'asc',
 			),
 			'author' => array(
 				'author',
 				false,
 				__( 'Author', 'contact-form-7' ),
 				__( 'Table ordered by Author.', 'contact-form-7' ),
-				'asc'
 			),
 			'date' => array(
 				'date',
-				false,
+				true,
 				__( 'Date', 'contact-form-7' ),
 				__( 'Table ordered by Date.', 'contact-form-7' ),
-				'desc'
 			),
 		);
 	}
