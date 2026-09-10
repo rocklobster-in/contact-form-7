@@ -30,7 +30,7 @@ class WPCF7_List_Table extends WP_List_Table {
 		$orderby = wpcf7_superglobal_get( 'orderby' );
 
 		if ( '' === $orderby ) {
-			$orderby = 'date';
+			$orderby = 'title';
 		}
 
 		if ( '' === $order ) {
