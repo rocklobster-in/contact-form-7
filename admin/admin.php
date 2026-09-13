@@ -254,9 +254,9 @@ function wpcf7_load_dashboard_page() {
 	require_once WPCF7_PLUGIN_DIR . '/admin/includes/dashboard.php';
 
 	wp_add_dashboard_widget(
-		'test',
-		'Test',
-		'wpcf7_dashboard_test'
+		'dashboard_right_now',
+		__( 'At a Glance', 'contact-form-7' ),
+		'wpcf7_dashboard_right_now'
 	);
 
 	do_action( 'wpcf7_dashboard_setup' );
