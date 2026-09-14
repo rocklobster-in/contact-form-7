@@ -621,3 +621,17 @@ form.tag-generator-panel[data-version="1"] {
 .card .checkboxes li {
 	margin: 0;
 }
+
+/*
+ * Dashboard
+ */
+#wpcf7_dashboard_right_now .page-count a::before {
+    content: "\f105" / '';
+    padding: 0 5px 0 0;
+    color: #646970;
+    font: normal 20px/1 dashicons;
+    display: inline-block;
+    position: relative;
+    text-decoration: none !important;
+    vertical-align: top;
+}
