@@ -261,6 +261,28 @@ function wpcf7_load_dashboard_page() {
 
 
 function wpcf7_admin_dashboard_page() {
+	global $wp_meta_boxes;
+
+	$screen = get_current_screen();
+	$page = $screen->id;
+	$core_widget_ids = array_keys( wpcf7_dashboard_widgets() );
+
+	foreach ( $wp_meta_boxes[$page] as $context => $priorities ) {
+		foreach ( $priorities as $priority => $boxes ) {
+			if ( ! in_array( $priority, array( 'high', 'core' ), true ) ) {
+				continue;
+			}
+
+			foreach ( $boxes as $box_key => $box ) {
+				if ( in_array( $box['id'], $core_widget_ids, true ) ) {
+					continue;
+				}
+
+				unset( $wp_meta_boxes[$page][$context][$priority][$box_key] );
+			}
+		}
+	}
+
 	require_once WPCF7_PLUGIN_DIR . '/admin/dashboard.php';
 }
 
