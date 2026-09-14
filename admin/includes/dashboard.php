@@ -88,11 +88,11 @@ function wpcf7_dashboard_primary() {
 			'news' => array(
 				'link' => 'https://contactform7.com/',
 				'url' => 'https://contactform7.com/feed/',
-				'title' => 'WordPress Blog',
-				'items' => 2,
+				'title' => __( 'Contact Form 7 official site', 'contact-form-7' ),
+				'items' => 10,
 				'show_summary' => 0,
 				'show_author' => 0,
-				'show_date' => 0,
+				'show_date' => 1,
 			),
 		)
 	);

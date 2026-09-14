@@ -12,9 +12,5 @@ const dashboardPrimary = () => {
 
  	fetch( new Request( url, {
 		method: 'GET',
-	} ) ).then( response => {
-	  if ( response.ok ) {
-
-		}
-	} );
+	} ) );
 };
