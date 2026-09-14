@@ -51,3 +51,21 @@ function wpcf7_dashboard_right_now() {
 
 	$formatter->print();
 }
+
+function wpcf7_dashboard_primary() {
+	wp_dashboard_cached_rss_widget(
+		'wpcf7_dashboard_primary',
+		'wp_dashboard_primary_output',
+		array(
+			'news' => array(
+				'link' => 'https://contactform7.com/',
+				'url' => 'https://contactform7.com/feed/',
+				'title' => 'WordPress Blog',
+				'items' => 2,
+				'show_summary' => 0,
+				'show_author' => 0,
+				'show_date' => 0,
+			),
+		)
+	);
+}
