@@ -4,6 +4,34 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 require_once ABSPATH . 'wp-admin/includes/dashboard.php';
 
+function wpcf7_dashboard_widgets() {
+	return array(
+		'wpcf7_dashboard_right_now' => array(
+			'widget_name' => __( 'At a Glance', 'contact-form-7' ),
+		),
+		'wpcf7_dashboard_primary' => array(
+			'widget_name' => __( 'News', 'contact-form-7' ),
+			'context' => 'side',
+		),
+	);
+}
+
+function wpcf7_dashboard_setup() {
+	foreach ( wpcf7_dashboard_widgets() as $widget_id => $widget ) {
+		wp_add_dashboard_widget(
+			$widget_id,
+			$widget['widget_name'] ?? '',
+			$widget['callback'] ?? $widget_id,
+			$widget['control_callback'] ?? null,
+			$widget['callback_args'] ?? null,
+			$widget['context'] ?? 'normal',
+			$widget['priority'] ?? 'core'
+		);
+	}
+
+	do_action( 'wpcf7_dashboard_setup' );
+}
+
 function wpcf7_dashboard_right_now() {
 	$formatter = new WPCF7_HTMLFormatter();
 

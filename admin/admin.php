@@ -254,19 +254,7 @@ function wpcf7_load_dashboard_page() {
 
 	require_once WPCF7_PLUGIN_DIR . '/admin/includes/dashboard.php';
 
-	wp_add_dashboard_widget(
-		'wpcf7_dashboard_right_now',
-		__( 'At a Glance', 'contact-form-7' ),
-		'wpcf7_dashboard_right_now'
-	);
-
-	wp_add_dashboard_widget(
-		'wpcf7_dashboard_primary',
-		__( 'News', 'contact-form-7' ),
-		'wpcf7_dashboard_primary'
-	);
-
-	do_action( 'wpcf7_dashboard_setup' );
+	wpcf7_dashboard_setup();
 
 	wp_enqueue_script( 'dashboard' );
 }
