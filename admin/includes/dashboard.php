@@ -9,7 +9,7 @@ function wpcf7_dashboard_widgets() {
 		'wpcf7_dashboard_right_now' => array(
 			'widget_name' => __( 'At a Glance', 'contact-form-7' ),
 		),
-		'wpcf7_dashboard_primary' => array(
+		'wpcf7_dashboard_news' => array(
 			'widget_name' => __( 'News', 'contact-form-7' ),
 			'context' => 'side',
 		),
@@ -80,9 +80,17 @@ function wpcf7_dashboard_right_now() {
 	$formatter->print();
 }
 
-function wpcf7_dashboard_primary() {
+function wpcf7_dashboard_news() {
+	echo '<div class="cf7com-news hide-if-no-js">';
+
+	wpcf7_dashboard_cf7com_news();
+
+	echo '</div>';
+}
+
+function wpcf7_dashboard_cf7com_news() {
 	wp_dashboard_cached_rss_widget(
-		'wpcf7_dashboard_primary',
+		'wpcf7_dashboard_cf7com_news',
 		'wp_dashboard_primary_output',
 		array(
 			'news' => array(

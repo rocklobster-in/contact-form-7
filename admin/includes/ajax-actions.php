@@ -14,7 +14,7 @@ function wpcf7_ajax_dashboard_widgets() {
 	set_current_screen( 'toplevel_page_wpcf7-dashboard' );
 
 	if ( 'dashboard_primary' === wpcf7_superglobal_get( 'widget' ) ) {
-		wpcf7_dashboard_primary();
+		wpcf7_dashboard_cf7com_news();
 	}
 
 	wp_die();

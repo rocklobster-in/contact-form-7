@@ -5,12 +5,20 @@ export const init = () => {
 };
 
 const dashboardPrimary = () => {
-  const url = addQueryArgs( ajaxurl, {
-    action: 'wpcf7-dashboard-widgets',
-    widget: 'dashboard_primary',
-  } );
+  const newsArea = document.querySelector(
+    '#wpcf7_dashboard_news .cf7com-news'
+  );
 
- 	fetch( new Request( url, {
-		method: 'GET',
-	} ) );
+  if ( newsArea && ! newsArea.querySelector( '.rss-widget' ) ) {
+    const url = addQueryArgs( ajaxurl, {
+      action: 'wpcf7-dashboard-widgets',
+      widget: 'dashboard_primary',
+    } );
+
+    fetch( url )
+      .then( ( response ) => response.text() )
+      .then( ( text ) => {
+        newsArea.innerHTML = text;
+      } );
+  }
 };
