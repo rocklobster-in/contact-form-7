@@ -65,6 +65,47 @@ function wpcf7_dashboard_right_now() {
 		) )
 	);
 
+	if ( current_user_can( 'wpcf7_manage_integration' ) ) {
+		$integration = WPCF7_Integration::get_instance();
+
+		$services = array( 'sendinblue', 'turnstile', 'recaptcha', 'stripe' );
+
+		foreach ( $services as $service_name ) {
+			if ( $integration->service_exists( $service_name ) ) {
+				$service = $integration->get_service( $service_name );
+
+				if ( $service->is_active() ) {
+					$formatter->append_start_tag( 'li', array(
+						'class' => sprintf(
+							'active-integration %s',
+							$service_name
+						),
+					) );
+
+					$setup_page_link = add_query_arg(
+						array(
+							'service' => $service_name,
+							'action' => 'setup',
+					 	),
+						menu_page_url( 'wpcf7-integration', false )
+					);
+
+					$formatter->append_start_tag( 'a', array(
+						'href' => $setup_page_link,
+					) );
+
+					$formatter->append_preformatted(
+						sprintf(
+							/* translators: %s: service name */
+							__( '<strong>%s</strong> integration is active', 'contact-form-7' ),
+							$service->get_title()
+						)
+					);
+				}
+			}
+		}
+	}
+
 	$formatter->end_tag( 'ul' );
 
 	$formatter->append_start_tag( 'p' );

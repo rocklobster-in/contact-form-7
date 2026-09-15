@@ -625,8 +625,8 @@ form.tag-generator-panel[data-version="1"] {
 /*
  * Dashboard
  */
-#wpcf7_dashboard_right_now .page-count a::before {
-    content: "\f105" / '';
+#wpcf7_dashboard_right_now li a::before {
+    content: "\f109" / '';
     padding: 0 5px 0 0;
     color: #646970;
     font: normal 20px/1 dashicons;
@@ -634,4 +634,12 @@ form.tag-generator-panel[data-version="1"] {
     position: relative;
     text-decoration: none !important;
     vertical-align: top;
+}
+
+#wpcf7_dashboard_right_now li.page-count a::before {
+    content: "\f105" / '';
+}
+
+#wpcf7_dashboard_right_now li.active-integration a::before {
+    content: "\f137" / '';
 }
