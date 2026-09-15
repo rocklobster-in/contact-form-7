@@ -16,6 +16,9 @@ function wpcf7_dashboard_widgets() {
 		'wpcf7_get_support' => array(
 			'widget_name' => __( 'Get Support', 'contact-form-7' ),
 		),
+		'wpcf7_spam_protection' => array(
+			'widget_name' => __( 'Spam Protection', 'contact-form-7' ),
+		),
 	);
 }
 
@@ -195,6 +198,39 @@ function wpcf7_get_support() {
 			__( 'Or, consult the <a href="%1$s">docs</a> and <a href="%2$s">FAQ</a>.', 'contact-form-7' ),
 			'https://contactform7.com/docs/',
 			'https://contactform7.com/faq/'
+		)
+	);
+
+	$formatter->print();
+}
+
+function wpcf7_spam_protection() {
+	$formatter = new WPCF7_HTMLFormatter();
+
+	$formatter->append_start_tag( 'p' );
+
+	$formatter->append_preformatted(
+		__( 'Spammers target everything. Your contact forms are not an exception.', 'contact-form-7' )
+	);
+
+	$formatter->append_start_tag( 'p' );
+
+	$formatter->append_preformatted(
+		sprintf(
+			/* translators: 1: URL to the Turnstile doc page, 2: URL to the Akismet doc page */
+			__( 'To provide effective protection, Contact Form 7 recommends using <a href="%1$s"><strong>Turnstile</strong></a> (good at blocking bots) and <a href="%2$s"><strong>Akismet</strong></a> (good at blocking human spammers) together.', 'contact-form-7' ),
+			'https://contactform7.com/turnstile-integration/',
+			'https://contactform7.com/spam-filtering-with-akismet/'
+		)
+	);
+
+	$formatter->append_start_tag( 'p' );
+
+	$formatter->append_preformatted(
+		sprintf(
+			/* translators: %s: URL to the Disallowed list doc page */
+			__( 'You can also block submissions that contain specific keywords or come from specific IP addresses (<a href="%s"><strong>Disallowed list</strong></a>).', 'contact-form-7' ),
+			'https://contactform7.com/comment-blacklist/'
 		)
 	);
 
