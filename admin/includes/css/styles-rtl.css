@@ -79,6 +79,7 @@ form.tag-generator-panel[data-version="1"] {
 /*
  * Dashboard
  */
-#wpcf7_dashboard_right_now li a::before {
+#wpcf7_dashboard_right_now li a::before,
+#wpcf7_get_support li a::before {
     padding: 0 0 0 5px;
 }

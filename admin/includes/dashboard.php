@@ -13,6 +13,9 @@ function wpcf7_dashboard_widgets() {
 			'widget_name' => __( 'News', 'contact-form-7' ),
 			'context' => 'side',
 		),
+		'wpcf7_get_support' => array(
+			'widget_name' => __( 'Get Support', 'contact-form-7' ),
+		),
 	);
 }
 
@@ -145,4 +148,55 @@ function wpcf7_dashboard_cf7com_news() {
 			),
 		)
 	);
+}
+
+function wpcf7_get_support() {
+	$formatter = new WPCF7_HTMLFormatter();
+
+	$formatter->append_start_tag( 'p' );
+
+	$formatter->append_preformatted(
+		__( 'Do you need help? These support channels are available:', 'contact-form-7' )
+	);
+
+	$formatter->append_start_tag( 'ul' );
+
+	$formatter->append_start_tag( 'li', array(
+		'class' => 'public',
+	) );
+
+	$formatter->append_start_tag( 'a', array(
+		'href' => __( 'https://wordpress.org/support/plugin/contact-form-7/', 'contact-form-7' ),
+	) );
+
+	$formatter->append_preformatted(
+		__( 'Public support forum on WordPress.org', 'contact-form-7' )
+	);
+
+	$formatter->append_start_tag( 'li', array(
+		'class' => 'private',
+	) );
+
+	$formatter->append_start_tag( 'a', array(
+		'href' => 'https://contactform7.com/custom-development/',
+	) );
+
+	$formatter->append_preformatted(
+		__( 'Private support by Codeable experts', 'contact-form-7' )
+	);
+
+	$formatter->end_tag( 'ul' );
+
+	$formatter->append_start_tag( 'p' );
+
+	$formatter->append_preformatted(
+		sprintf(
+			/* translators: 1: URL to the docs page, 2: URL to the FAQ page */
+			__( 'Or, consult the <a href="%1$s">docs</a> and <a href="%2$s">FAQ</a>.', 'contact-form-7' ),
+			'https://contactform7.com/docs/',
+			'https://contactform7.com/faq/'
+		)
+	);
+
+	$formatter->print();
 }
