@@ -273,12 +273,18 @@ function wpcf7_admin_dashboard_page() {
 				continue;
 			}
 
-			foreach ( $boxes as $box_key => $box ) {
-				if ( in_array( $box['id'], $core_widget_ids, true ) ) {
+			foreach ( $boxes as $box_id => $box ) {
+				if ( in_array( $box_id, $core_widget_ids, true ) ) {
 					continue;
 				}
 
-				unset( $wp_meta_boxes[$page][$context][$priority][$box_key] );
+				if ( ! isset( $priorities['default'][$box_id] ) ) {
+					$wp_meta_boxes[$page][$context]['default'][$box_id] = $box;
+				} elseif ( ! isset( $priorities['low'][$box_id] ) ) {
+					$wp_meta_boxes[$page][$context]['low'][$box_id] = $box;
+				}
+
+				unset( $wp_meta_boxes[$page][$context][$priority][$box_id] );
 			}
 		}
 	}
