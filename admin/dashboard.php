@@ -16,6 +16,20 @@ $formatter->append_preformatted(
 
 $formatter->end_tag( 'h1' );
 
+$formatter->call_user_func( static function () {
+	do_action( 'wpcf7_admin_warnings',
+		'wpcf7-dashboard',
+		wpcf7_current_action(),
+		null
+	);
+
+	do_action( 'wpcf7_admin_notices',
+		'wpcf7-dashboard',
+		wpcf7_current_action(),
+		null
+	);
+} );
+
 $formatter->append_start_tag( 'div', array(
 	'id' => 'dashboard-widgets-wrap',
 ) );

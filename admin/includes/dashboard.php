@@ -11,13 +11,14 @@ function wpcf7_dashboard_widgets() {
 		),
 		'wpcf7_dashboard_news' => array(
 			'widget_name' => __( 'News', 'contact-form-7' ),
-			'context' => 'side',
 		),
 		'wpcf7_get_support' => array(
 			'widget_name' => __( 'Get Support', 'contact-form-7' ),
+			'context' => 'side',
 		),
 		'wpcf7_spam_protection' => array(
 			'widget_name' => __( 'Spam Protection', 'contact-form-7' ),
+			'context' => 'side',
 		),
 	);
 }
@@ -144,7 +145,7 @@ function wpcf7_dashboard_cf7com_news() {
 				'link' => 'https://contactform7.com/',
 				'url' => 'https://contactform7.com/feed/',
 				'title' => __( 'Contact Form 7 official site', 'contact-form-7' ),
-				'items' => 10,
+				'items' => 6,
 				'show_summary' => 0,
 				'show_author' => 0,
 				'show_date' => 1,
@@ -169,7 +170,7 @@ function wpcf7_get_support() {
 	) );
 
 	$formatter->append_start_tag( 'a', array(
-		'href' => __( 'https://wordpress.org/support/plugin/contact-form-7/', 'contact-form-7' ),
+		'href' => 'https://wordpress.org/support/plugin/contact-form-7/',
 	) );
 
 	$formatter->append_preformatted(
