@@ -63,8 +63,6 @@ $formatter->call_user_func( static function () {
 		'wpcf7', wpcf7_current_action(), null
 	);
 
-	wpcf7_welcome_panel();
-
 	do_action( 'wpcf7_admin_notices',
 		'wpcf7', wpcf7_current_action(), null
 	);

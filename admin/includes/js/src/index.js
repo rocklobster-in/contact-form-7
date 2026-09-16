@@ -2,18 +2,18 @@ import { __ } from '@wordpress/i18n';
 
 import { init as initTabs } from './tabs.js';
 import { init as initConfigFields } from './config-errors.js';
-import { init as initWelcomePanel } from './welcome-panel.js';
 import { init as initTagGenerator } from './tag-generator.js';
 import { init as initBeforeUnload } from './before-unload.js';
+import { init as initAdminAjax } from './ajax-actions.js';
 import { toggleFieldset } from './utils.js';
 
 
 document.addEventListener( 'DOMContentLoaded', event => {
 	initTabs();
 	initConfigFields();
-	initWelcomePanel();
 	initTagGenerator();
 	initBeforeUnload();
+	initAdminAjax();
 
 	const titleField = document.querySelector( 'input#title' );
 

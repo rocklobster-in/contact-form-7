@@ -365,65 +365,6 @@ if ( $post ) {
 		$formatter->end_tag( 'section' ); // #submitdiv
 	}
 
-	$formatter->append_start_tag( 'section', array(
-		'id' => 'informationdiv',
-		'class' => 'postbox',
-	) );
-
-	$formatter->append_start_tag( 'h2' );
-
-	$formatter->append_preformatted(
-		esc_html( __( 'Do you need help?', 'contact-form-7' ) )
-	);
-
-	$formatter->end_tag( 'h2' );
-
-	$formatter->append_start_tag( 'div', array(
-		'class' => 'inside',
-	) );
-
-	$formatter->append_start_tag( 'p' );
-
-	$formatter->append_preformatted(
-		esc_html( __( 'Here are some available options to help solve your problems.', 'contact-form-7' ) )
-	);
-
-	$formatter->end_tag( 'p' );
-
-	$formatter->append_start_tag( 'ol' );
-
-	$formatter->append_start_tag( 'li' );
-
-	$formatter->append_preformatted(
-		sprintf(
-			/* translators: 1: URL to FAQ, 2: URL to docs */
-			'<a href="%1$s">FAQ</a> and <a href="%2$s">docs</a>',
-			'https://contactform7.com/faq/',
-			'https://contactform7.com/docs/'
-		)
-	);
-
-	$formatter->append_start_tag( 'li' );
-
-	$formatter->append_preformatted(
-		wpcf7_link(
-			__( 'https://wordpress.org/support/plugin/contact-form-7/', 'contact-form-7' ),
-			__( 'Support forums', 'contact-form-7' )
-		)
-	);
-
-	$formatter->append_start_tag( 'li' );
-
-	$formatter->append_preformatted(
-		wpcf7_link(
-			'https://contactform7.com/custom-development/',
-			__( 'Professional services', 'contact-form-7' )
-		)
-	);
-
-	$formatter->end_tag( 'ol' );
-	$formatter->end_tag( 'div' ); // .inside
-	$formatter->end_tag( 'section' ); // #informationdiv
 	$formatter->end_tag( 'div' ); // #postbox-container-1
 
 	$formatter->append_start_tag( 'div', array(
