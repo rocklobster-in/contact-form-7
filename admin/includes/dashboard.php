@@ -20,6 +20,10 @@ function wpcf7_dashboard_widgets() {
 			'widget_name' => __( 'Spam Protection', 'contact-form-7' ),
 			'context' => 'side',
 		),
+		'wpcf7_save_messages' => array(
+			'widget_name' => __( 'Save Messages', 'contact-form-7' ),
+			'context' => 'side',
+		),
 	);
 }
 
@@ -246,6 +250,32 @@ function wpcf7_spam_protection() {
 			/* translators: %s: URL to the Disallowed list doc page */
 			__( 'You can also block submissions that contain specific keywords or come from specific IP addresses (<a href="%s"><strong>Disallowed list</strong></a>).', 'contact-form-7' ),
 			'https://contactform7.com/comment-blacklist/'
+		)
+	);
+
+	$formatter->print();
+}
+
+function wpcf7_save_messages() {
+	$formatter = new WPCF7_HTMLFormatter();
+
+	$formatter->append_start_tag( 'p' );
+
+	$formatter->append_preformatted(
+		sprintf(
+			/* translators: %s: URL to the Flamingo doc page */
+			__( 'Contact Form 7 itself doesn&#8217;t have a feature to store submitted messages; therefore, there is always a risk of losing important messages. Contact Form 7 recommends installing a separate plugin called <a href="%s"><strong>Flamingo</strong></a>, which is dedicated to storing messages in the database.', 'contact-form-7' ),
+			'https://contactform7.com/save-submitted-messages-with-flamingo/'
+		)
+	);
+
+	$formatter->append_start_tag( 'p' );
+
+	$formatter->append_preformatted(
+		sprintf(
+			/* translators: %s: URL to the Brevo integration doc page */
+			__( 'If you use contact forms for customer relationship management, consider activating the <a href="%s"><strong>Brevo</strong></a> integration. With the integration, Contact Form 7 can safely connect to the leading CRM platform in Europe, while protecting user privacy.', 'contact-form-7' ),
+			'https://contactform7.com/sendinblue-integration/'
 		)
 	);
 
