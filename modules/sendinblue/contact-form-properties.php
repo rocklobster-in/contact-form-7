@@ -97,7 +97,7 @@ function wpcf7_sendinblue_editor_panels( $panels ) {
 		);
 
 		$lists = wpcf7_sendinblue_get_lists();
-		$templates = $service->get_templates();
+		$templates = wpcf7_sendinblue_get_templates();
 
 		$formatter = new WPCF7_HTMLFormatter();
 
@@ -411,7 +411,7 @@ function wpcf7_sendinblue_editor_panels( $panels ) {
 /**
  * Retrieves contact lists from Brevo's database.
  */
-function wpcf7_sendinblue_get_lists() {
+function wpcf7_sendinblue_get_lists(): array {
 	static $lists = array();
 
 	$service = WPCF7_Sendinblue::get_instance();
@@ -419,6 +419,15 @@ function wpcf7_sendinblue_get_lists() {
 	if ( ! empty( $lists ) or ! $service->is_active() ) {
 		return $lists;
 	}
+
+	$cache_key = 'wpcf7_sendinblue_get_lists';
+	$lists = get_transient( $cache_key );
+
+	if ( false !== $lists ) {
+		return $lists;
+	}
+
+	$lists = array();
 
 	$limit = 50;
 	$offset = 0;
@@ -440,5 +449,54 @@ function wpcf7_sendinblue_get_lists() {
 		$offset += $limit;
 	}
 
+	set_transient( $cache_key, $lists, 12 * HOUR_IN_SECONDS );
+
 	return $lists;
+}
+
+
+/**
+ * Retrieves email templates from Brevo's database.
+ */
+function wpcf7_sendinblue_get_templates(): array {
+	static $templates = array();
+
+	$service = WPCF7_Sendinblue::get_instance();
+
+	if ( ! empty( $templates ) or ! $service->is_active() ) {
+		return $templates;
+	}
+
+	$cache_key = 'wpcf7_sendinblue_get_templates';
+	$templates = get_transient( $cache_key );
+
+	if ( false !== $templates ) {
+		return $templates;
+	}
+
+	$templates = array();
+
+	$limit = 50;
+	$offset = 0;
+
+	while ( count( $templates ) < $limit * 10 ) {
+		$templates_next = (array) $service->get_templates( array(
+			'limit' => $limit,
+			'offset' => $offset,
+		) );
+
+		if ( ! empty( $templates_next ) ) {
+			$templates = array_merge( $templates, $templates_next );
+		}
+
+		if ( count( $templates_next ) < $limit ) {
+			break;
+		}
+
+		$offset += $limit;
+	}
+
+	set_transient( $cache_key, $templates, 12 * HOUR_IN_SECONDS );
+
+	return $templates;
 }
