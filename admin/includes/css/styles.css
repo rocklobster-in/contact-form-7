@@ -645,6 +645,10 @@ form.tag-generator-panel[data-version="1"] {
     content: "\f137" / '';
 }
 
+#wpcf7_dashboard_right_now li.flamingo a::before {
+    content: "\f17d" / '';
+}
+
 #wpcf7_get_support li.public a::before {
     content: "\f307" / '';
 }

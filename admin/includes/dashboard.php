@@ -42,10 +42,6 @@ function wpcf7_dashboard_setup() {
 function wpcf7_dashboard_right_now() {
 	$formatter = new WPCF7_HTMLFormatter();
 
-	$formatter->append_start_tag( 'div', array(
-		'class' => 'main',
-	) );
-
 	$formatter->append_start_tag( 'ul' );
 
 	$formatter->append_start_tag( 'li', array(
@@ -111,6 +107,24 @@ function wpcf7_dashboard_right_now() {
 				}
 			}
 		}
+	}
+
+	if ( defined( 'FLAMINGO_VERSION' ) ) {
+		$formatter->append_start_tag( 'li', array(
+			'class' => 'flamingo',
+		) );
+
+		$formatter->append_start_tag( 'a', array(
+			'href' => menu_page_url( 'flamingo_inbound', false ),
+		) );
+
+		$formatter->append_preformatted(
+			sprintf(
+				/* translators: %s: Flamingo version */
+				__( '<strong>Flamingo</strong> (version %s) is active', 'contact-form-7' ),
+				FLAMINGO_VERSION
+			)
+		);
 	}
 
 	$formatter->end_tag( 'ul' );
