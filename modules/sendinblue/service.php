@@ -330,13 +330,15 @@ trait WPCF7_Sendinblue_API {
 	}
 
 
-	public function get_templates() {
+	public function get_templates( $options = '' ) {
+		$options = wp_parse_args( $options, array(
+			'templateStatus' => 'true',
+			'limit' => 50,
+			'offset' => 0,
+		) );
+
 		$endpoint = add_query_arg(
-			array(
-				'templateStatus' => 'true',
-				'limit' => 100,
-				'offset' => 0,
-			),
+			$options,
 			'https://api.sendinblue.com/v3/smtp/templates'
 		);
 
