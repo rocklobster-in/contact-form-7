@@ -432,8 +432,7 @@ function wpcf7_sendinblue_get_lists(): array {
 		return $lists;
 	}
 
-	$cache_key = 'wpcf7_sendinblue_get_lists';
-	$lists = get_transient( $cache_key );
+	$lists = get_transient( 'wpcf7_sendinblue_lists' );
 
 	if ( false !== $lists ) {
 		return $lists;
@@ -461,7 +460,11 @@ function wpcf7_sendinblue_get_lists(): array {
 		$offset += $limit;
 	}
 
-	set_transient( $cache_key, $lists, 12 * HOUR_IN_SECONDS );
+	set_transient(
+		'wpcf7_sendinblue_lists',
+		$lists,
+		12 // 12 * HOUR_IN_SECONDS // Shortened for testing
+	);
 
 	return $lists;
 }
@@ -479,8 +482,7 @@ function wpcf7_sendinblue_get_templates(): array {
 		return $templates;
 	}
 
-	$cache_key = 'wpcf7_sendinblue_get_templates';
-	$templates = get_transient( $cache_key );
+	$templates = get_transient( 'wpcf7_sendinblue_templates' );
 
 	if ( false !== $templates ) {
 		return $templates;
@@ -508,7 +510,11 @@ function wpcf7_sendinblue_get_templates(): array {
 		$offset += $limit;
 	}
 
-	set_transient( $cache_key, $templates, 12 * HOUR_IN_SECONDS );
+	set_transient(
+		'wpcf7_sendinblue_templates',
+		$templates,
+		12 // 12 * HOUR_IN_SECONDS // Shortened for testing
+	);
 
 	return $templates;
 }
