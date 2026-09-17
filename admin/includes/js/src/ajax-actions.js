@@ -2,6 +2,7 @@ import { addQueryArgs } from '@wordpress/url';
 
 export const init = () => {
   dashboardPrimary();
+  sendinblue();
 };
 
 const dashboardPrimary = () => {
@@ -21,4 +22,12 @@ const dashboardPrimary = () => {
         newsArea.innerHTML = text;
       } );
   }
+};
+
+const sendinblue = () => {
+  const url = addQueryArgs( ajaxurl, {
+    action: 'wpcf7-sendinblue',
+  } );
+
+  fetch( url );
 };

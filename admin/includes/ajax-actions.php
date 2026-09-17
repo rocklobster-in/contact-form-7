@@ -19,3 +19,17 @@ function wpcf7_ajax_dashboard_widgets() {
 
 	wp_die();
 }
+
+
+add_action(
+	'wp_ajax_wpcf7-sendinblue',
+	'wpcf7_ajax_sendinblue',
+	10, 0
+);
+
+function wpcf7_ajax_sendinblue() {
+	wpcf7_sendinblue_get_lists();
+	wpcf7_sendinblue_get_templates();
+
+	wp_die();
+}

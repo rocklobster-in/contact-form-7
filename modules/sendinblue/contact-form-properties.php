@@ -105,8 +105,6 @@ function wpcf7_sendinblue_editor_panels( $panels ) {
 			'role' => 'presentation',
 		) );
 
-		$formatter->append_start_tag( 'tbody' );
-
 		$formatter->call_user_func( static function () {
 			wpcf7_sendinblue_editor_table();
 		} );
@@ -147,6 +145,8 @@ function wpcf7_sendinblue_editor_table() {
 	$templates = wpcf7_sendinblue_get_templates();
 
 	$formatter = new WPCF7_HTMLFormatter();
+
+	$formatter->append_start_tag( 'tbody' );
 
 	$formatter->append_start_tag( 'tr', array(
 		'class' => $prop['enable_contact_list'] ? '' : 'inactive',
@@ -460,11 +460,7 @@ function wpcf7_sendinblue_get_lists(): array {
 		$offset += $limit;
 	}
 
-	set_transient(
-		'wpcf7_sendinblue_lists',
-		$lists,
-		12 // 12 * HOUR_IN_SECONDS // Shortened for testing
-	);
+	set_transient( 'wpcf7_sendinblue_lists', $lists );
 
 	return $lists;
 }
@@ -510,11 +506,7 @@ function wpcf7_sendinblue_get_templates(): array {
 		$offset += $limit;
 	}
 
-	set_transient(
-		'wpcf7_sendinblue_templates',
-		$templates,
-		12 // 12 * HOUR_IN_SECONDS // Shortened for testing
-	);
+	set_transient( 'wpcf7_sendinblue_templates', $templates );
 
 	return $templates;
 }
