@@ -130,12 +130,8 @@ function wpcf7_sendinblue_editor_panels( $panels ) {
 /**
  * Reusable content for the Brevo editor panel.
  */
-function wpcf7_sendinblue_editor_table( $post = null ) {
-	if ( $post ) {
-		$contact_form = WPCF7_ContactForm::get_instance( $post );
-	} else {
-		$contact_form = WPCF7_ContactForm::get_current();
-	}
+function wpcf7_sendinblue_editor_table() {
+	$contact_form = WPCF7_ContactForm::get_current();
 
 	$prop = wp_parse_args(
 		$contact_form->prop( 'sendinblue' ),
