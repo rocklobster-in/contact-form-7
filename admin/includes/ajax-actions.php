@@ -30,19 +30,17 @@ add_action(
 function wpcf7_ajax_sendinblue_contact_lists() {
 	$contact_form = wpcf7_contact_form( wpcf7_superglobal_get( 'id' ) );
 
-	if ( $contact_form ) {
-		$prop = wp_parse_args(
-			$contact_form->prop( 'sendinblue' ),
-			array(
-				'enable_contact_list' => false,
-				'contact_lists' => array(),
-				'enable_transactional_email' => false,
-				'email_template' => 0,
-			)
-		);
+	$prop = wp_parse_args(
+		$contact_form ? $contact_form->prop( 'sendinblue' ) : array(),
+		array(
+			'enable_contact_list' => false,
+			'contact_lists' => array(),
+			'enable_transactional_email' => false,
+			'email_template' => 0,
+		)
+	);
 
-		wpcf7_sendinblue_editor_lists( $prop['contact_lists'] );
-	}
+	wpcf7_sendinblue_editor_lists( $prop['contact_lists'] );
 
 	wp_die();
 }
@@ -57,19 +55,17 @@ add_action(
 function wpcf7_ajax_sendinblue_email_template() {
 	$contact_form = wpcf7_contact_form( wpcf7_superglobal_get( 'id' ) );
 
-	if ( $contact_form ) {
-		$prop = wp_parse_args(
-			$contact_form->prop( 'sendinblue' ),
-			array(
-				'enable_contact_list' => false,
-				'contact_lists' => array(),
-				'enable_transactional_email' => false,
-				'email_template' => 0,
-			)
-		);
+	$prop = wp_parse_args(
+		$contact_form ? $contact_form->prop( 'sendinblue' ) : array(),
+		array(
+			'enable_contact_list' => false,
+			'contact_lists' => array(),
+			'enable_transactional_email' => false,
+			'email_template' => 0,
+		)
+	);
 
-		wpcf7_sendinblue_editor_templates( $prop['email_template'] );
-	}
+	wpcf7_sendinblue_editor_templates( $prop['email_template'] );
 
 	wp_die();
 }

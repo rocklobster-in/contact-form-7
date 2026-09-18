@@ -201,7 +201,11 @@ function wpcf7_sendinblue_editor_table() {
 
 	$formatter->call_user_func( static function () use ( $prop ) {
 		wpcf7_sendinblue_editor_lists( $prop['contact_lists'], array(
-			'clear_cache' => 'saved' !== wpcf7_superglobal_get( 'message' ),
+			'clear_cache' => ! in_array(
+				wpcf7_superglobal_get( 'message' ),
+				array( 'saved', 'created' ),
+				true
+			),
 			'run_query' => false,
 		) );
 	} );
@@ -266,7 +270,11 @@ function wpcf7_sendinblue_editor_table() {
 
 	$formatter->call_user_func( static function () use ( $prop ) {
 		wpcf7_sendinblue_editor_templates( $prop['email_template'], array(
-			'clear_cache' => 'saved' !== wpcf7_superglobal_get( 'message' ),
+			'clear_cache' => ! in_array(
+				wpcf7_superglobal_get( 'message' ),
+				array( 'saved', 'created' ),
+				true
+			),
 			'run_query' => false,
 		) );
 	} );
