@@ -289,8 +289,8 @@ function wpcf7_sendinblue_editor_lists( $lists_selected ) {
 		foreach ( $lists_selected as $list ) {
 			$formatter->append_start_tag( 'input', array(
 				'type' => 'hidden',
-				'name' => "wpcf7-sendinblue[contact_lists][{$list}]",
-				'value' => '1',
+				'name' => 'wpcf7-sendinblue[contact_lists][]',
+				'value' => $list,
 			) );
 		}
 
