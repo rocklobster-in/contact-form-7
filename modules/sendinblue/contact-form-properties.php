@@ -268,13 +268,33 @@ function wpcf7_sendinblue_editor_table() {
 
 
 function wpcf7_sendinblue_editor_lists( $lists_selected ) {
-	$lists = wpcf7_sendinblue_get_lists() ?? array();
-
 	$formatter = new WPCF7_HTMLFormatter();
 
 	$formatter->append_start_tag( 'fieldset' );
 
-	if ( $lists ) {
+	$lists = wpcf7_sendinblue_get_lists( array(
+		'clear_cache' => true,
+		'run_query' => false,
+	) );
+
+	if ( ! isset( $lists ) ) {
+		$formatter->append_start_tag( 'legend' );
+
+		$formatter->append_preformatted(
+			esc_html( __( 'Loading&hellip;', 'contact-form-7' ) )
+		);
+
+		$formatter->end_tag( 'legend' );
+
+		foreach ( $lists_selected as $list ) {
+			$formatter->append_start_tag( 'input', array(
+				'type' => 'hidden',
+				'name' => "wpcf7-sendinblue[contact_lists][{$list}]",
+				'value' => '1',
+			) );
+		}
+
+	} elseif ( $lists ) {
 		$formatter->append_start_tag( 'legend' );
 
 		$formatter->append_preformatted(
@@ -352,13 +372,31 @@ function wpcf7_sendinblue_editor_lists( $lists_selected ) {
 
 
 function wpcf7_sendinblue_editor_templates( $template_selected ) {
-	$templates = wpcf7_sendinblue_get_templates() ?? array();
-
 	$formatter = new WPCF7_HTMLFormatter();
 
 	$formatter->append_start_tag( 'fieldset' );
 
-	if ( $templates ) {
+	$templates = wpcf7_sendinblue_get_templates( array(
+		'clear_cache' => true,
+		'run_query' => false,
+	) );
+
+	if ( ! isset( $templates ) ) {
+		$formatter->append_start_tag( 'legend' );
+
+		$formatter->append_preformatted(
+			esc_html( __( 'Loading&hellip;', 'contact-form-7' ) )
+		);
+
+		$formatter->end_tag( 'legend' );
+
+		$formatter->append_start_tag( 'input', array(
+			'type' => 'hidden',
+			'name' => 'wpcf7-sendinblue[email_template]',
+			'value' => $template_selected,
+		) );
+
+	} elseif ( $templates ) {
 		$formatter->append_start_tag( 'legend' );
 
 		$formatter->append_preformatted(
@@ -445,7 +483,7 @@ function wpcf7_sendinblue_editor_templates( $template_selected ) {
 /**
  * Retrieves contact lists from Brevo's database.
  */
-function wpcf7_sendinblue_get_lists( $options = '' ): array {
+function wpcf7_sendinblue_get_lists( $options = '' ): ?array {
 	$options = wp_parse_args( $options, array(
 		'clear_cache' => false,
 		'run_query' => true,
@@ -506,7 +544,7 @@ function wpcf7_sendinblue_get_lists( $options = '' ): array {
 /**
  * Retrieves email templates from Brevo's database.
  */
-function wpcf7_sendinblue_get_templates( $options = '' ): array {
+function wpcf7_sendinblue_get_templates( $options = '' ): ?array {
 	$options = wp_parse_args( $options, array(
 		'clear_cache' => false,
 		'run_query' => true,
