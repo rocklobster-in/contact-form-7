@@ -26,23 +26,37 @@ const dashboardPrimary = () => {
 };
 
 const sendinblueContactLists = () => {
-  const id = document.querySelector( '[name="post_ID"]' )?.value ?? '';
+  const id = document.querySelector( '[name="post_ID"]' )?.value;
+  const td = document.querySelector( '#wpcf7-sendinblue-editor-lists' );
 
-  const url = addQueryArgs( ajaxurl, {
-    action: 'wpcf7-sendinblue-contact-lists',
-    id,
-  } );
+  if ( id && td ) {
+    const url = addQueryArgs( ajaxurl, {
+      action: 'wpcf7-sendinblue-contact-lists',
+      id,
+    } );
 
-  fetch( url );
+    fetch( url )
+      .then( ( response ) => response.text() )
+      .then( ( text ) => {
+        td.innerHTML = text;
+      } );
+  }
 };
 
 const sendinblueEmailTemplate = () => {
-  const id = document.querySelector( '[name="post_ID"]' )?.value ?? '';
+  const id = document.querySelector( '[name="post_ID"]' )?.value;
+  const td = document.querySelector( '#wpcf7-sendinblue-editor-templates' );
 
-  const url = addQueryArgs( ajaxurl, {
-    action: 'wpcf7-sendinblue-email-template',
-    id,
-  } );
+  if ( id && td ) {
+    const url = addQueryArgs( ajaxurl, {
+      action: 'wpcf7-sendinblue-email-template',
+      id,
+    } );
 
-  fetch( url );
+    fetch( url )
+      .then( ( response ) => response.text() )
+      .then( ( text ) => {
+        td.innerHTML = text;
+      } );
+  }
 };

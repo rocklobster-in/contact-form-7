@@ -42,8 +42,6 @@ function wpcf7_ajax_sendinblue_contact_lists() {
 		);
 
 		wpcf7_sendinblue_editor_lists( $prop['contact_lists'] );
-	} else {
-		wpcf7_sendinblue_get_lists();
 	}
 
 	wp_die();
@@ -71,8 +69,6 @@ function wpcf7_ajax_sendinblue_email_template() {
 		);
 
 		wpcf7_sendinblue_editor_templates( $prop['email_template'] );
-	} else {
-		wpcf7_sendinblue_get_templates();
 	}
 
 	wp_die();

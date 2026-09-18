@@ -195,10 +195,15 @@ function wpcf7_sendinblue_editor_table() {
 		'scope' => 'row',
 	) );
 
-	$formatter->append_start_tag( 'td' );
+	$formatter->append_start_tag( 'td', array(
+		'id' => 'wpcf7-sendinblue-editor-lists',
+	) );
 
 	$formatter->call_user_func( static function () use ( $prop ) {
-		wpcf7_sendinblue_editor_lists( $prop['contact_lists'] );
+		wpcf7_sendinblue_editor_lists( $prop['contact_lists'], array(
+			'clear_cache' => 'saved' !== wpcf7_superglobal_get( 'message' ),
+			'run_query' => false,
+		) );
 	} );
 
 	$formatter->end_tag( 'tr' );
@@ -255,10 +260,15 @@ function wpcf7_sendinblue_editor_table() {
 		'scope' => 'row',
 	) );
 
-	$formatter->append_start_tag( 'td' );
+	$formatter->append_start_tag( 'td', array(
+		'id' => 'wpcf7-sendinblue-editor-templates',
+	) );
 
 	$formatter->call_user_func( static function () use ( $prop ) {
-		wpcf7_sendinblue_editor_templates( $prop['email_template'] );
+		wpcf7_sendinblue_editor_templates( $prop['email_template'], array(
+			'clear_cache' => 'saved' !== wpcf7_superglobal_get( 'message' ),
+			'run_query' => false,
+		) );
 	} );
 
 	$formatter->end_tag( 'tr' );
@@ -267,15 +277,17 @@ function wpcf7_sendinblue_editor_table() {
 }
 
 
-function wpcf7_sendinblue_editor_lists( $lists_selected ) {
+function wpcf7_sendinblue_editor_lists( $lists_selected, $options = '' ) {
+	$options = wp_parse_args( $options, array(
+		'clear_cache' => false,
+		'run_query' => true,
+	) );
+
 	$formatter = new WPCF7_HTMLFormatter();
 
 	$formatter->append_start_tag( 'fieldset' );
 
-	$lists = wpcf7_sendinblue_get_lists( array(
-		'clear_cache' => true,
-		'run_query' => false,
-	) );
+	$lists = wpcf7_sendinblue_get_lists( $options );
 
 	if ( ! isset( $lists ) ) {
 		$formatter->append_start_tag( 'legend' );
@@ -371,15 +383,17 @@ function wpcf7_sendinblue_editor_lists( $lists_selected ) {
 }
 
 
-function wpcf7_sendinblue_editor_templates( $template_selected ) {
+function wpcf7_sendinblue_editor_templates( $template_selected, $options = '' ) {
+	$options = wp_parse_args( $options, array(
+		'clear_cache' => false,
+		'run_query' => true,
+	) );
+
 	$formatter = new WPCF7_HTMLFormatter();
 
 	$formatter->append_start_tag( 'fieldset' );
 
-	$templates = wpcf7_sendinblue_get_templates( array(
-		'clear_cache' => true,
-		'run_query' => false,
-	) );
+	$templates = wpcf7_sendinblue_get_templates( $options );
 
 	if ( ! isset( $templates ) ) {
 		$formatter->append_start_tag( 'legend' );
