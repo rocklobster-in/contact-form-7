@@ -141,7 +141,6 @@ function wpcf7_sendinblue_editor_table() {
 		)
 	);
 
-	$lists = wpcf7_sendinblue_get_lists();
 	$templates = wpcf7_sendinblue_get_templates();
 
 	$formatter = new WPCF7_HTMLFormatter();
@@ -200,81 +199,9 @@ function wpcf7_sendinblue_editor_table() {
 
 	$formatter->append_start_tag( 'td' );
 
-	$formatter->append_start_tag( 'fieldset' );
-
-	if ( $lists ) {
-		$formatter->append_start_tag( 'legend' );
-
-		$formatter->append_preformatted(
-			esc_html( __( 'Select lists to which contacts are added:', 'contact-form-7' ) )
-		);
-
-		$formatter->end_tag( 'legend' );
-
-		$formatter->append_start_tag( 'ul' );
-
-		foreach ( $lists as $list ) {
-			$formatter->append_start_tag( 'li' );
-			$formatter->append_start_tag( 'label' );
-
-			$formatter->append_start_tag( 'input', array(
-				'type' => 'checkbox',
-				'name' => 'wpcf7-sendinblue[contact_lists][]',
-				'value' => $list['id'],
-				'checked' => in_array( $list['id'], $prop['contact_lists'] ),
-			) );
-
-			$formatter->append_whitespace();
-
-			$formatter->append_preformatted( esc_html( $list['name'] ) );
-
-			$formatter->end_tag( 'li' );
-		}
-
-		$formatter->end_tag( 'ul' );
-
-	} else {
-		$formatter->append_start_tag( 'legend' );
-
-		$formatter->append_preformatted(
-			esc_html( __( 'You have no contact list yet.', 'contact-form-7' ) )
-		);
-
-		$formatter->end_tag( 'legend' );
-	}
-
-	$formatter->end_tag( 'fieldset' );
-
-	$formatter->append_start_tag( 'p' );
-
-	$formatter->append_start_tag( 'a', array(
-		'href' => 'https://my.sendinblue.com/lists',
-		'target' => '_blank',
-		'rel' => 'external noreferrer noopener',
-	) );
-
-	$formatter->append_preformatted(
-		esc_html( __( 'Manage your contact lists', 'contact-form-7' ) )
-	);
-
-	$formatter->append_whitespace();
-
-	$formatter->append_start_tag( 'span', array(
-		'class' => 'screen-reader-text',
-	) );
-
-	$formatter->append_preformatted(
-		esc_html( __( '(opens in a new tab)', 'contact-form-7' ) )
-	);
-
-	$formatter->end_tag( 'span' );
-
-	$formatter->append_start_tag( 'span', array(
-		'aria-hidden' => 'true',
-		'class' => 'dashicons dashicons-external',
-	) );
-
-	$formatter->end_tag( 'p' );
+	$formatter->call_user_func( static function () use ( $prop ) {
+		wpcf7_sendinblue_editor_lists( $prop['contact_lists'] );
+	} );
 
 	$formatter->end_tag( 'tr' );
 
@@ -415,6 +342,90 @@ function wpcf7_sendinblue_editor_table() {
 	$formatter->end_tag( 'p' );
 
 	$formatter->end_tag( 'tr' );
+
+	$formatter->print();
+}
+
+
+function wpcf7_sendinblue_editor_lists( $contact_lists ) {
+	$lists = wpcf7_sendinblue_get_lists() ?? array();
+
+	$formatter = new WPCF7_HTMLFormatter();
+
+	$formatter->append_start_tag( 'fieldset' );
+
+	if ( $lists ) {
+		$formatter->append_start_tag( 'legend' );
+
+		$formatter->append_preformatted(
+			esc_html( __( 'Select lists to which contacts are added:', 'contact-form-7' ) )
+		);
+
+		$formatter->end_tag( 'legend' );
+
+		$formatter->append_start_tag( 'ul' );
+
+		foreach ( $lists as $list ) {
+			$formatter->append_start_tag( 'li' );
+			$formatter->append_start_tag( 'label' );
+
+			$formatter->append_start_tag( 'input', array(
+				'type' => 'checkbox',
+				'name' => 'wpcf7-sendinblue[contact_lists][]',
+				'value' => $list['id'],
+				'checked' => in_array( $list['id'], $contact_lists ),
+			) );
+
+			$formatter->append_whitespace();
+
+			$formatter->append_preformatted( esc_html( $list['name'] ) );
+
+			$formatter->end_tag( 'li' );
+		}
+
+		$formatter->end_tag( 'ul' );
+	} else {
+		$formatter->append_start_tag( 'legend' );
+
+		$formatter->append_preformatted(
+			esc_html( __( 'You have no contact list yet.', 'contact-form-7' ) )
+		);
+
+		$formatter->end_tag( 'legend' );
+	}
+
+	$formatter->end_tag( 'fieldset' );
+
+	$formatter->append_start_tag( 'p' );
+
+	$formatter->append_start_tag( 'a', array(
+		'href' => 'https://my.sendinblue.com/lists',
+		'target' => '_blank',
+		'rel' => 'external noreferrer noopener',
+	) );
+
+	$formatter->append_preformatted(
+		esc_html( __( 'Manage your contact lists', 'contact-form-7' ) )
+	);
+
+	$formatter->append_whitespace();
+
+	$formatter->append_start_tag( 'span', array(
+		'class' => 'screen-reader-text',
+	) );
+
+	$formatter->append_preformatted(
+		esc_html( __( '(opens in a new tab)', 'contact-form-7' ) )
+	);
+
+	$formatter->end_tag( 'span' );
+
+	$formatter->append_start_tag( 'span', array(
+		'aria-hidden' => 'true',
+		'class' => 'dashicons dashicons-external',
+	) );
+
+	$formatter->end_tag( 'p' );
 
 	$formatter->print();
 }
