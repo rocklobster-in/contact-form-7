@@ -448,13 +448,14 @@ function wpcf7_sendinblue_editor_templates( $template_selected ) {
 function wpcf7_sendinblue_get_lists( $options = '' ): array {
 	$options = wp_parse_args( $options, array(
 		'clear_cache' => false,
+		'run_query' => true,
 	) );
 
-	static $lists = array();
+	static $lists = null;
 
 	$service = WPCF7_Sendinblue::get_instance();
 
-	if ( ! empty( $lists ) or ! $service->is_active() ) {
+	if ( isset( $lists ) or ! $service->is_active() ) {
 		return $lists;
 	}
 
@@ -462,10 +463,12 @@ function wpcf7_sendinblue_get_lists( $options = '' ): array {
 		delete_transient( 'wpcf7_sendinblue_lists' );
 	}
 
-	$lists = get_transient( 'wpcf7_sendinblue_lists' );
+	$cache = get_transient( 'wpcf7_sendinblue_lists' );
 
-	if ( false !== $lists ) {
-		return $lists;
+	if ( false !== $cache ) {
+		return $lists = $cache;
+	} elseif ( ! $options['run_query'] ) {
+		return $lists = null;
 	}
 
 	$lists = array();
@@ -506,13 +509,14 @@ function wpcf7_sendinblue_get_lists( $options = '' ): array {
 function wpcf7_sendinblue_get_templates( $options = '' ): array {
 	$options = wp_parse_args( $options, array(
 		'clear_cache' => false,
+		'run_query' => true,
 	) );
 
-	static $templates = array();
+	static $templates = null;
 
 	$service = WPCF7_Sendinblue::get_instance();
 
-	if ( ! empty( $templates ) or ! $service->is_active() ) {
+	if ( isset( $templates ) or ! $service->is_active() ) {
 		return $templates;
 	}
 
@@ -520,10 +524,12 @@ function wpcf7_sendinblue_get_templates( $options = '' ): array {
 		delete_transient( 'wpcf7_sendinblue_templates' );
 	}
 
-	$templates = get_transient( 'wpcf7_sendinblue_templates' );
+	$cache = get_transient( 'wpcf7_sendinblue_templates' );
 
-	if ( false !== $templates ) {
-		return $templates;
+	if ( false !== $cache ) {
+		return $templates = $cache;
+	} elseif ( ! $options['run_query'] ) {
+		return $templates = null;
 	}
 
 	$templates = array();
