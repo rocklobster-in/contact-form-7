@@ -490,7 +490,11 @@ function wpcf7_sendinblue_get_lists( $options = '' ): array {
 		$offset += $limit;
 	}
 
-	set_transient( 'wpcf7_sendinblue_lists', $lists );
+	set_transient(
+		'wpcf7_sendinblue_lists',
+		$lists,
+		12 * HOUR_IN_SECONDS
+	);
 
 	return $lists;
 }
@@ -544,7 +548,11 @@ function wpcf7_sendinblue_get_templates( $options = '' ): array {
 		$offset += $limit;
 	}
 
-	set_transient( 'wpcf7_sendinblue_templates', $templates );
+	set_transient(
+		'wpcf7_sendinblue_templates',
+		$templates,
+		12 * HOUR_IN_SECONDS
+	);
 
 	return $templates;
 }
