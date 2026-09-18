@@ -141,8 +141,6 @@ function wpcf7_sendinblue_editor_table() {
 		)
 	);
 
-	$templates = wpcf7_sendinblue_get_templates();
-
 	$formatter = new WPCF7_HTMLFormatter();
 
 	$formatter->append_start_tag( 'tbody' );
@@ -259,87 +257,9 @@ function wpcf7_sendinblue_editor_table() {
 
 	$formatter->append_start_tag( 'td' );
 
-	$formatter->append_start_tag( 'fieldset' );
-
-	if ( $templates ) {
-		$formatter->append_start_tag( 'legend' );
-
-		$formatter->append_preformatted(
-			esc_html( __( 'Select an email template:', 'contact-form-7' ) )
-		);
-
-		$formatter->end_tag( 'legend' );
-
-		$formatter->append_start_tag( 'select', array(
-			'name' => 'wpcf7-sendinblue[email_template]',
-		) );
-
-		$formatter->append_start_tag( 'option', array(
-			'value' => 0,
-			'selected' => 0 === $prop['email_template'],
-		) );
-
-		$formatter->append_preformatted(
-			esc_html( __( '&mdash; Select &mdash;', 'contact-form-7' ) )
-		);
-
-		$formatter->end_tag( 'option' );
-
-		foreach ( $templates as $template ) {
-			$formatter->append_start_tag( 'option', array(
-				'value' => $template['id'],
-				'selected' => $prop['email_template'] === $template['id'],
-			) );
-
-			$formatter->append_preformatted( esc_html( $template['name'] ) );
-
-			$formatter->end_tag( 'option' );
-		}
-
-		$formatter->end_tag( 'select' );
-
-	} else {
-		$formatter->append_start_tag( 'legend' );
-
-		$formatter->append_preformatted(
-			esc_html( __( 'You have no active email template yet.', 'contact-form-7' ) )
-		);
-
-		$formatter->end_tag( 'legend' );
-	}
-
-	$formatter->end_tag( 'fieldset' );
-
-	$formatter->append_start_tag( 'p' );
-
-	$formatter->append_start_tag( 'a', array(
-		'href' => 'https://my.sendinblue.com/camp/lists/template',
-		'target' => '_blank',
-		'rel' => 'external noreferrer noopener',
-	) );
-
-	$formatter->append_preformatted(
-		esc_html( __( 'Manage your email templates', 'contact-form-7' ) )
-	);
-
-	$formatter->append_whitespace();
-
-	$formatter->append_start_tag( 'span', array(
-		'class' => 'screen-reader-text',
-	) );
-
-	$formatter->append_preformatted(
-		esc_html( __( '(opens in a new tab)', 'contact-form-7' ) )
-	);
-
-	$formatter->end_tag( 'span' );
-
-	$formatter->append_start_tag( 'span', array(
-		'aria-hidden' => 'true',
-		'class' => 'dashicons dashicons-external',
-	) );
-
-	$formatter->end_tag( 'p' );
+	$formatter->call_user_func( static function () use ( $prop ) {
+		wpcf7_sendinblue_editor_templates( $prop['email_template'] );
+	} );
 
 	$formatter->end_tag( 'tr' );
 
@@ -347,7 +267,7 @@ function wpcf7_sendinblue_editor_table() {
 }
 
 
-function wpcf7_sendinblue_editor_lists( $contact_lists ) {
+function wpcf7_sendinblue_editor_lists( $lists_selected ) {
 	$lists = wpcf7_sendinblue_get_lists() ?? array();
 
 	$formatter = new WPCF7_HTMLFormatter();
@@ -373,7 +293,7 @@ function wpcf7_sendinblue_editor_lists( $contact_lists ) {
 				'type' => 'checkbox',
 				'name' => 'wpcf7-sendinblue[contact_lists][]',
 				'value' => $list['id'],
-				'checked' => in_array( $list['id'], $contact_lists ),
+				'checked' => in_array( $list['id'], $lists_selected ),
 			) );
 
 			$formatter->append_whitespace();
@@ -406,6 +326,97 @@ function wpcf7_sendinblue_editor_lists( $contact_lists ) {
 
 	$formatter->append_preformatted(
 		esc_html( __( 'Manage your contact lists', 'contact-form-7' ) )
+	);
+
+	$formatter->append_whitespace();
+
+	$formatter->append_start_tag( 'span', array(
+		'class' => 'screen-reader-text',
+	) );
+
+	$formatter->append_preformatted(
+		esc_html( __( '(opens in a new tab)', 'contact-form-7' ) )
+	);
+
+	$formatter->end_tag( 'span' );
+
+	$formatter->append_start_tag( 'span', array(
+		'aria-hidden' => 'true',
+		'class' => 'dashicons dashicons-external',
+	) );
+
+	$formatter->end_tag( 'p' );
+
+	$formatter->print();
+}
+
+
+function wpcf7_sendinblue_editor_templates( $template_selected ) {
+	$templates = wpcf7_sendinblue_get_templates() ?? array();
+
+	$formatter = new WPCF7_HTMLFormatter();
+
+	$formatter->append_start_tag( 'fieldset' );
+
+	if ( $templates ) {
+		$formatter->append_start_tag( 'legend' );
+
+		$formatter->append_preformatted(
+			esc_html( __( 'Select an email template:', 'contact-form-7' ) )
+		);
+
+		$formatter->end_tag( 'legend' );
+
+		$formatter->append_start_tag( 'select', array(
+			'name' => 'wpcf7-sendinblue[email_template]',
+		) );
+
+		$formatter->append_start_tag( 'option', array(
+			'value' => 0,
+			'selected' => 0 === $template_selected,
+		) );
+
+		$formatter->append_preformatted(
+			esc_html( __( '&mdash; Select &mdash;', 'contact-form-7' ) )
+		);
+
+		$formatter->end_tag( 'option' );
+
+		foreach ( $templates as $template ) {
+			$formatter->append_start_tag( 'option', array(
+				'value' => $template['id'],
+				'selected' => $template_selected === $template['id'],
+			) );
+
+			$formatter->append_preformatted( esc_html( $template['name'] ) );
+
+			$formatter->end_tag( 'option' );
+		}
+
+		$formatter->end_tag( 'select' );
+
+	} else {
+		$formatter->append_start_tag( 'legend' );
+
+		$formatter->append_preformatted(
+			esc_html( __( 'You have no active email template yet.', 'contact-form-7' ) )
+		);
+
+		$formatter->end_tag( 'legend' );
+	}
+
+	$formatter->end_tag( 'fieldset' );
+
+	$formatter->append_start_tag( 'p' );
+
+	$formatter->append_start_tag( 'a', array(
+		'href' => 'https://my.sendinblue.com/camp/lists/template',
+		'target' => '_blank',
+		'rel' => 'external noreferrer noopener',
+	) );
+
+	$formatter->append_preformatted(
+		esc_html( __( 'Manage your email templates', 'contact-form-7' ) )
 	);
 
 	$formatter->append_whitespace();
