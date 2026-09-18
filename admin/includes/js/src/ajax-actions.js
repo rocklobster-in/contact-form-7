@@ -2,7 +2,8 @@ import { addQueryArgs } from '@wordpress/url';
 
 export const init = () => {
   dashboardPrimary();
-  sendinblue();
+  sendinblueContactLists();
+  sendinblueEmailTemplate();
 };
 
 const dashboardPrimary = () => {
@@ -24,9 +25,23 @@ const dashboardPrimary = () => {
   }
 };
 
-const sendinblue = () => {
+const sendinblueContactLists = () => {
+  const id = document.querySelector( '[name="post_ID"]' )?.value ?? '';
+
   const url = addQueryArgs( ajaxurl, {
-    action: 'wpcf7-sendinblue',
+    action: 'wpcf7-sendinblue-contact-lists',
+    id,
+  } );
+
+  fetch( url );
+};
+
+const sendinblueEmailTemplate = () => {
+  const id = document.querySelector( '[name="post_ID"]' )?.value ?? '';
+
+  const url = addQueryArgs( ajaxurl, {
+    action: 'wpcf7-sendinblue-email-template',
+    id,
   } );
 
   fetch( url );

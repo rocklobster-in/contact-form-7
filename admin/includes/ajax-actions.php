@@ -22,14 +22,58 @@ function wpcf7_ajax_dashboard_widgets() {
 
 
 add_action(
-	'wp_ajax_wpcf7-sendinblue',
-	'wpcf7_ajax_sendinblue',
+	'wp_ajax_wpcf7-sendinblue-contact-lists',
+	'wpcf7_ajax_sendinblue_contact_lists',
 	10, 0
 );
 
-function wpcf7_ajax_sendinblue() {
-	wpcf7_sendinblue_get_lists();
-	wpcf7_sendinblue_get_templates();
+function wpcf7_ajax_sendinblue_contact_lists() {
+	$contact_form = wpcf7_contact_form( wpcf7_superglobal_get( 'id' ) );
+
+	if ( $contact_form ) {
+		$prop = wp_parse_args(
+			$contact_form->prop( 'sendinblue' ),
+			array(
+				'enable_contact_list' => false,
+				'contact_lists' => array(),
+				'enable_transactional_email' => false,
+				'email_template' => 0,
+			)
+		);
+
+		wpcf7_sendinblue_editor_lists( $prop['contact_lists'] );
+	} else {
+		wpcf7_sendinblue_get_lists();
+	}
+
+	wp_die();
+}
+
+
+add_action(
+	'wp_ajax_wpcf7-sendinblue-email-template',
+	'wpcf7_ajax_sendinblue_email_template',
+	10, 0
+);
+
+function wpcf7_ajax_sendinblue_email_template() {
+	$contact_form = wpcf7_contact_form( wpcf7_superglobal_get( 'id' ) );
+
+	if ( $contact_form ) {
+		$prop = wp_parse_args(
+			$contact_form->prop( 'sendinblue' ),
+			array(
+				'enable_contact_list' => false,
+				'contact_lists' => array(),
+				'enable_transactional_email' => false,
+				'email_template' => 0,
+			)
+		);
+
+		wpcf7_sendinblue_editor_templates( $prop['email_template'] );
+	} else {
+		wpcf7_sendinblue_get_templates();
+	}
 
 	wp_die();
 }
