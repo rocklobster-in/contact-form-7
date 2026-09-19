@@ -6,6 +6,7 @@ import { init as initTagGenerator } from './tag-generator.js';
 import { init as initBeforeUnload } from './before-unload.js';
 import { init as initAdminAjax } from './ajax-actions.js';
 import { toggleFieldset } from './utils.js';
+import { externalizeAll } from './link-external.js';
 
 
 document.addEventListener( 'DOMContentLoaded', event => {
@@ -123,5 +124,7 @@ document.addEventListener( 'DOMContentLoaded', event => {
 			}
 		} );
 	} );
+
+	externalizeAll();
 
 } );

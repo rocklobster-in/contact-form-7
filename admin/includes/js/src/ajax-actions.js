@@ -1,5 +1,7 @@
 import { addQueryArgs } from '@wordpress/url';
 
+import { externalizeAll } from './link-external.js';
+
 export const init = () => {
   dashboardPrimary();
   sendinblueContactLists();
@@ -39,7 +41,8 @@ const sendinblueContactLists = () => {
       .then( ( response ) => response.text() )
       .then( ( text ) => {
         td.innerHTML = text;
-      } );
+      } )
+      .then( externalizeAll );
   }
 };
 
@@ -57,6 +60,7 @@ const sendinblueEmailTemplate = () => {
       .then( ( response ) => response.text() )
       .then( ( text ) => {
         td.innerHTML = text;
-      } );
+      } )
+      .then( externalizeAll );
   }
 };

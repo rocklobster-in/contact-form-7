@@ -1,10 +1,8 @@
 import apiFetch from '@wordpress/api-fetch';
 import { sprintf, _n, __ } from '@wordpress/i18n';
 
-import {
-	iconInCircle,
- 	canonicalizeName,
-} from './utils.js';
+import { iconInCircle, canonicalizeName } from './utils.js';
+import { externalize } from './link-external.js';
 
 
 const init = () => {
@@ -140,6 +138,7 @@ const createErrorsList = section => {
 			const anchor = document.createElement( 'a' );
 			anchor.setAttribute( 'href', err.link );
 			anchor.append( err.message );
+			externalize( anchor );
 			li.append( ' ', anchor );
 		} else {
 			li.append( ' ', err.message );
