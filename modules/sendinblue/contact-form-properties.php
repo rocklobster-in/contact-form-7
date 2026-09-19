@@ -360,30 +360,11 @@ function wpcf7_sendinblue_editor_lists( $lists_selected, $options = '' ) {
 
 	$formatter->append_start_tag( 'a', array(
 		'href' => 'https://my.sendinblue.com/lists',
-		'target' => '_blank',
-		'rel' => 'external noreferrer noopener',
 	) );
 
 	$formatter->append_preformatted(
 		esc_html( __( 'Manage your contact lists', 'contact-form-7' ) )
 	);
-
-	$formatter->append_whitespace();
-
-	$formatter->append_start_tag( 'span', array(
-		'class' => 'screen-reader-text',
-	) );
-
-	$formatter->append_preformatted(
-		esc_html( __( '(opens in a new tab)', 'contact-form-7' ) )
-	);
-
-	$formatter->end_tag( 'span' );
-
-	$formatter->append_start_tag( 'span', array(
-		'aria-hidden' => 'true',
-		'class' => 'dashicons dashicons-external',
-	) );
 
 	$formatter->end_tag( 'p' );
 
@@ -471,30 +452,11 @@ function wpcf7_sendinblue_editor_templates( $template_selected, $options = '' ) 
 
 	$formatter->append_start_tag( 'a', array(
 		'href' => 'https://my.sendinblue.com/camp/lists/template',
-		'target' => '_blank',
-		'rel' => 'external noreferrer noopener',
 	) );
 
 	$formatter->append_preformatted(
 		esc_html( __( 'Manage your email templates', 'contact-form-7' ) )
 	);
-
-	$formatter->append_whitespace();
-
-	$formatter->append_start_tag( 'span', array(
-		'class' => 'screen-reader-text',
-	) );
-
-	$formatter->append_preformatted(
-		esc_html( __( '(opens in a new tab)', 'contact-form-7' ) )
-	);
-
-	$formatter->end_tag( 'span' );
-
-	$formatter->append_start_tag( 'span', array(
-		'aria-hidden' => 'true',
-		'class' => 'dashicons dashicons-external',
-	) );
 
 	$formatter->end_tag( 'p' );
 
