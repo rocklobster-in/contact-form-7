@@ -2,6 +2,17 @@
     margin-top: 1ex;
 }
 
+#wpcf7-shortcode-wrap button.toggle-shortcode::after {
+    font: 1.2rem dashicons;
+    content: "\f343" / '';
+	padding-inline-start: 2px;
+	vertical-align: top;
+}
+
+#wpcf7-shortcode-wrap.hide-shortcode button.toggle-shortcode::after {
+    content: "\f347" / '';
+}
+
 #wpcf7-shortcode-wrap.hide-shortcode #wpcf7-shortcode-inside {
     display: none;
 }
@@ -17,11 +28,6 @@
 #wpcf7-shortcode-wrap span.shortcode {
 	display: block;
 	margin: 2px 0;
-}
-
-#wpcf7-shortcode-wrap span.shortcode.old {
-	background: #777;
-	color: #fff;
 }
 
 #wpcf7-shortcode-wrap span.shortcode input {
