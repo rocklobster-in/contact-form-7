@@ -177,7 +177,7 @@ if ( $post ) {
 			) );
 
 			$formatter->append_preformatted(
-				esc_html( __( 'Copy this shortcode and paste it into your post, page, or text widget content:', 'contact-form-7' ) )
+				esc_html( __( 'Shortcodes are only needed in the Classic Editor environment; otherwise, use the Contact Form 7 block in the Block Editor.', 'contact-form-7' ) )
 			);
 
 			$formatter->end_tag( 'label' );
@@ -191,38 +191,6 @@ if ( $post ) {
 			$formatter->append_start_tag( 'input', array(
 				'type' => 'text',
 				'id' => 'wpcf7-shortcode',
-				'readonly' => true,
-				'class' => 'large-text code selectable',
-				'value' => $shortcode,
-			) );
-
-			$formatter->end_tag( 'p' );
-		}
-
-		if ( $shortcode = $post->shortcode( array( 'use_old_format' => true ) ) ) {
-			$formatter->append_start_tag( 'p', array(
-				'class' => 'description',
-			) );
-
-			$formatter->append_start_tag( 'label', array(
-				'for' => 'wpcf7-shortcode-old',
-			) );
-
-			$formatter->append_preformatted(
-				esc_html( __( 'You can also use this old-style shortcode:', 'contact-form-7' ) )
-			);
-
-			$formatter->end_tag( 'label' );
-
-			$formatter->append_whitespace();
-
-			$formatter->append_start_tag( 'span', array(
-				'class' => 'shortcode old',
-			) );
-
-			$formatter->append_start_tag( 'input', array(
-				'type' => 'text',
-				'id' => 'wpcf7-shortcode-old',
 				'readonly' => true,
 				'class' => 'large-text code selectable',
 				'value' => $shortcode,

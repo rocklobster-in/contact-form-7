@@ -30,11 +30,6 @@
 	margin: 2px 0;
 }
 
-#wpcf7-shortcode-wrap span.shortcode.old {
-	background: #777;
-	color: #fff;
-}
-
 #wpcf7-shortcode-wrap span.shortcode input {
 	font-size: 12px;
 	border: none;
