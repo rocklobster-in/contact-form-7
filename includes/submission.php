@@ -11,7 +11,7 @@ class WPCF7_Submission {
 
 	private static $instance;
 
-	private $contact_form;
+	private readonly WPCF7_ContactForm $contact_form;
 	private $status = 'init';
 	private $posted_data = array();
 	private $posted_data_hash = null;
