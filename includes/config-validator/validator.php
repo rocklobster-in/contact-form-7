@@ -45,7 +45,7 @@ class WPCF7_ConfigValidator {
 	use WPCF7_ConfigValidator_Messages;
 	use WPCF7_ConfigValidator_AdditionalSettings;
 
-	private $contact_form;
+	private readonly WPCF7_ContactForm $contact_form;
 	private $errors = array();
 	private $include;
 	private $exclude;
