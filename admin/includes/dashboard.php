@@ -4,6 +4,9 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 require_once ABSPATH . 'wp-admin/includes/dashboard.php';
 
+/**
+ * Defines the core widgets for the Contact Form 7 Dashboard.
+ */
 function wpcf7_dashboard_widgets() {
 	return array(
 		'wpcf7_dashboard_right_now' => array(
@@ -27,6 +30,10 @@ function wpcf7_dashboard_widgets() {
 	);
 }
 
+
+/**
+ * Adds dashboard widgets to the Contact Form 7 Dashboard screen.
+ */
 function wpcf7_dashboard_setup() {
 	foreach ( wpcf7_dashboard_widgets() as $widget_id => $widget ) {
 		wp_add_dashboard_widget(
@@ -43,6 +50,10 @@ function wpcf7_dashboard_setup() {
 	do_action( 'wpcf7_dashboard_setup' );
 }
 
+
+/**
+ * Defines the "At a Glance" dashboard widget content.
+ */
 function wpcf7_dashboard_right_now() {
 	$formatter = new WPCF7_HTMLFormatter();
 
@@ -146,6 +157,10 @@ function wpcf7_dashboard_right_now() {
 	$formatter->print();
 }
 
+
+/**
+ * Defines the "News" dashboard widget content.
+ */
 function wpcf7_dashboard_news() {
 	echo '<div class="cf7com-news hide-if-no-js">';
 
@@ -154,6 +169,10 @@ function wpcf7_dashboard_news() {
 	echo '</div>';
 }
 
+
+/**
+ * Retrieves the news feed from the contactform7.com site.
+ */
 function wpcf7_dashboard_cf7com_news() {
 	wp_dashboard_cached_rss_widget(
 		'wpcf7_dashboard_cf7com_news',
@@ -172,6 +191,10 @@ function wpcf7_dashboard_cf7com_news() {
 	);
 }
 
+
+/**
+ * Defines the "Get Support" dashboard widget content.
+ */
 function wpcf7_get_support() {
 	$formatter = new WPCF7_HTMLFormatter();
 
@@ -223,6 +246,10 @@ function wpcf7_get_support() {
 	$formatter->print();
 }
 
+
+/**
+ * Defines the "Spam Protection" dashboard widget content.
+ */
 function wpcf7_spam_protection() {
 	$formatter = new WPCF7_HTMLFormatter();
 
@@ -256,6 +283,10 @@ function wpcf7_spam_protection() {
 	$formatter->print();
 }
 
+
+/**
+ * Defines the "Save Messages" dashboard widget content.
+ */
 function wpcf7_save_messages() {
 	$formatter = new WPCF7_HTMLFormatter();
 

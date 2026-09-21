@@ -8,6 +8,9 @@ add_action(
 	10, 0
 );
 
+/**
+ * Ajax action to update the Contact Form 7 news in the Dashboard screen.
+ */
 function wpcf7_ajax_dashboard_widgets() {
 	require_once WPCF7_PLUGIN_DIR . '/admin/includes/dashboard.php';
 
@@ -27,6 +30,9 @@ add_action(
 	10, 0
 );
 
+/**
+ * Ajax action to update the contact lists in the Brevo editor panel.
+ */
 function wpcf7_ajax_sendinblue_contact_lists() {
 	$contact_form = wpcf7_contact_form( wpcf7_superglobal_get( 'id' ) );
 
@@ -52,6 +58,9 @@ add_action(
 	10, 0
 );
 
+/**
+ * Ajax action to update the email templates in the Brevo editor panel.
+ */
 function wpcf7_ajax_sendinblue_email_template() {
 	$contact_form = wpcf7_contact_form( wpcf7_superglobal_get( 'id' ) );
 

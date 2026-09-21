@@ -413,8 +413,10 @@ class WPCF7_Service_OAuth2 extends WPCF7_Service {
 
 		$response = wp_remote_request( sanitize_url( $url ), $request );
 
-		if ( 401 === wp_remote_retrieve_response_code( $response )
-		and ! $refreshed ) {
+		if (
+			401 === wp_remote_retrieve_response_code( $response ) and
+			! $refreshed
+		) {
 			$this->refresh_token();
 			$refreshed = true;
 
