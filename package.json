@@ -35,6 +35,6 @@
 		"@rocklobsterinc/form-data-tree": "^2.1.3",
 		"@rocklobsterinc/functions": "^1.0.5",
 		"@rocklobsterinc/swv": "^2.1.2",
-		"@wordpress/scripts": "^34.2.0"
+		"@wordpress/scripts": "^35.0.0"
 	}
 }
