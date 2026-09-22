@@ -1,5 +1,13 @@
+#wpcf7-contact-form-editor a .dashicons {
+    text-decoration: none;
+}
+
 #wpcf7-shortcode-wrap {
     margin-top: 1ex;
+}
+
+#wpcf7-shortcode-wrap button.toggle-shortcode {
+    text-decoration: none;
 }
 
 #wpcf7-shortcode-wrap button.toggle-shortcode::after {
@@ -43,6 +51,7 @@
 
 #submitpost button.copy {
 	margin-bottom: 10px;
+	text-decoration: none;
 }
 
 #submitpost button.delete {
