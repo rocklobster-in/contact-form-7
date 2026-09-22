@@ -5,6 +5,8 @@ import { setValidationError, removeValidationError } from './validate.js';
 
 export default function submit( form, options = {} ) {
 
+  // Irritating submission mode
+  // https://github.com/rocklobster-in/contact-form-7/issues/533
 	if ( wpcf7.blocked ) {
 		clearResponse( form );
 		setStatus( form, 'submitting' );
