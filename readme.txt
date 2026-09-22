@@ -66,52 +66,10 @@ Do you have questions or issues with Contact Form 7? Use these support channels 
 
 == Changelog ==
 
+= 6.2-rc =
+
+[https://contactform7.com/contact-form-7-62-rc/](https://contactform7.com/contact-form-7-62-rc/)
+
 For more information, see [Releases](https://contactform7.com/category/releases/).
-
-= 6.1.4 =
-
-[https://contactform7.com/contact-form-7-614/](https://contactform7.com/contact-form-7-614/)
-
-= 6.1.3 =
-
-[https://contactform7.com/contact-form-7-613/](https://contactform7.com/contact-form-7-613/)
-
-= 6.1.2 =
-
-[https://contactform7.com/contact-form-7-612/](https://contactform7.com/contact-form-7-612/)
-
-= 6.1.1 =
-
-[https://contactform7.com/contact-form-7-611/](https://contactform7.com/contact-form-7-611/)
-
-= 6.1 =
-
-[https://contactform7.com/contact-form-7-61/](https://contactform7.com/contact-form-7-61/)
-
-= 6.0.5 =
-
-[https://contactform7.com/contact-form-7-605/](https://contactform7.com/contact-form-7-605/)
-
-= 6.0.4 =
-
-[https://contactform7.com/contact-form-7-604/](https://contactform7.com/contact-form-7-604/)
-
-= 6.0.3 =
-
-* Updates the copyright year to 2025.
-* Updates the "Contact Form 7 needs your support" message content.
-* Updates the Constant Contact deprecation warning.
-
-= 6.0.2 =
-
-* Removes unnecessary type declaration from nullable arguments to avoid deprecation warnings in PHP 8.4.
-
-= 6.0.1 =
-
-[https://contactform7.com/contact-form-7-601/](https://contactform7.com/contact-form-7-601/)
-
-= 6.0 =
-
-[https://contactform7.com/contact-form-7-60/](https://contactform7.com/contact-form-7-60/)
 
 == Upgrade Notice ==
