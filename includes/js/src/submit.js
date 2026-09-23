@@ -3,8 +3,15 @@ import { triggerEvent } from './event.js';
 import { apiFetch } from './api-fetch.js';
 import { setValidationError, removeValidationError } from './validate.js';
 
-export default function submit( form, options = {} ) {
+export default async function submit( form, options = {} ) {
 
+  // Another submission is ongoing.
+  if ( 'submitting' === form.wpcf7.status ) {
+    return;
+  }
+
+  // Irritating submission mode
+  // https://github.com/rocklobster-in/contact-form-7/issues/533
 	if ( wpcf7.blocked ) {
 		clearResponse( form );
 		setStatus( form, 'submitting' );
@@ -34,7 +41,7 @@ export default function submit( form, options = {} ) {
 		formData,
 	};
 
-	apiFetch( {
+	const response = await apiFetch( {
 		endpoint: `contact-forms/${ form.wpcf7.id }/feedback`,
 		method: 'POST',
 		body: formData,
@@ -43,51 +50,45 @@ export default function submit( form, options = {} ) {
 			form,
 			detail,
 		},
-	} ).then( response => {
+	} );
 
-		const status = setStatus( form, response.status );
+	const status = setStatus( form, response.status );
 
-		detail.status = response.status;
-		detail.apiResponse = response;
+	detail.status = response.status;
+	detail.apiResponse = response;
 
-		if ( [ 'invalid', 'unaccepted', 'spam', 'aborted' ].includes( status ) ) {
-			triggerEvent( form, status, detail );
-		} else if ( [ 'sent', 'failed' ].includes( status ) ) {
-			triggerEvent( form, `mail${ status }`, detail );
-		}
+	if ( [ 'invalid', 'unaccepted', 'spam', 'aborted' ].includes( status ) ) {
+		triggerEvent( form, status, detail );
+	} else if ( [ 'sent', 'failed' ].includes( status ) ) {
+		triggerEvent( form, `mail${ status }`, detail );
+	}
 
-		triggerEvent( form, 'submit', detail );
+	triggerEvent( form, 'submit', detail );
 
-		return response;
+	if ( response.posted_data_hash ) {
+		form.querySelector(
+			'input[name="_wpcf7_posted_data_hash"]'
+		).value = response.posted_data_hash;
+	}
 
-	} ).then( response => {
+	if ( 'mail_sent' === response.status ) {
+		form.reset();
+		form.wpcf7.resetOnMailSent = true;
+	}
 
-		if ( response.posted_data_hash ) {
-			form.querySelector(
-				'input[name="_wpcf7_posted_data_hash"]'
-			).value = response.posted_data_hash;
-		}
-
-		if ( 'mail_sent' === response.status ) {
-			form.reset();
-			form.wpcf7.resetOnMailSent = true;
-		}
-
-		if ( response.invalid_fields ) {
-			response.invalid_fields.forEach( error => {
-				setValidationError( form, error.field, error.message );
-			} );
-		}
-
-		form.wpcf7.parent.querySelector(
-			'.screen-reader-response [role="status"]'
-		).insertAdjacentText( 'beforeend', response.message );
-
-		form.querySelectorAll( '.wpcf7-response-output' ).forEach( div => {
-			div.innerText = response.message;
+	if ( response.invalid_fields ) {
+		response.invalid_fields.forEach( error => {
+			setValidationError( form, error.field, error.message );
 		} );
+	}
 
-	} ).catch( error => console.error( error ) );
+	form.wpcf7.parent.querySelector(
+		'.screen-reader-response [role="status"]'
+	).insertAdjacentText( 'beforeend', response.message );
+
+	form.querySelectorAll( '.wpcf7-response-output' ).forEach( div => {
+		div.innerText = response.message;
+	} );
 }
 
 apiFetch.use( ( options, next ) => {
