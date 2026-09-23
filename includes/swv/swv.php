@@ -41,7 +41,7 @@ function wpcf7_swv_available_rules() {
 		'stepnumber' => '\RockLobsterInc\Swv\Rules\StepNumberRule',
 		'tel' => '\RockLobsterInc\Swv\Rules\TelRule',
 		'time' => '\RockLobsterInc\Swv\Rules\TimeRule',
-		'url' => '\RockLobsterInc\Swv\Rules\URLRule',
+		'url' => '\RockLobsterInc\Swv\Rules\UrlRule',
 	);
 
 	return apply_filters( 'wpcf7_swv_available_rules', $rules );
