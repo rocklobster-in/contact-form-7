@@ -1,120 +1,116 @@
-import { setStatus } from './status.js';
-import { triggerEvent } from './event.js';
-import { apiFetch } from './api-fetch.js';
-import { setValidationError, removeValidationError } from './validate.js';
+import { setStatus } from "./status.js";
+import { triggerEvent } from "./event.js";
+import { apiFetch } from "./api-fetch.js";
+import { setValidationError, removeValidationError } from "./validate.js";
 
-export default async function submit( form, options = {} ) {
-
+export default async function submit(form, options = {}) {
   // Another submission is ongoing.
-  if ( 'submitting' === form.wpcf7.status ) {
+  if ("submitting" === form.wpcf7.status) {
     return;
   }
 
   // Irritating submission mode
   // https://github.com/rocklobster-in/contact-form-7/issues/533
-	if ( wpcf7.blocked ) {
-		clearResponse( form );
-		setStatus( form, 'submitting' );
-		return;
-	}
+  if (wpcf7.blocked) {
+    clearResponse(form);
+    setStatus(form, "submitting");
+    return;
+  }
 
-	const formData = new FormData( form );
+  const formData = new FormData(form);
 
-	if ( options.submitter && options.submitter.name ) {
-		formData.append( options.submitter.name, options.submitter.value );
-	}
+  if (options.submitter && options.submitter.name) {
+    formData.append(options.submitter.name, options.submitter.value);
+  }
 
-	const detail = {
-		contactFormId: form.wpcf7.id,
-		pluginVersion: form.wpcf7.pluginVersion,
-		contactFormLocale: form.wpcf7.locale,
-		unitTag: form.wpcf7.unitTag,
-		containerPostId: form.wpcf7.containerPost,
-		status: form.wpcf7.status,
-		inputs: Array.from(
-			formData,
-			val => {
-				const name = val[0], value = val[1];
-				return name.match( /^_/ ) ? false : { name, value };
-			}
-		).filter( val => false !== val ),
-		formData,
-	};
+  const detail = {
+    contactFormId: form.wpcf7.id,
+    pluginVersion: form.wpcf7.pluginVersion,
+    contactFormLocale: form.wpcf7.locale,
+    unitTag: form.wpcf7.unitTag,
+    containerPostId: form.wpcf7.containerPost,
+    status: form.wpcf7.status,
+    inputs: Array.from(formData, (val) => {
+      const name = val[0],
+        value = val[1];
+      return name.match(/^_/) ? false : { name, value };
+    }).filter((val) => false !== val),
+    formData,
+  };
 
-	const response = await apiFetch( {
-		endpoint: `contact-forms/${ form.wpcf7.id }/feedback`,
-		method: 'POST',
-		body: formData,
-		wpcf7: {
-			endpoint: 'feedback',
-			form,
-			detail,
-		},
-	} );
+  const response = await apiFetch({
+    endpoint: `contact-forms/${form.wpcf7.id}/feedback`,
+    method: "POST",
+    body: formData,
+    wpcf7: {
+      endpoint: "feedback",
+      form,
+      detail,
+    },
+  });
 
-	const status = setStatus( form, response.status );
+  const status = setStatus(form, response.status);
 
-	detail.status = response.status;
-	detail.apiResponse = response;
+  detail.status = response.status;
+  detail.apiResponse = response;
 
-	if ( [ 'invalid', 'unaccepted', 'spam', 'aborted' ].includes( status ) ) {
-		triggerEvent( form, status, detail );
-	} else if ( [ 'sent', 'failed' ].includes( status ) ) {
-		triggerEvent( form, `mail${ status }`, detail );
-	}
+  if (["invalid", "unaccepted", "spam", "aborted"].includes(status)) {
+    triggerEvent(form, status, detail);
+  } else if (["sent", "failed"].includes(status)) {
+    triggerEvent(form, `mail${status}`, detail);
+  }
 
-	triggerEvent( form, 'submit', detail );
+  triggerEvent(form, "submit", detail);
 
-	if ( response.posted_data_hash ) {
-		form.querySelector(
-			'input[name="_wpcf7_posted_data_hash"]'
-		).value = response.posted_data_hash;
-	}
+  if (response.posted_data_hash) {
+    form.querySelector('input[name="_wpcf7_posted_data_hash"]').value =
+      response.posted_data_hash;
+  }
 
-	if ( 'mail_sent' === response.status ) {
-		form.reset();
-		form.wpcf7.resetOnMailSent = true;
-	}
+  if ("mail_sent" === response.status) {
+    form.reset();
+    form.wpcf7.resetOnMailSent = true;
+  }
 
-	if ( response.invalid_fields ) {
-		response.invalid_fields.forEach( error => {
-			setValidationError( form, error.field, error.message );
-		} );
-	}
+  if (response.invalid_fields) {
+    response.invalid_fields.forEach((error) => {
+      setValidationError(form, error.field, error.message);
+    });
+  }
 
-	form.wpcf7.parent.querySelector(
-		'.screen-reader-response [role="status"]'
-	).insertAdjacentText( 'beforeend', response.message );
+  form.wpcf7.parent
+    .querySelector('.screen-reader-response [role="status"]')
+    .insertAdjacentText("beforeend", response.message);
 
-	form.querySelectorAll( '.wpcf7-response-output' ).forEach( div => {
-		div.innerText = response.message;
-	} );
+  form.querySelectorAll(".wpcf7-response-output").forEach((div) => {
+    div.innerText = response.message;
+  });
 }
 
-apiFetch.use( ( options, next ) => {
-	if ( options.wpcf7 && 'feedback' === options.wpcf7.endpoint ) {
-		const { form, detail } = options.wpcf7;
+apiFetch.use((options, next) => {
+  if (options.wpcf7 && "feedback" === options.wpcf7.endpoint) {
+    const { form, detail } = options.wpcf7;
 
-		clearResponse( form );
-		triggerEvent( form, 'beforesubmit', detail );
-		setStatus( form, 'submitting' );
-	}
+    clearResponse(form);
+    triggerEvent(form, "beforesubmit", detail);
+    setStatus(form, "submitting");
+  }
 
-	return next( options );
-} );
+  return next(options);
+});
 
-export const clearResponse = form => {
-	form.querySelectorAll( '.wpcf7-form-control-wrap' ).forEach( wrap => {
-		if ( wrap.dataset.name ) {
-			removeValidationError( form, wrap.dataset.name );
-		}
-	} );
+export const clearResponse = (form) => {
+  form.querySelectorAll(".wpcf7-form-control-wrap").forEach((wrap) => {
+    if (wrap.dataset.name) {
+      removeValidationError(form, wrap.dataset.name);
+    }
+  });
 
-	form.wpcf7.parent.querySelector(
-		'.screen-reader-response [role="status"]'
-	).innerText = '';
+  form.wpcf7.parent.querySelector(
+    '.screen-reader-response [role="status"]',
+  ).innerText = "";
 
-	form.querySelectorAll( '.wpcf7-response-output' ).forEach( div => {
-		div.innerText = '';
-	} );
+  form.querySelectorAll(".wpcf7-response-output").forEach((div) => {
+    div.innerText = "";
+  });
 };

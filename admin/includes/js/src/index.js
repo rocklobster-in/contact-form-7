@@ -1,130 +1,135 @@
-import { __ } from '@wordpress/i18n';
+import { __ } from "@wordpress/i18n";
 
-import { init as initTabs } from './tabs.js';
-import { init as initConfigFields } from './config-errors.js';
-import { init as initTagGenerator } from './tag-generator.js';
-import { init as initBeforeUnload } from './before-unload.js';
-import { init as initAdminAjax } from './ajax-actions.js';
-import { toggleFieldset } from './utils.js';
-import { externalizeAll } from './link-external.js';
+import { init as initTabs } from "./tabs.js";
+import { init as initConfigFields } from "./config-errors.js";
+import { init as initTagGenerator } from "./tag-generator.js";
+import { init as initBeforeUnload } from "./before-unload.js";
+import { init as initAdminAjax } from "./ajax-actions.js";
+import { toggleFieldset } from "./utils.js";
+import { externalizeAll } from "./link-external.js";
 
+document.addEventListener("DOMContentLoaded", (event) => {
+  initTabs();
+  initConfigFields();
+  initTagGenerator();
+  initBeforeUnload();
+  initAdminAjax();
 
-document.addEventListener( 'DOMContentLoaded', event => {
-	initTabs();
-	initConfigFields();
-	initTagGenerator();
-	initBeforeUnload();
-	initAdminAjax();
+  const titleField = document.querySelector("input#title");
 
-	const titleField = document.querySelector( 'input#title' );
+  if (titleField && "" === titleField.value) {
+    titleField.focus();
+  }
 
-	if ( titleField && '' === titleField.value ) {
-		titleField.focus();
-	}
+  document
+    .querySelector("#wpcf7-shortcode-wrap .toggle-shortcode")
+    ?.addEventListener("click", (event) => {
+      document
+        .querySelector("#wpcf7-shortcode-wrap")
+        ?.classList.toggle("hide-shortcode");
+    });
 
-	document.querySelector(
-		'#wpcf7-shortcode-wrap .toggle-shortcode'
-	)?.addEventListener( 'click', event => {
-		document.querySelector(
-			'#wpcf7-shortcode-wrap'
-		)?.classList.toggle( 'hide-shortcode' );
-	} );
+  document
+    .querySelector("#wpcf7-admin-form-element")
+    ?.addEventListener("submit", (event) => {
+      const inputAction = document.querySelector(
+        '#wpcf7-admin-form-element [name="action"]',
+      );
 
-	document.querySelector(
-		'#wpcf7-admin-form-element'
-	)?.addEventListener( 'submit', event => {
-		const inputAction = document.querySelector(
-			'#wpcf7-admin-form-element [name="action"]'
-		);
+      const inputNonce = document.querySelector(
+        '#wpcf7-admin-form-element [name="_wpnonce"]',
+      );
 
-		const inputNonce = document.querySelector(
-			'#wpcf7-admin-form-element [name="_wpnonce"]'
-		);
+      if ("wpcf7-save" === event.submitter?.name) {
+        if (inputAction) {
+          inputAction.value = "save";
+        }
 
-		if ( 'wpcf7-save' === event.submitter?.name ) {
-			if ( inputAction ) {
-				inputAction.value = 'save';
-			}
+        if (inputNonce) {
+          inputNonce.value = wpcf7.nonce.save;
+        }
 
-			if ( inputNonce ) {
-				inputNonce.value = wpcf7.nonce.save;
-			}
+        document
+          .querySelectorAll(
+            "#wpcf7-admin-form-element #publishing-action .spinner",
+          )
+          .forEach((spinner) => {
+            spinner.classList.add("is-active");
+          });
+      }
 
-			document.querySelectorAll(
-				'#wpcf7-admin-form-element #publishing-action .spinner'
-			).forEach( spinner => {
-				spinner.classList.add( 'is-active' );
-			} );
-		}
+      if ("wpcf7-copy" === event.submitter?.name) {
+        if (inputAction) {
+          inputAction.value = "copy";
+        }
 
-		if ( 'wpcf7-copy' === event.submitter?.name ) {
-			if ( inputAction ) {
-				inputAction.value = 'copy';
-			}
+        if (inputNonce) {
+          inputNonce.value = wpcf7.nonce.copy;
+        }
+      }
 
-			if ( inputNonce ) {
-				inputNonce.value = wpcf7.nonce.copy;
-			}
-		}
+      if ("wpcf7-delete" === event.submitter?.name) {
+        const confirmed = window.confirm(
+          __(
+            "You are about to delete this contact form.\n  'Cancel' to stop, 'OK' to delete.",
+            "contact-form-7",
+          ),
+        );
 
-		if ( 'wpcf7-delete' === event.submitter?.name ) {
-			const confirmed = window.confirm( __( "You are about to delete this contact form.\n  'Cancel' to stop, 'OK' to delete.", 'contact-form-7' ) );
+        if (confirmed) {
+          if (inputAction) {
+            inputAction.value = "delete";
+          }
 
-			if ( confirmed ) {
-				if ( inputAction ) {
-					inputAction.value = 'delete';
-				}
+          if (inputNonce) {
+            inputNonce.value = wpcf7.nonce.delete;
+          }
+        } else {
+          event.preventDefault();
+        }
+      }
+    });
 
-				if ( inputNonce ) {
-					inputNonce.value = wpcf7.nonce.delete;
-				}
-			} else {
-				event.preventDefault();
-			}
-		}
-	} );
+  document
+    .querySelectorAll(
+      '.contact-form-editor-box-mail span.mailtag, [data-tag-part="mail-tag"]',
+    )
+    .forEach((mailtag) => {
+      mailtag.addEventListener("click", (event) => {
+        const range = document.createRange();
+        range.selectNodeContents(mailtag);
+        window.getSelection().addRange(range);
+      });
+    });
 
-	document.querySelectorAll(
-		'.contact-form-editor-box-mail span.mailtag, [data-tag-part="mail-tag"]'
-	).forEach( mailtag => {
-		mailtag.addEventListener( 'click', event => {
-			const range = document.createRange();
-			range.selectNodeContents( mailtag );
-			window.getSelection().addRange( range );
-		} );
-	} );
+  document.querySelectorAll("input.selectable").forEach((input) => {
+    input.addEventListener("click", (event) => {
+      input.focus();
+      input.select();
+    });
+  });
 
-	document.querySelectorAll(
-		'input.selectable'
-	).forEach( input => {
-		input.addEventListener( 'click', event => {
-			input.focus();
-			input.select();
-		} );
-	} );
+  document.querySelectorAll("[data-toggle]").forEach((toggle) => {
+    toggleFieldset(toggle);
 
-	document.querySelectorAll(
-		'[data-toggle]'
-	).forEach( toggle => {
-		toggleFieldset( toggle );
+    toggle.addEventListener("change", (event) => {
+      toggleFieldset(toggle);
+    });
+  });
 
-		toggle.addEventListener( 'change', event => {
-			toggleFieldset( toggle );
-		} );
-	} );
+  document
+    .querySelectorAll(
+      "#wpcf7-sendinblue-enable-contact-list, #wpcf7-sendinblue-enable-transactional-email",
+    )
+    .forEach((checkbox) => {
+      checkbox.addEventListener("change", (event) => {
+        if (checkbox.checked) {
+          checkbox.closest("tr").classList.remove("inactive");
+        } else {
+          checkbox.closest("tr").classList.add("inactive");
+        }
+      });
+    });
 
-	document.querySelectorAll(
-		'#wpcf7-sendinblue-enable-contact-list, #wpcf7-sendinblue-enable-transactional-email'
-	).forEach( checkbox => {
-		checkbox.addEventListener( 'change', event => {
-			if ( checkbox.checked ) {
-				checkbox.closest( 'tr' ).classList.remove( 'inactive' );
-			} else {
-				checkbox.closest( 'tr' ).classList.add( 'inactive' );
-			}
-		} );
-	} );
-
-	externalizeAll();
-
-} );
+  externalizeAll();
+});
