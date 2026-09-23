@@ -29,12 +29,14 @@
 		"start:admin": "wp-scripts start admin/includes/js/src/index.js --output-path=admin/includes/js",
 		"build:admin": "wp-scripts build admin/includes/js/src/index.js --output-path=admin/includes/js",
 		"packages-update": "wp-scripts packages-update",
-		"packages-update:php": "php composer.phar update"
+		"packages-update:php": "php composer.phar update",
+		"format": "prettier . --write"
 	},
 	"devDependencies": {
 		"@rocklobsterinc/form-data-tree": "^2.1.3",
 		"@rocklobsterinc/functions": "^1.0.5",
 		"@rocklobsterinc/swv": "^2.1.2",
-		"@wordpress/scripts": "^35.0.0"
+		"@wordpress/scripts": "^35.0.0",
+		"prettier": "3.9.9"
 	}
 }

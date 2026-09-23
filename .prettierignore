@@ -1,0 +1,9 @@
+tests
+vendor
+includes/js/jquery-ui
+includes/js/index.js
+includes/swv/js/index.js
+includes/block-editor/index.js
+admin/includes/js/index.js
+modules/stripe/index.js
+modules/recaptcha/index.js
