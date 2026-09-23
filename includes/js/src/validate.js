@@ -1,7 +1,7 @@
 import { setStatus } from './status.js';
 
 
-export default function validate( form, options = {} ) {
+export default async function validate( form, options = {} ) {
 	const {
 		target,
 		scope = form,
@@ -74,40 +74,37 @@ export default function validate( form, options = {} ) {
 	}, new FormData() );
 
 	const prevStatus = form.getAttribute( 'data-status' );
+	const status = setStatus( form, 'validating' );
 
-	Promise.resolve( setStatus( form, 'validating' ) )
-		.then( status => {
-			if ( undefined !== swv ) {
-				const result = swv.validate( schema, formData, options );
+	if ( undefined !== swv ) {
+		const result = swv.validate( schema, formData, options );
 
-				for ( const wrap of wrapList ) {
-					if ( undefined === wrap.dataset.name ) {
-						continue;
-					}
-
-					const field = wrap.dataset.name;
-
-					if ( undefined !== result[ field ] ) {
-						const { error, validInputs } = result[ field ];
-
-						removeValidationError( form, field );
-
-						if ( undefined !== error ) {
-							setValidationError( form, field, error, { scope } );
-						}
-
-						updateReflection( form, field, validInputs ?? [] );
-					}
-
-					if ( wrap.contains( target ) ) {
-						break;
-					}
-				}
+		for ( const wrap of wrapList ) {
+			if ( undefined === wrap.dataset.name ) {
+				continue;
 			}
-		} )
-		.finally( () => {
-			setStatus( form, prevStatus );
-		} );
+
+			const field = wrap.dataset.name;
+
+			if ( undefined !== result[ field ] ) {
+				const { error, validInputs } = result[ field ];
+
+				removeValidationError( form, field );
+
+				if ( undefined !== error ) {
+					setValidationError( form, field, error, { scope } );
+				}
+
+				updateReflection( form, field, validInputs ?? [] );
+			}
+
+			if ( wrap.contains( target ) ) {
+				break;
+			}
+		}
+	}
+
+	setStatus( form, prevStatus );
 }
 
 
