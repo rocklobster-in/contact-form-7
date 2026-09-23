@@ -3,7 +3,13 @@ import { triggerEvent } from './event.js';
 import { clearResponse } from './submit.js';
 import { apiFetch } from './api-fetch.js';
 
-export default function reset( form ) {
+export default async function reset( form ) {
+
+  // Another reset is ongoing.
+  if ( 'resetting' === form.wpcf7.status ) {
+    return;
+  }
+
 	const formData = new FormData( form );
 
 	const detail = {
@@ -23,7 +29,7 @@ export default function reset( form ) {
 		formData,
 	};
 
-	apiFetch( {
+	const response = await apiFetch( {
 		endpoint: `contact-forms/${ form.wpcf7.id }/refill`,
 		method: 'GET',
 		wpcf7: {
@@ -31,20 +37,18 @@ export default function reset( form ) {
 			form,
 			detail,
 		},
-	} ).then( response => {
+	} );
 
-		if ( form.wpcf7.resetOnMailSent ) {
-			delete form.wpcf7.resetOnMailSent;
-			setStatus( form, 'mail_sent' );
-		} else {
-			setStatus( form, 'init' );
-		}
+	if ( form.wpcf7.resetOnMailSent ) {
+		delete form.wpcf7.resetOnMailSent;
+		setStatus( form, 'mail_sent' );
+	} else {
+		setStatus( form, 'init' );
+	}
 
-		detail.apiResponse = response;
+	detail.apiResponse = response;
 
-		triggerEvent( form, 'reset', detail );
-
-	} ).catch( error => console.error( error ) );
+	triggerEvent( form, 'reset', detail );
 }
 
 apiFetch.use( ( options, next ) => {
