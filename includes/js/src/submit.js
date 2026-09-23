@@ -5,6 +5,11 @@ import { setValidationError, removeValidationError } from './validate.js';
 
 export default async function submit( form, options = {} ) {
 
+  // Another submission is ongoing.
+  if ( 'submitting' === form.wpcf7.status ) {
+    return;
+  }
+
   // Irritating submission mode
   // https://github.com/rocklobster-in/contact-form-7/issues/533
 	if ( wpcf7.blocked ) {
