@@ -26,6 +26,9 @@ export default async function reset(form) {
     formData,
   };
 
+  clearResponse(form);
+  setStatus(form, "resetting");
+
   const response = await apiFetch({
     endpoint: `contact-forms/${form.wpcf7.id}/refill`,
     method: "GET",
@@ -47,17 +50,6 @@ export default async function reset(form) {
 
   triggerEvent(form, "reset", detail);
 }
-
-apiFetch.use((options, next) => {
-  if (options.wpcf7 && "refill" === options.wpcf7.endpoint) {
-    const { form, detail } = options.wpcf7;
-
-    clearResponse(form);
-    setStatus(form, "resetting");
-  }
-
-  return next(options);
-});
 
 // Refill for Really Simple CAPTCHA
 export const resetCaptcha = (form, refill) => {

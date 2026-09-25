@@ -38,6 +38,10 @@ export default async function submit(form, options = {}) {
     formData,
   };
 
+  clearResponse(form);
+  triggerEvent(form, "beforesubmit", detail);
+  setStatus(form, "submitting");
+
   const response = await apiFetch({
     endpoint: `contact-forms/${form.wpcf7.id}/feedback`,
     method: "POST",
@@ -86,18 +90,6 @@ export default async function submit(form, options = {}) {
     div.innerText = response.message;
   });
 }
-
-apiFetch.use((options, next) => {
-  if (options.wpcf7 && "feedback" === options.wpcf7.endpoint) {
-    const { form, detail } = options.wpcf7;
-
-    clearResponse(form);
-    triggerEvent(form, "beforesubmit", detail);
-    setStatus(form, "submitting");
-  }
-
-  return next(options);
-});
 
 export const clearResponse = (form) => {
   form.querySelectorAll(".wpcf7-form-control-wrap").forEach((wrap) => {
