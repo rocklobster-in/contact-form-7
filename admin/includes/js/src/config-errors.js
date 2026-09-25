@@ -1,208 +1,198 @@
-import apiFetch from '@wordpress/api-fetch';
-import { sprintf, _n, __ } from '@wordpress/i18n';
+import apiFetch from "@wordpress/api-fetch";
+import { sprintf, _n, __ } from "@wordpress/i18n";
 
-import { iconInCircle, canonicalizeName } from './utils.js';
-import { externalize } from './link-external.js';
-
+import { iconInCircle, canonicalizeName } from "./utils.js";
+import { externalize } from "./link-external.js";
 
 const init = () => {
-	document.querySelectorAll(
-		'#contact-form-editor [data-config-field]'
-	).forEach( field => {
-		field.addEventListener( 'change', event => {
-			const id = document.querySelector( '[name="post_ID"]' )?.value;
+  document
+    .querySelectorAll("#contact-form-editor [data-config-field]")
+    .forEach((field) => {
+      field.addEventListener("change", (event) => {
+        const id = document.querySelector('[name="post_ID"]')?.value;
 
-			if ( id && 0 < id ) {
-				verifyContactForm( id );
-			}
-		} );
-	} );
+        if (id && 0 < id) {
+          verifyContactForm(id);
+        }
+      });
+    });
 
-	update();
+  update();
 };
-
 
 const update = () => {
-	document.querySelectorAll(
-		'#contact-form-editor .config-error'
-	).forEach( error => {
-		error.remove();
-	} );
+  document
+    .querySelectorAll("#contact-form-editor .config-error")
+    .forEach((error) => {
+      error.remove();
+    });
 
-	document.querySelectorAll(
-		'#contact-form-editor [data-config-field]'
-	).forEach( field => {
-		const section = field.dataset.configField;
-		const errors = retrieveErrors( section );
+  document
+    .querySelectorAll("#contact-form-editor [data-config-field]")
+    .forEach((field) => {
+      const section = field.dataset.configField;
+      const errors = retrieveErrors(section);
 
-		if ( errors.length ) {
-			field.setAttribute( 'aria-invalid', 'true' );
+      if (errors.length) {
+        field.setAttribute("aria-invalid", "true");
 
-			field.setAttribute( 'aria-describedby',
-				canonicalizeName( `wpcf7-config-error-for-${ section }` )
-			);
+        field.setAttribute(
+          "aria-describedby",
+          canonicalizeName(`wpcf7-config-error-for-${section}`),
+        );
 
-			field.after( createErrorsList( section ) );
-		} else { // Valid field
-			field.removeAttribute( 'aria-invalid' );
-		}
-	} );
+        field.after(createErrorsList(section));
+      } else {
+        // Valid field
+        field.removeAttribute("aria-invalid");
+      }
+    });
 
-	document.querySelectorAll(
-		'#contact-form-editor-tabs [data-panel] .icon-in-circle'
-	).forEach( icon => {
-		icon.remove();
-	} );
+  document
+    .querySelectorAll("#contact-form-editor-tabs [data-panel] .icon-in-circle")
+    .forEach((icon) => {
+      icon.remove();
+    });
 
-	document.querySelectorAll(
-		'#contact-form-editor-tabs [data-panel]'
-	).forEach( tab => {
-		if ( countErrors( tab.dataset.panel ) ) {
-			tab.append( iconInCircle( '!' ) );
-		}
-	} );
+  document
+    .querySelectorAll("#contact-form-editor-tabs [data-panel]")
+    .forEach((tab) => {
+      if (countErrors(tab.dataset.panel)) {
+        tab.append(iconInCircle("!"));
+      }
+    });
 
-	let errorsCountTotal = 0;
+  let errorsCountTotal = 0;
 
-	document.querySelectorAll(
-		'#contact-form-editor .contact-form-editor-panel'
-	).forEach( panel => {
-		const errorsCount = countErrors( panel.id );
+  document
+    .querySelectorAll("#contact-form-editor .contact-form-editor-panel")
+    .forEach((panel) => {
+      const errorsCount = countErrors(panel.id);
 
-		if ( errorsCount ) {
-			errorsCountTotal += errorsCount;
+      if (errorsCount) {
+        errorsCountTotal += errorsCount;
 
-			const errMsg = document.createElement( 'div' );
-			errMsg.classList.add( 'config-error' );
+        const errMsg = document.createElement("div");
+        errMsg.classList.add("config-error");
 
-			errMsg.append(
-				iconInCircle( '!' ),
-				sprintf( _n(
-					'%d configuration error detected in this tab panel.',
-					'%d configuration errors detected in this tab panel.',
-					errorsCount,
-					'contact-form-7'
-				), errorsCount )
-			);
+        errMsg.append(
+          iconInCircle("!"),
+          sprintf(
+            _n(
+              "%d configuration error detected in this tab panel.",
+              "%d configuration errors detected in this tab panel.",
+              errorsCount,
+              "contact-form-7",
+            ),
+            errorsCount,
+          ),
+        );
 
-			panel.prepend( errMsg );
-		}
-	} );
+        panel.prepend(errMsg);
+      }
+    });
 };
 
-
-const countErrors = panelId => {
-	return document.querySelectorAll(
-		`#${ panelId } ul.config-error li`
-	)?.length;
+const countErrors = (panelId) => {
+  return document.querySelectorAll(`#${panelId} ul.config-error li`)?.length;
 };
 
+const retrieveErrors = (section) => {
+  const errors = [];
 
-const retrieveErrors = section => {
-	const errors = [];
+  for (const prop in wpcf7.configValidator.errors) {
+    if (prop === section) {
+      errors.push(...wpcf7.configValidator.errors[prop]);
+    }
+  }
 
-	for ( const prop in wpcf7.configValidator.errors ) {
-		if ( prop === section ) {
-			errors.push( ...wpcf7.configValidator.errors[ prop ] );
-		}
-	}
-
-	return errors;
+  return errors;
 };
 
+const createErrorsList = (section) => {
+  if (!section) {
+    return "";
+  }
 
-const createErrorsList = section => {
-	if ( ! section ) {
-		return '';
-	}
+  const ul = document.createElement("ul");
 
-	const ul = document.createElement( 'ul' );
+  ul.setAttribute("id", canonicalizeName(`wpcf7-config-error-for-${section}`));
 
-	ul.setAttribute( 'id',
-		canonicalizeName( `wpcf7-config-error-for-${ section }` )
-	);
+  ul.classList.add("config-error");
 
-	ul.classList.add( 'config-error' );
+  const errors = retrieveErrors(section);
 
-	const errors = retrieveErrors( section );
+  errors.forEach((err) => {
+    if (!err.message) {
+      return;
+    }
 
-	errors.forEach( err => {
-		if ( ! err.message ) {
-			return;
-		}
+    const li = document.createElement("li");
+    li.append(iconInCircle("!"));
 
-		const li = document.createElement( 'li' );
-		li.append( iconInCircle( '!' ) );
+    if (err.link) {
+      const anchor = document.createElement("a");
+      anchor.setAttribute("href", err.link);
+      anchor.append(err.message);
+      externalize(anchor);
+      li.append(" ", anchor);
+    } else {
+      li.append(" ", err.message);
+    }
 
-		if ( err.link ) {
-			const anchor = document.createElement( 'a' );
-			anchor.setAttribute( 'href', err.link );
-			anchor.append( err.message );
-			externalize( anchor );
-			li.append( ' ', anchor );
-		} else {
-			li.append( ' ', err.message );
-		}
+    ul.append(li);
+  });
 
-		ul.append( li );
-	} );
-
-	return ul;
+  return ul;
 };
 
+const verifyContactForm = (id) => {
+  const { namespace } = wpcf7.apiSettings;
 
-const verifyContactForm = id => {
-	const {
-		namespace,
-	} = wpcf7.apiSettings;
+  const path = `/${namespace}/contact-forms/${id}`;
 
-	const path = `/${ namespace }/contact-forms/${ id }`;
+  const data = new FormData();
 
-	const data = new FormData();
+  document
+    .querySelectorAll("#contact-form-editor [data-config-field]")
+    .forEach((field) => {
+      const name = field.name?.replace(/^wpcf7-/, "").replace(/-/g, "_");
 
-	document.querySelectorAll(
-		'#contact-form-editor [data-config-field]'
-	).forEach( field => {
-		const name = field.name?.replace( /^wpcf7-/, '' ).replace( /-/g, '_' );
+      if (!name) {
+        return;
+      }
 
-		if ( ! name ) {
-			return;
-		}
+      let value;
 
-		let value;
+      if (["checkbox", "radio"].includes(field.type)) {
+        if (field.checked) {
+          value = field.value;
+        }
+      } else {
+        value = field.value;
+      }
 
-		if ( [ 'checkbox', 'radio' ].includes( field.type ) ) {
-			if ( field.checked ) {
-				value = field.value;
-			}
-		} else {
-			value = field.value;
-		}
+      if (value === undefined) {
+        return;
+      }
 
-		if ( value === undefined ) {
-			return;
-		}
+      if (name.endsWith("[]")) {
+        data.append(name, value);
+      } else {
+        data.set(name, value);
+      }
+    });
 
-		if ( name.endsWith( '[]' ) ) {
-			data.append( name, value );
-		} else {
-			data.set( name, value );
-		}
-	} );
+  data.set("context", "dry-run");
 
-	data.set( 'context', 'dry-run' );
-
-	apiFetch( {
-		path,
-		method: 'POST',
-		body: data,
-	} ).then( response => {
-		wpcf7.configValidator.errors = response.config_errors;
-		update();
-	} );
+  apiFetch({
+    path,
+    method: "POST",
+    body: data,
+  }).then((response) => {
+    wpcf7.configValidator.errors = response.config_errors;
+    update();
+  });
 };
 
-
-export {
-	init,
-};
+export { init };

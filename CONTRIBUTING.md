@@ -3,7 +3,6 @@ How to contribute to Contact Form 7
 
 Thank you for considering contributing to Contact Form 7. This document explains how you can contribute to the project. We ask all contributors to read through this first.
 
-
 Contributing by reporting issues
 --------------------------------
 
@@ -17,7 +16,6 @@ In any case, prior to reporting an issue, please double-check if the issue is ca
 
 Receiving reports of issues that have little to do with the plugin negatively impacts the motivation of the developers. If you are uncertain, posting to the [support forum](https://wordpress.org/support/plugin/contact-form-7/) is advised.
 
-
 Contributing by helping other users
 -----------------------------------
 
@@ -26,7 +24,6 @@ Coding is not the only way to contribute to an open source project. Helping othe
 Everyday, a lot of users come to the [official support forum](https://wordpress.org/support/plugin/contact-form-7/) to post their support requests. If you feel you can answer their questions, please do not hesitate to do so.
 
 Also, asking good questions in the public forum provides a great contribution. To properly ask a question, you are advised to read through the [forum guidelines](https://wordpress.org/support/welcome/) before posting.
-
 
 Contributing with translation
 -----------------------------
@@ -37,12 +34,10 @@ We use [translate.wordpress.org](https://translate.wordpress.org/projects/wp-plu
 
 For details about how to join the translation project, see [Translating Contact Form 7](https://contactform7.com/translating-contact-form-7/).
 
-
 Contributing with financial donations
 -------------------------------------
 
 You can contribute to the open source project even if you have no technical knowledge. We are asking for [donations](https://contactform7.com/donate/) to help developers sustain the development and support of the plugin.
-
 
 Contributing by respecting intellectual property rights
 -------------------------------------------------------

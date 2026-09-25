@@ -2,55 +2,55 @@
  * Form Tab
  */
 .tag-generator-panel {
-	text-align: right;
+  text-align: right;
 }
 
 .tag-generator-dialog > .close-button {
-	right: auto;
-	left: 8px;
+  right: auto;
+  left: 8px;
 }
 
 form.tag-generator-panel[data-version="1"] {
-	.control-box > fieldset > legend {
-		border: 1px solid #dfdfdf;
-		border-right: 4px solid #00a0d2;
-	}
+  .control-box > fieldset > legend {
+    border: 1px solid #dfdfdf;
+    border-right: 4px solid #00a0d2;
+  }
 
-	.insert-box input.tag {
-		float: right;
-	}
+  .insert-box input.tag {
+    float: right;
+  }
 
-	.insert-box .submitbox input[type="button"] {
-		float: left;
-	}
+  .insert-box .submitbox input[type="button"] {
+    float: left;
+  }
 }
 
 /*
  * Mail Tab
  */
 .contact-form-editor-box-mail span.mailtag {
-	margin: 0 4px 0 0;
+  margin: 0 4px 0 0;
 }
 
 /*
  * Integration
  */
 .card {
-	border-left: 1px solid #e5e5e5;
-	border-right: 4px solid #e5e5e5;
+  border-left: 1px solid #e5e5e5;
+  border-right: 4px solid #e5e5e5;
 }
 
 .card img.icon {
-	float: right;
-	margin: 8px -8px 8px 8px;
+  float: right;
+  margin: 8px -8px 8px 8px;
 }
 
 .card h2.title {
-	float: right;
+  float: right;
 }
 
 .card .infobox {
-	float: left;
+  float: left;
 }
 
 /*
@@ -58,5 +58,5 @@ form.tag-generator-panel[data-version="1"] {
  */
 #wpcf7_dashboard_right_now li a::before,
 #wpcf7_get_support li a::before {
-    padding: 0 0 0 5px;
+  padding: 0 0 0 5px;
 }
