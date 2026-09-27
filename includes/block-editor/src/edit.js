@@ -49,14 +49,14 @@ export default function ContactFormSelectorEdit({ attributes, setAttributes }) {
   return (
     <>
       <InspectorControls>
-        {attributes.id && (
+        {!!attributes.id && (
           <PanelBody title={attributes.title}>
             <ExternalLink href={getContactFormEditorLink(attributes)}>
               {__("Edit this contact form", "contact-form-7")}
             </ExternalLink>
           </PanelBody>
         )}
-        {attributes.id && (
+        {!!attributes.id && (
           <PanelBody
             title={__("Form attributes", "contact-form-7")}
             initialOpen={false}
