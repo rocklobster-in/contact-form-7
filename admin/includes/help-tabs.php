@@ -66,7 +66,7 @@ class WPCF7_Help_Tabs {
 	private function content( $name ) {
 		$content = array();
 
-		$content['list_overview'] = '<p>' . __( 'On this screen, you can manage contact forms provided by Contact Form 7. You can manage an unlimited number of contact forms. Each contact form has a unique ID and Contact Form 7 shortcode ([contact-form-7 ...]). To insert a contact form into a post or a text widget, insert the shortcode into the target.', 'contact-form-7' ) . '</p>';
+		$content['list_overview'] = '<p>' . __( 'On this screen, you can manage contact forms your team has created with Contact Form 7. You can embed contact forms in post content or a block theme template by inserting a Contact Form 7 block. For use in the classic editor environment, traditional shortcodes are also provided.', 'contact-form-7' ) . '</p>';
 
 		$content['list_available_actions'] = '<p>' . __( 'Hovering over a row in the contact forms list will display action links that allow you to manage your contact form. You can perform the following actions:', 'contact-form-7' ) . '</p>';
 		$content['list_available_actions'] .= '<p>' . __( '<strong>Edit</strong> - Navigates to the editing screen for that contact form. You can also reach that screen by clicking on the contact form title.', 'contact-form-7' ) . '</p>';
