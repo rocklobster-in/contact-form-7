@@ -66,9 +66,9 @@ Do you have questions or issues with Contact Form 7? Use these support channels 
 
 == Changelog ==
 
-= 6.2-rc =
+= 6.2 =
 
-[https://contactform7.com/contact-form-7-62-rc/](https://contactform7.com/contact-form-7-62-rc/)
+* [Release announcement](https://contactform7.com/contact-form-7-620/)
 
 For more information, see [Releases](https://contactform7.com/category/releases/).
 
