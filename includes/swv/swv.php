@@ -9,9 +9,6 @@ use RockLobsterInc\Swv\{ AbstractRule, CompositeRule };
 use RockLobsterInc\Swv\{ InvalidityException as Invalidity };
 use RockLobsterInc\FormDataTree\{ FormDataTreeInterface as FormDataTree };
 
-require_once 'schema-holder.php';
-require_once 'script-loader.php';
-
 
 /**
  * Returns an associative array of SWV rules.

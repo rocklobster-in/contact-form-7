@@ -2,7 +2,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-require 'vendor/autoload.php';
+require WPCF7_PLUGIN_DIR . '/vendor/autoload.php';
 
 require_once WPCF7_PLUGIN_DIR . '/includes/l10n.php';
 require_once WPCF7_PLUGIN_DIR . '/includes/capabilities.php';
@@ -14,6 +14,8 @@ require_once WPCF7_PLUGIN_DIR . '/includes/pocket-holder.php';
 require_once WPCF7_PLUGIN_DIR . '/includes/form-tag.php';
 require_once WPCF7_PLUGIN_DIR . '/includes/form-tags-manager.php';
 require_once WPCF7_PLUGIN_DIR . '/includes/swv/swv.php';
+require_once WPCF7_PLUGIN_DIR . '/includes/swv/schema-holder.php';
+require_once WPCF7_PLUGIN_DIR . '/includes/swv/script-loader.php';
 require_once WPCF7_PLUGIN_DIR . '/includes/contact-form-functions.php';
 require_once WPCF7_PLUGIN_DIR . '/includes/contact-form-template.php';
 require_once WPCF7_PLUGIN_DIR . '/includes/contact-form.php';
