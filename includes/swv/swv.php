@@ -9,8 +9,8 @@ use RockLobsterInc\Swv\{ AbstractRule, CompositeRule };
 use RockLobsterInc\Swv\{ InvalidityException as Invalidity };
 use RockLobsterInc\FormDataTree\{ FormDataTreeInterface as FormDataTree };
 
-require_once 'schema-holder.php';
-require_once 'script-loader.php';
+require_once __DIR__ . '/schema-holder.php';
+require_once __DIR__ . '/script-loader.php';
 
 
 /**
