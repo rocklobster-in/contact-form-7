@@ -66,6 +66,10 @@ Do you have questions or issues with Contact Form 7? Use these support channels 
 
 == Changelog ==
 
+= 6.2.1 =
+
+* [Release announcement](https://contactform7.com/contact-form-7-621/)
+
 = 6.2 =
 
 * [Release announcement](https://contactform7.com/contact-form-7-620/)
