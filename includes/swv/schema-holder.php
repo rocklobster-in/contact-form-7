@@ -35,7 +35,9 @@ trait WPCF7_SWV_SchemaHolder {
 	public function validate_schema( $context, WPCF7_Validation $validity ) {
 		$schema = $this->get_schema();
 
-		$form_data = new FormDataTree();
+		$form_data = new FormDataTree( array(
+			'post' => wp_unslash( $_POST ),
+		) );
 
 		$context = wp_parse_args( $context );
 
