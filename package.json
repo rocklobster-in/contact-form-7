@@ -35,7 +35,7 @@
   "devDependencies": {
     "@rocklobsterinc/form-data-tree": "^2.1.3",
     "@rocklobsterinc/functions": "^1.0.5",
-    "@rocklobsterinc/swv": "^2.1.2",
+    "@rocklobsterinc/swv": "^2.1.4",
     "@wordpress/scripts": "^36.1.0",
     "prettier": "3.9.9"
   }
