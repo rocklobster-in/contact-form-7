@@ -25,21 +25,7 @@ It is hard to continue to maintain this plugin without support from users like y
 
 = Privacy notices =
 
-With the default configuration, this plugin, in itself, does not:
-
-* track users by stealth;
-* write any user personal data to the database;
-* send any data to external servers;
-* use cookies.
-
-If you activate certain features in this plugin, the contact form submitter's personal data, including their IP address, may be sent to the service provider. Thus, confirming the provider's privacy policy is recommended. These features include:
-
-* reCAPTCHA ([Google](https://policies.google.com/?hl=en))
-* Akismet ([Automattic](https://automattic.com/privacy/))
-* [Constant Contact](https://www.constantcontact.com/legal/privacy-center)
-* [Brevo](https://www.brevo.com/legal/privacypolicy/)
-* [Stripe](https://stripe.com/privacy)
-* Turnstile ([Cloudflare](https://www.cloudflare.com/turnstile-privacy-policy/))
+See [Plugin privacy notices](https://contactform7.com/plugin-privacy-notices/).
 
 == Installation ==
 
