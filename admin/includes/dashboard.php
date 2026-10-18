@@ -154,6 +154,20 @@ function wpcf7_dashboard_right_now() {
 		) )
 	);
 
+	$plugin_updates = get_plugin_updates();
+
+	if ( isset( $plugin_updates[WPCF7_PLUGIN_BASENAME] ) ) {
+		$formatter->append_whitespace();
+
+		$formatter->append_start_tag( 'a', array(
+			'href' => admin_url( 'update-core.php' ),
+		) );
+
+		$formatter->append_preformatted(
+			esc_html( __( '&raquo; New version available', 'contact-form-7' ) )
+		);
+	}
+
 	$formatter->print();
 }
 
