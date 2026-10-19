@@ -24,7 +24,7 @@ class WPCF7_REST_Controller {
 				array(
 					'methods' => WP_REST_Server::READABLE,
 					'callback' => array( $this, 'get_contact_forms' ),
-					'permission_callback' => static function () {
+					'permission_callback' => function () {
 						if ( current_user_can( 'wpcf7_read_contact_forms' ) ) {
 							return true;
 						} else {
@@ -38,7 +38,7 @@ class WPCF7_REST_Controller {
 				array(
 					'methods' => WP_REST_Server::CREATABLE,
 					'callback' => array( $this, 'create_contact_form' ),
-					'permission_callback' => static function () {
+					'permission_callback' => function () {
 						if ( current_user_can( 'wpcf7_edit_contact_forms' ) ) {
 							return true;
 						} else {
@@ -58,7 +58,7 @@ class WPCF7_REST_Controller {
 				array(
 					'methods' => WP_REST_Server::READABLE,
 					'callback' => array( $this, 'get_contact_form' ),
-					'permission_callback' => static function ( WP_REST_Request $request ) {
+					'permission_callback' => function ( WP_REST_Request $request ) {
 						$id = (int) $request->get_param( 'id' );
 
 						if ( current_user_can( 'wpcf7_edit_contact_form', $id ) ) {
@@ -74,7 +74,7 @@ class WPCF7_REST_Controller {
 				array(
 					'methods' => WP_REST_Server::EDITABLE,
 					'callback' => array( $this, 'update_contact_form' ),
-					'permission_callback' => static function ( WP_REST_Request $request ) {
+					'permission_callback' => function ( WP_REST_Request $request ) {
 						$id = (int) $request->get_param( 'id' );
 
 						if ( current_user_can( 'wpcf7_edit_contact_form', $id ) ) {
@@ -90,7 +90,7 @@ class WPCF7_REST_Controller {
 				array(
 					'methods' => WP_REST_Server::DELETABLE,
 					'callback' => array( $this, 'delete_contact_form' ),
-					'permission_callback' => static function ( WP_REST_Request $request ) {
+					'permission_callback' => function ( WP_REST_Request $request ) {
 						$id = (int) $request->get_param( 'id' );
 
 						if ( current_user_can( 'wpcf7_delete_contact_form', $id ) ) {
