@@ -8,8 +8,10 @@
       "role": "Developer"
     }
   ],
-  "require": {
-    "php": ">=8.3"
+  "autoload": {
+    "files": [
+      "src/functions.php"
+    ]
   },
   "archive": {
     "exclude": [
@@ -18,15 +20,16 @@
       "/package.json"
     ]
   },
-  "autoload": {
-    "files": [
-      "src/functions.php"
-    ]
-  },
   "scripts": {
-    "lint": "parallel-lint src/"
+    "lint": "parallel-lint src/",
+    "test": "phpunit"
+  },
+  "require": {
+    "php": ">=8.3",
+    "symfony/polyfill-mbstring": "^1.43"
   },
   "require-dev": {
-    "php-parallel-lint/php-parallel-lint": "^1.4"
+    "php-parallel-lint/php-parallel-lint": "^1.4",
+    "phpunit/phpunit": "^12.5"
   }
 }

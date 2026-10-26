@@ -8,10 +8,6 @@
       "role": "Developer"
     }
   ],
-  "require": {
-    "php": ">=8.3",
-    "rocklobsterinc/functions": "^v1.0"
-  },
   "archive": {
     "exclude": [
       "/.*",
@@ -29,6 +25,10 @@
   },
   "scripts": {
     "lint": "parallel-lint src/"
+  },
+  "require": {
+    "php": ">=8.3",
+    "rocklobsterinc/functions": "^v1.1"
   },
   "require-dev": {
     "php-parallel-lint/php-parallel-lint": "^1.4"

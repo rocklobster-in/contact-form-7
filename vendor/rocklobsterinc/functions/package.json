@@ -1,7 +1,8 @@
 {
   "scripts": {
     "format": "prettier . --write",
-    "lint": "php composer.phar lint"
+    "lint": "php composer.phar lint",
+    "test": "php composer.phar test"
   },
   "devDependencies": {
     "@prettier/plugin-php": "^0.25.0",
