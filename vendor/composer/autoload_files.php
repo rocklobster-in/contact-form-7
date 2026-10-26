@@ -6,6 +6,7 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
+    '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => $vendorDir . '/symfony/polyfill-mbstring/bootstrap.php',
     'ae18b6324ebdb023b82dfb6b6ec743e6' => $vendorDir . '/rocklobsterinc/functions/src/functions.php',
     'a88a339f0bb39de956f257ef3d7d5643' => $vendorDir . '/rocklobsterinc/form-data-tree/src/functions.php',
     '8e20d93be991ae9cd79bba6774de3000' => $vendorDir . '/rocklobsterinc/swv/src/functions.php',

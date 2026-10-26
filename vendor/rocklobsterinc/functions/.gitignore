@@ -4,6 +4,9 @@
 # Composer
 vendor/
 
+# PHPUnit
+.phpunit*
+
 # Logs
 logs
 *.log

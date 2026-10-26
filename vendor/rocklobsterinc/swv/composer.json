@@ -22,7 +22,7 @@
   },
   "require": {
     "php": ">=8.3",
-    "rocklobsterinc/functions": "^v1.0",
+    "rocklobsterinc/functions": "^v1.1",
     "rocklobsterinc/form-data-tree": "^v2.0"
   },
   "require-dev": {

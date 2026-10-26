@@ -7,12 +7,17 @@ namespace Composer\Autoload;
 class ComposerStaticInitf850b4a531317914b9045752ab7ba3f8
 {
     public static $files = array (
+        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         'ae18b6324ebdb023b82dfb6b6ec743e6' => __DIR__ . '/..' . '/rocklobsterinc/functions/src/functions.php',
         'a88a339f0bb39de956f257ef3d7d5643' => __DIR__ . '/..' . '/rocklobsterinc/form-data-tree/src/functions.php',
         '8e20d93be991ae9cd79bba6774de3000' => __DIR__ . '/..' . '/rocklobsterinc/swv/src/functions.php',
     );
 
     public static $prefixLengthsPsr4 = array (
+        'S' =>
+        array (
+            'Symfony\\Polyfill\\Mbstring\\' => 26,
+        ),
         'R' =>
         array (
             'RockLobsterInc\\Swv\\' => 19,
@@ -21,6 +26,10 @@ class ComposerStaticInitf850b4a531317914b9045752ab7ba3f8
     );
 
     public static $prefixDirsPsr4 = array (
+        'Symfony\\Polyfill\\Mbstring\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-mbstring',
+        ),
         'RockLobsterInc\\Swv\\' =>
         array (
             0 => __DIR__ . '/..' . '/rocklobsterinc/swv/src',
