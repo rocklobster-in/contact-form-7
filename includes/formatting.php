@@ -287,6 +287,7 @@ function wpcf7_sanitize_unit_tag( $tag ) {
  * @return string Converted file name.
  */
 function wpcf7_antiscript_file_name( $filename ) {
+	$filename = wp_scrub_utf8( $filename );
 	$filename = wp_basename( $filename );
 
 	// Apply part of protection logic from sanitize_file_name().
@@ -611,6 +612,8 @@ function wpcf7_strip_whitespaces( $input, $side = 'both' ) {
 
 	// https://tc39.es/ecma262/multipage/ecmascript-language-lexical-grammar.html
 	$whitespaces = wpcf7_get_unicode_whitespaces() . '\x{FEFF}';
+
+	$input = wp_scrub_utf8( $input );
 
 	if ( 'end' !== $side ) {
 		// Strip leading whitespaces
