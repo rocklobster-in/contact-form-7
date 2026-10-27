@@ -55,7 +55,7 @@ class File implements FileInterface
         }
 
         if (is_array($array)) {
-            return array_map("self::walkToFindSelf", $array);
+            return array_map(File::walkToFindSelf(...), $array);
         }
     }
 
