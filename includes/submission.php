@@ -840,24 +840,32 @@ class WPCF7_Submission {
 				continue;
 			}
 
-			$new_files = wpcf7_unship_uploaded_file( $_FILES[$tag->name], array(
-				'tag' => $tag,
-				'name' => $tag->name,
-				'required' => $tag->is_required(),
-				'filetypes' => $tag->get_option( 'filetypes' ),
-				'limit' => $tag->get_limit_option(),
-			) );
+			$uploaded_files = array();
 
-			if ( is_wp_error( $new_files ) ) {
-				$result->invalidate( $tag, $new_files );
-			} else {
-				$this->add_uploaded_file( $tag->name, $new_files );
+			$all_unshipped = wpcf7_unship_uploaded_file(
+				$_FILES[$tag->name],
+				array(
+					'tag' => $tag,
+					'name' => $tag->name,
+					'required' => $tag->is_required(),
+					'filetypes' => $tag->get_option( 'filetypes' ),
+					'limit' => $tag->get_limit_option(),
+				),
+				$uploaded_files
+			);
+
+			if ( $uploaded_files ) {
+				$this->add_uploaded_file( $tag->name, $uploaded_files );
+			}
+
+			if ( is_wp_error( $all_unshipped ) ) {
+				$result->invalidate( $tag, $all_unshipped );
 			}
 
 			$result = apply_filters( "wpcf7_validate_{$tag->type}", $result,
 				$tag,
 				array(
-					'uploaded_files' => $new_files,
+					'uploaded_files' => $uploaded_files,
 				)
 			);
 		}

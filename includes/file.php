@@ -6,10 +6,12 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  * Validates uploaded files and moves them to the temporary directory.
  *
  * @param array $file An item of `$_FILES`.
- * @param string|array $options Optional. Options to control behavior.
- * @return array|WP_Error Array of file paths, or WP_Error if validation fails.
+ * @param string|array $options Options to control behavior. Not optional.
+ * @param array $uploaded_files A temporary container of uploaded files.
+ * @return bool|WP_Error True if all files are successfully unshipped,
+ *                       or WP_Error if any exception occurs.
  */
-function wpcf7_unship_uploaded_file( $file, $options = '' ) {
+function wpcf7_unship_uploaded_file( $file, $options, &$uploaded_files ) {
 	$filesystem = WPCF7_Filesystem::get_instance();
 
 	$options = wp_parse_args( $options, array(
@@ -40,8 +42,6 @@ function wpcf7_unship_uploaded_file( $file, $options = '' ) {
 	// Move uploaded file to tmp dir
 	$uploads_dir = wpcf7_upload_tmp_dir();
 	$uploads_dir = wpcf7_maybe_add_random_dir( $uploads_dir );
-
-	$uploaded_files = array();
 
 	foreach ( $names as $key => $name ) {
 		$tmp_name = $tmp_names[$key];
@@ -74,7 +74,7 @@ function wpcf7_unship_uploaded_file( $file, $options = '' ) {
 		$uploaded_files[] = $new_file;
 	}
 
-	return $uploaded_files;
+	return true;
 }
 
 
