@@ -2,6 +2,8 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
+use RockLobsterInc\Swv\Rules\FileRule;
+
 /**
  * Replaces double line breaks with paragraph elements.
  *
@@ -288,6 +290,7 @@ function wpcf7_sanitize_unit_tag( $tag ) {
  */
 function wpcf7_antiscript_file_name( $filename ) {
 	$filename = wp_scrub_utf8( $filename );
+	$filename = wpcf7_strip_whitespaces( $filename );
 	$filename = wp_basename( $filename );
 
 	// Apply part of protection logic from sanitize_file_name().
@@ -301,7 +304,12 @@ function wpcf7_antiscript_file_name( $filename ) {
 		$filename
 	);
 
-	$filename = preg_replace( '/[\r\n\t -]+/', '-', $filename );
+	$whitespaces = '\x09-\x0D\x20\xA0\x{1680}\x{2000}-\x{200A}\x{2028}\x{2029}\x{202F}\x{205F}\x{3000}\x{FEFF}';
+
+	$filename = preg_replace(
+		sprintf( '/[%s-]+/u', $whitespaces ), '-', $filename
+	);
+
 	$filename = preg_replace( '/[\pC\pZ]+/iu', '', $filename );
 
 	$parts = explode( '.', $filename );
@@ -310,26 +318,45 @@ function wpcf7_antiscript_file_name( $filename ) {
 		return $filename;
 	}
 
-	$script_pattern = '/^(php|phtml|pl|py|rb|cgi|asp|aspx)\d?$/i';
+	$ext_safelist = wpcf7_file_extension_safelist();
 
 	$filename = array_shift( $parts );
 	$extension = array_pop( $parts );
 
 	foreach ( $parts as $part ) {
-		if ( preg_match( $script_pattern, $part ) ) {
+		if ( ! in_array( strtolower( $part ), $ext_safelist, true ) ) {
 			$filename .= '.' . $part . '_';
 		} else {
 			$filename .= '.' . $part;
 		}
 	}
 
-	if ( preg_match( $script_pattern, $extension ) ) {
+	if ( ! in_array( strtolower( $extension ), $ext_safelist, true ) ) {
 		$filename .= '.' . $extension . '_.txt';
 	} else {
 		$filename .= '.' . $extension;
 	}
 
 	return $filename;
+}
+
+
+/**
+ * Returns a file extension safelist.
+ *
+ * @return array List of file extensions.
+ */
+function wpcf7_file_extension_safelist(): array {
+	$safelist = array_merge(
+		FileRule::convertMimeToExt( 'audio/*' ),
+		FileRule::convertMimeToExt( 'video/*' ),
+		FileRule::convertMimeToExt( 'image/*' ),
+		array( 'pdf', 'txt' )
+	);
+
+	$safelist = apply_filters( 'wpcf7_file_extension_safelist', $safelist );
+
+	return array_values( array_unique( $safelist ) );
 }
 
 
