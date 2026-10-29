@@ -46,12 +46,16 @@ class File implements FileInterface
             $tmp_name = strip_whitespaces((string) $array["tmp_name"]);
             $error = (int) $array["error"];
 
-            return new self([
-                "name" => $name,
-                "size" => $size,
-                "temporaryFilePath" => $tmp_name,
-                "error" => $error,
-            ]);
+            if (0 !== $size) {
+                return new self([
+                    "name" => $name,
+                    "size" => $size,
+                    "temporaryFilePath" => $tmp_name,
+                    "error" => $error,
+                ]);
+            } else {
+                return;
+            }
         }
 
         if (is_array($array)) {
