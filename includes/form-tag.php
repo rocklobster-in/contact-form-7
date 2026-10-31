@@ -72,7 +72,7 @@ class WPCF7_FormTag implements ArrayAccess {
 			'id' => '[-0-9a-zA-Z_]+',
 		);
 
-		if ( isset( $preset_patterns[$pattern] ) ) {
+		if ( is_string( $pattern ) and isset( $preset_patterns[$pattern] ) ) {
 			$pattern = $preset_patterns[$pattern];
 		}
 
