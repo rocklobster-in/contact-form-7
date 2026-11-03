@@ -117,7 +117,7 @@ function wpcf7_swv_add_number_rules( $schema, $contact_form ) {
 
 	foreach ( $tags as $tag ) {
 		if ( $tag->is_required() ) {
-			$schema->add_rule(
+			$schema->addRule(
 				wpcf7_swv_create_rule( 'required', array(
 					'field' => $tag->name,
 					'error' => wpcf7_get_message( 'invalid_required' ),
@@ -125,7 +125,7 @@ function wpcf7_swv_add_number_rules( $schema, $contact_form ) {
 			);
 		}
 
-		$schema->add_rule(
+		$schema->addRule(
 			wpcf7_swv_create_rule( 'number', array(
 				'field' => $tag->name,
 				'error' => wpcf7_get_message( 'invalid_number' ),
@@ -146,7 +146,7 @@ function wpcf7_swv_add_number_rules( $schema, $contact_form ) {
 		}
 
 		if ( wpcf7_is_number( $min ) ) {
-			$schema->add_rule(
+			$schema->addRule(
 				wpcf7_swv_create_rule( 'minnumber', array(
 					'field' => $tag->name,
 					'threshold' => $min,
@@ -156,7 +156,7 @@ function wpcf7_swv_add_number_rules( $schema, $contact_form ) {
 		}
 
 		if ( wpcf7_is_number( $max ) ) {
-			$schema->add_rule(
+			$schema->addRule(
 				wpcf7_swv_create_rule( 'maxnumber', array(
 					'field' => $tag->name,
 					'threshold' => $max,
