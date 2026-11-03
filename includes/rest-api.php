@@ -431,7 +431,7 @@ class WPCF7_REST_Controller {
 
 		$schema = $item->get_schema();
 
-		$response = isset( $schema ) ? $schema->to_array() : array();
+		$response = isset( $schema ) ? $schema->toArray() : array();
 
 		return rest_ensure_response( $response );
 	}

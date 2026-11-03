@@ -86,7 +86,7 @@ function wpcf7_swv_add_file_rules( $schema, $contact_form ) {
 
 	foreach ( $tags as $tag ) {
 		if ( $tag->is_required() ) {
-			$schema->add_rule(
+			$schema->addRule(
 				wpcf7_swv_create_rule( 'requiredfile', array(
 					'field' => $tag->name,
 					'error' => wpcf7_get_message( 'invalid_required' ),
@@ -94,7 +94,7 @@ function wpcf7_swv_add_file_rules( $schema, $contact_form ) {
 			);
 		}
 
-		$schema->add_rule(
+		$schema->addRule(
 			wpcf7_swv_create_rule( 'file', array(
 				'field' => $tag->name,
 				'accept' => explode( ',', wpcf7_acceptable_filetypes(
@@ -104,7 +104,7 @@ function wpcf7_swv_add_file_rules( $schema, $contact_form ) {
 			) )
 		);
 
-		$schema->add_rule(
+		$schema->addRule(
 			wpcf7_swv_create_rule( 'maxfilesize', array(
 				'field' => $tag->name,
 				'threshold' => $tag->get_limit_option(),

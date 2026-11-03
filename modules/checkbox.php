@@ -206,7 +206,7 @@ function wpcf7_swv_add_checkbox_rules( $schema, $contact_form ) {
 
 	foreach ( $tags as $tag ) {
 		if ( $tag->is_required() or 'radio' === $tag->type ) {
-			$schema->add_rule(
+			$schema->addRule(
 				wpcf7_swv_create_rule( 'required', array(
 					'field' => $tag->name,
 					'error' => wpcf7_get_message( 'invalid_required' ),
@@ -215,7 +215,7 @@ function wpcf7_swv_add_checkbox_rules( $schema, $contact_form ) {
 		}
 
 		if ( 'radio' === $tag->type or $tag->has_option( 'exclusive' ) ) {
-			$schema->add_rule(
+			$schema->addRule(
 				wpcf7_swv_create_rule( 'maxitems', array(
 					'field' => $tag->name,
 					'threshold' => 1,
@@ -296,7 +296,7 @@ function wpcf7_swv_add_checkbox_enum_rules( $schema, $contact_form ) {
 			}
 		);
 
-		$schema->add_rule(
+		$schema->addRule(
 			wpcf7_swv_create_rule( 'enum', array(
 				'field' => $field,
 				'accept' => array_values( $field_values ),

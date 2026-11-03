@@ -103,7 +103,7 @@ function wpcf7_swv_add_textarea_rules( $schema, $contact_form ) {
 
 	foreach ( $tags as $tag ) {
 		if ( $tag->is_required() ) {
-			$schema->add_rule(
+			$schema->addRule(
 				wpcf7_swv_create_rule( 'required', array(
 					'field' => $tag->name,
 					'error' => wpcf7_get_message( 'invalid_required' ),
@@ -112,7 +112,7 @@ function wpcf7_swv_add_textarea_rules( $schema, $contact_form ) {
 		}
 
 		if ( $minlength = $tag->get_minlength_option() ) {
-			$schema->add_rule(
+			$schema->addRule(
 				wpcf7_swv_create_rule( 'minlength', array(
 					'field' => $tag->name,
 					'threshold' => absint( $minlength ),
@@ -122,7 +122,7 @@ function wpcf7_swv_add_textarea_rules( $schema, $contact_form ) {
 		}
 
 		if ( $maxlength = $tag->get_maxlength_option( '2000' ) ) {
-			$schema->add_rule(
+			$schema->addRule(
 				wpcf7_swv_create_rule( 'maxlength', array(
 					'field' => $tag->name,
 					'threshold' => absint( $maxlength ),

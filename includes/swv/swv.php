@@ -188,20 +188,32 @@ final class WPCF7_SWV_Schema extends CompositeRule {
 
 	/**
  	 * Wrapper function for addRule.
+ 	 *
+     * @deprecated 6.2 Use addRule()
 	 *
 	 * @param AbstractRule $rule Sub-rule to be added.
  	 */
 	public function add_rule( AbstractRule $rule ) {
+		wpcf7_deprecated_function( __METHOD__, '6.2',
+			'WPCF7_SWV_Schema::addRule'
+		);
+
 		return $this->addRule( $rule );
 	}
 
 
 	/**
 	 * Wrapper function for toArray.
+     *
+     * @deprecated 6.2 Use toArray()
 	 *
 	 * @return array Array of rule properties.
 	 */
 	public function to_array() {
+		wpcf7_deprecated_function( __METHOD__, '6.2',
+			'WPCF7_SWV_Schema::toArray'
+		);
+
 		return $this->toArray();
 	}
 
