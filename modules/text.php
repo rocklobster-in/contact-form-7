@@ -110,7 +110,7 @@ function wpcf7_swv_add_text_rules( $schema, $contact_form ) {
 
 	foreach ( $tags as $tag ) {
 		if ( $tag->is_required() ) {
-			$schema->add_rule(
+			$schema->addRule(
 				wpcf7_swv_create_rule( 'required', array(
 					'field' => $tag->name,
 					'error' => wpcf7_get_message( 'invalid_required' ),
@@ -119,7 +119,7 @@ function wpcf7_swv_add_text_rules( $schema, $contact_form ) {
 		}
 
 		if ( 'email' === $tag->basetype ) {
-			$schema->add_rule(
+			$schema->addRule(
 				wpcf7_swv_create_rule( 'email', array(
 					'field' => $tag->name,
 					'error' => wpcf7_get_message( 'invalid_email' ),
@@ -128,7 +128,7 @@ function wpcf7_swv_add_text_rules( $schema, $contact_form ) {
 		}
 
 		if ( 'url' === $tag->basetype ) {
-			$schema->add_rule(
+			$schema->addRule(
 				wpcf7_swv_create_rule( 'url', array(
 					'field' => $tag->name,
 					'error' => wpcf7_get_message( 'invalid_url' ),
@@ -137,7 +137,7 @@ function wpcf7_swv_add_text_rules( $schema, $contact_form ) {
 		}
 
 		if ( 'tel' === $tag->basetype ) {
-			$schema->add_rule(
+			$schema->addRule(
 				wpcf7_swv_create_rule( 'tel', array(
 					'field' => $tag->name,
 					'error' => wpcf7_get_message( 'invalid_tel' ),
@@ -146,7 +146,7 @@ function wpcf7_swv_add_text_rules( $schema, $contact_form ) {
 		}
 
 		if ( $minlength = $tag->get_minlength_option() ) {
-			$schema->add_rule(
+			$schema->addRule(
 				wpcf7_swv_create_rule( 'minlength', array(
 					'field' => $tag->name,
 					'threshold' => absint( $minlength ),
@@ -156,7 +156,7 @@ function wpcf7_swv_add_text_rules( $schema, $contact_form ) {
 		}
 
 		if ( $maxlength = $tag->get_maxlength_option( '400' ) ) {
-			$schema->add_rule(
+			$schema->addRule(
 				wpcf7_swv_create_rule( 'maxlength', array(
 					'field' => $tag->name,
 					'threshold' => absint( $maxlength ),
