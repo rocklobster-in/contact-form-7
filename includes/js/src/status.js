@@ -21,8 +21,8 @@ export const setStatus = (form, status) => {
   }
 
   if (!Array.from(defaultStatuses.values()).includes(status)) {
-    status = status.replace(/[^0-9a-z]+/i, " ").trim();
-    status = status.replace(/\s+/, "-");
+    status = status.replaceAll(/[^0-9a-z]+/gi, " ").trim();
+    status = status.replaceAll(/\s+/g, "-");
     status = `custom-${status}`;
   }
 
