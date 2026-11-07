@@ -125,6 +125,13 @@ function wpcf7_post_related_smt( $output, $name, $html, $mail_tag = null ) {
 		return '';
 	}
 
+	if (
+		! is_post_publicly_viewable( $post ) or
+		! empty( $post->post_password )
+	) {
+		return '';
+	}
+
 	if ( '_post_id' === $name ) {
 		return (string) $post->ID;
 	}
