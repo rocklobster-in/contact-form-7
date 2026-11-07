@@ -124,9 +124,7 @@ function wpcf7_stripe_skip_spam_check( $skip_spam_check, $submission ) {
 		) {
 			// This PI has already been used. Ignore.
 			return $skip_spam_check;
-		}
-
-		if (
+		} elseif (
 			isset( $payment_intent['status'] ) and
 			'succeeded' === $payment_intent['status']
 		) {
@@ -137,14 +135,11 @@ function wpcf7_stripe_skip_spam_check( $skip_spam_check, $submission ) {
 					'wpcf7_submission_timestamp' => $submission->get_meta( 'timestamp' ),
 				) ),
 			) );
-		}
-	}
 
-	if (
-		! empty( $submission->pull( 'payment_intent' ) ) and
-		$submission->verify_posted_data_hash()
-	) {
-		$skip_spam_check = true;
+			if ( $submission->verify_posted_data_hash() ) {
+				return true; // Posted data unchanged. Skip spam check.
+			}
+		}
 	}
 
 	return $skip_spam_check;
@@ -161,6 +156,10 @@ add_filter(
  * Verifies submitted Stripe Payment Intent ID.
  */
 function wpcf7_stripe_verify_payment_intent( $spam, $submission ) {
+	if ( $spam ) {
+		return $spam;
+	}
+
 	$service = WPCF7_Stripe::get_instance();
 
 	if ( ! $service->is_active() ) {
@@ -169,26 +168,28 @@ function wpcf7_stripe_verify_payment_intent( $spam, $submission ) {
 
 	$pi_id = (string) wpcf7_superglobal_post( '_wpcf7_stripe_payment_intent' );
 
-	if ( $pi_id ) {
-		$payment_intent = $service->api()->retrieve_payment_intent( $pi_id );
+	if ( ! $pi_id ) {
+		return $spam;
+	}
 
-		if (
-			! $payment_intent or
-			isset( $payment_intent['metadata']['wpcf7_submission_timestamp'] )
-		) {
-			$spam = true;
+	$payment_intent = $service->api()->retrieve_payment_intent( $pi_id );
 
-			$submission->add_spam_log( array(
-				'agent' => 'stripe',
-				'reason' => __(
-					'Invalid Stripe Payment Intent ID detected.',
-					'contact-form-7'
-				),
-			) );
+	if ( $payment_intent ) {
+		$pi_timestamp =
+			$payment_intent['metadata']['wpcf7_submission_timestamp'] ?? 0;
+
+		if ( $pi_timestamp === $submission->get_meta( 'timestamp' ) ) {
+			return $spam;
 		}
 	}
 
-	return $spam;
+	// No PI exists, or the PI has an invalid timestamp.
+	$submission->add_spam_log( array(
+		'agent' => 'stripe',
+		'reason' => __( 'Invalid Stripe Payment Intent ID detected.', 'contact-form-7' ),
+	) );
+
+	return true;
 }
 
 
