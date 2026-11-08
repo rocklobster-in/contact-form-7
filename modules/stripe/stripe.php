@@ -116,8 +116,10 @@ function wpcf7_stripe_skip_spam_check( $skip_spam_check, $submission ) {
 
 	$pi_id = (string) wpcf7_superglobal_post( '_wpcf7_stripe_payment_intent' );
 
-	if ( $pi_id ) {
-		$payment_intent = $service->api()->retrieve_payment_intent( $pi_id );
+	if (
+		$pi_id and
+		$payment_intent = $service->api()->retrieve_payment_intent( $pi_id )
+	) {
 		$metadata = $payment_intent['metadata'] ?? array();
 		$status = $payment_intent['status'] ?? '';
 
