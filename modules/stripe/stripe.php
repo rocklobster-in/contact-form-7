@@ -118,23 +118,25 @@ function wpcf7_stripe_skip_spam_check( $skip_spam_check, $submission ) {
 
 	if ( $pi_id ) {
 		$payment_intent = $service->api()->retrieve_payment_intent( $pi_id );
+		$metadata = $payment_intent['metadata'] ?? array();
+		$status = $payment_intent['status'] ?? '';
 
 		if (
-			isset( $payment_intent['metadata']['wpcf7_submission_timestamp'] )
-		) {
-			// This PI has already been used. Ignore.
-			return $skip_spam_check;
-		} elseif (
-			isset( $payment_intent['status'] ) and
-			'succeeded' === $payment_intent['status']
+			isset( $metadata['wpcf7_pending'] ) and
+			! isset( $metadata['wpcf7_complete'] ) and
+			'succeeded' === $status
 		) {
 			$submission->push( 'payment_intent', $pi_id );
 
-			$service->api()->update_payment_intent( $pi_id, array(
-				'metadata' => array_merge( $payment_intent['metadata'], array(
-					'wpcf7_submission_timestamp' => $submission->get_meta( 'timestamp' ),
-				) ),
-			) );
+			if ( ! isset( $metadata['wpcf7_fulfilled'] ) ) {
+				$metadata = array_merge( $metadata, array(
+					'wpcf7_fulfilled' => $submission->get_meta( 'timestamp' ),
+				) );
+
+				$service->api()->update_payment_intent( $pi_id, array(
+					'metadata' => $metadata,
+				) );
+			}
 
 			if ( $submission->verify_posted_data_hash() ) {
 				return true; // Posted data unchanged. Skip spam check.
@@ -175,10 +177,12 @@ function wpcf7_stripe_verify_payment_intent( $spam, $submission ) {
 	$payment_intent = $service->api()->retrieve_payment_intent( $pi_id );
 
 	if ( $payment_intent ) {
-		$pi_timestamp =
-			$payment_intent['metadata']['wpcf7_submission_timestamp'] ?? 0;
+		$metadata = $payment_intent['metadata'] ?? array();
 
-		if ( $pi_timestamp === $submission->get_meta( 'timestamp' ) ) {
+		if (
+			isset( $metadata['wpcf7_fulfilled'] ) and
+			! isset( $metadata['wpcf7_complete'] )
+		) {
 			return $spam;
 		}
 	}
@@ -209,51 +213,71 @@ function wpcf7_stripe_before_send_mail( $contact_form, &$abort, $submission ) {
 		return;
 	}
 
-	$tags = $contact_form->scan_form_tags( array( 'type' => 'stripe' ) );
+	$pi_id = $submission->pull( 'payment_intent' );
 
-	if ( ! $tags ) {
-		return;
-	}
+	if ( $pi_id ) {
+		$payment_intent = $service->api()->retrieve_payment_intent( $pi_id );
+		$metadata = $payment_intent['metadata'] ?? array();
 
-	if ( ! empty( $submission->pull( 'payment_intent' ) ) ) {
-		return;
-	}
-
-	$tag = $tags[0];
-	$amount = $tag->get_option( 'amount', 'int', true );
-	$currency = $tag->get_option( 'currency', '[a-zA-Z]{3}', true );
-
-	$payment_intent_params = apply_filters(
-		'wpcf7_stripe_payment_intent_parameters',
-		array(
-			'amount' => $amount ? absint( $amount ) : null,
-			'currency' => $currency ? strtolower( $currency ) : null,
-			'receipt_email' => $submission->get_posted_data( 'your-email' ),
-		)
-	);
-
-	$payment_intent = $service->api()->create_payment_intent(
-		$payment_intent_params
-	);
-
-	if ( $payment_intent ) {
-		$submission->add_result_props( array(
-			'stripe' => array(
-				'payment_intent' => array(
-					'id' => $payment_intent['id'],
-					'client_secret' => $payment_intent['client_secret'],
-				),
-			),
+		$metadata = array_merge( $metadata, array(
+			'wpcf7_complete' => $submission->get_meta( 'timestamp' ),
 		) );
 
-		$submission->set_status( 'payment_required' );
+		$service->api()->update_payment_intent( $pi_id, array(
+			'metadata' => $metadata,
+		) );
 
-		$submission->set_response(
-			__( 'Payment is required. Please pay by credit card.', 'contact-form-7' )
+		return;
+	} else {
+		$tags = $contact_form->scan_form_tags( array( 'type' => 'stripe' ) );
+
+		if ( ! $tags ) {
+			return;
+		}
+
+		$tag = $tags[0];
+		$amount = $tag->get_option( 'amount', 'int', true );
+		$currency = $tag->get_option( 'currency', '[a-zA-Z]{3}', true );
+
+		$payment_intent_params = apply_filters(
+			'wpcf7_stripe_payment_intent_parameters',
+			array(
+				'amount' => $amount ? absint( $amount ) : null,
+				'currency' => $currency ? strtolower( $currency ) : null,
+				'receipt_email' => $submission->get_posted_data( 'your-email' ),
+			)
 		);
-	}
 
-	$abort = true;
+		$metadata = array_merge(
+			$payment_intent_params['metadata'] ?? array(),
+			array(
+				'wpcf7_pending' => $submission->get_meta( 'timestamp' ),
+			)
+		);
+
+		$payment_intent = $service->api()->create_payment_intent(
+			array_merge( $payment_intent_params, array( 'metadata' => $metadata ) )
+		);
+
+		if ( $payment_intent ) {
+			$submission->add_result_props( array(
+				'stripe' => array(
+					'payment_intent' => array(
+						'id' => $payment_intent['id'],
+						'client_secret' => $payment_intent['client_secret'],
+					),
+				),
+			) );
+
+			$submission->set_status( 'payment_required' );
+
+			$submission->set_response(
+				__( 'Payment is required. Please pay by credit card.', 'contact-form-7' )
+			);
+		}
+
+		$abort = true;
+	}
 }
 
 
