@@ -386,9 +386,30 @@ class WPCF7_FormTag implements ArrayAccess {
 		foreach ( $options as $opt ) {
 			$opt = sanitize_key( $opt );
 
-			if ( 'user_' === substr( $opt, 0, 5 ) and is_user_logged_in() ) {
-				$primary_props = array( 'user_login', 'user_email', 'user_url' );
-				$opt = in_array( $opt, $primary_props, true ) ? $opt : substr( $opt, 5 );
+			if ( str_starts_with( $opt, 'user_' ) and is_user_logged_in() ) {
+				$available_names = array(
+					'user_login',
+					'user_email',
+					'user_url',
+					'user_first_name',
+					'user_last_name',
+					'user_nickname',
+					'user_display_name',
+				);
+
+				if ( ! in_array( $opt, $available_names, true ) ) {
+					continue;
+				}
+
+				$primary_props = array(
+					'user_login',
+					'user_email',
+					'user_url',
+				);
+
+				if ( ! in_array( $opt, $primary_props, true ) ) {
+					$opt = substr( $opt, 5 );
+				}
 
 				$user = wp_get_current_user();
 				$user_prop = $user->get( $opt );
