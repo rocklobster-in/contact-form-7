@@ -196,7 +196,7 @@ function wpcf7_stripe_verify_payment_intent( $spam, $submission ) {
 		}
 	}
 
-	// No PI exists, or the PI has an invalid timestamp.
+	// No PI exists or refers to the wrong PI.
 	$submission->add_spam_log( array(
 		'agent' => 'stripe',
 		'reason' => __( 'Invalid Stripe Payment Intent ID detected.', 'contact-form-7' ),
