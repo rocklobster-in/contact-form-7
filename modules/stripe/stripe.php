@@ -231,7 +231,7 @@ function wpcf7_stripe_before_send_mail( $contact_form, &$abort, $submission ) {
 
 		return;
 	} else {
-		$pi_params = wpcf7_stripe_get_payment_intent_parameters( $submission );
+		$pi_params = wpcf7_stripe_get_pi_params( $submission );
 
 		if ( ! isset( $pi_params ) ) { // No [stripe] form-tag found.
 			return;
@@ -277,7 +277,7 @@ function wpcf7_stripe_before_send_mail( $contact_form, &$abort, $submission ) {
  * @return array|null Payment Intent parameters.
  *                    Null if no [stripe] form-tag found.
  */
-function wpcf7_stripe_get_payment_intent_parameters( $submission ) {
+function wpcf7_stripe_get_pi_params( $submission ) {
 	$contact_form = $submission->get_contact_form();
 	$tags = $contact_form->scan_form_tags( array( 'type' => 'stripe' ) );
 
