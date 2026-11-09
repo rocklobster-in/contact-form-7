@@ -231,34 +231,21 @@ function wpcf7_stripe_before_send_mail( $contact_form, &$abort, $submission ) {
 
 		return;
 	} else {
-		$tags = $contact_form->scan_form_tags( array( 'type' => 'stripe' ) );
+		$pi_params = wpcf7_stripe_get_payment_intent_parameters( $submission );
 
-		if ( ! $tags ) {
+		if ( ! isset( $pi_params ) ) { // No [stripe] form-tag found.
 			return;
 		}
 
-		$tag = $tags[0];
-		$amount = $tag->get_option( 'amount', 'int', true );
-		$currency = $tag->get_option( 'currency', '[a-zA-Z]{3}', true );
-
-		$payment_intent_params = apply_filters(
-			'wpcf7_stripe_payment_intent_parameters',
-			array(
-				'amount' => $amount ? absint( $amount ) : null,
-				'currency' => $currency ? strtolower( $currency ) : null,
-				'receipt_email' => $submission->get_posted_data( 'your-email' ),
-			)
-		);
-
 		$metadata = array_merge(
-			$payment_intent_params['metadata'] ?? array(),
+			$pi_params['metadata'] ?? array(),
 			array(
 				'wpcf7_pending' => $submission->get_meta( 'timestamp' ),
 			)
 		);
 
 		$payment_intent = $service->api()->create_payment_intent(
-			array_merge( $payment_intent_params, array( 'metadata' => $metadata ) )
+			array_merge( $pi_params, array( 'metadata' => $metadata ) )
 		);
 
 		if ( $payment_intent ) {
@@ -280,6 +267,40 @@ function wpcf7_stripe_before_send_mail( $contact_form, &$abort, $submission ) {
 
 		$abort = true;
 	}
+}
+
+
+/**
+ * Returns Payment Intent parameters.
+ *
+ * @param WPCF7_Submission $submission Submission object.
+ * @return array|null Payment Intent parameters.
+ *                    Null if no [stripe] form-tag found.
+ */
+function wpcf7_stripe_get_payment_intent_parameters( $submission ) {
+	$contact_form = $submission->get_contact_form();
+	$tags = $contact_form->scan_form_tags( array( 'type' => 'stripe' ) );
+
+	if ( ! $tags ) {
+		return null;
+	}
+
+	$tag = $tags[0];
+	$amount = $tag->get_option( 'amount', 'int', true );
+	$currency = $tag->get_option( 'currency', '[a-zA-Z]{3}', true );
+
+	$pi_params = array(
+		'amount' => $amount ? absint( $amount ) : null,
+		'currency' => $currency ? strtolower( $currency ) : null,
+		'receipt_email' => $submission->get_posted_data( 'your-email' ),
+	);
+
+	$pi_params = apply_filters(
+		'wpcf7_stripe_payment_intent_parameters',
+		$pi_params
+	);
+
+	return (array) $pi_params;
 }
 
 
