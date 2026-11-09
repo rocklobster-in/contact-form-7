@@ -114,7 +114,7 @@ function wpcf7_stripe_skip_spam_check( $skip_spam_check, $submission ) {
 		return $skip_spam_check;
 	}
 
-	$pi_id = (string) wpcf7_superglobal_post( '_wpcf7_stripe_payment_intent' );
+	$pi_id = wpcf7_superglobal_post( '_wpcf7_stripe_payment_intent' );
 
 	if (
 		$pi_id and
@@ -122,6 +122,8 @@ function wpcf7_stripe_skip_spam_check( $skip_spam_check, $submission ) {
 	) {
 		$metadata = $payment_intent['metadata'] ?? array();
 		$status = $payment_intent['status'] ?? '';
+
+		$pi_params_hash = wpcf7_stripe_pi_params_hash( $submission );
 
 		if (
 			isset( $metadata['wpcf7_pending'] ) and
@@ -132,7 +134,7 @@ function wpcf7_stripe_skip_spam_check( $skip_spam_check, $submission ) {
 
 			if ( ! isset( $metadata['wpcf7_fulfilled'] ) ) {
 				$metadata = array_merge( $metadata, array(
-					'wpcf7_fulfilled' => $submission->get_meta( 'timestamp' ),
+					'wpcf7_fulfilled' => $pi_params_hash,
 				) );
 
 				$service->api()->update_payment_intent( $pi_id, array(
@@ -140,7 +142,10 @@ function wpcf7_stripe_skip_spam_check( $skip_spam_check, $submission ) {
 				) );
 			}
 
-			if ( $submission->verify_posted_data_hash() ) {
+			if (
+				$submission->verify_posted_data_hash() and
+				hash_equals( $metadata['wpcf7_fulfilled'], $pi_params_hash )
+			) {
 				return true; // Posted data unchanged. Skip spam check.
 			}
 		}
@@ -170,7 +175,7 @@ function wpcf7_stripe_verify_payment_intent( $spam, $submission ) {
 		return $spam;
 	}
 
-	$pi_id = (string) wpcf7_superglobal_post( '_wpcf7_stripe_payment_intent' );
+	$pi_id = wpcf7_superglobal_post( '_wpcf7_stripe_payment_intent' );
 
 	if ( ! $pi_id ) {
 		return $spam;
@@ -180,10 +185,12 @@ function wpcf7_stripe_verify_payment_intent( $spam, $submission ) {
 
 	if ( $payment_intent ) {
 		$metadata = $payment_intent['metadata'] ?? array();
+		$pi_params_hash = wpcf7_stripe_pi_params_hash( $submission );
 
 		if (
 			isset( $metadata['wpcf7_fulfilled'] ) and
-			! isset( $metadata['wpcf7_complete'] )
+			! isset( $metadata['wpcf7_complete'] ) and
+			hash_equals( $metadata['wpcf7_fulfilled'], $pi_params_hash )
 		) {
 			return $spam;
 		}
@@ -219,11 +226,13 @@ function wpcf7_stripe_before_send_mail( $contact_form, &$abort, $submission ) {
 
 	if ( $pi_id ) {
 		$payment_intent = $service->api()->retrieve_payment_intent( $pi_id );
-		$metadata = $payment_intent['metadata'] ?? array();
 
-		$metadata = array_merge( $metadata, array(
-			'wpcf7_complete' => $submission->get_meta( 'timestamp' ),
-		) );
+		$metadata = array_merge(
+			$payment_intent['metadata'] ?? array(),
+			array(
+				'wpcf7_complete' => wpcf7_stripe_pi_params_hash( $submission ),
+			)
+		);
 
 		$service->api()->update_payment_intent( $pi_id, array(
 			'metadata' => $metadata,
@@ -240,7 +249,7 @@ function wpcf7_stripe_before_send_mail( $contact_form, &$abort, $submission ) {
 		$metadata = array_merge(
 			$pi_params['metadata'] ?? array(),
 			array(
-				'wpcf7_pending' => $submission->get_meta( 'timestamp' ),
+				'wpcf7_pending' => wpcf7_stripe_pi_params_hash( $submission ),
 			)
 		);
 
@@ -301,6 +310,26 @@ function wpcf7_stripe_get_pi_params( $submission ) {
 	);
 
 	return (array) $pi_params;
+}
+
+
+/**
+ * Returns the hash of Payment Intent parameters plus some submission metadata.
+ */
+function wpcf7_stripe_pi_params_hash( $submission, $length = 7 ) {
+	$params = array_merge(
+		wpcf7_stripe_get_pi_params( $submission ) ?? array(),
+		array(
+			'unit_tag' => $submission->get_meta( 'unit_tag' ),
+			'remote_ip' => $submission->get_meta( 'remote_ip' ),
+		)
+	);
+
+	ksort( $params );
+
+	$hash = wp_hash( wp_json_encode( $params ), 'wpcf7_stripe' );
+
+	return substr( $hash, 0, absint( $length ) );
 }
 
 
