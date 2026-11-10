@@ -52,6 +52,10 @@ Do you have questions or issues with Contact Form 7? Use these support channels 
 
 == Changelog ==
 
+= 6.2.5 =
+
+* [Release announcement](https://contactform7.com/2026/11/10/contact-form-7-625/)
+
 = 6.2.4.1 =
 
 * FormDataTree-PHP: Upgraded to 2.0.10.
