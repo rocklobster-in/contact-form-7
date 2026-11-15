@@ -6,7 +6,7 @@ import reset from "./reset.js";
 import validate from "./validate.js";
 import { apiFetch } from "./api-fetch.js";
 
-document.addEventListener("DOMContentLoaded", (event) => {
+const onReady = () => {
   if (typeof wpcf7 === "undefined") {
     console.error("wpcf7 is not defined.");
     return;
@@ -79,4 +79,10 @@ document.addEventListener("DOMContentLoaded", (event) => {
       wpcf7.schemas.set(formId, response);
     });
   }
-});
+};
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", onReady);
+} else {
+  onReady();
+}

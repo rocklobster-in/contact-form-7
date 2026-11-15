@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", (event) => {
+const onReady = () => {
   wpcf7_recaptcha = {
     ...(wpcf7_recaptcha ?? {}),
   };
@@ -65,4 +65,10 @@ document.addEventListener("DOMContentLoaded", (event) => {
       field.setAttribute("value", event.detail.token);
     }
   });
-});
+};
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", onReady);
+} else {
+  onReady();
+}

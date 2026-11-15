@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", (event) => {
+const onReady = () => {
   const warnLegacyBrowser = () => {
     const message =
       "This form includes a payment widget that requires a modern browser to work.";
@@ -220,4 +220,10 @@ document.addEventListener("DOMContentLoaded", (event) => {
       }
     }
   });
-});
+};
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", onReady);
+} else {
+  onReady();
+}
