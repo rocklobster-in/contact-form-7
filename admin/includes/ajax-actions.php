@@ -36,6 +36,15 @@ add_action(
 function wpcf7_ajax_sendinblue_contact_lists() {
 	$contact_form = wpcf7_contact_form( wpcf7_superglobal_get( 'id' ) );
 
+	if (
+		! $contact_form and
+		! current_user_can( 'wpcf7_read_contact_forms' ) or
+		$contact_form and
+		! current_user_can( 'wpcf7_read_contact_form', $contact_form->id() )
+	) {
+		wp_die( -1 );
+	}
+
 	$prop = wp_parse_args(
 		$contact_form ? $contact_form->prop( 'sendinblue' ) : array(),
 		array(
@@ -63,6 +72,15 @@ add_action(
  */
 function wpcf7_ajax_sendinblue_email_template() {
 	$contact_form = wpcf7_contact_form( wpcf7_superglobal_get( 'id' ) );
+
+	if (
+		! $contact_form and
+		! current_user_can( 'wpcf7_read_contact_forms' ) or
+		$contact_form and
+		! current_user_can( 'wpcf7_read_contact_form', $contact_form->id() )
+	) {
+		wp_die( -1 );
+	}
 
 	$prop = wp_parse_args(
 		$contact_form ? $contact_form->prop( 'sendinblue' ) : array(),
