@@ -534,20 +534,19 @@ class WPCF7_Submission {
 	 * Retrieves the request URL of this submission.
 	 */
 	private function get_request_url() {
-		$home_url = untrailingslashit( home_url() );
+		$request_url = path_join(
+			preg_replace( '%(?<!:|/)/.*$%', '', home_url() ),
+			ltrim( wpcf7_get_request_uri(), '/' )
+		);
 
 		if ( self::is_restful() ) {
-			$referer = wpcf7_superglobal_server( 'HTTP_REFERER' );
-
-			if ( $referer and str_starts_with( $referer, $home_url ) ) {
-				return sanitize_url( $referer );
-			}
+			return wp_validate_redirect(
+				wpcf7_superglobal_server( 'HTTP_REFERER' ),
+				$request_url
+			);
 		}
 
-		$url = preg_replace( '%(?<!:|/)/.*$%', '', $home_url )
-			. wpcf7_get_request_uri();
-
-		return $url;
+		return $request_url;
 	}
 
 
