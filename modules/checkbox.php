@@ -162,6 +162,7 @@ function wpcf7_checkbox_form_tag_handler( $tag ) {
 					'name' => $free_text_name,
 					'class' => 'wpcf7-free-text',
 					'tabindex' => $tabindex,
+					'aria-label' => $label,
 				);
 
 				if ( wpcf7_is_posted() ) {
