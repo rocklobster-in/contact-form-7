@@ -111,7 +111,11 @@ function wpcf7_editor_panel_form( $post ) {
 		'for' => 'wpcf7-form',
 		'class' => 'screen-reader-text',
 	) );
-	$formatter->append_preformatted( esc_html( __( 'Form template', 'contact-form-7' ) ) );
+
+	$formatter->append_preformatted(
+		esc_html( __( 'Form template', 'contact-form-7' ) )
+	);
+
 	$formatter->end_tag( 'label' );
 
 	$formatter->append_start_tag( 'textarea', array(
@@ -551,7 +555,11 @@ function wpcf7_editor_panel_additional_settings( $post ) {
 		'for' => 'wpcf7-additional-settings',
 		'class' => 'screen-reader-text',
 	) );
-	$formatter->append_preformatted( esc_html( __( 'Additional settings', 'contact-form-7' ) ) );
+
+	$formatter->append_preformatted(
+		esc_html( __( 'Additional settings', 'contact-form-7' ) )
+	);
+
 	$formatter->end_tag( 'label' );
 
 	$formatter->append_start_tag( 'textarea', array(
