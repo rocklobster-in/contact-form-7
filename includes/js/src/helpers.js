@@ -30,10 +30,6 @@ export const freeTextHelper = (form) => {
 
     form.addEventListener("change", (event) => {
       freetext.disabled = !checkbox.checked;
-
-      if (event.target === checkbox && checkbox.checked) {
-        freetext.focus();
-      }
     });
   });
 };
