@@ -107,6 +107,13 @@ function wpcf7_editor_panel_form( $post ) {
 		$tag_generator->print_buttons();
 	} );
 
+	$formatter->append_start_tag( 'label', array(
+		'for' => 'wpcf7-form',
+		'class' => 'screen-reader-text',
+	) );
+	$formatter->append_preformatted( esc_html( __( 'Form template', 'contact-form-7' ) ) );
+	$formatter->end_tag( 'label' );
+
 	$formatter->append_start_tag( 'textarea', array(
 		'id' => 'wpcf7-form',
 		'name' => 'wpcf7-form',
@@ -539,6 +546,13 @@ function wpcf7_editor_panel_additional_settings( $post ) {
 	$formatter->append_start_tag( 'legend' );
 	$formatter->append_preformatted( $description );
 	$formatter->end_tag( 'legend' );
+
+	$formatter->append_start_tag( 'label', array(
+		'for' => 'wpcf7-additional-settings',
+		'class' => 'screen-reader-text',
+	) );
+	$formatter->append_preformatted( esc_html( __( 'Additional settings', 'contact-form-7' ) ) );
+	$formatter->end_tag( 'label' );
 
 	$formatter->append_start_tag( 'textarea', array(
 		'id' => 'wpcf7-additional-settings',
