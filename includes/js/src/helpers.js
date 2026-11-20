@@ -101,8 +101,9 @@ export const initCharacterCount = (form) => {
     const maximum = absInt(counter.getAttribute("data-maximum-value"));
     const minimum = absInt(counter.getAttribute("data-minimum-value"));
 
+    // A countdown reflects the space left under the native maxlength.
     const count = counter.classList.contains("down")
-      ? starting - target.value.trim().length
+      ? starting - target.value.length
       : target.value.trim().length;
 
     counter.setAttribute("data-current-value", count);
