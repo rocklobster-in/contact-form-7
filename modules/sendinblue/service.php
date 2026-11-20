@@ -223,7 +223,7 @@ class WPCF7_Sendinblue extends WPCF7_Service {
 <table class="form-table">
 <tbody>
 <tr>
-	<th scope="row"><label for="publishable"><?php echo esc_html( __( 'API key', 'contact-form-7' ) ); ?></label></th>
+	<th scope="row"><label for="api_key"><?php echo esc_html( __( 'API key', 'contact-form-7' ) ); ?></label></th>
 	<td><?php
 		if ( $this->is_active() ) {
 			echo esc_html( wpcf7_mask_password( $api_key, 4, 8 ) );
