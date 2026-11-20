@@ -1,5 +1,3 @@
-import { __ } from "@wordpress/i18n";
-
 import { absInt } from "./utils.js";
 
 export const exclusiveCheckboxHelper = (form) => {
@@ -98,8 +96,6 @@ export const initSubmitButton = (form) => {
 };
 
 export const initCharacterCount = (form) => {
-  const hints = new WeakMap();
-
   const updateCount = (counter, target) => {
     const starting = absInt(counter.getAttribute("data-starting-value"));
     const maximum = absInt(counter.getAttribute("data-maximum-value"));
@@ -115,24 +111,6 @@ export const initCharacterCount = (form) => {
 
     counter.classList.toggle("too-long", maximum > 0 && length > maximum);
     counter.classList.toggle("too-short", length > 0 && length < minimum);
-
-    const hint = hints.get(counter);
-    if (hint) {
-      const atInputLimit =
-        target.value.length >= target.maxLength && length < target.maxLength;
-      const message =
-        count > 0 && atInputLimit
-          ? " " +
-            __(
-              "Remove whitespace at the beginning or end to enter more text.",
-              "contact-form-7",
-            )
-          : "";
-
-      if (hint.textContent !== message) {
-        hint.textContent = message;
-      }
-    }
   };
 
   const bulkUpdate = (options) => {
@@ -148,14 +126,6 @@ export const initCharacterCount = (form) => {
       const target = form.querySelector(`[name="${targetName}"]`);
 
       if (target) {
-        if (options.init && counter.classList.contains("down")) {
-          const hint = document.createElement("span");
-          hint.className = "wpcf7-character-count-hint";
-          hint.setAttribute("role", "status");
-          counter.after(hint);
-          hints.set(counter, hint);
-        }
-
         target.value = target.defaultValue;
 
         updateCount(counter, target);
