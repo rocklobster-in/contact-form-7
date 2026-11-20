@@ -109,8 +109,8 @@ export const initCharacterCount = (form) => {
     counter.setAttribute("data-current-value", count);
     counter.innerText = count;
 
-    counter.classList.toggle("too-long", maximum > 0 && length > maximum);
-    counter.classList.toggle("too-short", length > 0 && length < minimum);
+    counter.classList.toggle("too-long", 0 < maximum && maximum < length);
+    counter.classList.toggle("too-short", 0 < length && length < minimum);
   };
 
   const bulkUpdate = (options) => {
@@ -131,7 +131,7 @@ export const initCharacterCount = (form) => {
         updateCount(counter, target);
 
         if (options.init) {
-          target.addEventListener("keyup", (event) => {
+          target.addEventListener("input", (event) => {
             updateCount(counter, target);
           });
         }
