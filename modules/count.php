@@ -34,7 +34,12 @@ function wpcf7_count_form_tag_handler( $tag ) {
 		$target = array_shift( $targets );
 
 		if ( 'count' !== $target->type ) {
-			$maxlength = $target->get_maxlength_option();
+			$default_maxlength = match ( $target->basetype ) {
+				'text', 'email', 'url', 'tel' => '400',
+				'textarea' => '2000',
+				default => false,
+			};
+			$maxlength = $target->get_maxlength_option( $default_maxlength );
 			$minlength = $target->get_minlength_option();
 			break;
 		}
