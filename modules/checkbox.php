@@ -162,6 +162,11 @@ function wpcf7_checkbox_form_tag_handler( $tag ) {
 					'name' => $free_text_name,
 					'class' => 'wpcf7-free-text',
 					'tabindex' => $tabindex,
+					'aria-label' => sprintf(
+						/* translators: %s: label of the list option the free text field belongs to */
+						__( 'Free text for the "%s" option', 'contact-form-7' ),
+						$label
+					),
 				);
 
 				if ( wpcf7_is_posted() ) {
