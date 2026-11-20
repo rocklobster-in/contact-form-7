@@ -139,7 +139,7 @@ export const initCharacterCount = (form) => {
         updateCount(counter, target);
 
         if (options.init) {
-          target.addEventListener("keyup", (event) => {
+          target.addEventListener("input", (event) => {
             updateCount(counter, target);
           });
         }
