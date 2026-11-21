@@ -101,24 +101,16 @@ export const initCharacterCount = (form) => {
     const maximum = absInt(counter.getAttribute("data-maximum-value"));
     const minimum = absInt(counter.getAttribute("data-minimum-value"));
 
+    const length = target.value.trim().length;
     const count = counter.classList.contains("down")
-      ? starting - target.value.trim().length
-      : target.value.trim().length;
+      ? starting - length
+      : length;
 
     counter.setAttribute("data-current-value", count);
     counter.innerText = count;
 
-    if (maximum && maximum < target.value.length) {
-      counter.classList.add("too-long");
-    } else {
-      counter.classList.remove("too-long");
-    }
-
-    if (minimum && target.value.length < minimum) {
-      counter.classList.add("too-short");
-    } else {
-      counter.classList.remove("too-short");
-    }
+    counter.classList.toggle("too-long", 0 < maximum && maximum < length);
+    counter.classList.toggle("too-short", 0 < length && length < minimum);
   };
 
   const bulkUpdate = (options) => {
