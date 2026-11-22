@@ -87,6 +87,18 @@ trait WPCF7_ConfigValidator_Form {
 				$this->remove_error( $section, 'upload_filesize_overlimit' );
 			}
 		}
+
+		if ( $this->supports( 'stripe_deviation' ) ) {
+			if ( $this->detect_stripe_deviation( $section, $form ) ) {
+				$this->add_error( $section, 'stripe_deviation',
+					array(
+						'message' => __( 'Stripe is used in a way that deviates from recommended practices.', 'contact-form-7' ),
+					)
+				);
+			} else {
+				$this->remove_error( $section, 'stripe_deviation' );
+			}
+		}
 	}
 
 
@@ -277,4 +289,35 @@ trait WPCF7_ConfigValidator_Form {
 		return false;
 	}
 
+
+	/**
+	 * Detects errors of Stripe deviation.
+	 *
+	 * @link https://contactform7.com/configuration-errors/stripe-deviation/
+	 */
+	public function detect_stripe_deviation( $section, $content ) {
+		$form_tags_manager = WPCF7_FormTagsManager::get_instance();
+
+		$stripe_tags = $form_tags_manager->filter( $content, array(
+			'type' => 'stripe',
+		) );
+
+		if ( empty( $stripe_tags ) ) {
+			return false;
+		}
+
+		$conflicting_tags = $form_tags_manager->filter( $content, array(
+			'feature' => 'not-for-stripe',
+		) );
+
+		if ( $conflicting_tags ) {
+			return true;
+		}
+
+		if ( ! str_contains( $content, 'inert-on-payment-required' ) ) {
+			return true;
+		}
+
+		return false;
+	}
 }
