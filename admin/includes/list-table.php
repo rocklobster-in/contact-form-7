@@ -325,6 +325,6 @@ class WPCF7_List_Table extends WP_List_Table {
 			$datetime->format( __( 'g:i a', 'contact-form-7' ) )
 		);
 
-		echo $t_time;
+		echo esc_html( $t_time );
 	}
 }
