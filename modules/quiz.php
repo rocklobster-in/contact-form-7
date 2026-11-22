@@ -18,6 +18,7 @@ function wpcf7_add_form_tag_quiz() {
 			'name-attr' => true,
 			'do-not-store' => true,
 			'not-for-mail' => true,
+			'not-for-stripe' => true,
 		)
 	);
 }
