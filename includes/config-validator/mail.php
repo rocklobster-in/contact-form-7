@@ -47,6 +47,9 @@ trait WPCF7_ConfigValidator_Mail {
 		if ( '_site_admin_email' === $field_name ) {
 			return get_bloginfo( 'admin_email', 'raw' );
 
+		} elseif ( '_site_domain' === $field_name ) {
+			return wpcf7_site_related_smt( '', $field_name, false, $mail_tag );
+
 		} elseif ( '_user_agent' === $field_name ) {
 			return $example_text;
 
